@@ -1,22 +1,39 @@
+import './Navbar.css'
+import { Link } from 'react-router-dom'
+  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+  import { faHouseChimney } from '@fortawesome/free-solid-svg-icons'
 const Navbar = () => {
 
 
 return(
         
-    <ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="#">Active</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-  </li>
-</ul>
+   
+  
+  <nav>
+    <div  class="my-nav px-3 py-2  text-white">
+      
+        <div class="  d-flex flex-wrap align-items-center justify-content-start  ">
+
+
+          
+            <Link  style={{textDecoration : "none"}} to={'/fgd'}  >
+
+
+              
+
+              
+              
+              <a className='header-text'> <FontAwesomeIcon className='header-icon' icon={faHouseChimney} />  خانه</a>
+         
+            </Link>
+
+        </div>
+    
+    </div>
+    
+  </nav> 
+
+
 )
 }
 
