@@ -24,10 +24,10 @@ export const globalStyles = {
       body: {
         overflowX: "hidden",
         bg: mode("gray.50", "#1B254B")(props),
-        fontFamily: "Helvetica, sans-serif",
+        
       },
       html: {
-        fontFamily: "Helvetica, sans-serif",
+       
       },
     }),
   },

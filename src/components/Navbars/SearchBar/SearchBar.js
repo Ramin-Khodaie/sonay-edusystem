@@ -14,7 +14,7 @@ export function SearchBar(props) {
   const searchIconColor = useColorModeValue("gray.700", "gray.200");
   const inputBg = useColorModeValue("white", "navy.800");
   return (
-    <InputGroup borderRadius='8px' w='200px' {...rest}>
+    <InputGroup ml="15px" borderRadius='8px' w='200px' {...rest}>
       <InputLeftElement
         children={
           <IconButton

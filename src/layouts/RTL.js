@@ -6,12 +6,12 @@ import {
   Stack,
   Box,
 } from "@chakra-ui/react";
-import { RtlProvider } from "components/RTLProvider/RTLProvider";
-import Configurator from "components/Configurator/Configurator";
-import Footer from "components/Footer/Footer.js";
+import { RtlProvider } from "../components/RTLProvider/RTLProvider";
+import Configurator from "../components/Configurator/Configurator";
+import Footer from "../components/Footer/Footer.js";
 // Layout components
-import AdminNavbar from "components/Navbars/AdminNavbar.js";
-import Sidebar from "components/Sidebar/Sidebar.js";
+import AdminNavbar from "../components/Navbars/AdminNavbar.js";
+import Sidebar from "../components/Sidebar/Sidebar.js";
 import React, { useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "routes.js";
@@ -25,8 +25,8 @@ import {
   ArgonLogoLight,
   ChakraLogoDark,
   ChakraLogoLight,
-} from "components/Icons/Icons";
-import bgAdmin from "assets/img/admin-background.png";
+} from "../components/Icons/Icons";
+import bgAdmin from "../assets/img/admin-background.png";
 export default function Dashboard(props) {
   const { ...rest } = props;
   // states and functions

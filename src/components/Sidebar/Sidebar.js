@@ -30,7 +30,7 @@ import { SidebarHelp } from "components/Sidebar/SidebarHelp";
 import React from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { NavLink, useLocation } from "react-router-dom";
-
+import BrandText from "../../helpers/components/BrandComponent"
 
 
 // FUNCTIONS
@@ -207,8 +207,8 @@ function Sidebar(props) {
   let sidebarMargins = "0px";
   var brand = (
     <Box pt={"25px"} mb="12px">
-      {logo}
-      <HSeparator my="26px" />
+    <BrandText />    
+<HSeparator my="26px" />
     </Box>
   );
 
@@ -434,8 +434,8 @@ export function SidebarResponsive(props) {
   //  BRAND
 
   var brand = (
-    <Box pt={"35px"} mb="8px">
-      {logo}
+    <Box pt={"35px"} mb="8px" >
+      {BrandText}
       <HSeparator my="26px" />
     </Box>
   );

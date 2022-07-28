@@ -19,6 +19,8 @@ import { SidebarResponsive } from "components/Sidebar/Sidebar";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import routes from "routes.js";
+
+import BrandText from "helpers/components/BrandComponent";
 export default function AuthNavbar(props) {
   const { logo, logoText, secondary, ...rest } = props;
   const { colorMode } = useColorMode();
@@ -48,13 +50,9 @@ export default function AuthNavbar(props) {
       alignItems="center"
       color={mainText}
     >
-      <Stack direction="row" spacing="12px" align="center" justify="center">
-        <ArgonLogoLight w="74px" h="27px" />
-        <Box w="1px" h="20px" bg={"white"} />
-        <ChakraLogoBlue w="82px" h="21px" />
-      </Stack>
+     
       <Text fontsize="sm" mt="3px">
-        {logoText}
+      <BrandText /> 
       </Text>
     </Link>
   );
@@ -67,12 +65,12 @@ export default function AuthNavbar(props) {
           ms="0px"
           me="0px"
           px="0px"
-          me={{ sm: "2px", md: "16px" }}
+          mr={{ sm: "2px", md: "16px" }}
           color={navbarIcon}
           variant="no-effects"
-          leftIcon={<HomeIcon color={navbarIcon} w="12px" h="12px" me="0px" />}
-        >
-          <Text>Dashboard</Text>
+          leftIcon={<HomeIcon color={navbarIcon} w="25px" h="25px" me="0px" />}
+        > <Text style={{fontFamily : 'Lalezar' , fontSize : '20px'}}>داشبورد</Text>
+         
         </Button>
       </NavLink>
       <NavLink to="/admin/profile">
@@ -81,14 +79,14 @@ export default function AuthNavbar(props) {
           ms="0px"
           me="0px"
           px="0px"
-          me={{ sm: "2px", md: "16px" }}
+          mr={{ sm: "2px", md: "16px" }}
           color={navbarIcon}
           variant="no-effects"
           leftIcon={
-            <PersonIcon color={navbarIcon} w="12px" h="12px" me="0px" />
+            <PersonIcon color={navbarIcon} w="25px" h="25px" me="0px" />
           }
         >
-          <Text>Profile</Text>
+          <Text style={{fontFamily : 'Lalezar' , fontSize : '20px'}}>پروفایل من</Text>
         </Button>
       </NavLink>
       <NavLink to="/auth/signup">
@@ -97,14 +95,14 @@ export default function AuthNavbar(props) {
           ms="0px"
           me="0px"
           px="0px"
-          me={{ sm: "2px", md: "16px" }}
+          mr={{ sm: "2px", md: "16px" }}
           color={navbarIcon}
           variant="no-effects"
           leftIcon={
-            <RocketIcon color={navbarIcon} w="12px" h="12px" me="0px" />
+            <RocketIcon color={navbarIcon} w="25px" h="25px" me="0px" />
           }
         >
-          <Text>Sign Up</Text>
+          <Text style={{fontFamily : 'Lalezar' , fontSize : '20px'}}>ثبت نام</Text>
         </Button>
       </NavLink>
       <NavLink to="/auth/signin">
@@ -112,14 +110,14 @@ export default function AuthNavbar(props) {
           fontSize="sm"
           ms="0px"
           px="0px"
-          me={{ sm: "2px", md: "16px" }}
+          mr={{ sm: "2px", md: "16px" }}
           color={navbarIcon}
           variant="no-effects"
           leftIcon={
-            <DocumentIcon color={navbarIcon} w="12px" h="12px" me="0px" />
+            <DocumentIcon color={navbarIcon} w="25px" h="25px" me="0px" />
           }
         >
-          <Text>Sign In</Text>
+          <Text style={{fontFamily : 'Lalezar' , fontSize : '20px'}}>ورود به سیستم</Text>
         </Button>
       </NavLink>
     </HStack>
@@ -187,15 +185,16 @@ export default function AuthNavbar(props) {
           <Button
             bg={bgButton}
             color={colorButton}
-            fontSize="xs"
+            fontSize="20px"
             variant="no-hover"
             px="30px"
             display={{
               sm: "none",
               lg: "flex",
             }}
+            fontFamily="Lalezar"
           >
-            Free Download
+            راهنما
           </Button>
         </Link>
       </Flex>

@@ -120,7 +120,7 @@ export default function AdminNavbar(props) {
         }}
         alignItems={{ xl: "center" }}
       >
-        <Box mb={{ sm: "8px", md: "0px" }}>
+        <Box mb={{ sm: "8px", md: "0px" }} ml={{ sm: "15px", md: "10px" }}>
           <Breadcrumb>
             <BreadcrumbItem color={mainText}>
               <BreadcrumbLink href="#" color={secondaryText}>
