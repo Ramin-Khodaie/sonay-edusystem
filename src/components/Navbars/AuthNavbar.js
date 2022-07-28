@@ -69,7 +69,7 @@ export default function AuthNavbar(props) {
           color={navbarIcon}
           variant="no-effects"
           leftIcon={<HomeIcon color={navbarIcon} w="25px" h="25px" me="0px" />}
-        > <Text style={{fontFamily : 'Lalezar' , fontSize : '20px'}}>داشبورد</Text>
+        > <Text style={{fontFamily : 'Lalezar' , fontSize : '16px'}}>داشبورد</Text>
          
         </Button>
       </NavLink>
@@ -86,7 +86,7 @@ export default function AuthNavbar(props) {
             <PersonIcon color={navbarIcon} w="25px" h="25px" me="0px" />
           }
         >
-          <Text style={{fontFamily : 'Lalezar' , fontSize : '20px'}}>پروفایل من</Text>
+          <Text style={{fontFamily : 'Lalezar' , fontSize : '16px'}}>پروفایل من</Text>
         </Button>
       </NavLink>
       <NavLink to="/auth/signup">
@@ -102,7 +102,7 @@ export default function AuthNavbar(props) {
             <RocketIcon color={navbarIcon} w="25px" h="25px" me="0px" />
           }
         >
-          <Text style={{fontFamily : 'Lalezar' , fontSize : '20px'}}>ثبت نام</Text>
+          <Text style={{fontFamily : 'Lalezar' , fontSize : '16px'}}>ثبت نام</Text>
         </Button>
       </NavLink>
       <NavLink to="/auth/signin">
@@ -117,7 +117,7 @@ export default function AuthNavbar(props) {
             <DocumentIcon color={navbarIcon} w="25px" h="25px" me="0px" />
           }
         >
-          <Text style={{fontFamily : 'Lalezar' , fontSize : '20px'}}>ورود به سیستم</Text>
+          <Text style={{fontFamily : 'Lalezar' , fontSize : '16px'}}>ورود به سیستم</Text>
         </Button>
       </NavLink>
     </HStack>

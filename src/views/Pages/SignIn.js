@@ -64,7 +64,7 @@ function SignIn() {
               fontWeight='bold'
               textAlign='center'
               mb='22px'>
-              Register With
+              : ورود به پنل کاربری با 
             </Text>
             <HStack spacing='15px' justify='center' mb='22px'>
               <Flex
@@ -134,47 +134,50 @@ function SignIn() {
               fontWeight='bold'
               textAlign='center'
               mb='22px'>
-              or
+              یا
             </Text>
             <FormControl>
-              <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
-                Name
+              <FormLabel textAlign='end' ms='4px' fontSize='sm' fontWeight='normal'>
+                نام کاربری
               </FormLabel>
               <Input
+                textAlign='right'
                 variant='auth'
                 fontSize='sm'
                 ms='4px'
                 type='text'
-                placeholder='Your full name'
+                placeholder='نام کاربری خود را وارد کنید'
                 mb='24px'
                 size='lg'
               />
-              <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
-                Password
+              <FormLabel textAlign='end' ms='4px' fontSize='sm' fontWeight='normal'>
+                رمز
               </FormLabel>
               <Input
+                textAlign='right'
                 variant='auth'
                 fontSize='sm'
                 ms='4px'
                 type='password'
-                placeholder='Your password'
+                placeholder='رمز خود را وارد کنید'
                 mb='24px'
                 size='lg'
               />
               <FormControl display='flex' alignItems='center' mb='24px'>
                 <Switch id='remember-login' colorScheme='blue' me='10px' />
                 <FormLabel htmlFor='remember-login' mb='0' fontWeight='normal'>
-                  Remember me
+                  ذخیره نام کاربری و رمز
                 </FormLabel>
               </FormControl>
               <Button
-                fontSize='10px'
+                fontSize='20px'
+                fontFamily='Lalezar'
                 variant='dark'
                 fontWeight='bold'
                 w='100%'
                 h='45'
                 mb='24px'>
-                SIGN UP
+                ورود
               </Button>
             </FormControl>
             <Flex
@@ -184,14 +187,16 @@ function SignIn() {
               maxW='100%'
               mt='0px'>
               <Text color={textColor} fontWeight='medium'>
-                Already have an account?
+               
+                تاکنون ثبت نام نکرده اید؟
+                {" "}
                 <Link
                   color={titleColor}
                   as='span'
                   ms='5px'
                   href='#'
                   fontWeight='bold'>
-                  Sign In
+                  ثبت نام کنید
                 </Link>
               </Text>
             </Flex>

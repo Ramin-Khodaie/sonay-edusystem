@@ -58,9 +58,8 @@ function SignUp() {
         align='center'
         mt='125px'
         mb='30px'>
-        <Text fontSize='4xl' color='white' fontWeight='bold'>
-          Welcome!
-        </Text>
+        <Text fontFamily='Lalezar' fontSize='5xl' color='white' fontWeight='bold'>
+پنل مدیریتی آموزشی یکپارچه سون آی  </Text>
         <Text
           fontSize='md'
           color='white'
@@ -68,8 +67,7 @@ function SignUp() {
           mt='10px'
           mb='26px'
           w={{ base: "90%", sm: "60%", lg: "40%", xl: "333px" }}>
-          Use these awesome forms to login or create new account in your project
-          for free.
+          پس از ثبت نام اطلاعات شما توسط مدیر سیستم تایید خواهد شد . این پروسه ممکن است دو الی سه روز کاری طول کشد بعد از تایید کاربری، شما می توانید از طریق پنل ورود به سیستم، وار ناحیه کاربری خود شوید
         </Text>
       </Flex>
       <Flex alignItems='center' justifyContent='center' mb='60px' mt='20px'>
@@ -91,7 +89,7 @@ function SignUp() {
             fontWeight='bold'
             textAlign='center'
             mb='22px'>
-            Register With
+            : ثبت نام کاربری در سیستم با 
           </Text>
           <HStack spacing='15px' justify='center' mb='22px'>
             <Flex
@@ -156,64 +154,90 @@ function SignUp() {
             </Flex>
           </HStack>
           <Text
+          
             fontSize='lg'
             color='gray.400'
             fontWeight='bold'
             textAlign='center'
             mb='22px'>
-            or
+            یا
           </Text>
           <FormControl>
-            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
-              Name
+            <FormLabel textAlign='right' ms='4px' fontSize='sm' fontWeight='normal'>
+              نام
             </FormLabel>
             <Input
+            textAlign='right'
               variant='auth'
               fontSize='sm'
               ms='4px'
               type='text'
-              placeholder='Your full name'
+              placeholder='نام کاربری خود را وارد کنید'
               mb='24px'
               size='lg'
             />
-            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
-              Email
+            <FormLabel textAlign='right' ms='4px' fontSize='sm' fontWeight='normal'>
+              ایمیل
             </FormLabel>
             <Input
+            textAlign='right'
               variant='auth'
               fontSize='sm'
               ms='4px'
               type='email'
-              placeholder='Your email address'
+              placeholder='ایمیل خود را وارد کنید'
               mb='24px'
               size='lg'
             />
-            <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
-              Password
+            <FormLabel textAlign='right' ms='4px' fontSize='sm' fontWeight='normal'>
+              رمز
             </FormLabel>
             <Input
+              textAlign='right'
+
               variant='auth'
               fontSize='sm'
               ms='4px'
               type='password'
-              placeholder='Your password'
+              placeholder='رمز خود را وارد کنید'
               mb='24px'
               size='lg'
             />
+
+
+            <FormLabel textAlign='right' ms='4px' fontSize='sm' fontWeight='normal'>
+              تکرار رمز
+            </FormLabel>
+            <Input
+              textAlign='right'
+
+              variant='auth'
+              fontSize='sm'
+              ms='4px'
+              type='password'
+              placeholder='تکرار رمز خود را وارد کنید'
+              mb='24px'
+              size='lg'
+            />
+
+
+
+
             <FormControl display='flex' alignItems='center' mb='24px'>
               <Switch id='remember-login' colorScheme='blue' me='10px' />
               <FormLabel htmlFor='remember-login' mb='0' fontWeight='normal'>
-                Remember me
+              ذخیره نام کاربری و رمز
               </FormLabel>
             </FormControl>
             <Button
-              fontSize='10px'
+            fontSize="20px"
+            fontFamily='Lalezar'
               variant='dark'
               fontWeight='bold'
               w='100%'
               h='45'
               mb='24px'>
-              SIGN UP
+            ثبت نام
             </Button>
           </FormControl>
           <Flex
@@ -223,15 +247,16 @@ function SignUp() {
             maxW='100%'
             mt='0px'>
             <Text color={textColor} fontWeight='medium'>
-              Already have an account?
+قبلا ثبت نام کرده اید؟
+              {" "}
+
               <Link
                 color={titleColor}
                 as='span'
                 ms='5px'
                 href='#'
                 fontWeight='bold'>
-                Sign In
-              </Link>
+ورود               </Link>
             </Text>
           </Flex>
         </Flex>
