@@ -9,7 +9,7 @@ from ..users.models import *
 usr = User()
 
 router = APIRouter(
-    prefix="/users",
+    prefix="/api/users",
     tags=["users"],
   
     responses={404: {"description": "Not found"}},
@@ -51,12 +51,12 @@ async def read_users_me(current_user: User = Depends(usr.get_current_active_user
     return current_user
 
 
-@router.get("/users/me/items/")
+@router.get("/me/items/")
 async def read_own_items(current_user: UserBase = Depends(usr.get_current_active_user)):
     return [{"item_id": "Foo", "owner": current_user.username}]
 
 
-@router.post("/users/register")
+@router.post("/register")
 def register_user(user_info : UserRegistration):
     if user_info.password != user_info.password_confirm:
         raise HTTPException(
