@@ -13,6 +13,8 @@ import {
   Text,
   useColorModeValue,
   LightMode,
+  FormErrorMessage,
+  FormHelperText
 } from "@chakra-ui/react";
 // Assets
 import BgSignUp from "assets/img/BgSignUp.png";
@@ -28,21 +30,65 @@ function SignUp() {
   const bgIcons = useColorModeValue("trasnparent", "navy.700");
   const bgIconsHover = useColorModeValue("gray.50", "whiteAlpha.100");
 
+  const handleChange = (event) => {
+    const field = event.target.id
+    const value = event.target.value
+    setFormData({...formData , [field]: value } , () => { chackFormValidation() })
 
-  const [sent,setSent] = React.useState({
-    status : false,
-    sending : false
+    
+   
+
+
+  }
+
+  const [sent, setSent] = React.useState({
+    status: false,
+    sending: false,
+  });
+
+  const [valid, setValid] = React.useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  const [messages,setMessages] = React.useState({
+    passwordConfirm : "",
   })
   const [formData, setFormData] = React.useState({
     username: "",
     email: "",
     full_name: "",
     password: "",
-    confirm_password  :""
+    confirm_password: "",
   });
 
+
+
+  function chackFormValidation() {
+    // username validation
+
+    // email validation
+
+    // password comfirmation check
+  console.log(formData.confirm_password , formData.password)
+    
+      if(formData.password === formData.confirm_password)
+      {
+        setValid({ password: true })
+        setMessages({passwordConfirm : ""})
+      }
+      else{
+        setValid({ password: false });
+        setMessages({passwordConfirm : "رمز عبور با تکرار آن مطابقت ندارد"})
+
+      }
+         
+         return
+    
+  }
   function createPost() {
-    setSent({sending : true})
+    setSent({ sending: true });
     bixious
       .post("/users/register", {
         username: formData.username,
@@ -52,8 +98,11 @@ function SignUp() {
         password_confirm: formData.confirm_password,
       })
       .then((response) => {
-
-        {response.status === 200 ? setSent({status : true}) : setSent({sending : true}) }
+        {
+          response.status === 200
+            ? setSent({ status: true })
+            : setSent({ sending: true });
+        }
         console.log(response);
       });
   }
@@ -315,20 +364,30 @@ function SignUp() {
               تکرار رمز
             </FormLabel>
             <Input
-            onChange={(e) =>
-              setFormData({ ...formData, confirm_password: e.target.value })
-            }
-            id="confirm_password"
-            value={formData.confirm_password}
+              onChange={(e) =>
+                handleChange(e)
+              }
+              id="confirm_password"
+              value={formData.confirm_password}
               textAlign="right"
               variant="auth"
               fontSize="sm"
               ms="4px"
               type="password"
               placeholder="تکرار رمز خود را وارد کنید"
-              mb="24px"
+              mb={valid.password | valid.password === "" ? "24px" : "5px"}
               size="lg"
             />
+
+            <FormHelperText>{messages.passwordConfirm}</FormHelperText>
+           
+            
+
+            
+              
+            
+
+            
 
             <FormControl display="flex" alignItems="center" mb="24px">
               <Switch id="remember-login" colorScheme="blue" me="10px" />
@@ -344,9 +403,7 @@ function SignUp() {
               fontWeight="bold"
               w="100%"
               h="45"
-              mb="24px"
-            >
-
+              mb="24px">
               {sent.sending ? "در حال ثبت نام" : "! ثبت نام کن"}
             </Button>
           </FormControl>
