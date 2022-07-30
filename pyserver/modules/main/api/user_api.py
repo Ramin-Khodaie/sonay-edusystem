@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
-from fastapi import Depends,  HTTPException, status , APIRouter
+from os import stat
+from fastapi import Depends,  HTTPException, status , APIRouter ,  Response
 from fastapi.security import  OAuth2PasswordRequestForm
 
 from pyserver.dependencies import get_token_header
@@ -70,6 +71,9 @@ def register_user(user_info : UserRegistration):
 
 
 @router.get("/checkregisterform")
-def register_user(user_name:str = "" , email : str = ""):
+def register_user(response : Response,user_name:str = "" , email : str = ""   ):
     res = usr.check_register_form(user_name,email)
+    if res["status"] == 422:
+        response.status_code= status.HTTP_422_UNPROCESSABLE_ENTITY
+        
     return {"status" : res["status"] , "result" :res["result"], "message" : res["message"]}

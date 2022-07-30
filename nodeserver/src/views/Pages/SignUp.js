@@ -40,7 +40,7 @@ function SignUp() {
 
   const checkUsernameAndEmail = (usn,eml) => {
 
-    bixious.get("/users/checkregisterform/",
+    bixious.get("/users/checkregisterform",
     {
       params: {
         "user_name": usn,
@@ -48,21 +48,28 @@ function SignUp() {
       }
 
   }).then((response) => {
-    
-      if (response.result === "email_unique"){
-        setMessages(...messages , {usernameMessage : "این نام کاربری قبلا انتخاب شده است"})
-      }
-      else if (response.result === "user_unique"){
-        setMessages(...messages , {emailMessage : "این ایمیل قبلا انتخاب شده است"})
-      }
-      else {
-        setMessages(...messages,{emailMessage : ""})
-        setMessages(...messages,{usernameMessage : ""})
-      }
 
-        
-    
-    console.log(messages.emailMessage , messages.usernameMessage);
+    setMessages({...messages,emailMessage : ""})
+      setMessages({...messages,usernameMessage : ""})
+      setValid({...valid , username : true})
+      setValid({...valid , email : true})
+  
+  })
+  .catch((e)=> {
+    if (e.response.data.result === "user_unique"){
+      setMessages({...messages , usernameMessage : "این نام کاربری قبلا انتخاب شده است"})
+      setValid({...valid , username : false})
+    }
+    else if (e.response.data.result === "email_unique"){
+      setMessages({...messages , emailMessage : "این ایمیل قبلا انتخاب شده است"})
+      setValid({...valid , email : false})
+
+    }
+    else {
+      
+
+
+    }
   });
 
 
@@ -95,7 +102,7 @@ function SignUp() {
   useEffect(()=>{
 
     chackFormValidation()
-  },[formData])
+  },[formData.username,formData.confirm_password,formData.email])
 
   function chackFormValidation() {
     // username validation
@@ -109,11 +116,11 @@ function SignUp() {
     
       if(formData.password === formData.confirm_password)
       {
-        setValid({ password: true })
+        setValid({...valid, password: true })
         setMessages({passwordConfirm : ""})
       }
       else{
-        setValid({ password: false });
+        setValid({...valid, password: false });
         setMessages({passwordConfirm : "رمز عبور با تکرار آن مطابقت ندارد"})
 
       }
@@ -137,9 +144,10 @@ function SignUp() {
             ? setSent({ status: true })
             : setSent({ sending: true });
         }
-        console.log(response);
       });
   }
+
+  console.log(valid.password ,valid.email , valid.username)
 
   return (
     <Flex
@@ -315,9 +323,12 @@ function SignUp() {
               ms="4px"
               type="text"
               placeholder="نام کاربری خود را وارد کنید"
-              mb="24px"
+              mb={valid.username | valid.username === "" ? "24px" : "5px"}
               size="lg"
             />
+            <Text textAlign={"end"}  mb={"14px"} color={'red'} fontWeight="medium">
+            {messages.usernameMessage}     
+            </Text>
 
             <FormLabel
               textAlign="right"
@@ -338,10 +349,11 @@ function SignUp() {
               fontSize="sm"
               ms="4px"
               type="text"
-              placeholder="نام کاربری خود را وارد کنید"
+              placeholder="نام و نام خانوادگی خود را وارد کنید"
               mb="24px"
               size="lg"
             />
+            
             <FormLabel
               textAlign="right"
               ms="4px"
@@ -361,10 +373,15 @@ function SignUp() {
               fontSize="sm"
               ms="4px"
               type="email"
+
               placeholder="ایمیل خود را وارد کنید"
-              mb="24px"
+              mb={valid.email | valid.email === "" ? "24px" : "5px"}
+
               size="lg"
             />
+            <Text textAlign={"end"} mb={"14px"} color={'red'} fontWeight="medium">
+            {messages.emailMessage}     
+            </Text>
             <FormLabel
               textAlign="right"
               ms="4px"
@@ -434,6 +451,10 @@ function SignUp() {
               </FormLabel>
             </FormControl>
             <Button
+            requiered
+            
+            
+            // disabled={valid.password & valid.email & valid.username ? false : true}
               onClick={createPost}
               fontSize="20px"
               fontFamily="Lalezar"
