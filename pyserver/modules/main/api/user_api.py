@@ -67,3 +67,9 @@ def register_user(user_info : UserRegistration):
     created_user = usr.register_user(user_name=user_info.username , email=user_info.email ,full_name= user_info.full_name,
     password=usr.get_password_hash(user_info.password))
     return {"status" : 200 , "result" : "ok", "data" : []}
+
+
+@router.get("/checkregisterform")
+def register_user(user_name:str = "" , email : str = ""):
+    res = usr.check_register_form(user_name,email)
+    return {"status" : res["status"] , "result" :res["result"], "message" : res["message"]}

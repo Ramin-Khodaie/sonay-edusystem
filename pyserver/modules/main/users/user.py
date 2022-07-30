@@ -116,3 +116,33 @@ class User:
             "password" : password
         })
         return cu
+    
+    
+    def check_register_form(self,user_name : str,email : str) -> dict:
+        db  = mongo_client["accounts"]
+        col = db["users"]
+        username = list(col.find({"username" : user_name }))
+        eemail = list(col.find({"email" : email }))
+        if len(username) > 0:
+            return {
+                "status" : 422,
+                "result" : "user_unique",
+                "message" : "username must be unique"
+            }
+            
+        
+        elif len(eemail) > 0:
+            return {
+                "status" : 422,
+                "result" : "email_unique",
+                "message" : "email must be unique"
+            }
+            
+        else:
+            return {
+                "status" : 200,
+                "result" : "ok",
+                "message" : "ok"
+            }
+            
+        

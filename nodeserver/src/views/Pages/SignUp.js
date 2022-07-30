@@ -1,5 +1,6 @@
 // Chakra imports
 import {
+  
   Box,
   Button,
   Flex,
@@ -18,8 +19,8 @@ import {
 } from "@chakra-ui/react";
 // Assets
 import BgSignUp from "assets/img/BgSignUp.png";
-import React from "react";
-import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
+import React, { useEffect } from "react";
+import { FaApple, FaFacebook, FaGoogle , FaTimes } from "react-icons/fa";
 import { bixious } from "services/main";
 
 function SignUp() {
@@ -33,14 +34,41 @@ function SignUp() {
   const handleChange = (event) => {
     const field = event.target.id
     const value = event.target.value
-    setFormData({...formData , [field]: value } , () => { chackFormValidation() })
-
-    
-   
-
+    setFormData({...formData , [field]: value  })
 
   }
 
+  const checkUsernameAndEmail = (usn,eml) => {
+
+    bixious.get("/users/checkregisterform/",
+    {
+      params: {
+        "user_name": usn,
+        "email":eml
+      }
+
+  }).then((response) => {
+    
+      if (response.result === "email_unique"){
+        setMessages(...messages , {usernameMessage : "این نام کاربری قبلا انتخاب شده است"})
+      }
+      else if (response.result === "user_unique"){
+        setMessages(...messages , {emailMessage : "این ایمیل قبلا انتخاب شده است"})
+      }
+      else {
+        setMessages(...messages,{emailMessage : ""})
+        setMessages(...messages,{usernameMessage : ""})
+      }
+
+        
+    
+    console.log(messages.emailMessage , messages.usernameMessage);
+  });
+
+
+}
+
+ 
   const [sent, setSent] = React.useState({
     status: false,
     sending: false,
@@ -54,6 +82,8 @@ function SignUp() {
 
   const [messages,setMessages] = React.useState({
     passwordConfirm : "",
+    usernameMessage:"",
+    emailMessage : ""
   })
   const [formData, setFormData] = React.useState({
     username: "",
@@ -62,16 +92,20 @@ function SignUp() {
     password: "",
     confirm_password: "",
   });
+  useEffect(()=>{
 
-
+    chackFormValidation()
+  },[formData])
 
   function chackFormValidation() {
     // username validation
-
+    
     // email validation
 
+    checkUsernameAndEmail(formData.username , formData.email)
+
     // password comfirmation check
-  console.log(formData.confirm_password , formData.password)
+ 
     
       if(formData.password === formData.confirm_password)
       {
@@ -150,7 +184,7 @@ function SignUp() {
         >
           پنل مدیریتی آموزشی یکپارچه سون آی{" "}
         </Text>
-        <Text
+        {/* <Text
           fontSize="md"
           color="white"
           fontWeight="normal"
@@ -161,7 +195,7 @@ function SignUp() {
           پس از ثبت نام اطلاعات شما توسط مدیر سیستم تایید خواهد شد . این پروسه
           ممکن است دو الی سه روز کاری طول کشد بعد از تایید کاربری، شما می توانید
           از طریق پنل ورود به سیستم، وار ناحیه کاربری خود شوید
-        </Text>
+        </Text> */}
       </Flex>
       <Flex alignItems="center" justifyContent="center" mb="60px" mt="20px">
         <Flex
@@ -270,8 +304,8 @@ function SignUp() {
               نام کاربری
             </FormLabel>
             <Input
-              onChange={(e) =>
-                setFormData({ ...formData, username: e.target.value })
+              onChange={
+                handleChange
               }
               id="username"
               value={formData.username}
@@ -294,8 +328,8 @@ function SignUp() {
               نام و نام خانوادگی
             </FormLabel>
             <Input
-              onChange={(e) =>
-                setFormData({ ...formData, full_name: e.target.value })
+              onChange={
+                handleChange
               }
               id="full_name"
               value={formData.full_name}
@@ -317,8 +351,8 @@ function SignUp() {
               ایمیل
             </FormLabel>
             <Input
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
+              onChange={
+                handleChange
               }
               id="email"
               value={formData.email}
@@ -340,8 +374,7 @@ function SignUp() {
               رمز
             </FormLabel>
             <Input
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
+              onChange={handleChange
               }
               id="password"
               value={formData.password}
@@ -364,8 +397,8 @@ function SignUp() {
               تکرار رمز
             </FormLabel>
             <Input
-              onChange={(e) =>
-                handleChange(e)
+              onChange={
+                handleChange
               }
               id="confirm_password"
               value={formData.confirm_password}
@@ -379,10 +412,15 @@ function SignUp() {
               size="lg"
             />
 
-            <FormHelperText>{messages.passwordConfirm}</FormHelperText>
-           
-            
 
+
+
+
+            
+            
+            <Text textAlign={"end"} mb={"14px"} color={'red'} fontWeight="medium">
+            {messages.passwordConfirm}     
+            </Text>
             
               
             
