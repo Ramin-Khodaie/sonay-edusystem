@@ -3,3 +3,4 @@ env
 venv
 package-lock.json
 build
+*.pyc

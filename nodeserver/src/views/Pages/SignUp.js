@@ -32,12 +32,7 @@ function SignUp() {
   const bgIcons = useColorModeValue("trasnparent", "navy.700");
   const bgIconsHover = useColorModeValue("gray.50", "whiteAlpha.100");
 
-  const handleChange = (event) => {
-    const field = event.target.id
-    const value = event.target.value
-    setFormData({...formData , [field]: value  })
-
-  }
+  
 
   const checkUsernameAndEmail = (usn,eml) => {
 
@@ -72,6 +67,41 @@ function SignUp() {
 
 }
 
+ function createPost() {
+    setSent({ sending: true });
+    bixious
+      .post("/users/register", {
+        username: formData.username,
+        email: formData.email,
+        full_name: formData.full_name,
+        password: formData.password,
+        password_confirm: formData.confirm_password,
+      })
+      .then((response) => {
+        {
+          response.status === 200
+            ? c
+            : setSent({ sending: true });
+        }
+      })
+      .catch((e)=>{
+        if (e.response.status === 422 && e.response.data.result === "requiered_field") {
+          setSent({ status: true })
+          notify("خطا در ثبت داده", true, "success")
+        }
+      });
+  }
+
+
+
+const handleChange = (event) => {
+    const field = event.target.id
+    const value = event.target.value
+    setFormData({...formData , [field]: value  })
+
+  }
+
+ 
  
   const [sent, setSent] = React.useState({
     status: false,
@@ -130,32 +160,7 @@ function SignUp() {
   }
 
   const notify = useNotify()
-  function createPost() {
-    setSent({ sending: true });
-    bixious
-      .post("/users/register", {
-        username: formData.username,
-        email: formData.email,
-        full_name: formData.full_name,
-        password: formData.password,
-        password_confirm: formData.confirm_password,
-      })
-      .then((response) => {
-        {
-          response.status === 200
-            ? c
-            : setSent({ sending: true });
-        }
-      })
-      .catch((e)=>{
-        if (e.response.status === 422 && e.response.data.result === "requiered_field") {
-          setSent({ status: true })
-          notify("خطا در ثبت داده", true, "success")
-        }
-      });
-  }
-
-
+  
   return (
     <Flex
       direction="column"

@@ -17,6 +17,7 @@ import {
 // Assets
 import signInImage from "assets/img/signInImage.png";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
+import { bixious } from "services/main";
 
 function SignIn() {
   // Chakra color mode
@@ -26,6 +27,43 @@ function SignIn() {
   const colorIcons = useColorModeValue("gray.700", "white");
   const bgIcons = useColorModeValue("trasnparent", "navy.700");
   const bgIconsHover = useColorModeValue("gray.50", "whiteAlpha.100");
+
+  const [formData , setFormData] = React.useState({
+    username : "",
+    password : ""
+  })
+  
+  
+  const handleChange = (event) => {
+    const field = event.target.id
+    const value = event.target.value
+    setFormData({...formData , [field]: value  })
+
+  }
+
+
+
+function createPost(){
+
+  const fData = new FormData();
+  fData.append("username", formData.username);
+  fData.append("password", formData.password);
+
+  bixious.post("/users/login" , fData
+  ).then((response) => {
+    localStorage.setItem("token", response.data.access_token);
+    
+    
+
+  })
+
+  .catch((err) => {
+    console.log(err)
+  })
+}
+
+
+
   return (
     <Flex position='relative' mb='40px'>
       <Flex
@@ -141,6 +179,11 @@ function SignIn() {
                 نام کاربری
               </FormLabel>
               <Input
+              onChange={
+                handleChange
+              }
+              id="username"
+              value={formData.username}
                 textAlign='right'
                 variant='auth'
                 fontSize='sm'
@@ -154,6 +197,11 @@ function SignIn() {
                 رمز
               </FormLabel>
               <Input
+              onChange={
+                handleChange
+              }
+              id="password"
+              value={formData.password}
                 textAlign='right'
                 variant='auth'
                 fontSize='sm'
@@ -170,6 +218,7 @@ function SignIn() {
                 </FormLabel>
               </FormControl>
               <Button
+              onClick={createPost}
                 fontSize='20px'
                 fontFamily='Lalezar'
                 variant='dark'

@@ -29,7 +29,7 @@ fake_users_db = {
     }
 }
 
-@router.post("/token", response_model=Token)
+@router.post("/login", response_model=Token)
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     
 
@@ -74,7 +74,7 @@ def register_user(response : Response, user_info : UserRegistration):
 
 
 @router.get("/checkregisterform")
-def register_user(response : Response,user_name:str = "" , email : str = ""   ):
+def check_register_user(response : Response,user_name:str = "" , email : str = ""   ):
     res = usr.check_register_form(user_name,email)
     if res["status"] == 422:
         response.status_code= status.HTTP_422_UNPROCESSABLE_ENTITY
