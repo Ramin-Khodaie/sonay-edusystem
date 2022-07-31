@@ -103,19 +103,51 @@ class User:
         if current_user.disabled:
             raise HTTPException(status_code=400, detail="Inactive user")
         return current_user
-
-    def register_user(self, user_name , password , full_name , email):
+    
+    def validate_user_registration(self , user_name , password , full_name , email):
         db  = mongo_client["accounts"]
         col = db["users"]
-        idd = str(ObjectId())
-        cu = col.insert_one({
-            "_id" : idd,
-            "username" :user_name,
-            "email" : email,
-            "fullname" : full_name,
-            "password" : password
-        })
-        return cu
+        if user_name == "" or password == "" or full_name == "" or email =="" :
+            return {
+                "status" : 422,
+                "result" : "requiered_field",
+                "message" : "some fields are empty"
+            }
+            
+        obj = list(col.find({"$or" : [{"username" : user_name} , {"email" : email}]}))
+        if len(obj) > 0 :
+            return {
+                "status" : 422,
+                "result" : "not_unique",
+                "message" : "user already exists"
+            }
+        return {
+                "status" : 200,
+                "result" : "ok",
+                "message" : "ok"
+            }
+         
+
+    def register_user(self, user_name , password , full_name , email):
+        valid = self.validate_user_registration(user_name , password , full_name , email)
+        if valid["status"] == "ok":
+            db  = mongo_client["accounts"]
+            col = db["users"]
+            idd = str(ObjectId())
+            cu = col.insert_one({
+                "_id" : idd,
+                "username" :user_name,
+                "email" : email,
+                "fullname" : full_name,
+                "password" : password
+            })
+            return {
+                "status" : 200,
+                "result" : "ok",
+                "message" : "ok"
+            }
+        else:
+            return valid
     
     
     def check_register_form(self,user_name : str,email : str) -> dict:

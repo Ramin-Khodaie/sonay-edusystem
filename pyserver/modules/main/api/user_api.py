@@ -58,16 +58,19 @@ async def read_own_items(current_user: UserBase = Depends(usr.get_current_active
 
 
 @router.post("/register")
-def register_user(user_info : UserRegistration):
+def register_user(response : Response, user_info : UserRegistration):
     if user_info.password != user_info.password_confirm:
         raise HTTPException(
             status_code=422,
             detail="confirm password is not same as password"
             # headers={"WWW-Authenticate": "Bearer"},
         )
-    created_user = usr.register_user(user_name=user_info.username , email=user_info.email ,full_name= user_info.full_name,
+    res = usr.register_user(user_name=user_info.username , email=user_info.email ,full_name= user_info.full_name,
     password=usr.get_password_hash(user_info.password))
-    return {"status" : 200 , "result" : "ok", "data" : []}
+    if res["status"] == 422:
+        response.status_code= status.HTTP_422_UNPROCESSABLE_ENTITY
+        
+    return {"status" : res["status"] , "result" :res["result"], "message" : res["message"]}
 
 
 @router.get("/checkregisterform")

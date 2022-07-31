@@ -18,27 +18,33 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
-
+import NotifyProvider from "helpers/notify/NotifyProvider.jsx";
 import AuthLayout from "./layouts/Auth.js";
 import AdminLayout from "./layouts/Admin.js";
 import RTLLayout from "./layouts/RTL.js"; // Chakra imports
 import { ChakraProvider } from "@chakra-ui/react";
 // Custom Chakra theme
 import theme from "./theme/theme.js";
-import "./index.css"
+import "./index.css";
 
 ReactDOM.render(
   <div className="body">
-    <ChakraProvider theme={theme} resetCss={false} position="relative">
-    <HashRouter>
-      <Switch>
-        <Route path={`/auth`} component={AuthLayout} />
-        <Route path={`/admin`} component={AdminLayout} />
-        <Route path={`/rtl`} component={RTLLayout} />
-        <Redirect from={`/`} to="/admin/dashboard" />
-      </Switch>
-    </HashRouter>
-  </ChakraProvider>
+    {/* <NotifyProvider> */}
+
+      <ChakraProvider theme={theme} resetCss={false} position="relative">
+
+        <HashRouter>
+          <Switch>
+            <Route path={`/auth`} component={AuthLayout} />
+            <Route path={`/admin`} component={AdminLayout} />
+            <Route path={`/rtl`} component={RTLLayout} />
+            <Redirect from={`/`} to="/admin/dashboard" />
+          </Switch>
+        </HashRouter>
+      </ChakraProvider>
+      
+    {/* </NotifyProvider> */}
+
   </div>,
   document.getElementById("root")
 );

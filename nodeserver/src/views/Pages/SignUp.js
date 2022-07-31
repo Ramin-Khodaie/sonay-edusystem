@@ -19,6 +19,7 @@ import {
 } from "@chakra-ui/react";
 // Assets
 import BgSignUp from "assets/img/BgSignUp.png";
+import useNotify from "helpers/notify/useNotify";
 import React, { useEffect } from "react";
 import { FaApple, FaFacebook, FaGoogle , FaTimes } from "react-icons/fa";
 import { bixious } from "services/main";
@@ -48,27 +49,23 @@ function SignUp() {
       }
 
   }).then((response) => {
-
-    setMessages({...messages,emailMessage : ""})
-      setMessages({...messages,usernameMessage : ""})
-      setValid({...valid , username : true})
-      setValid({...valid , email : true})
-  
+      if (response.status === 200){
+        setMessages({...messages,emailMessage : "" , usernameMessage : ""})
+        setValid({...valid , username : true , email : true})
+        
+      }
   })
   .catch((e)=> {
-    if (e.response.data.result === "user_unique"){
-      setMessages({...messages , usernameMessage : "این نام کاربری قبلا انتخاب شده است"})
+    if ((e.response.status === 422 && e.response.data.result) === "user_unique"){
+      setMessages({...messages ,emailMessage : "" ,usernameMessage : "این نام کاربری قبلا انتخاب شده است"})
       setValid({...valid , username : false})
     }
-    else if (e.response.data.result === "email_unique"){
-      setMessages({...messages , emailMessage : "این ایمیل قبلا انتخاب شده است"})
+    else if ((e.response.status === 422 && e.response.data.result) === "email_unique"){
+      setMessages({...messages ,usernameMessage: "", emailMessage : "این ایمیل قبلا انتخاب شده است"})
       setValid({...valid , email : false})
 
     }
     else {
-      
-
-
     }
   });
 
@@ -102,32 +99,37 @@ function SignUp() {
   useEffect(()=>{
 
     chackFormValidation()
-  },[formData.username,formData.confirm_password,formData.email])
+  },[formData.confirm_password])
+
+
+
+   useEffect(()=>{
+    checkUsernameAndEmail(formData.username , formData.email)
+   },[formData.username,formData.email])
+
+
 
   function chackFormValidation() {
-    // username validation
     
-    // email validation
-
-    checkUsernameAndEmail(formData.username , formData.email)
-
     // password comfirmation check
  
     
       if(formData.password === formData.confirm_password)
       {
         setValid({...valid, password: true })
-        setMessages({passwordConfirm : ""})
+        setMessages({...messages, passwordConfirm : ""})
       }
       else{
         setValid({...valid, password: false });
-        setMessages({passwordConfirm : "رمز عبور با تکرار آن مطابقت ندارد"})
+        setMessages({...messages,passwordConfirm : "رمز عبور با تکرار آن مطابقت ندارد"})
 
       }
          
          return
     
   }
+
+  const notify = useNotify()
   function createPost() {
     setSent({ sending: true });
     bixious
@@ -141,13 +143,18 @@ function SignUp() {
       .then((response) => {
         {
           response.status === 200
-            ? setSent({ status: true })
+            ? c
             : setSent({ sending: true });
+        }
+      })
+      .catch((e)=>{
+        if (e.response.status === 422 && e.response.data.result === "requiered_field") {
+          setSent({ status: true })
+          notify("خطا در ثبت داده", true, "success")
         }
       });
   }
 
-  console.log(valid.password ,valid.email , valid.username)
 
   return (
     <Flex
@@ -302,7 +309,7 @@ function SignUp() {
           >
             یا
           </Text>
-          <FormControl>
+          <FormControl >
             <FormLabel
               textAlign="right"
               ms="4px"
@@ -444,14 +451,8 @@ function SignUp() {
 
             
 
-            <FormControl display="flex" alignItems="center" mb="24px">
-              <Switch id="remember-login" colorScheme="blue" me="10px" />
-              <FormLabel htmlFor="remember-login" mb="0" fontWeight="normal">
-                ذخیره نام کاربری و رمز
-              </FormLabel>
-            </FormControl>
+            
             <Button
-            requiered
             
             
             // disabled={valid.password & valid.email & valid.username ? false : true}
