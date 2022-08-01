@@ -7,6 +7,7 @@ const useNotify = () =>{
 
 
     function notify(message, open, variant){
+        
         context.Notify(message, open, variant)
     }
 

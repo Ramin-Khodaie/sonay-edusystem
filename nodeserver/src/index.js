@@ -28,23 +28,20 @@ import theme from "./theme/theme.js";
 import "./index.css";
 
 ReactDOM.render(
-  <div className="body">
-    {/* <NotifyProvider> */}
+  // <div className="body">
+  <ChakraProvider theme={theme} resetCss={false} position="relative">
+    <NotifyProvider>
+      <HashRouter>
+        <Switch>
+          <Route path={`/auth`} component={AuthLayout} />
+          <Route path={`/admin`} component={AdminLayout} />
+          <Route path={`/rtl`} component={RTLLayout} />
+          <Redirect from={`/`} to="/admin/dashboard" />
+        </Switch>
+      </HashRouter>
+    </NotifyProvider>
+  </ChakraProvider>,
 
-      <ChakraProvider theme={theme} resetCss={false} position="relative">
-
-        <HashRouter>
-          <Switch>
-            <Route path={`/auth`} component={AuthLayout} />
-            <Route path={`/admin`} component={AdminLayout} />
-            <Route path={`/rtl`} component={RTLLayout} />
-            <Redirect from={`/`} to="/admin/dashboard" />
-          </Switch>
-        </HashRouter>
-      </ChakraProvider>
-      
-    {/* </NotifyProvider> */}
-
-  </div>,
+  // </div>
   document.getElementById("root")
 );

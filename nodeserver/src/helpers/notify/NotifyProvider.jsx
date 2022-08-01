@@ -1,6 +1,8 @@
 import { NotifyContext } from "./NotifyContext";
 import NotifyHelper from "./NotifyHelper";
-const NotifyProvider = (children) => {
+const NotifyProvider = (props) => {
+
+  const {children} = props
   const notify = {
     Notify() {},
   };

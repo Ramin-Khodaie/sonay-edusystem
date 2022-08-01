@@ -86,6 +86,7 @@ function SignUp() {
       })
       .catch((e)=>{
         if (e.response.status === 422 && e.response.data.result === "requiered_field") {
+         
           setSent({ status: true })
           notify("خطا در ثبت داده", true, "success")
         }
