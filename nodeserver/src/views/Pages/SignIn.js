@@ -18,6 +18,7 @@ import {
 import signInImage from "assets/img/signInImage.png";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 import { bixious } from "services/main";
+import {  Redirect } from "react-router-dom";
 
 function SignIn() {
   // Chakra color mode
@@ -45,13 +46,18 @@ function SignIn() {
 
 function createPost(){
 
-  const fData = new FormData();
-  fData.append("username", formData.username);
-  fData.append("password", formData.password);
+  // const fData = new FormData();
+  // fData.append("username", formData.username);
+  // fData.append("password", formData.password);
 
-  bixious.post("/users/login" , fData
+  bixious.post("/users/login" , {
+    username: formData.username,
+    password: formData.password,
+ 
+  }
   ).then((response) => {
     localStorage.setItem("token", response.data.access_token);
+    
     
     
 
