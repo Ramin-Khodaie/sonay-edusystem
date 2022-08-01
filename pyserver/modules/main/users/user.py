@@ -130,7 +130,7 @@ class User:
 
     def register_user(self, user_name , password , full_name , email):
         valid = self.validate_user_registration(user_name , password , full_name , email)
-        if valid["status"] == "ok":
+        if valid["status"] == 200:
             db  = mongo_client["accounts"]
             col = db["users"]
             idd = str(ObjectId())

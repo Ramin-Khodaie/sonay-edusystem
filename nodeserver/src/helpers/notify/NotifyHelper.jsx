@@ -3,9 +3,8 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
-  Box,
-  CloseButton,
 } from "@chakra-ui/react";
+
 import React, { useContext, useEffect, useState } from "react";
 import { NotifyContext } from "./NotifyContext";
 
@@ -15,34 +14,37 @@ const NotifyHelper = (props) => {
   const [state, setState] = useState({
     message: "",
     open: false,
-    variant: "success",
+    variant: "solid",
+    status: "success",
   });
 
-  function show(message, variant = "success") {
+  function show(message,open, variant, status = "success") {
     //const opts=options ||{};
-    setState({ message: message, open: true, variant: variant });
+    setState({
+      message: message,
+      open: open,
+      status: status,
+      variant: variant,
+    });
   }
 
-  function handleClose() {
-    setState({ message: "", open: false, variant: "" });
-  }
+  useEffect(() => {
+    setTimeout(() => {
+      setState({...state ,  message: "", open: false });
+    }, 7000);
+  }, [state.open]);
 
-  useEffect(()=>{
-    setTimeout(()=>{
-      setState({ message: "", open: false, variant: "" });
-    }, 3000)
-  },[state.open])
-  console.log(3355, state.open);
+
   return (
     <React.Fragment>
       {open && (
-        <div 
+        <Alert
+        variant={state.variant}
+        status={state.status}
           style={{
-            
-            
             display: state.open ? "flex" : "none",
-            alignItems:"center",
-            justifyContent: "center",                        
+            alignItems: "center",
+            justifyContent: "center",
             bottom: "30px",
             left: "20px",
             width: "350px",
@@ -51,21 +53,9 @@ const NotifyHelper = (props) => {
             position: "fixed",
           }}
         >
-          {state.message}
-        </div>
-        // <Alert status={state.variant}>
-        //   <AlertIcon />
-        //   {/* <Box>
-        //     <AlertDescription>{state.message}</AlertDescription>
-        //   </Box>
-        //   <CloseButton
-        //     alignSelf="flex-start"
-        //     position="relative"
-        //     right={-1}
-        //     top={-1}
-        //     onClick={handleClose}
-        //   /> */}
-        // </Alert>
+          <AlertIcon />
+          <AlertDescription>{state.message}</AlertDescription>
+        </Alert>
       )}
     </React.Fragment>
   );

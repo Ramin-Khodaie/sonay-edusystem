@@ -78,17 +78,25 @@ function SignUp() {
         password_confirm: formData.confirm_password,
       })
       .then((response) => {
+        console.log(response.status)
         {
           response.status === 200
-            ? c
+            ? setSent({ status: true })
             : setSent({ sending: true });
         }
       })
       .catch((e)=>{
-        if (e.response.status === 422 && e.response.data.result === "requiered_field") {
+
+
+        if (e.response && e.response.status === 422 && e.response.data.result === "requiered_field") {
          
           setSent({ status: true })
-          notify("خطا در ثبت داده", true, "success")
+          notify("خطا در ثبت داده", true, "solid","error")
+      
+        }
+        else if(e.response && e.response.status === 422 && e.response.data.result === "not_unique"){
+          setSent({ status: true })
+          notify("این کاربر قبلا  ثبت نام کرده است", true, "solid" , 'error')
         }
       });
   }

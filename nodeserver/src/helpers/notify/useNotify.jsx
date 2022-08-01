@@ -6,9 +6,9 @@ const useNotify = () =>{
     const context = useContext(NotifyContext)
 
 
-    function notify(message, open, variant){
+    function notify(message, open, variant , status){
         
-        context.Notify(message, open, variant)
+        context.Notify(message, open, variant , status)
     }
 
     return notify
