@@ -18,9 +18,9 @@ import {
 import signInImage from "assets/img/signInImage.png";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 import { bixious } from "services/main";
-import {  Redirect } from "react-router-dom";
-
-function SignIn() {
+import { useNavigate } from "react-router-dom";
+import { withRouter } from "helpers/components/withRouter/withRouter";
+function SignIn(props) {
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
   const bgForm = useColorModeValue("white", "navy.800");
@@ -33,6 +33,12 @@ function SignIn() {
     username : "",
     password : ""
   })
+
+
+  const [status, setStatus] = React.useState({
+    user : false,
+    error : false
+  })
   
   
   const handleChange = (event) => {
@@ -42,6 +48,8 @@ function SignIn() {
 
   }
 
+
+  let history = props.history;
 
 
 function createPost(){
@@ -57,7 +65,8 @@ function createPost(){
   }
   ).then((response) => {
     localStorage.setItem("token", response.data.access_token);
-    
+    setStatus({...status , user : true})
+    history.push("/dashboard")
     
     
 
@@ -276,4 +285,4 @@ function createPost(){
   );
 }
 
-export default SignIn;
+export default withRouter(SignIn);
