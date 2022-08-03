@@ -3,13 +3,15 @@ from fastapi import FastAPI
 # from pyserver.modules.main.user_api import test
 from pyserver.modules.main.api import user_api
 import uvicorn
+
+from pyserver.modules.main.initialize import Sonay
 app = FastAPI()
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-
+sn = Sonay()
 
 origins = [
 

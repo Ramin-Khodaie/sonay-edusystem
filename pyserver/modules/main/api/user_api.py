@@ -80,3 +80,9 @@ def check_register_user(response : Response,user_name:str = "" , email : str = "
         response.status_code= status.HTTP_422_UNPROCESSABLE_ENTITY
         
     return {"status" : res["status"] , "result" :res["result"], "message" : res["message"]}
+
+
+
+@router.get("/userinfo")
+def get_user_info(response : Response):
+    pass
