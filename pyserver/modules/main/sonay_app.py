@@ -2,12 +2,12 @@
 from typing import Dict, Callable, Union, List
 from fastapi import Request, APIRouter
 import logging
-from pyserver.modules.main.aaa.aaa import AAA
-from pyserver.modules.main.asettings import ASettings, load_settings
-from pyserver.modules.main.database.adatabase import ADatabase
-from pyserver.modules.main.database.db_factory import create_db_obj
+from modules.main.aaa.aaa import AAA
+from modules.main.asettings import ASettings, load_settings
+from modules.main.database.adatabase import ADatabase
+from modules.main.database.db_factory import create_db_obj
 
-from pyserver.modules.main.sonay_decorator import sn_decorator
+from modules.main.sonay_decorator import sn_decorator
 
 class SonayApp:
     _mode = "development"
@@ -91,9 +91,7 @@ class SonayApp:
                 if self._aaa.database == dbr.name:
                     db.isAAA = True
                     self._aaa.db = db
-                if self._log.database == dbr.name:
-                    db.isLog = True
-                    self._log.db = db
+                
                 if not db.init():
                     self._state = "FAILED"
                     self._state_desc = f"database {dbr.name} with type {dbr.type} failed to initialize."
@@ -127,7 +125,7 @@ class SonayApp:
         """
         decorator default class function that Authorize APIs
         """
-        return sn_decorator(self.aaa, self._settings, self._log, roles=roles, fast=fast)
+        return sn_decorator(self.aaa, self._settings,  roles=roles, fast=fast)
     
     
     

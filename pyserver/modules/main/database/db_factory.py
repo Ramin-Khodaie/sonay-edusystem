@@ -11,16 +11,12 @@ Copyright 2018 - 2021 Borna Mehr Fann, Borna Mehr Fann
 Trademark barteh
 '''
 
-from .postgresql import *
 from .mongodb import *
-from .sqlserver import *
 from .adatabase_base import ADatabaseBase
 import copy
 
 db_types = {
-    'sqlserver': ASqlServer,
     'mongodb': AMongodb,
-    'postgresql': APostgreSql
 }
 
 

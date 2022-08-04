@@ -11,7 +11,8 @@ Copyright 2018 - 2021 Borna Mehr Fann, Borna Mehr Fann
 Trademark barteh
 '''
 
-from utils.persiandate import to_jalali
+
+
 
 
 

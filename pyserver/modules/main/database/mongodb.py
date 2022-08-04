@@ -51,13 +51,13 @@ class AMongodb(AMongodbBase, ADatabase):
             client.server_info()
 
             # if self.database not in client.list_database_names():
-            info_in_db = {"_id": 0, **self.settings.info.__dict__, "database_name": self.database, "isAAA": self.isAAA}
+            info_in_db = {"_id": 0, **self.settings.info, "database_name": self.database, "isAAA": self.isAAA}
             db = client[self.database]
             self.db = client[self.database]
             info = db["app_info"]
-            inf = info.find()
+            inf = info.find({})
 
-            if inf.count() == 0:
+            if len(list(inf)) == 0:
                 info.insert_one(info_in_db)
             else:
                 del info_in_db["_id"]

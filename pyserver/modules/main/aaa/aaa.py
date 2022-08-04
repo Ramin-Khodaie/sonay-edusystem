@@ -16,7 +16,7 @@ import sys
 from typing import Collection, List
 import jwt
 import time
-from modules.main.asettings import AAABase, ASettings
+from modules.main.asettings import  ASettings
 from modules.main.database.adatabase import ADatabase
 import copy
 from .session import ASession
@@ -25,17 +25,15 @@ import datetime
 import hashlib
 import base64
 import re
-from utils.persiandate import to_jalali
-from ..geo import AGeos
-from ..org import AOrgChart
+
+
 
 __all__ = ['AAA']
 
 
-class AAA(AAABase):
+class AAA():
     
-    _geos: AGeos
-    _orgCharts: AOrgChart
+   
     db: ADatabase
     settings: ASettings = None
     _secret: str = "ABartehSecret"
@@ -44,14 +42,6 @@ class AAA(AAABase):
     __session_token_name: str = "sid"
     _roles: list = []
     _all_inherited_roles: dict = {}
-
-    @property
-    def geos(self) -> AGeos:
-        return self._geos
-
-    @property
-    def org_chart(self) -> AOrgChart:
-        return self._orgChart
 
     def get_roles(self):
         return self._roles
@@ -153,16 +143,16 @@ class AAA(AAABase):
     def get_session_manager(self):
         return self._session_manager
 
-    def __init__(self, aaa: AAABase, settings: ASettings):
+    def __init__(self, aaa, settings: ASettings):
 
         super(AAA, self).__init__()
         self.collect_roles()
         self.settings = settings
-        self.database = aaa.database
-        self.prefix = aaa.prefix
-        self.access_expire = aaa.access_expire
-        self.refresh_expire = aaa.refresh_expire
-        self.domains = copy.deepcopy(aaa.domains)
+        self.database = aaa["database"]
+        self.prefix = aaa["prefix"]
+        self.access_expire = aaa["access_expire"]
+        self.refresh_expire = aaa["refresh_expire"]
+        self.domains = copy.deepcopy(aaa["domains"])
         self._secret = self.encode_pass(self._secret)
         self.anonymous_user = {"userid":"anonymous", "geo":{"geoid": "", "name": "", "level": -1},"roles" : []}
 
@@ -178,15 +168,12 @@ class AAA(AAABase):
         return base64.b64encode(eps).decode()
     def init_users(self):
         col : Collection = self.db.mongo_db['a_user']
-        ab_dict = {**self._orgChart.get_admin_box()}
-        count = col.find({}).count()
-        if count == 0:
+       
+        count = col.find({})
+        if len(list(count)) == 0:
             ps = self.encode_pass("admin")
           
-            del ab_dict["level"]
-            del ab_dict["parent"]
-            if "_id" in ab_dict:
-                del ab_dict["_id"]
+            
 
             x = {
                 "userid": "admin",
@@ -194,18 +181,10 @@ class AAA(AAABase):
                 "password": ps,
                 "fname": "admin",
                 "lname": "admin",
-                "box": ab_dict,
-                "geo": {
-                    "geoid": "IR",
-                    "level_name": "",
-                    "name": "ایران",
-                    "full_name": "کشور ایران",
-                    "level": 2,
-                    "geo_type": {"id": "country", "name": "", "scope": ""},
-                },
+                
+                
                 "creator": "admin",
                 "created": datetime.datetime.now(),
-                "j_created": to_jalali(datetime.datetime.now()),
                 "scope" : "HQ",
                 
                 "roles": ["admin"],
@@ -216,11 +195,7 @@ class AAA(AAABase):
             ASession.set_collection(self.db.mongo_db["a_session"])
             ASession.collect_garbage()
             # self._session = MongoSession
-            self._geos = AGeos(db=self.db.mongo_db)
-            self._geos.init_geos()
-            self._orgChart = AOrgChart(db=self.db.mongo_db, settings=self.settings)
 
-            self._orgChart.init()
             
             self.init_users()
     #         count = AUser.objects.count()

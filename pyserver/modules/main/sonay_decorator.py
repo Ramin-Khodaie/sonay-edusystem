@@ -17,8 +17,7 @@ from starlette.responses import JSONResponse
 from .aaa import AAA, AUser
 from fastapi import Request, Response, HTTPException
 from .asettings import ASettings
-from .alog import ALog
-from utils.responses import http_codes
+
 # from mongoengine.fields import BaseQuerySet
 # from mongoengine.base import BaseDocument
 
@@ -37,7 +36,7 @@ class CustomResponse(JSONResponse):
         return orjson.dumps(content, default=prepare)
 
 
-def sn_decorator(aaa: AAA, settings: ASettings, log: ALog, *, roles : List[str] = [], fast: bool = True,
+def sn_decorator(aaa: AAA, settings: ASettings, *, roles : List[str] = [], fast: bool = True,
                  files: Union[None, List[str]] = None):
     session_token_name = aaa.get_session_token_name()
     # session_manager: ASessionManager = aaa.get_session_manager()

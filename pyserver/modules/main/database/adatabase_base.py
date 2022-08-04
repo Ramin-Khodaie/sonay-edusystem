@@ -13,6 +13,8 @@ Trademark barteh
 
 class ADatabaseBase:
     def __init__(self, **db):
+
+        
         self.__dict__.update(**db)
         pass
 
@@ -76,9 +78,7 @@ class APostgreSqlBase(ADatabaseBase):
 
 
 dbset_types = {
-    'sqlserver': ASqlServerBase,
     'mongodb': AMongodbBase,
-    'postgresql': APostgreSqlBase
 }
 
 

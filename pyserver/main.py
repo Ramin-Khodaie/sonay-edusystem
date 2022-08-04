@@ -3,16 +3,15 @@ from imp import reload
 import click
 from fastapi import FastAPI
 # from pyserver.modules.main.user_api import test
-from pyserver.modules.main.api import user_api
 import uvicorn
 
-from pyserver.modules.main.sonay_app import SonayApp, bt
-
-
-app = FastAPI()
+from modules.main.sonay_app import SonayApp, bt
 
 
 sn = SonayApp()
+
+app = FastAPI()
+
 
 
 
@@ -54,7 +53,7 @@ def app_start():
     if bt.state != "READY":
         print("could not initilize sonay app")
         return
-    uvicorn.run("pyserver.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
 
 
 if __name__ == "__main__":
