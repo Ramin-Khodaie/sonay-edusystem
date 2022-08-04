@@ -1,43 +1,61 @@
+from fastapi.middleware.cors import CORSMiddleware
 from imp import reload
+import click
 from fastapi import FastAPI
 # from pyserver.modules.main.user_api import test
 from pyserver.modules.main.api import user_api
 import uvicorn
 
-from pyserver.modules.main.initialize import Sonay
+from pyserver.modules.main.sonay_app import SonayApp, bt
+
+
 app = FastAPI()
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
-sn = Sonay()
-
-origins = [
-
-    "http://localhost",
-    "http://localhost:3000",
-    "http://0.0.0.0:3000",
-    "http://127.0.0.1:8000/"
-    
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-app.include_router(user_api.router)
+sn = SonayApp()
 
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+if bt.state == "READY":
+
+    for r in bt.routers:
+        app.include_router(router=r, prefix='/api')
+
+    origins = [
+        "http://192.168.0.1",
+        "*",
+        "http://localhost",
+        "http://localhost:8080",
+        "http://localhost:3000",
+        "http://0.0.0.0:3000",
+        "http://127.0.0.1:8000/"
+    ]
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    # @app.middleware("http")
+    # async def case_sens_middleware(request: Request, call_next):
+    #     path = request.scope["path"].lower()
+    #     request.scope["path"] = path
+    #     response = await call_next(request)
+    #     return response
+
+    # barteh_app = ABartehApp()
+
+
+
+def app_start():
+    if bt.state != "READY":
+        print("could not initilize sonay app")
+        return
+    uvicorn.run("pyserver.main:app", host="0.0.0.0", port=8000, reload=True)
 
 
 if __name__ == "__main__":
-    uvicorn.run("pyserver.main:app", host="0.0.0.0", port=8000,reload=True )
+    app_start()

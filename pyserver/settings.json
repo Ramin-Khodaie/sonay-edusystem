@@ -1,13 +1,126 @@
+
+
 {
-    "DATABASE": {
-        "host" : "localhost",
-        "port" : 27017,
-        "username" : "",
-        "password" : ""
+    "info": {
+      "appname": "barteh",
+      "version": "3.0.0",
+      "systemname": "مجموعه نرم افزار های برته",
+      "copyright": "محصول شرکت برنا مهر فن",
+      "customer": "وزارت تعاون، کار و رفاه اجتماعی",
+      "customerCode":"TVTO",
+      "code": "xmhfMNsD251rM5eZyeVW2cTI3goiuqy+qdaSYzA0K1U=",
+      "innername": "دیتا کاتالوگ برته",
+
+      "expiration" : "1401/5/20",
+      "daysToNotify" : 10
+  
     },
     "API": {
         "SECRET_KEY": "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7",
         "ALGORITHM": "HS256",
         "ACCESS_TOKEN_EXPIRE_MINUTES": 30
+    },
+    
+    "databases": [
+      {
+        "default": false,
+        "name": "plan",
+        "type": "mongodb",
+        "host": "localhost",
+        "port": 27017,
+        "username": "",
+        "password": "",
+        "database": "plan",
+        "appName": "barteh",
+        "options": {
+          "retryReads": true,
+          "retryWrites": true,
+          "ssl": false,
+          "tlsCertificateKeyFile": null,
+          "tlsCertificateKeyFilePassword": null,
+          "tlsCAFile": null,
+          "tlsAllowInvalidCertificates": true,
+          "tlsAllowInvalidHostnames": false,
+          "tlsInsecure": false,
+          "connectTimeoutMS": 20000,
+          "socketTimeoutMS": 20000,
+          "compressors": "zstd",
+          "zlibCompressionLevel": -1,
+          "poolOptions": {
+            "maxPoolSize": 100,
+            "minPoolSize": 0,
+            "maxIdleTimeMS": 600,
+            "waitQueueMultiple": 50,
+            "waitQueueTimeoutMS": 20000
+          }
+        }
+      },
+     
+      {
+        "default": false,
+        "name": "barteh3",
+        "type": "mongodb",
+        "host": "localhost",
+        "port": 27017,
+        "username": "",
+        "password": "",
+        "database": "barteh3",
+        "appName": "barteh",
+        "options": {
+          "retryReads": true,
+          "retryWrites": true,
+          "ssl": false,
+          "tlsCertificateKeyFile": null,
+          "tlsCertificateKeyFilePassword": null,
+          "tlsCAFile": null,
+          "tlsAllowInvalidCertificates": true,
+          "tlsAllowInvalidHostnames": false,
+          "tlsInsecure": false,
+          "connectTimeoutMS": 20000,
+          "socketTimeoutMS": 20000,
+          "compressors": "zstd",
+          "zlibCompressionLevel": -1,
+          "poolOptions": {
+            "maxPoolSize": 100,
+            "minPoolSize": 0,
+            "maxIdleTimeMS": 600,
+            "waitQueueMultiple": 50,
+            "waitQueueTimeoutMS": 20000
+          }
+        }
+      }
+     
+      
+    ],
+    
+    "AAA": {
+      "database": "barteh3",
+      "access_expire": 24000,
+      "refresh_expire": 1296000,
+      "prefix": "btsec",
+      "domains": [
+        {
+          "name": "borna.local",
+          "user": "administrator",
+          "password": "Borna99"
+        }
+      ]
+    },
+    "extra": {
+      "server":{
+          "ssr":{
+              "url":"localhost",
+              "port":3000
+              
+          },
+          "service":{
+              "url":"localhost",
+              "port":22659
+          }
+      }
     }
-}
+  
+  }
+  
+  
+  
