@@ -1,15 +1,14 @@
 {
-
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: FastAPI",
+            "name": "backend",
             "type": "python",
             "request": "launch",
-            "module": "pyserver.main",
-        
-            "jinja": true,
+            "program": "pyserver/main.py",
+            "console": "integratedTerminal",
             "justMyCode": true
         }
+        
     ]
 }
