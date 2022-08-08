@@ -23,7 +23,7 @@ bt.add_router(router)
 
 
 @router.post("/login")
-@bt(fast=True)
+@bt(roles=["dfg"],fast=True)
 def login(say: SAY , info : dict):
     ret = say.authenticate(info["username"] , info['password'])
     return api_return(ret[0],ret[1],ret[2],data=ret[3])

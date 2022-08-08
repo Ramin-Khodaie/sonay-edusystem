@@ -1,15 +1,3 @@
-'''
-File: bt_decorator.py
-Project: main
-File Created: Wednesday, 27th January 2021 2:19:55 pm
-Author: Ahad Rafat Talebi (office) (ahadrt@gmail.com)
------
-Last Modified: Thursday, 11th March 2021 1:31:09 pm
-Modified By: Ahad Rafat Talebi (office) (ahadrt@gmail.com>)
------
-Copyright 2018 - 2021 Borna Mehr Fann, Borna Mehr Fann
-Trademark barteh
-'''
 
 from inspect import iscoroutinefunction, signature
 from starlette.responses import JSONResponse
@@ -88,7 +76,7 @@ def sn_decorator(say: SAY, settings: SSettings, *, roles : List[str] = [], fast:
 
             result: int = say.authorize(roles=roles, headers=req_headers)
             if result != 200:
-                raise HTTPException(status_code=result, detail=http_codes[result])
+                raise HTTPException(status_code=result)
 
             user: SUser = None
             hdrs = dict(req_headers)
