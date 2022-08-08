@@ -82,8 +82,6 @@ def sn_decorator(say: SAY, settings: SSettings, *, roles : List[str] = [], fast:
 
         async def _async_wrapper(*args, **kwargs):
 
-            # headers = kwargs['response'].headers if 'response' in kwargs else None
-            # headers = kwargs['response'].headers
             response: Response = kwargs[response_param_name]
             request: Request = kwargs[request_param_name]
             req_headers = request.headers.items()
@@ -93,7 +91,6 @@ def sn_decorator(say: SAY, settings: SSettings, *, roles : List[str] = [], fast:
                 raise HTTPException(status_code=result, detail=http_codes[result])
 
             user: SUser = None
-            # if user_parameter_name in extras:
             hdrs = dict(req_headers)
             token = ''
             if 'authorization' in hdrs:
@@ -106,34 +103,15 @@ def sn_decorator(say: SAY, settings: SSettings, *, roles : List[str] = [], fast:
             if user_parameter_name in extras:
                 um = usr
                 usr_dict = um
-                # usr_dict = mongo_to_dict(usr)
                 rls = say.get_all_full_roles(usr["roles"])
                 final_user_object = {**usr_dict, "full_roles": rls, "all_roles": [r["name"] for r in rls]}
                 extras[user_parameter_name] = final_user_object
 
-            # user_agent = ""
-            # if "user-agent" in hdrs:
-            #     user_agent = hdrs["user-agent"]
-            # session_user = {"userid": user.userid, "fullname": user.fname + ' ' + user.lname, "geo": user.geo,
-            #                 "box": user.box, "user_agent": user_agent, "login_time": datetime.datetime.utcnow(),
-            #                 "ip": request.client.host}
             session_id: str = request.cookies.get(session_token_name)
 
             session = ASession(session_id)
 
 
-            # session: ASession = None
-            #
-            # if session_id is None:
-            #     session = session_manager.get_new_session(user=session_user)
-            # else:
-            #     session = session_manager.get_session(session_id)
-            #     if session is None:
-            #         session = session_manager.get_new_session(user=session_user)
-            #     else:
-            #         if session.get_userid() != user.userid:
-            #             session.set_user(session_user)
-            #
 
             if session_param_name in extras:
                 extras[session_param_name] = session
