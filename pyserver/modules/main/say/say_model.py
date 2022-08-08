@@ -26,7 +26,7 @@ Trademark barteh
 #     full_name = StringField(max_length=200)
 
 
-# class AUser(Document):
+# class SUser(Document):
 #     meta = {'db_alias': 'aaa',
 #             "allow_inheritance": False,
 #             'indexes': [
@@ -56,5 +56,5 @@ Trademark barteh
 #     thumb_nail = BinaryField(max_bytes=5 * 1024 * 1024)
 
 
-class AUser():
+class SUser():
     pass

@@ -1,15 +1,3 @@
-'''
-File: mongodb.py
-Project: database
-File Created: Thursday, 24th December 2020 12:51:28 pm
-Author: Ahad Rafat Talebi (office) (ahadrt@gmail.com)
------
-Last Modified: Thursday, 11th March 2021 1:30:08 pm
-Modified By: Ahad Rafat Talebi (office) (ahadrt@gmail.com>)
------
-Copyright 2018 - 2021 Borna Mehr Fann, Borna Mehr Fann
-Trademark barteh
-'''
 
 from .adatabase import ADatabase
 from .adatabase_base import AMongodbBase
@@ -34,7 +22,7 @@ class AMongodb(AMongodbBase, ADatabase):
 
     client: MongoClient = None
     pymngo: Database
-    isAAA: bool = False
+    isSAY: bool = False
     db: Database
 
     def init(self):
@@ -51,7 +39,7 @@ class AMongodb(AMongodbBase, ADatabase):
             client.server_info()
 
             # if self.database not in client.list_database_names():
-            info_in_db = {"_id": 0, **self.settings.info, "database_name": self.database, "isAAA": self.isAAA}
+            info_in_db = {"_id": 0, **self.settings.info, "database_name": self.database, "isSAY": self.isSAY}
             db = client[self.database]
             self.db = client[self.database]
             info = db["app_info"]
@@ -82,15 +70,6 @@ class AMongodb(AMongodbBase, ADatabase):
             
             
             
-            ######################################################
-            # if self.isAAA:
-            #     connect(**con_attr, alias="aaa")
-
-            # connect(**con_attr, alias=self.database)
-
-                # connect(db=self.database, host=self.host, port=self.port, alias='aaa')
-                
-            ######################################################
 
             return True
         except:

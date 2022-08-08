@@ -14,14 +14,16 @@ Trademark barteh
 from inspect import iscoroutinefunction, signature
 from starlette.responses import JSONResponse
 
-from .aaa import AAA, AUser
 from fastapi import Request, Response, HTTPException
-from .asettings import ASettings
+
+from modules.main.say.say import SAY
+from modules.main.say.session import ASession
+from modules.main.say.say_model import SUser
+from .s_settings import SSettings
 
 # from mongoengine.fields import BaseQuerySet
 # from mongoengine.base import BaseDocument
 
-from .aaa.session import ASession #, ASessionManager
 import orjson
 from typing import Any,List ,Union
 
@@ -36,10 +38,9 @@ class CustomResponse(JSONResponse):
         return orjson.dumps(content, default=prepare)
 
 
-def sn_decorator(aaa: AAA, settings: ASettings, *, roles : List[str] = [], fast: bool = True,
+def sn_decorator(say: SAY, settings: SSettings, *, roles : List[str] = [], fast: bool = True,
                  files: Union[None, List[str]] = None):
-    session_token_name = aaa.get_session_token_name()
-    # session_manager: ASessionManager = aaa.get_session_manager()
+    session_token_name = say.get_session_token_name()
 
     def api_wrapper(api: callable):
 
@@ -57,16 +58,15 @@ def sn_decorator(aaa: AAA, settings: ASettings, *, roles : List[str] = [], fast:
         for param, v in params.items():
             main_params.append(param)
             full_name = v.__str__()
-            if v.__str__().find('.AAA') != -1:
-                extras[param] = aaa
+            if v.__str__().find('.SAY') != -1:
+                extras[param] = say
 
             elif v.__str__().find('.ASettings') != -1:
                 extras[param] = settings
             elif v.__str__().find('.ASession') != -1:
                 session_param_name = param
                 extras[param] = None
-            elif v.__str__().find('.ALog') != -1:
-                extras[param] = log
+            
             elif v.__str__().find('.Request') != -1:
                 request_param_name = param
                 context[param] = Request
@@ -74,7 +74,7 @@ def sn_decorator(aaa: AAA, settings: ASettings, *, roles : List[str] = [], fast:
             elif v.__str__().find('.Response') != -1:
                 response_param_name = param
                 context[param] = Response
-            elif full_name.find('.AUser') != -1:
+            elif full_name.find('.SUser') != -1:
                 user_parameter_name = param
                 extras[param] = None
             else:
@@ -88,11 +88,11 @@ def sn_decorator(aaa: AAA, settings: ASettings, *, roles : List[str] = [], fast:
             request: Request = kwargs[request_param_name]
             req_headers = request.headers.items()
 
-            result: int = aaa.authorize(roles=roles, headers=req_headers)
+            result: int = say.authorize(roles=roles, headers=req_headers)
             if result != 200:
                 raise HTTPException(status_code=result, detail=http_codes[result])
 
-            user: AUser = None
+            user: SUser = None
             # if user_parameter_name in extras:
             hdrs = dict(req_headers)
             token = ''
@@ -100,14 +100,14 @@ def sn_decorator(aaa: AAA, settings: ASettings, *, roles : List[str] = [], fast:
                 authorization: List[str] = hdrs['authorization'].split(' ')
                 if len(authorization) == 2:
                     [prefix, token] = authorization
-            usr = aaa.get_user_from_token(token)
+            usr = say.get_user_from_token(token)
             user = usr
 
             if user_parameter_name in extras:
                 um = usr
                 usr_dict = um
                 # usr_dict = mongo_to_dict(usr)
-                rls = aaa.get_all_full_roles(usr["roles"])
+                rls = say.get_all_full_roles(usr["roles"])
                 final_user_object = {**usr_dict, "full_roles": rls, "all_roles": [r["name"] for r in rls]}
                 extras[user_parameter_name] = final_user_object
 

@@ -27,13 +27,6 @@ class ADatabaseBase:
     appName = 'barteh'  # barteh
 
 
-class ASqlServerBase(ADatabaseBase):
-    def __init__(self, **db):
-        super().__init__(**db)
-        pass
-
-    pass
-
 
 class AMongodbPoolOptionsBase:
     maxPoolSize = 0  # 0
@@ -67,7 +60,7 @@ class AMongodbBase(ADatabaseBase):
     host = ''
     port = 27017
     options: AMongodbOptionsBase
-    isAAA: False
+    isSAY: False
     isLog: False
 
 

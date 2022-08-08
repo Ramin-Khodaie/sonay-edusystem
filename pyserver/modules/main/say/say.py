@@ -1,26 +1,13 @@
-'''
-File: aaa.py
-Project: aaa
-File Created: Sunday, 21st February 2021 2:43:04 pm
-Author: Ahad Rafat Talebi (office) (ahadrt@gmail.com)
------
-Last Modified: Thursday, 11th March 2021 1:28:19 pm
-Modified By: Ahad Rafat Talebi (office) (ahadrt@gmail.com>)
------
-Copyright 2018 - 2021 Borna Mehr Fann, Borna Mehr Fann
-Trademark barteh
-'''
-
 import os
 import sys
 from typing import Collection, List
 import jwt
 import time
-from modules.main.asettings import  ASettings
+from modules.main.s_settings import  SSettings
 from modules.main.database.adatabase import ADatabase
 import copy
 from .session import ASession
-from .aaa_model import *
+from .say_model import *
 import datetime
 import hashlib
 import base64
@@ -28,15 +15,15 @@ import re
 
 
 
-__all__ = ['AAA']
+__all__ = ['SAY']
 
 
-class AAA():
+class SAY():
     
    
     db: ADatabase
-    settings: ASettings = None
-    _secret: str = "ABartehSecret"
+    settings: SSettings = None
+    _secret: str = "MySecretCode"
     _user_cache = {}
     # _session_manager: ASessionManager
     __session_token_name: str = "sid"
@@ -84,27 +71,6 @@ class AAA():
                 self._admin_role["inherits"].append(r["name"])
         self.finalize_roles()
 
-    # def add_roles(self, namespace: str, roles: list) -> None:
-    #     new_roles = [{**r, "namespace": namespace + r["name"]} for r in roles]
-    #     self._roles = self._roles + new_roles
-    #
-    #     for r in new_roles:
-    #         if r["name"] == "admin":
-    #             self._admin_role = r
-    #         if "top" in r:
-    #             self._admin_role.inhe
-    #
-    #         if "inherits" not in r:
-    #             r["inherits"] = []
-    #         else:
-    #             inherits: list = r["inherits"]
-    #             children = self.get_all_child_roles(r)
-    #             self._all_inherited_roles[r["name"]] = children
-    #             r["all_inherits"] = children
-    #
-    #     for r in new_roles:
-    #         parents = self.get_all_parent_roles(r)
-    #         r["all_parents"] = parents
     
 
     def get_all_parent_roles(self, role: dict) -> set:
@@ -143,9 +109,9 @@ class AAA():
     def get_session_manager(self):
         return self._session_manager
 
-    def __init__(self, aaa, settings: ASettings):
+    def __init__(self, aaa, settings: SSettings):
 
-        super(AAA, self).__init__()
+        super(SAY, self).__init__()
         self.collect_roles()
         self.settings = settings
         self.database = aaa["database"]
@@ -167,7 +133,7 @@ class AAA():
         eps = m.digest()
         return base64.b64encode(eps).decode()
     def init_users(self):
-        col : Collection = self.db.mongo_db['a_user']
+        col : Collection = self.db.mongo_db['s_user']
        
         count = col.find({})
         if len(list(count)) == 0:
@@ -184,103 +150,45 @@ class AAA():
                 
                 
                 "creator": "admin",
-                "created": datetime.datetime.now(),
-                "scope" : "HQ",
-                
+                "created": datetime.datetime.now(),                
                 "roles": ["admin"],
             }
             col.insert_one(x)
     def init(self):
         if self.db.type == 'mongodb':
             ASession.set_collection(self.db.mongo_db["a_session"])
-            ASession.collect_garbage()
-            # self._session = MongoSession
-
-            
+            ASession.collect_garbage()     
             self.init_users()
-    #         count = AUser.objects.count()
-    #         if count == 0:
-    #             ps = self.encode_pass('admin')
-    #             ab_dict = {**self._orgChart.get_admin_box()}
-    #             del ab_dict["level"]
-    #             del ab_dict["parent"]
-    #             if '_id' in ab_dict:
-    #                 del ab_dict['_id']
-
-    #             ab = ABoxField(**ab_dict)
-                
-                
-                
-    #             x = {"userid":'admin', "enable":True, "password":ps, "fname":'admin', "lname":'admin', "box":ab,
-    #                   "geo":{"geoid": "world", 'level_name': "", "name": "ایران", "full_name": "کشور ایران", "level": 2,
-    #                        "geo_type" : {
-    #   "id": "country",
-    #   "name": "",
-    #   "scope": ""
-    # }},
-    #                   "creator":'admin', "created":datetime.datetime.now(), "roles":['admin']}
-
-    #             AUser(userid='admin', enable=True, password=ps, fname='admin', lname='admin', box=ab,
-    #                   geo={"geoid": "world", 'level_name': "", "name": "ایران", "full_name": "کشور ایران", "level": 2,
-    #                        "geo_type" : {
-    #   "id": "country",
-    #   "name": "",
-    #   "scope": ""
-    # }},
-    #                   creator='admin', created=datetime.datetime.now(), roles=['admin']).save()
-
-            #
 
     def activate_user(self, userid: str, editor: dict, state: bool):
 
-        try:
-            eu = self.get_user(userid)
-            if eu:
-                if 'admin' in eu["roles"] and 'admin' not in editor['roles']:
-                    return 403, "access_denied", 'you cant edit admin user'
+        pass
 
-            self.update_user(eu , {"enable" : state})
-            u = self.get_user(userid, refresh=True)
-
-            if u is None:
-                return 404, "not_found", None
-            else:
-                u.pop("_id")
-                return 200, "ok", u
-            # AUser.objects(userid=userid).exclude("password", "image","refreshToken").as_pymongo()[0]
-
-        except:
-            e = sys.exc_info()[0]
-            return 500, "error", None
-
-    def authenticate(self, user, password):
+    def  authenticate(self, user, password):
+        res = {}
         passwd = self.encode_pass(password)
-        usr: AUser = None
+        usr: SUser = None
         try:
-            # usr = AUser.objects(userid=user, password=passwd).exclude("image", "password", "refreshToken").first()
             usr = self.get_user_by_query({"userid" : user , "password" : passwd},{"image":0, "password":0, "refreshToken":0})
         except:
-            return "databaseError", 'cant connect to database', "", "", None
+            return 500 , "databaseError" ,'cant connect to database' , {"at": "","rf": "", "usr" :None} 
         if usr is None:
-            return "incorrectUserPassword", 'incorrect user name or password', "", "", None
+            return 403 , "incorrectUserPassword", 'incorrect user name or password',{"at": "","rf": "", "usr" :None} 
         elif not usr["enable"]:
-            return "userInactive", 'user is not active', "", "", None
+            return 403 , "userInactive", 'user is not active', {"at": "","rf": "", "usr" :None} 
         else:
             at = self.encode_auth_token(user, 'access_token')
             rt = self.encode_auth_token(user, 'refresh_token')
             self._user_cache[usr["userid"]] = usr
-            # usr.refreshToken = rt
-            # usr.reload()
-            # usr.update(refreshToken=rt)
+
             self._user_cache[user] = usr
 
-            return "ok", "ok", at, rt, usr
+            return 200 ,"ok", "ok",{"at": at,"rt": rt, "usr" :usr} 
 
-    def remote_authenticate(self):
-        pass
 
-    def current_user(self, access_token: str) -> AUser:
-        ret: AUser = None
+
+    def current_user(self, access_token: str) -> SUser:
+        ret: SUser = None
         status, data = self.decode_token(access_token)
         if status == 200:
             ret = self.get_user(userid=data)
@@ -328,7 +236,7 @@ class AAA():
 
     algorithm = 'HS256'
     jwt_options = {
-        'verify_signature': True,
+        'verify_signature': False,
         'verify_exp': True,
         'verify_nbf': False,
         'verify_iat': True,
@@ -342,24 +250,23 @@ class AAA():
         """
 
         expire = self.access_expire if type == 'access_token' else self.refresh_expire
-        try:
-            now = int(time.time())
+       
+        now = int(time.time())
 
-            payload = {
-                'exp': now + expire,
-                'iat': now,
-                'sub': user_id,
-                'type': type
-            }
+        payload = {
+            'exp': now + expire,
+            'iat': now,
+            'sub': user_id,
+            'type': type
+        }
 
-            j = jwt.encode(
-                payload,
-                self._secret,
-                algorithm=self.algorithm,
-            )
-            return j.decode('utf-8')
-        except Exception as e:
-            return e
+        j = jwt.encode(
+            payload,
+            self._secret,
+            algorithm=self.algorithm,
+        )
+        return j.decode('utf-8')
+        
 
     def decode_token(self, token: str) -> tuple:
         result = 200
@@ -391,7 +298,7 @@ class AAA():
             return self.anonymous_user
         else:
             userid = data["sub"]
-            user: AUser = self.get_user(userid=userid)
+            user: SUser = self.get_user(userid=userid)
             if user is None:
                 user = self.anonymous_user
             return user
@@ -410,7 +317,7 @@ class AAA():
             if 'sub' in data and 'type' in data:
                 tk_type = data['type']
                 user = data['sub']
-                usr: AUser = None
+                usr: SUser = None
                 if user in self._user_cache:
                     usr = self._user_cache[user]
                 else:
@@ -425,21 +332,21 @@ class AAA():
         return 401, None
 
     def all_users(self):
-        # AUser.field_names.
-        # return AUser.objects.exclude('password', 'refreshToken', 'image', 'id')
-        c = self.db.mongo_db["a_user"]
+        # SUser.field_names.
+        # return SUser.objects.exclude('password', 'refreshToken', 'image', 'id')
+        c = self.db.mongo_db["s_user"]
         q = c.find({}, {'_id': False, 'password': False, 'refreshToken': False, 'image': False})
 
         return list(q)
-        # return AUser.objects.exclude('userid')
+        # return SUser.objects.exclude('userid')
 
-    def get_user(self, userid, refresh: bool = False) -> AUser:
-        col : Collection = self.db.mongo_db["a_user"]
+    def get_user(self, userid, refresh: bool = False) -> SUser:
+        col : Collection = self.db.mongo_db["s_user"]
         if userid in self._user_cache and not refresh:
             return self._user_cache[userid]
         else:
             usr = list(col.find({"userid" : userid} , {"password" : 0 , "image" : 0 , "refreshToken" : 0}))
-            # usr = AUser.objects(userid=userid).exclude("password", "image", "refreshToken").first()
+            # usr = SUser.objects(userid=userid).exclude("password", "image", "refreshToken").first()
             if len(usr) != 0:
                 self._user_cache[userid] = usr[0]
                 return usr[0]
@@ -447,10 +354,10 @@ class AAA():
                 return None
        
     def get_user_by_query(self,query:dict,fields:dict):
-        col : Collection = self.db.mongo_db["a_user"]
+        col : Collection = self.db.mongo_db["s_user"]
         
         usr = list(col.find(query , fields))
-        # usr = AUser.objects(userid=userid).exclude("password", "image", "refreshToken").first()
+        # usr = SUser.objects(userid=userid).exclude("password", "image", "refreshToken").first()
         if len(usr) != 0:
             
             return usr[0]
@@ -514,147 +421,20 @@ class AAA():
             return validate_result, None
         else:
             passwd = self.encode_pass(usr["password"])
-            user = AUser(**usr, password=passwd)
+            user = SUser(**usr, password=passwd)
             return "ok", user
 
-    def validate_user(self, usr: dict, user: AUser, mode="save"):
-        #this validation is deprecated
-        if "password" not in usr:
-            return "password"
-        elif not self.check_password_policy(usr["password"]):
-            return "password_to_easy"
-        elif "roles" not in usr or not isinstance(usr["roles"], list) or len(usr["roles"]) < 1:
-            return "rolesnotset"
+    def validate_user(self, usr: dict, user: SUser, mode="save"):
 
-
-
-        else:
-            return "ok"
         pass
 
-    def validate_user_2(self, usr: dict, user: AUser, mode="save"):
-        if 'all_parents' in usr['geo']:
-            del usr['geo']['all_parents']
+    def validate_user_2(self, usr: dict, user: SUser, mode="save"):
+        return True
 
-        if 'parent' in usr['geo']:
-            del usr['geo']['parent']
-
-        if 'children' in usr['geo']:
-            del usr['geo']['children']
-
-        if 'all_children' in usr['geo']:
-            del usr['geo']['all_children']
-
-        elif "userid" not in usr or \
-                "fname" not in usr or \
-                "lname" not in usr:
-            return "incomplete", None
-
-        user_geoid = user["geo"]["geoid"]
-        usr_usrerid = usr["userid"]
-        user_userid = user["userid"]
-        user_boxid = user['box']['boxid']
-        usr_boxid = usr['box']['boxid']
-        usr_geoid = usr["geo"]["geoid"]
-
-        # edit validator
-        if mode == "edit":
-
-            # exist_user = AUser.objects(userid=usr["userid"]).first()
-            exist_user = self.get_user(usr["userid"])
-
-            # user cant edit geo and box
-            if usr_boxid != exist_user['box']['boxid']:
-                return "cant_edit_box", None
-            if usr_geoid != exist_user['geo']['geoid']:
-                if user_geoid not in ["IR", "HQ"]:
-                    # return "cant_edit_geo", None
-                    pass
-
-            creator = exist_user["creator"]
-            limit = 0
-            li = ["admin"]
-            # user access authorization
-            while creator != "admin":
-                li.append(creator)
-                # x = AUser.objects(userid=creator).first()
-                x = self.get_user(userid=creator)
-                creator = x["creator"]
-
-                limit += 1
-                if limit > 7:
-                    break
-            if user_userid not in li and user_geoid != "IR":
-                return "wrong_user", None
-
-            # users cant edit themselves
-
-            if user_userid == usr_usrerid:
-                return "self_edit", None
-
-        # geo authorization
-
-        if user_geoid != "IR":  # except IR users ,they should be able edit only their descendants
-
-            editable_geos = self.geos.get_descendants(user_geoid)
-            if not (usr_geoid == user_geoid or usr_geoid in editable_geos):
-                return "wrong_geo", None
-
-        # box authorization
-
-        if not (user_boxid == usr_boxid or user_boxid == '1' or self.org_chart.is_in_sub_chart(usr_boxid, user_boxid)):
-            return "wrong_box", None
-
-        return "ok", usr
 
     def validate_delete_activate_user(self, usr, user):
-        exist_user = self.get_user(userid=usr)
-        if exist_user is None:
-            return "not_found", None
-        user_geoid = user["geo"]["geoid"]
-        user_userid = user["userid"]
-        user_boxid = user['box']['boxid']
-        usr_boxid = exist_user['box']['boxid']
-        usr_geoid = exist_user["geo"]["geoid"]
-
-
-
-        creator = exist_user["creator"]
-        limit = 0
-        li = ["admin"]
-        # user access authorization
-        while creator != "admin":
-            li.append(creator)
-            # x = AUser.objects(userid=creator).first()
-            x = self.get_user(userid=creator)
-            creator = x["creator"]
-
-            limit += 1
-            if limit > 7:
-                break
-        if user_userid not in li and user_geoid != "IR":
-            return "wrong_user", None
-            # pass
-        # box authorization
-
-        if not (user_boxid == usr_boxid or user_boxid == '1' or self.org_chart.is_in_sub_chart(usr_boxid, user_boxid)):
-            return "wrong_box", None
-            # pass
-
-
-
-
-        # geo authorization
-
-        if user_geoid != "IR":  # except IR users ,they should be able edit only their descendants
-
-            editable_geos = self.geos.get_descendants(user_geoid)
-            if not (usr_geoid == user_geoid or usr_geoid in editable_geos):
-                return "wrong_geo", None
-
-
-
-        return "ok", None
+        pass
+        
     def logout(self, userid: str) -> bool:
 
         usr = self.get_user(userid)
@@ -668,44 +448,13 @@ class AAA():
     __all_roles: dict
 
     def collect_roles(self):
-        # mdls=__import__('modules')
-        # for mdl in mdls:
-        #     print(mdl)
         pass
 
     def update_user(self, usr: dict, values: dict):
-        col : Collection = self.db.mongo_db['a_user']
-        if not usr["userid"] or not usr["fname"] or not usr["lname"]:
-            return 422, "insufficient_input", "", None
-        u: dict = {**usr}
-        if "password" in usr:
-            if not u["password"]:
-                del u["password"]
-            else:
-                hash_pass = self.encode_pass(usr["password"])
-                u["password"] = hash_pass
-        # try:
-            
-            
-        user = self.get_user(userid=u["userid"])
-        if user is None:
-            return 404, "not_found", "user is not exist", None
-        if 'id' in u:
-            del u['id']
-        if '_id' in u:
-            del u['_id']
-        if "userid" not in user:
-            return 422, "not_found", "userid is missing", None
-            
-        col.update_one({"userid" : user["userid"]} , {"$set" : u})
-        # user.update(**u)
-        return 200, "ok", "user is updated successfully", u
-        # except:
-        #     e = sys.exc_info()
-        #     return 500, "error", str(e[1]), None
+        pass
 
     def insert_new_user(self, usr: dict, creator: str):
-        col : Collection = self.db.mongo_db["a_user"]
+        col : Collection = self.db.mongo_db["s_user"]
         if not usr["userid"] or not usr["password"] or not usr["fname"] or not usr["lname"] or 'geo' not in usr or not \
                 usr['geo'] or not isinstance(usr['geo'], dict):
             return 422, "insufficient_input", "", None
@@ -714,9 +463,7 @@ class AAA():
               "created": datetime.datetime.now()}
 
         try:
-            # su = AUser(**nu)
             col.insert_one(nu)
-            # su.save(force_insert=True)
             return 200, "ok", "user inserted", nu
         except:
             e = sys.exc_info()
@@ -731,9 +478,8 @@ class AAA():
             return 404, "not_found", "user not found", None
         else:
             try:
-                col : Collection = self.db.mongo_db["a_user"]
+                col : Collection = self.db.mongo_db["s_user"]
                 
-                # AUser.objects(userid=userid).delete()
                 col.delete_one({"userid" : userid})
                 if userid in self._user_cache:
                     del self._user_cache[userid]

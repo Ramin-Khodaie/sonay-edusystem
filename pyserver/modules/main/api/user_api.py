@@ -4,7 +4,9 @@ from fastapi import Depends,  HTTPException, status , APIRouter ,  Response
 from fastapi.security import  OAuth2PasswordRequestForm
 
 from dependencies import get_token_header
-from modules.main.asettings import ASettings
+from modules.main.s_settings import SSettings
+from modules.main.say.say import SAY
+from modules.main.api_return import api_return
 from ..users.models import *
 
 from modules.main.sonay_app import bt
@@ -13,28 +15,18 @@ class User:
 
 
 
-router = APIRouter()
+router = APIRouter(prefix='/users')
 
 bt.add_router(router)
 
 
 
 
-fake_users_db = {
-    "johndoe": {
-        "username": "johndoe",
-        "full_name": "John Doe",
-        "email": "johndoe@example.com",
-        "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
-        "disabled": False,
-    }
-}
-
-@router.get("/login")
+@router.post("/login")
 @bt(fast=True)
-def login(st : ASettings):
-    
-    return {"access_token": "fghfghfgh", "token_type": "bearer"}
+def login(say: SAY , info : dict):
+    ret = say.authenticate(info["username"] , info['password'])
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 
 # @router.get("/users/me/", response_model=UserBase)

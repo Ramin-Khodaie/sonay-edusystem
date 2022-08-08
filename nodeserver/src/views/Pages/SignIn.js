@@ -64,7 +64,8 @@ function createPost(){
  
   }
   ).then((response) => {
-    localStorage.setItem("token", response.data.access_token);
+    localStorage.setItem("at", response.data.data.at);
+    localStorage.setItem("rt", response.data.data.rt);
     setStatus({...status , user : true})
     history.push("/dashboard")
     

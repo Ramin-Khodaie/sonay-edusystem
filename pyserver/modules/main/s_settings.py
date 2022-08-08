@@ -20,7 +20,7 @@ from typing import List
 from .database.adatabase_base import ADatabaseBase, db_type_factory
 
 
-class ASettings:
+class SSettings:
     def __init__(self, **sd):
 
         if 'info' in sd:
@@ -39,7 +39,7 @@ class ASettings:
                         self.databases.append(T(**db))
 
         
-        self.AAA = sd['AAA']
+        self.SAY = sd['SAY']
 
         if 'extra' in sd:
             self.extra = sd["extra"]
@@ -78,9 +78,7 @@ def load_settings(mode, filename="pyserver/settings.json"):
 
     if path.isfile(path.abspath(filename)):
         data = json.load(codecs.open(filename, 'r', 'utf-8-sig'))
-        # settings_obj = Dic2Obj(data)
-        # self._settings = map_config(settings_obj)
-        _settings = ASettings(**data)
+        _settings = SSettings(**data)
         _state = "READY"
     else:
         _state = "NOTEXIST"

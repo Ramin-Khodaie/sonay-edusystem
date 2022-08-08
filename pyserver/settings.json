@@ -2,15 +2,13 @@
 
 {
     "info": {
-      "appname": "barteh",
-      "version": "3.0.0",
-      "systemname": "مجموعه نرم افزار های برته",
-      "copyright": "محصول شرکت برنا مهر فن",
-      "customer": "وزارت تعاون، کار و رفاه اجتماعی",
-      "customerCode":"TVTO",
-      "code": "xmhfMNsD251rM5eZyeVW2cTI3goiuqy+qdaSYzA0K1U=",
-      "innername": "دیتا کاتالوگ برته",
-
+      "appname": "soany",
+      "version": "2.0.0",
+      "systemname": "مجموعه نرم افزار های سون آی",
+      "copyright": "محصول شرکت سون آی",
+      "customer": "اموزشگاه استقلال",
+      "customerCode":"ESTG",
+      "code": "heelo dear",
       "expiration" : "1401/5/20",
       "daysToNotify" : 10
   
@@ -24,14 +22,14 @@
     "databases": [
       {
         "default": false,
-        "name": "plan",
+        "name": "educational_app",
         "type": "mongodb",
         "host": "localhost",
         "port": 27017,
         "username": "",
         "password": "",
-        "database": "plan",
-        "appName": "barteh",
+        "database": "educational_app",
+        "appName": "sonay",
         "options": {
           "retryReads": true,
           "retryWrites": true,
@@ -58,14 +56,14 @@
      
       {
         "default": false,
-        "name": "barteh3",
+        "name": "sonay",
         "type": "mongodb",
         "host": "localhost",
         "port": 27017,
         "username": "",
         "password": "",
-        "database": "barteh3",
-        "appName": "barteh",
+        "database": "sonay",
+        "appName": "sonay",
         "options": {
           "retryReads": true,
           "retryWrites": true,
@@ -93,8 +91,8 @@
       
     ],
     
-    "AAA": {
-      "database": "barteh3",
+    "SAY": {
+      "database": "sonay",
       "access_expire": 24000,
       "refresh_expire": 1296000,
       "prefix": "btsec",

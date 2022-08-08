@@ -2,19 +2,18 @@
 from typing import Dict, Callable, Union, List
 from fastapi import Request, APIRouter
 import logging
-from modules.main.aaa.aaa import AAA
-from modules.main.asettings import ASettings, load_settings
+from modules.main.s_settings import SSettings, load_settings
 from modules.main.database.adatabase import ADatabase
 from modules.main.database.db_factory import create_db_obj
 
-from modules.main.sonay_decorator import sn_decorator
+from modules.main.sn_decorator import sn_decorator,SAY
 
 class SonayApp:
     _mode = "development"
 
-    _settings: ASettings = None
+    _settings: SSettings = None
 
-    _aaa: AAA = None
+    _say: SAY = None
     _state: str = "INIT"
     _state_desc: str = "initializing"
     _databases = Dict[str, ADatabase]
@@ -51,11 +50,11 @@ class SonayApp:
 
 
     @property
-    def aaa(self) -> AAA:
-        return self._aaa
+    def say(self) -> SAY:
+        return self._say
 
     @property
-    def Settings(self) -> ASettings:
+    def Settings(self) -> SSettings:
         return self._settings
 
     async def middleware(self, request: Request, call_next):
@@ -79,7 +78,7 @@ class SonayApp:
             dbs = dict()
             # dbs = {}
             first_db = None
-            self._aaa = AAA(settings.AAA, settings)
+            self._say = SAY(settings.SAY, settings)
             for i, dbr in enumerate(settings.databases):
                 db = create_db_obj(dbr)
                 if i == 0:
@@ -88,9 +87,9 @@ class SonayApp:
                 dbs[db.name] = db
                 if dbr.default:
                     self._default_db = db
-                if self._aaa.database == dbr.name:
-                    db.isAAA = True
-                    self._aaa.db = db
+                if self._say.database == dbr.name:
+                    db.isSAY = True
+                    self._say.db = db
                 
                 if not db.init():
                     self._state = "FAILED"
@@ -105,7 +104,7 @@ class SonayApp:
 
             self._databases = dbs
 
-            self.aaa.init()
+            self.say.init()
 
             self._state = "READY"
             self._state_desc = "app is ready."
@@ -125,7 +124,7 @@ class SonayApp:
         """
         decorator default class function that Authorize APIs
         """
-        return sn_decorator(self.aaa, self._settings,  roles=roles, fast=fast)
+        return sn_decorator(self.say, self._settings,  roles=roles, fast=fast)
     
     
     
@@ -136,4 +135,4 @@ class SonayApp:
 global bt
 bt = SonayApp()
 
-aaa = bt.aaa
+say = bt.say
