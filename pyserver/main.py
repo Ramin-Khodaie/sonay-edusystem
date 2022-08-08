@@ -5,7 +5,7 @@ from fastapi import FastAPI
 # from pyserver.modules.main.user_api import test
 import uvicorn
 
-from modules.main.sonay_app import SonayApp, bt
+from modules.main.sonay_app import SonayApp, sn
 
 
 sn = SonayApp()
@@ -15,9 +15,9 @@ app = FastAPI()
 
 
 
-if bt.state == "READY":
+if sn.state == "READY":
 
-    for r in bt.routers:
+    for r in sn.routers:
         app.include_router(router=r, prefix='/api')
 
     origins = [
@@ -50,7 +50,7 @@ if bt.state == "READY":
 
 
 def app_start():
-    if bt.state != "READY":
+    if sn.state != "READY":
         print("could not initilize sonay app")
         return
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

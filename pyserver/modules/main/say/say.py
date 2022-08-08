@@ -1,6 +1,8 @@
+import email
 import os
 import sys
 from typing import Collection, List
+from bson import ObjectId
 import jwt
 import time
 from modules.main.s_settings import  SSettings
@@ -174,8 +176,8 @@ class SAY():
             return 500 , "databaseError" ,'cant connect to database' , {"at": "","rf": "", "usr" :None} 
         if usr is None:
             return 403 , "incorrectUserPassword", 'incorrect user name or password',{"at": "","rf": "", "usr" :None} 
-        elif not usr["enable"]:
-            return 403 , "userInactive", 'user is not active', {"at": "","rf": "", "usr" :None} 
+        # elif not usr["enable"]:
+        #     return 403 , "userInactive", 'user is not active', {"at": "","rf": "", "usr" :None} 
         else:
             at = self.encode_auth_token(user, 'access_token')
             rt = self.encode_auth_token(user, 'refresh_token')
@@ -414,15 +416,6 @@ class SAY():
 
         return ret
 
-    def create_new_user(self, usr: dict) -> list:
-        # this function is not used anymore
-        validate_result = self.validate_user(usr)
-        if validate_result != "ok":
-            return validate_result, None
-        else:
-            passwd = self.encode_pass(usr["password"])
-            user = SUser(**usr, password=passwd)
-            return "ok", user
 
     def validate_user(self, usr: dict, user: SUser, mode="save"):
 
@@ -487,3 +480,21 @@ class SAY():
             except:
                 return 500, "error", "error accrued during delete user", None
 
+    def user_registration(self, user_info : dict) -> List :
+        col : Collection = self.db.mongo_db["s_user"]
+        idd = str(ObjectId())
+        obj_ready = {
+  "_id": idd,
+  "userid": user_info["username"],
+  "enable": False,
+  "password": self.encode_pass(user_info["password"]),
+  "fname": user_info["full_name"],
+  "creator": "self",
+  "created": datetime.datetime.now(),
+  "email" : user_info["email"],
+  "roles": [
+    "visitor"
+  ]
+}
+        col.insert_one(obj_ready)
+        return  200, "ok", "user is registered", None

@@ -1,14 +1,23 @@
 // Chakra imports
 import {
+  
+  SimpleGrid,
+  Stat,
+  StatLabel,
+  StatNumber,
+  GridItem, 
+  useColorModeValue,
   Flex,
-  Table,
-  Tbody,
   Text,
-  Th,
-  Thead,
-  Tr,
-  useColorModeValue
+  Box,
+  FormControl,
+  Input,
+  FormLabel
+ 
+
+
 } from "@chakra-ui/react";
+import IconBox from "components/Icons/IconBox";
 // Custom components
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -26,48 +35,167 @@ function Tables() {
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
       <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
         <CardHeader p="6px 0px 22px 0px">
-          <Text fontSize="xl" color={textColor} fontWeight="bold">
-            Authors Table
+          <Text
+            fontSize="xl"
+            color={textColor}
+            fontWeight="bold"
+            textAlign={"right"}
+          >
+            ثبت کاربر جدید
           </Text>
         </CardHeader>
+
+
+
         <CardBody>
-          <Table variant="simple" color={textColor}>
-            <Thead>
-              <Tr my=".8rem" pl="0px" color="gray.400" >
-                <Th pl="0px" borderColor={borderColor} color="gray.400" >
-                  Author
-                </Th>
-                <Th borderColor={borderColor} color="gray.400" >Function</Th>
-                <Th borderColor={borderColor} color="gray.400" >Status</Th>
-                <Th borderColor={borderColor} color="gray.400" >Employed</Th>
-                <Th borderColor={borderColor}></Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {tablesTableData.map((row, index, arr) => {
-                return (
-                  <TablesTableRow
-                    name={row.name}
-                    logo={row.logo}
-                    email={row.email}
-                    subdomain={row.subdomain}
-                    domain={row.domain}
-                    status={row.status}
-                    date={row.date}
-                    isLast={index === arr.length - 1 ? true : false}
-                    key={index}
-                  />
-                );
-              })}
-            </Tbody>
-          </Table>
+          <FormControl>
+
+    <SimpleGrid columns={{ sm: 1, md: 2, xl: 3 }} spacing='24px' mb='20px' style={{"direction" : "rtl"}} >
+        <Box   minH='80px'>
+        <FormLabel textAlign='end' ms='4px' fontSize='sm' fontWeight='normal'>
+                نام کاربری
+              </FormLabel>
+              <Input
+             
+              id="username"
+             
+                textAlign='right'
+                variant='filled'
+                fontSize='sm'
+                ms='4px'
+                type='text'
+                placeholder='نام کاربری خود را وارد کنید'
+                mb='5px'
+                size='lg'
+              />
+        </Box>
+        <Box   minH='80px'>
+        <FormLabel textAlign='end' ms='4px' fontSize='sm' fontWeight='normal'>
+نام و نام خانوادگی           </FormLabel>
+              <Input
+             
+              id="username"
+             
+                textAlign='right'
+                variant='filled'
+                fontSize='sm'
+                ms='4px'
+                type='text'
+                placeholder='نام کاربری خود را وارد کنید'
+                mb='5px'
+                size='lg'
+              />
+        </Box>
+        <Box   minH='80px'>
+        <FormLabel textAlign='end' ms='4px' fontSize='sm' fontWeight='normal'>
+شماره تماس              </FormLabel>
+              <Input
+             
+              id="username"
+             
+                textAlign='right'
+                variant='filled'
+                fontSize='sm'
+                ms='4px'
+                type='text'
+                placeholder='نام کاربری خود را وارد کنید'
+                mb='5px'
+                size='lg'
+              />
+        </Box>
+
+        
+
+
+        <Box   minH='80px'>
+        <FormLabel textAlign='end' ms='4px' fontSize='sm' fontWeight='normal'>
+ایمیل             </FormLabel>
+              <Input
+             
+              id="username"
+             
+                textAlign='right'
+                variant='filled'
+                fontSize='sm'
+                ms='4px'
+                type='text'
+                placeholder='نام کاربری خود را وارد کنید'
+                mb='5px'
+                size='lg'
+              />
+        </Box>
+        <Box   minH='80px'>
+        <FormLabel textAlign='end' ms='4px' fontSize='sm' fontWeight='normal'>
+رمز عبور              </FormLabel>
+              <Input
+             
+              id="username"
+             
+                textAlign='right'
+                variant='filled'
+                fontSize='sm'
+                ms='4px'
+                type='text'
+                placeholder='نام کاربری خود را وارد کنید'
+                mb='5px'
+                size='lg'
+              />
+        </Box>
+        <Box   minH='80px'>
+        <FormLabel textAlign='end' ms='4px' fontSize='sm' fontWeight='normal'>
+تکرار رمز عبور              </FormLabel>
+              <Input
+             
+              id="username"
+             
+                textAlign='right'
+                variant='filled'
+                fontSize='sm'
+                ms='4px'
+                type='text'
+                placeholder='نام کاربری خود را وارد کنید'
+                mb='5px'
+                size='lg'
+              />
+        </Box>
+     
+
+
+
+        <Box   minH='80px'>
+        <FormLabel textAlign='end' ms='4px' fontSize='sm' fontWeight='normal'>
+نقش ها           </FormLabel>
+              <Input
+             
+              id="username"
+             
+                textAlign='right'
+                variant='filled'
+                fontSize='sm'
+                ms='4px'
+                type='text'
+                placeholder='نام کاربری خود را وارد کنید'
+                mb='5px'
+                size='lg'
+              />
+        </Box>
+
+
+      </SimpleGrid>
+
+          </FormControl>
+    
         </CardBody>
       </Card>
-      <Card
-        my="22px"
-        overflowX={{ sm: "scroll", xl: "hidden" }}
-        pb="0px"
-      >
+
+
+
+
+
+
+
+
+      <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
         <CardHeader p="6px 0px 22px 0px">
           <Flex direction="column">
             <Text fontSize="lg" color={textColor} fontWeight="bold" pb=".5rem">
@@ -75,36 +203,7 @@ function Tables() {
             </Text>
           </Flex>
         </CardHeader>
-        <CardBody>
-          <Table variant="simple" color={textColor}>
-            <Thead>
-              <Tr my=".8rem" pl="0px">
-                <Th pl="0px" color="gray.400" borderColor={borderColor}>
-                  Companies
-                </Th>
-                <Th color="gray.400" borderColor={borderColor}>Budget</Th>
-                <Th color="gray.400" borderColor={borderColor}>Status</Th>
-                <Th color="gray.400" borderColor={borderColor}>Completion</Th>
-                <Th></Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {tablesProjectData.map((row, index, arr) => {
-                return (
-                  <TablesProjectRow
-                    name={row.name}
-                    logo={row.logo}
-                    status={row.status}
-                    budget={row.budget}
-                    progression={row.progression}
-                    isLast={index === arr.length - 1 ? true : false}
-                    key={index}
-                  />
-                );
-              })}
-            </Tbody>
-          </Table>
-        </CardBody>
+        <CardBody></CardBody>
       </Card>
     </Flex>
   );

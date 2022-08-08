@@ -1,7 +1,7 @@
 roles = [{
     "id" : "admin",
     "name" : "ادمین",
-    "inherit" :["mark","report","dashboard"]
+    "inherit" :["mark"]
 },
 {
     "id" : "mark",
@@ -11,14 +11,18 @@ roles = [{
 {
     "id" : "report",
     "name" : "کارنامه",
-    "inherit" :[]
+    "inherit" :["dashboard"]
 },
 {
     "id" : "dashboard",
     "name" : "داشبورد",
-    "inherit" :["dashboard"]
+    "inherit" :[]
 },
-
+{
+    "id" : "visitor",
+    "name" : "بازدید کننده",
+    "inherit" :["dashboard"]
+}
 
 
 

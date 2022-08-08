@@ -132,7 +132,7 @@ class SonayApp:
 
 
 
-global bt
-bt = SonayApp()
+global sn
+sn = SonayApp()
 
-say = bt.say
+say = sn.say

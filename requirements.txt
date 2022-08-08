@@ -15,10 +15,12 @@ fastapi==0.79.0
 h11==0.13.0
 httptools==0.4.0
 idna==3.3
+orjson==3.7.11
 passlib==1.7.4
 pyasn1==0.4.8
 pycparser==2.21
 pydantic==1.9.1
+PyJWT==1.7.1
 pymongo==4.2.0
 python-dateutil==2.8.2
 python-jose==3.3.0
