@@ -34,7 +34,7 @@ import MultiSelect from "components/MultiSelect/MultiSelect";
 import useNotify from "helpers/notify/useNotify";
 
 function Tables() {
-  const notify = useNotify()
+  const notify = useNotify();
   const data = [
     { id: "teacher", name: "دبیر" },
     { id: "student", name: "دانش آموز" },
@@ -42,7 +42,6 @@ function Tables() {
   ];
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-  const [options, setOptions] = React.useState([]);
 
   const [formData, setFormData] = React.useState({
     username: "",
@@ -64,23 +63,16 @@ function Tables() {
   const handleOptionChange = (e) => {
     const newOpt = data.find((f) => f.id === e.target.value);
 
-    options.findIndex((itm) => itm.id == newOpt.id) === -1
-      ? setOptions([...options, newOpt])
+    formData.roles.findIndex((itm) => itm.id == newOpt.id) === -1
+      ? setFormData({ ...formData, roles: [...formData.roles, newOpt] })
       : notify("این آیتم قبلا انتخاب شده است", true, "solid", "warning");
-
-
-      setFormData({...formData , "roles" : options})
   };
 
   const handleDelete = (id) => (e) => {
-    setOptions((current) =>
-      current.filter((element) => {
-        return element.id !== id;
-      })
-    );
-
-    setFormData({...formData , "roles" : options})
-
+    const cc = formData.roles.filter((element) => {
+      return element.id !== id;
+    });
+    setFormData({ ...formData, roles: cc });
   };
 
   return (
@@ -195,7 +187,7 @@ function Tables() {
                     fontSize="sm"
                     ms="4px"
                     type="text"
-                    placeholder="نام کاربری خود را وارد کنید"
+                    placeholder="‌ایمیل را وارد کنید"
                     mb="5px"
                     size="lg"
                   />
@@ -213,7 +205,7 @@ function Tables() {
                     fontSize="sm"
                     ms="4px"
                     type="text"
-                    placeholder="نام کاربری خود را وارد کنید"
+                    placeholder="رمز عبور را وارد کنید"
                     mb="5px"
                     size="lg"
                   />
@@ -231,7 +223,7 @@ function Tables() {
                     fontSize="sm"
                     ms="4px"
                     type="text"
-                    placeholder="نام کاربری خود را وارد کنید"
+                    placeholder="تکرار رمز را وارد کنید"
                     mb="5px"
                     size="lg"
                   />
@@ -247,7 +239,7 @@ function Tables() {
                     handleChange={handleOptionChange}
                     handleDelete={handleDelete}
                     data={data}
-                    options={options}
+                    options={formData.roles}
                   />
                 </Box>
               </Box>
