@@ -15,33 +15,14 @@ import {
 import useNotify from "helpers/notify/useNotify";
 import React from "react";
 
-const MultiSelect = () => {
-  const data = [
-    { id: "teacher", name: "دبیر" },
-    { id: "student", name: "دانش آموز" },
-    { id: "manager", name: "مدیر" },
-  ];
+const MultiSelect = ({handleChange , handleDelete , data , options}) => {
+
+  console.log(options,555)
+ 
 
   const notify = useNotify();
 
-  const [options, setOptions] = React.useState([]);
 
-  const handleChange = (e) => {
-    const newOpt = data.find((f) => f.id === e.target.value);
-
-    options.findIndex((itm) => itm.id == newOpt.id) === -1
-      ? setOptions([...options, newOpt])
-      : notify("این آیتم قبلا انتخاب شده است", true, "solid", "warning");
-  };
-
-  const handleDelete =(id)=> (e) => {
-
-    setOptions(current =>
-        current.filter(element => {
-          return element.id !== id;
-        }),
-      );
-  };
 
   return (
     <>

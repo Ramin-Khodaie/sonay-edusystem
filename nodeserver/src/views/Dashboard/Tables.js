@@ -20,23 +20,68 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
+  Spacer,
 } from "@chakra-ui/react";
 
-import IconBox from "components/Icons/IconBox";
 // Custom components
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
-import TablesProjectRow from "components/Tables/TablesProjectRow";
 import TablesTableRow from "components/Tables/TablesTableRow";
 import React from "react";
-import { tablesProjectData, tablesTableData } from "variables/general";
+import { tablesTableData } from "variables/general";
 import MultiSelect from "components/MultiSelect/MultiSelect";
+import useNotify from "helpers/notify/useNotify";
 
 function Tables() {
+  const notify = useNotify()
+  const data = [
+    { id: "teacher", name: "دبیر" },
+    { id: "student", name: "دانش آموز" },
+    { id: "manager", name: "مدیر" },
+  ];
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-  const [value, setValue] = React.useState("");
+  const [options, setOptions] = React.useState([]);
+
+  const [formData, setFormData] = React.useState({
+    username: "",
+    full_name: "",
+    phone: "",
+    email: "",
+    password: "",
+    confirm_password: "",
+    course: "",
+    roles: [],
+  });
+
+  const handleChange = (event) => {
+    const field = event.target.id;
+    const value = event.target.value;
+    setFormData({ ...formData, [field]: value });
+  };
+
+  const handleOptionChange = (e) => {
+    const newOpt = data.find((f) => f.id === e.target.value);
+
+    options.findIndex((itm) => itm.id == newOpt.id) === -1
+      ? setOptions([...options, newOpt])
+      : notify("این آیتم قبلا انتخاب شده است", true, "solid", "warning");
+
+
+      setFormData({...formData , "roles" : options})
+  };
+
+  const handleDelete = (id) => (e) => {
+    setOptions((current) =>
+      current.filter((element) => {
+        return element.id !== id;
+      })
+    );
+
+    setFormData({...formData , "roles" : options})
+
+  };
 
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -66,6 +111,7 @@ function Tables() {
                     نام کاربری
                   </FormLabel>
                   <Input
+                    handleChange={handleChange}
                     focusBorderColor="purple.300"
                     id="username"
                     textAlign="right"
@@ -73,7 +119,7 @@ function Tables() {
                     fontSize="sm"
                     ms="4px"
                     type="text"
-                    placeholder="نام کاربری خود را وارد کنید"
+                    placeholder="نام کاربری را وارد کنید"
                     mb="5px"
                     size="lg"
                   />
@@ -83,14 +129,15 @@ function Tables() {
                     نام و نام خانوادگی{" "}
                   </FormLabel>
                   <Input
+                    handleChange={handleChange}
                     focusBorderColor="purple.300"
-                    id="username"
+                    id="full_name"
                     textAlign="right"
                     variant="filled"
                     fontSize="sm"
                     ms="4px"
                     type="text"
-                    placeholder="نام کاربری خود را وارد کنید"
+                    placeholder="نام و نام خانوادگی را وارد کنید"
                     mb="5px"
                     size="lg"
                   />
@@ -101,14 +148,15 @@ function Tables() {
                     شماره تماس{" "}
                   </FormLabel>
                   <Input
+                    handleChange={handleChange}
                     focusBorderColor="purple.300"
-                    id="username"
+                    id="phone"
                     textAlign="right"
                     variant="filled"
                     fontSize="sm"
                     ms="4px"
                     type="text"
-                    placeholder="نام کاربری خود را وارد کنید"
+                    placeholder=" شماره تماس را وارد کنید"
                     mb="5px"
                     size="lg"
                   />
@@ -119,6 +167,8 @@ function Tables() {
                     دوره{" "}
                   </FormLabel>
                   <Select
+                    handleChange={handleChange}
+                    id="course"
                     focusBorderColor="purple.300"
                     textAlign={"center"}
                     placeholder="دوره کاربر را انتخاب کنید"
@@ -137,8 +187,9 @@ function Tables() {
                     ایمیل{" "}
                   </FormLabel>
                   <Input
+                    handleChange={handleChange}
                     focusBorderColor="purple.300"
-                    id="username"
+                    id="email"
                     textAlign="right"
                     variant="filled"
                     fontSize="sm"
@@ -154,8 +205,9 @@ function Tables() {
                     رمز عبور{" "}
                   </FormLabel>
                   <Input
+                    handleChange={handleChange}
                     focusBorderColor="purple.300"
-                    id="username"
+                    id="password"
                     textAlign="right"
                     variant="filled"
                     fontSize="sm"
@@ -171,6 +223,7 @@ function Tables() {
                     تکرار رمز عبور{" "}
                   </FormLabel>
                   <Input
+                    handleChange={handleChange}
                     focusBorderColor="purple.300"
                     id="username"
                     textAlign="right"
@@ -190,7 +243,12 @@ function Tables() {
                   <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                     نقش ها{" "}
                   </FormLabel>
-                  <MultiSelect />
+                  <MultiSelect
+                    handleChange={handleOptionChange}
+                    handleDelete={handleDelete}
+                    data={data}
+                    options={options}
+                  />
                 </Box>
               </Box>
             </SimpleGrid>
@@ -214,30 +272,33 @@ function Tables() {
       <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
         <CardHeader p="6px 0px 22px 0px">
           <Flex direction="column">
-            <Accordion
-              style={{ direction: "rtl" }}
-              defaultIndex={[0]}
-              allowMultiple
-            >
-              <AccordionItem >
-                <h2>
-                  <AccordionButton _expanded={{ bg: 'tomato', color: 'white' }} aria-expanded="true">
-                    <Box flex="1" textAlign="left">
-                      نمایش فیلتر
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-
-                <Text
-                  fontSize="lg"
-                  color={textColor}
-                  fontWeight="bold"
-                  pb=".5rem"
-                  my={"20px"}
-                >
-                  لیست کاربران
-                </Text>
+            <Accordion allowToggle>
+              <AccordionItem>
+                <Flex>
+                  <Box>
+                    <h2>
+                      <AccordionButton>
+                        <Box flex="1" textAlign="left">
+                          {" "}
+                          نمایش فیلتر ها{" "}
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>{" "}
+                  </Box>
+                  <Spacer />
+                  <Box>
+                    <Text
+                      fontSize="xl"
+                      color={textColor}
+                      fontWeight="bold"
+                      textAlign={"right"}
+                      my={"10px"}
+                    >
+                      لیست کاربران{" "}
+                    </Text>
+                  </Box>
+                </Flex>
 
                 <AccordionPanel pb={4}>
                   <SimpleGrid
@@ -246,6 +307,21 @@ function Tables() {
                     spacing="24px"
                     mb="20px"
                   >
+                    <Box>
+                      <Input
+                        focusBorderColor="purple.300"
+                        id="username"
+                        textAlign="right"
+                        variant="outline"
+                        fontSize="sm"
+                        ms="4px"
+                        type="text"
+                        placeholder="نام و نام خانوادگی را وارد کنید"
+                        mb="5px"
+                        size="md"
+                      />
+                    </Box>
+
                     <Box>
                       <Select
                         focusBorderColor="purple.300"
@@ -271,8 +347,6 @@ function Tables() {
                         <option value="jk">"first"</option>
                       </Select>
                     </Box>
-
-                    <Box></Box>
                   </SimpleGrid>
                 </AccordionPanel>
               </AccordionItem>
