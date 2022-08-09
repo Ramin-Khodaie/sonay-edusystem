@@ -77,7 +77,7 @@ function TablesTableRow(props) {
             fontWeight="bold"
             cursor="pointer"
           >
-            Edit
+            ویرایش
           </Text>
         </Button>
       </Td>
