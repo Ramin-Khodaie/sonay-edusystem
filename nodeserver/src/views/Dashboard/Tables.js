@@ -34,6 +34,7 @@ import MultiSelect from "components/MultiSelect/MultiSelect";
 import useNotify from "helpers/notify/useNotify";
 import { bixious } from "services/main";
 import { SmallCloseIcon } from "@chakra-ui/icons";
+import { useConfirmPassword } from "hooks/useConfirmPassword";
 
 function Tables() {
   const notify = useNotify();
@@ -67,6 +68,8 @@ function Tables() {
     course: "",
     roles: [],
   });
+
+  const [userList , setUserList] = React.useState([])
 
   const handleChange = (event) => {
     const field = event.target.id;
@@ -182,7 +185,6 @@ function Tables() {
         }
       })
       .catch((e) => {
-        console.log(e.response, 5222);
         if (
           e.response &&
           e.response.status === 422 &&
@@ -208,13 +210,42 @@ function Tables() {
       });
   }
 
-  useEffect(() => {
-    chackFormValidation();
-  }, [formData.confirm_password]);
+
+  
+  function getUserList() {
+    bixious
+      .get("/users/getuserlist")
+      .then((response) => {
+        console.log(2222, response)
+        
+
+        if(response.status === 200)
+        {
+            setUserList(response.data.data)
+            console.log("bblaaaaaaaaah")
+        }
+      })
+      .catch((e) => {
+        console.log(e.response, 5222);
+      });
+  }
+
+  // useEffect(() => {
+  //   chackFormValidation();
+  // }, [formData.confirm_password]);
+
+  const isValid = useConfirmPassword(formData.password, formData.confirm_password)
+  console.log(889900, isValid)
 
   useEffect(() => {
     checkUsernameAndEmail(formData.username, formData.email);
   }, [formData.username, formData.email]);
+
+  useEffect(() => {
+    getUserList()
+  }, []);
+
+  console.log(userList,87)
 
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -545,7 +576,7 @@ function Tables() {
               </Tr>
             </Thead>
             <Tbody>
-              {tablesTableData.map((row, index, arr) => {
+              {userList.map((row, index, arr) => {
                 return (
                   <TablesTableRow
                     name={row.name}

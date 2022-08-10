@@ -148,9 +148,7 @@ class SAY():
                 "course" : "",
                 "phone" : "123456",
                 "email" : "admin@gmail.com",
-                
-
-
+                "image" : "",
                 "creator": "admin",
                 "created": datetime.datetime.now(),
                 "roles": ["admin"],
@@ -481,7 +479,8 @@ class SAY():
               "created": datetime.datetime.now(),
               "roles": roles,
               "enable": True,
-              "creator": "self"}
+              "creator": "self",
+              "image" : ""}
 
         col.insert_one(nu)
         return 200, "ok", "user inserted", nu
@@ -513,9 +512,24 @@ class SAY():
             "creator": "self",
             "created": datetime.datetime.now(),
             "email": user_info["email"],
+            "image" :"",
             "roles": [
                 "visitor"
             ]
         }
         col.insert_one(obj_ready)
         return 200, "ok", "user is registered", None
+    
+    
+    def get_user_list(self , fullname , course , status):
+        
+        filters = {}
+        if fullname != "" : 
+            filters["fullname"] = fullname #this will be text search
+        if course != "":
+            filters["course"] =course
+        if status != "":
+            filters["status"] = status
+        col : Collection = self.db.mongo_db["s_user"]
+        data = list(col.find(filters,{"_id" : 1,"image" : 1,"fullname" : 1 ,"email" : 1,"course" : 1,"enable" : 1,"phone" : 1}))
+        return 200, "ok", "user is registered", data

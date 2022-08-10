@@ -43,7 +43,7 @@ def register_user(say: SAY, user_info : dict):
  
 @router.post("/createuser")
 @sn()
-def check_register_user(say :SAY , user : dict  ):
+def insert_new_user(say :SAY , user : dict  ):
     ret = say.insert_new_user(user)     
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
     
@@ -51,8 +51,17 @@ def check_register_user(say :SAY , user : dict  ):
 
 @router.get("/checkregisterform")
 @sn()
-def check_register_user(say :SAY ,user_name:str = "" , email : str = ""   ):
+def check_register_form(say :SAY ,user_name:str = "" , email : str = ""   ):
     ret = say.check_register_form(user_name,email)     
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+
+@router.get("/getuserlist")
+@sn()
+def get_user_list(say : SAY , fullname = "" , course = "" , status = ""):
+    ret = say.get_user_list(fullname , course , status)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 
