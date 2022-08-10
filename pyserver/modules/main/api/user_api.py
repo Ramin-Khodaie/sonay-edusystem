@@ -51,8 +51,8 @@ def insert_new_user(say :SAY , user : dict  ):
 
 @router.get("/checkregisterform")
 @sn()
-def check_register_form(say :SAY ,user_name:str = "" , email : str = ""   ):
-    ret = say.check_register_form(user_name,email)     
+def check_register_form(say :SAY ,user_name:str = "" , email : str = "",phone : str = None   ):
+    ret = say.check_register_form(user_name,email , phone)     
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 

@@ -34,7 +34,8 @@ import MultiSelect from "components/MultiSelect/MultiSelect";
 import useNotify from "helpers/notify/useNotify";
 import { bixious } from "services/main";
 import { SmallCloseIcon } from "@chakra-ui/icons";
-import { useConfirmPassword } from "hooks/useConfirmPassword";
+import { useConfirmPassword } from "hooks/formValidation/useConfirmPassword";
+import { useConfirmUserEmailPhone } from "hooks/formValidation/useConfirmUserEmailPhone";
 
 function Tables() {
   const notify = useNotify();
@@ -69,7 +70,7 @@ function Tables() {
     roles: [],
   });
 
-  const [userList , setUserList] = React.useState([])
+  const [userList, setUserList] = React.useState([]);
 
   const handleChange = (event) => {
     const field = event.target.id;
@@ -115,8 +116,7 @@ function Tables() {
             ...messages,
             emailMessage: "",
             usernameMessage: "این نام کاربری قبلا انتخاب شده است",
-            phoneMessage : ""
-
+            phoneMessage: "",
           });
           // setValid({...valid , username : false})
         } else if (
@@ -127,43 +127,24 @@ function Tables() {
             ...messages,
             usernameMessage: "",
             emailMessage: "این ایمیل قبلا انتخاب شده است",
-            phoneMessage : ""
-
+            phoneMessage: "",
           });
           // setValid({...valid , email : false})
-        }else if (
+        } else if (
           (e.response.status === 422 && e.response.data.detail.result) ===
           "phone_unique"
         ) {
           setMessages({
             ...messages,
             phoneMessage: "این شماره تماس قبلا ثبت شده است",
-            emailMessage:"" ,
-            usernameMessage : ""
+            emailMessage: "",
+            usernameMessage: "",
           });
           // setValid({...valid , email : false})
-        } 
-         else {
+        } else {
         }
       });
   };
-
-  function chackFormValidation() {
-    // password comfirmation check
-
-    if (formData.password === formData.confirm_password) {
-      // setValid({...valid, password: true })
-      setMessages({ ...messages, passwordConfirm: "" });
-    } else {
-      // setValid({...valid, password: false });
-      setMessages({
-        ...messages,
-        passwordConfirm: "رمز عبور با تکرار آن مطابقت ندارد",
-      });
-    }
-
-    return;
-  }
 
   function createPost() {
     setSent({ sending: true });
@@ -210,42 +191,37 @@ function Tables() {
       });
   }
 
-
-  
   function getUserList() {
     bixious
       .get("/users/getuserlist")
       .then((response) => {
-        console.log(2222, response)
-        
-
-        if(response.status === 200)
-        {
-            setUserList(response.data.data)
-            console.log("bblaaaaaaaaah")
+        if (response.status === 200) {
+          setUserList(response.data.data);
         }
       })
-      .catch((e) => {
-        console.log(e.response, 5222);
-      });
+      .catch((e) => {});
   }
 
-  // useEffect(() => {
-  //   chackFormValidation();
-  // }, [formData.confirm_password]);
-
-  const isValid = useConfirmPassword(formData.password, formData.confirm_password)
-  console.log(889900, isValid)
+  const { passMessage, passStatus } = useConfirmPassword(
+    formData.password,
+    formData.confirm_password
+  );
+  const {
+    userMessage,
+    userValid,
+    emailMessage,
+    emailValid,
+    phoneMessage,
+    phoneValid,
+  } = useConfirmUserEmailPhone(
+    formData.username,
+    formData.email,
+    formData.phone
+  );
 
   useEffect(() => {
-    checkUsernameAndEmail(formData.username, formData.email);
-  }, [formData.username, formData.email]);
-
-  useEffect(() => {
-    getUserList()
+    getUserList();
   }, []);
-
-  console.log(userList,87)
 
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -276,13 +252,8 @@ function Tables() {
                       نام کاربری
                     </FormLabel>
                     <Spacer />
-                    <Text
-                      textAlign={"end"}
-                       
-                      color={"red"}
-                      fontSize={"14px"}
-                    >
-                      {messages.usernameMessage}
+                    <Text textAlign={"end"} color={"red"} fontSize={"14px"}>
+                      {userMessage}
                     </Text>
                   </Flex>
 
@@ -296,7 +267,7 @@ function Tables() {
                     ms="4px"
                     type="text"
                     placeholder="نام کاربری را وارد کنید"
-                     mb="10px"
+                    mb="10px"
                     size="lg"
                   />
                 </Box>
@@ -314,15 +285,23 @@ function Tables() {
                     ms="4px"
                     type="text"
                     placeholder="نام و نام خانوادگی را وارد کنید"
-                     mb="10px"
+                    mb="10px"
                     size="lg"
                   />
                 </Box>
 
                 <Box minH="80px">
-                  <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                <Flex>
+                <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                     شماره تماس{" "}
                   </FormLabel>
+                  <Spacer />
+                    <Text textAlign={"end"} color={"red"} fontSize={"14px"}>
+                      {phoneMessage}
+                    </Text>
+
+                </Flex>
+
                   <Input
                     onChange={handleChange}
                     focusBorderColor="purple.300"
@@ -333,7 +312,7 @@ function Tables() {
                     ms="4px"
                     type="text"
                     placeholder=" شماره تماس را وارد کنید"
-                     mb="10px"
+                    mb="10px"
                     size="lg"
                   />
                 </Box>
@@ -365,7 +344,7 @@ function Tables() {
                     </FormLabel>
                     <Spacer />
                     <Text textAlign={"end"} color={"red"} fontWeight="medium">
-                      {messages.emailMessage}
+                      {emailMessage}
                     </Text>
                   </Flex>
                   <Input
@@ -378,16 +357,15 @@ function Tables() {
                     ms="4px"
                     type="text"
                     placeholder="‌ایمیل را وارد کنید"
-                     mb="10px"
+                    mb="10px"
                     size="lg"
                   />
                 </Box>
                 <Box minH="80px">
-         
-                    <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                      رمز عبور{" "}
-                    </FormLabel>
-   
+                  <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                    رمز عبور{" "}
+                  </FormLabel>
+
                   <Input
                     onChange={handleChange}
                     focusBorderColor="purple.300"
@@ -398,7 +376,7 @@ function Tables() {
                     ms="4px"
                     type="text"
                     placeholder="رمز عبور را وارد کنید"
-                     mb="10px"
+                    mb="10px"
                     size="lg"
                   />
                 </Box>
@@ -409,16 +387,9 @@ function Tables() {
                     </FormLabel>
                     <Spacer />
 
-                    <Text
-                      textAlign={"end"}
-                       
-                      color={"red"}
-                      fontWeight="medium"
-                    >
-                      {messages.passwordConfirm}
-                      
+                    <Text textAlign={"end"} color={"red"} fontWeight="medium">
+                      {passMessage}
                     </Text>
-                    
                   </Flex>
                   <Input
                     onChange={handleChange}
@@ -430,7 +401,7 @@ function Tables() {
                     ms="4px"
                     type="text"
                     placeholder="تکرار رمز را وارد کنید"
-                     mb="10px"
+                    mb="10px"
                     size="lg"
                   />
                 </Box>
@@ -470,10 +441,10 @@ function Tables() {
 
       <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
         <CardHeader p="6px 0px 22px 0px">
-          <Flex  direction="column">
-            <Accordion  allowToggle>
+          <Flex direction="column">
+            <Accordion allowToggle>
               <AccordionItem>
-                <Flex >
+                <Flex>
                   <Box>
                     <h2>
                       <AccordionButton>
@@ -516,7 +487,7 @@ function Tables() {
                         ms="4px"
                         type="text"
                         placeholder="نام و نام خانوادگی را وارد کنید"
-                         mb="10px"
+                        mb="10px"
                         size="md"
                       />
                     </Box>

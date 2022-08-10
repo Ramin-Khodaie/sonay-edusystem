@@ -4,15 +4,15 @@ import { chackFormValidation } from "utils/passwordValidation"
 
 export const useConfirmPassword = (pass, confirmPass) =>{
 
-const [isValid, setIsValid] = useState({message:"", status:false})
+const [isValid, setIsValid] = useState({passMessage:"", passStatus:false})
 
 useEffect(()=>{
     const {message, valid} = chackFormValidation(pass, confirmPass)
     if(valid){
-        setIsValid({message:"", status:valid})        
+        setIsValid({passMessage:"", passStatus:true})        
     }
     else{
-        setIsValid({message:message, valid:false})
+        setIsValid({passMessage:message, passStatus:false})
     }
 }, [confirmPass, pass])
     

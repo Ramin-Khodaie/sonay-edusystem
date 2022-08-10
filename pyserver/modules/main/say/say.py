@@ -426,13 +426,13 @@ class SAY():
 
         return 200, "ok", "is valid", None
 
-    def check_register_form(self,user_name : str,email : str , phone = None) -> dict:
+    def check_register_form(self,user_name : str,email : str , phone) -> dict:
         
         col: Collection = self.db.mongo_db["s_user"]
         username = list(col.find({"username" : user_name }))
         eemail = list(col.find({"email" : email }))
         if phone:
-            phone = list(col.find({"phone" : phone}))
+            phone = list(col.find({"phone" : str(phone)}))
             if len(phone) > 0:
                 return 422,"phone_unique", "phone must be unique",None
         if len(username) > 0:
