@@ -41,7 +41,7 @@ const MultiSelect = ({handleChange , handleDelete , data , options}) => {
         marginTop={"25px"}
         borderWidth="1px"
         borderRadius="lg"
-        minH={"150px"}
+        minH={"155px"}
         overflow="hidden"
       >
         <Wrap>

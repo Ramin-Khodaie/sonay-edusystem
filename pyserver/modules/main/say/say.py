@@ -1,11 +1,12 @@
 import email
+from importlib.metadata import requires
 import os
 import sys
 from typing import Collection, List
 from bson import ObjectId
 import jwt
 import time
-from modules.main.s_settings import  SSettings
+from modules.main.s_settings import SSettings
 from modules.main.database.adatabase import ADatabase
 import copy
 from .session import ASession
@@ -16,13 +17,11 @@ import base64
 import re
 
 
-
 __all__ = ['SAY']
 
 
 class SAY():
-    
-   
+
     db: ADatabase
     settings: SSettings = None
     _secret: str = "MySecretCode"
@@ -73,8 +72,6 @@ class SAY():
                 self._admin_role["inherits"].append(r["name"])
         self.finalize_roles()
 
-    
-
     def get_all_parent_roles(self, role: dict) -> set:
         ret = set()
         for parent_role in self._roles:
@@ -122,7 +119,8 @@ class SAY():
         self.refresh_expire = aaa["refresh_expire"]
         self.domains = copy.deepcopy(aaa["domains"])
         self._secret = self.encode_pass(self._secret)
-        self.anonymous_user = {"userid":"anonymous", "geo":{"geoid": "", "name": "", "level": -1},"roles" : []}
+        self.anonymous_user = {"userid": "anonymous", "geo": {
+            "geoid": "", "name": "", "level": -1}, "roles": []}
 
         # self._session_manager = ASessionManager()
 
@@ -134,50 +132,54 @@ class SAY():
         m.update(ps)
         eps = m.digest()
         return base64.b64encode(eps).decode()
+
     def init_users(self):
-        col : Collection = self.db.mongo_db['s_user']
-       
+        col: Collection = self.db.mongo_db['s_user']
+
         count = col.find({})
         if len(list(count)) == 0:
             ps = self.encode_pass("admin")
-          
-            
 
             x = {
-                "userid": "admin",
+                "username": "admin",
                 "enable": True,
                 "password": ps,
-                "fname": "admin",
-                "lname": "admin",
+                "full_name": "admin",
+                "course" : "",
+                "phone" : "123456",
+                "email" : "admin@gmail.com",
                 
-                
+
+
                 "creator": "admin",
-                "created": datetime.datetime.now(),                
+                "created": datetime.datetime.now(),
                 "roles": ["admin"],
             }
             col.insert_one(x)
+
     def init(self):
         if self.db.type == 'mongodb':
             ASession.set_collection(self.db.mongo_db["a_session"])
-            ASession.collect_garbage()     
+            ASession.collect_garbage()
             self.init_users()
 
     def activate_user(self, userid: str, editor: dict, state: bool):
 
         pass
 
-    def  authenticate(self, user, password):
+    def authenticate(self, user, password):
         res = {}
         passwd = self.encode_pass(password)
         usr: SUser = None
         try:
-            usr = self.get_user_by_query({"userid" : user , "password" : passwd},{"image":0, "password":0, "refreshToken":0})
+            usr = self.get_user_by_query({"userid": user, "password": passwd}, {
+                                         "image": 0, "password": 0, "refreshToken": 0})
         except:
-            return 500 , "databaseError" ,'cant connect to database' , {"at": "","rf": "", "usr" :None} 
+            return 500, "databaseError", 'cant connect to database', {"at": "", "rf": "", "usr": None}
         if usr is None:
-            return 403 , "incorrectUserPassword", 'incorrect user name or password',{"at": "","rf": "", "usr" :None} 
+            return 403, "incorrectUserPassword", 'incorrect user name or password', {"at": "", "rf": "", "usr": None}
         # elif not usr["enable"]:
-        #     return 403 , "userInactive", 'user is not active', {"at": "","rf": "", "usr" :None} 
+        #     return 403 , "userInactive", 'user is not active', {"at": "","rf": "", "usr" :None}
         else:
             at = self.encode_auth_token(user, 'access_token')
             rt = self.encode_auth_token(user, 'refresh_token')
@@ -185,9 +187,7 @@ class SAY():
 
             self._user_cache[user] = usr
 
-            return 200 ,"ok", "ok",{"at": at,"rt": rt, "usr" :usr} 
-
-
+            return 200, "ok", "ok", {"at": at, "rt": rt, "usr": usr}
 
     def current_user(self, access_token: str) -> SUser:
         ret: SUser = None
@@ -252,7 +252,7 @@ class SAY():
         """
 
         expire = self.access_expire if type == 'access_token' else self.refresh_expire
-       
+
         now = int(time.time())
 
         payload = {
@@ -268,13 +268,13 @@ class SAY():
             algorithm=self.algorithm,
         )
         return j.decode('utf-8')
-        
 
     def decode_token(self, token: str) -> tuple:
         result = 200
         data = None
         try:
-            data = jwt.decode(token, self._secret, 'utf-8', algorithms=[self.algorithm], options=self.jwt_options)
+            data = jwt.decode(token, self._secret, 'utf-8',
+                              algorithms=[self.algorithm], options=self.jwt_options)
             if 'sub' not in data or 'type' not in data:
                 result = 401
             elif not (data['type'] == 'access_token' or data['type'] == 'refresh_token'):
@@ -287,7 +287,6 @@ class SAY():
             result = 401
 
         return result, data
-
 
     anonymous_user = None
 
@@ -304,17 +303,14 @@ class SAY():
             if user is None:
                 user = self.anonymous_user
             return user
-        
 
     def get_access_token_from_refresh(self, refresh_token):
-        
-        
+
         print(self.settings.info)
-        
-        
-        #here
+
+        # here
         result, data = self.decode_token(refresh_token)
-        
+
         if result == 200:
             if 'sub' in data and 'type' in data:
                 tk_type = data['type']
@@ -328,7 +324,8 @@ class SAY():
                 if usr is not None:
                     if usr.enable:
                         if tk_type == 'refresh_token' and refresh_token == usr.refreshToken:
-                            acc_tok = self.encode_auth_token(user, 'access_token')
+                            acc_tok = self.encode_auth_token(
+                                user, 'access_token')
                             self._user_cache[usr.userid] = usr
                             return result, acc_tok
         return 401, None
@@ -337,35 +334,37 @@ class SAY():
         # SUser.field_names.
         # return SUser.objects.exclude('password', 'refreshToken', 'image', 'id')
         c = self.db.mongo_db["s_user"]
-        q = c.find({}, {'_id': False, 'password': False, 'refreshToken': False, 'image': False})
+        q = c.find({}, {'_id': False, 'password': False,
+                   'refreshToken': False, 'image': False})
 
         return list(q)
         # return SUser.objects.exclude('userid')
 
     def get_user(self, userid, refresh: bool = False) -> SUser:
-        col : Collection = self.db.mongo_db["s_user"]
+        col: Collection = self.db.mongo_db["s_user"]
         if userid in self._user_cache and not refresh:
             return self._user_cache[userid]
         else:
-            usr = list(col.find({"userid" : userid} , {"password" : 0 , "image" : 0 , "refreshToken" : 0}))
+            usr = list(col.find({"userid": userid}, {
+                       "password": 0, "image": 0, "refreshToken": 0}))
             # usr = SUser.objects(userid=userid).exclude("password", "image", "refreshToken").first()
             if len(usr) != 0:
                 self._user_cache[userid] = usr[0]
                 return usr[0]
             else:
                 return None
-       
-    def get_user_by_query(self,query:dict,fields:dict):
-        col : Collection = self.db.mongo_db["s_user"]
-        
-        usr = list(col.find(query , fields))
+
+    def get_user_by_query(self, query: dict, fields: dict):
+        col: Collection = self.db.mongo_db["s_user"]
+
+        usr = list(col.find(query, fields))
         # usr = SUser.objects(userid=userid).exclude("password", "image", "refreshToken").first()
         if len(usr) != 0:
-            
+
             return usr[0]
         else:
             return None
-        
+
     def check_password_policy(self, password: str) -> bool:
         length_error = len(password) < 8
 
@@ -379,10 +378,12 @@ class SAY():
         lowercase_error = re.search(r"[a-z]", password) is None
 
         # searching for symbols
-        symbol_error = re.search(r"[ !#$%&'()*+,-./[\\\]^_`{|}~" + r'"]', password) is None
+        symbol_error = re.search(
+            r"[ !#$%&'()*+,-./[\\\]^_`{|}~" + r'"]', password) is None
 
         # overall result
-        password_ok = not (length_error or digit_error or uppercase_error or lowercase_error or symbol_error)
+        password_ok = not (
+            length_error or digit_error or uppercase_error or lowercase_error or symbol_error)
         return password_ok
         # return [password_ok,{
         # 'password_ok' : password_ok,
@@ -409,25 +410,46 @@ class SAY():
             epass = self.encode_pass(password)
             try:
                 # q.update(password=epass)
-                self.update_user(q,{"password" : epass})
+                self.update_user(q, {"password": epass})
                 ret = "ok"
             except:
                 ret = "database"
 
         return ret
 
+    def validate_user(self, user: dict, col: Collection):
+        required = {"username","email", "full_name", "phone", "password", "course", "roles"}
+        if len(required.difference(set(user.keys()))) != 0 :
+            return 422, "missing_field", "some fields are missing", None
+        if not (user["username"] and user["full_name"] and user["email"] and user["phone"] and user["password"] and user["course"] and user["roles"]):
+            return 422, "empty_field", "can not accept empty fiels", None
+        if len(list(col.find({"username": user["username"]}))) != 0:
+            return 422, "not_unique", "user already exists", None
 
-    def validate_user(self, usr: dict, user: SUser, mode="save"):
+        return 200, "ok", "is valid", None
 
-        pass
-
-    def validate_user_2(self, usr: dict, user: SUser, mode="save"):
-        return True
-
-
-    def validate_delete_activate_user(self, usr, user):
-        pass
+    def check_register_form(self,user_name : str,email : str , phone = None) -> dict:
         
+        col: Collection = self.db.mongo_db["s_user"]
+        username = list(col.find({"username" : user_name }))
+        eemail = list(col.find({"email" : email }))
+        if phone:
+            phone = list(col.find({"phone" : phone}))
+            if len(phone) > 0:
+                return 422,"phone_unique", "phone must be unique",None
+        if len(username) > 0:
+            return 422,"user_unique", "username must be unique",None
+            
+            
+        
+        elif len(eemail) > 0:
+            return 422,"email_unique", "email must be unique",None
+        
+            
+        else:
+            return 200,"ok", "ok" , None
+            
+
     def logout(self, userid: str) -> bool:
 
         usr = self.get_user(userid)
@@ -446,55 +468,54 @@ class SAY():
     def update_user(self, usr: dict, values: dict):
         pass
 
-    def insert_new_user(self, usr: dict, creator: str):
-        col : Collection = self.db.mongo_db["s_user"]
-        if not usr["userid"] or not usr["password"] or not usr["fname"] or not usr["lname"] or 'geo' not in usr or not \
-                usr['geo'] or not isinstance(usr['geo'], dict):
-            return 422, "insufficient_input", "", None
-        has_pass = self.encode_pass(usr["password"])
-        nu = {**usr, "password": has_pass, "creator": creator,
-              "created": datetime.datetime.now()}
+    def insert_new_user(self, user: dict):
+        col: Collection = self.db.mongo_db["s_user"]
+        res = self.validate_user(user, col)
+        if res[0] != 200:
+            return res
 
-        try:
-            col.insert_one(nu)
-            return 200, "ok", "user inserted", nu
-        except:
-            e = sys.exc_info()
-            return 500, "server_error", str(e[1]), None
+        roles = [it['id'] for it in user["roles"]]
 
-        pass
+        has_pass = self.encode_pass(user["password"])
+        nu = {**user, '_id': str(ObjectId()), "password": has_pass,
+              "created": datetime.datetime.now(),
+              "roles": roles,
+              "enable": True,
+              "creator": "self"}
+
+        col.insert_one(nu)
+        return 200, "ok", "user inserted", nu
 
     def delete_user(self, userid: str):
-        
 
         if self.get_user(userid=userid) is None:
             return 404, "not_found", "user not found", None
         else:
             try:
-                col : Collection = self.db.mongo_db["s_user"]
-                
-                col.delete_one({"userid" : userid})
+                col: Collection = self.db.mongo_db["s_user"]
+
+                col.delete_one({"userid": userid})
                 if userid in self._user_cache:
                     del self._user_cache[userid]
                 return 200, "ok", "user is deleted", None
             except:
                 return 500, "error", "error accrued during delete user", None
 
-    def user_registration(self, user_info : dict) -> List :
-        col : Collection = self.db.mongo_db["s_user"]
+    def user_registration(self, user_info: dict) -> List:
+        col: Collection = self.db.mongo_db["s_user"]
         idd = str(ObjectId())
         obj_ready = {
-  "_id": idd,
-  "userid": user_info["username"],
-  "enable": False,
-  "password": self.encode_pass(user_info["password"]),
-  "fname": user_info["full_name"],
-  "creator": "self",
-  "created": datetime.datetime.now(),
-  "email" : user_info["email"],
-  "roles": [
-    "visitor"
-  ]
-}
+            "_id": idd,
+            "username": user_info["username"],
+            "enable": False,
+            "password": self.encode_pass(user_info["password"]),
+            "full_name": user_info["full_name"],
+            "creator": "self",
+            "created": datetime.datetime.now(),
+            "email": user_info["email"],
+            "roles": [
+                "visitor"
+            ]
+        }
         col.insert_one(obj_ready)
-        return  200, "ok", "user is registered", None
+        return 200, "ok", "user is registered", None
