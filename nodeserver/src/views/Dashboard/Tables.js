@@ -36,6 +36,7 @@ import { bixious } from "services/main";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import { useConfirmPassword } from "hooks/formValidation/useConfirmPassword";
 import { useConfirmUserEmailPhone } from "hooks/formValidation/useConfirmUserEmailPhone";
+import { useUserList } from "hooks/users/useUserList";
 
 function Tables() {
   const notify = useNotify();
@@ -44,19 +45,18 @@ function Tables() {
     { id: "student", name: "دانش آموز" },
     { id: "manager", name: "مدیر" },
   ];
+
+  const courses = [
+    { id: "1", name: "کلاس ۱" },
+    { id: "2", name: "کلاس ۲" },
+    { id: "3", name: "کلاس ۳" },
+  ];
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
 
   const [sent, setSent] = React.useState({
     status: false,
     sending: false,
-  });
-
-  const [messages, setMessages] = React.useState({
-    passwordConfirm: "",
-    usernameMessage: "",
-    emailMessage: "",
-    phoneMessage: "",
   });
 
   const [formData, setFormData] = React.useState({
@@ -69,8 +69,6 @@ function Tables() {
     course: "",
     roles: [],
   });
-
-  const [userList, setUserList] = React.useState([]);
 
   const handleChange = (event) => {
     const field = event.target.id;
@@ -86,64 +84,19 @@ function Tables() {
       : notify("این آیتم قبلا انتخاب شده است", true, "solid", "warning");
   };
 
+  const handleCourseOptionChange = (e) => {
+    const newOpt = courses.find((f) => f.id === e.target.value);
+
+    formData.course.findIndex((itm) => itm.id == newOpt.id) === -1
+      ? setFormData({ ...formData, course: newOpt })
+      : notify("این آیتم یافت نشد", true, "solid", "warning");
+  };
+
   const handleDelete = (id) => (e) => {
     const cc = formData.roles.filter((element) => {
       return element.id !== id;
     });
     setFormData({ ...formData, roles: cc });
-  };
-
-  const checkUsernameAndEmail = (usn, eml) => {
-    bixious
-      .get("/users/checkregisterform", {
-        params: {
-          user_name: usn,
-          email: eml,
-        },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          setMessages({ ...messages, emailMessage: "", usernameMessage: "" });
-          // setValid({...valid , username : true , email : true})
-        }
-      })
-      .catch((e) => {
-        if (
-          (e.response.status === 422 && e.response.data.detail.result) ===
-          "user_unique"
-        ) {
-          setMessages({
-            ...messages,
-            emailMessage: "",
-            usernameMessage: "این نام کاربری قبلا انتخاب شده است",
-            phoneMessage: "",
-          });
-          // setValid({...valid , username : false})
-        } else if (
-          (e.response.status === 422 && e.response.data.detail.result) ===
-          "email_unique"
-        ) {
-          setMessages({
-            ...messages,
-            usernameMessage: "",
-            emailMessage: "این ایمیل قبلا انتخاب شده است",
-            phoneMessage: "",
-          });
-          // setValid({...valid , email : false})
-        } else if (
-          (e.response.status === 422 && e.response.data.detail.result) ===
-          "phone_unique"
-        ) {
-          setMessages({
-            ...messages,
-            phoneMessage: "این شماره تماس قبلا ثبت شده است",
-            emailMessage: "",
-            usernameMessage: "",
-          });
-          // setValid({...valid , email : false})
-        } else {
-        }
-      });
   };
 
   function createPost() {
@@ -191,17 +144,6 @@ function Tables() {
       });
   }
 
-  function getUserList() {
-    bixious
-      .get("/users/getuserlist")
-      .then((response) => {
-        if (response.status === 200) {
-          setUserList(response.data.data);
-        }
-      })
-      .catch((e) => {});
-  }
-
   const { passMessage, passStatus } = useConfirmPassword(
     formData.password,
     formData.confirm_password
@@ -219,9 +161,7 @@ function Tables() {
     formData.phone
   );
 
-  useEffect(() => {
-    getUserList();
-  }, []);
+  const userList = useUserList(sent.status);
 
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -291,16 +231,15 @@ function Tables() {
                 </Box>
 
                 <Box minH="80px">
-                <Flex>
-                <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                    شماره تماس{" "}
-                  </FormLabel>
-                  <Spacer />
+                  <Flex>
+                    <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                      شماره تماس{" "}
+                    </FormLabel>
+                    <Spacer />
                     <Text textAlign={"end"} color={"red"} fontSize={"14px"}>
                       {phoneMessage}
                     </Text>
-
-                </Flex>
+                  </Flex>
 
                   <Input
                     onChange={handleChange}
@@ -322,16 +261,20 @@ function Tables() {
                     دوره{" "}
                   </FormLabel>
                   <Select
-                    onChange={handleChange}
+                    onChange={handleCourseOptionChange}
                     id="course"
                     focusBorderColor="purple.300"
                     textAlign={"center"}
                     placeholder="دوره کاربر را انتخاب کنید"
                   >
-                    <option value="jk">"first"</option>
-                    <option value="jk">"first"</option>
-                    <option value="jk">"first"</option>
-                    <option value="jk">"first"</option>
+                    {courses.map((row) => {
+                      return (
+                        <option value={row.id} key={row.id}>
+                          {" "}
+                          {row.name}
+                        </option>
+                      );
+                    })}
                   </Select>
                 </Box>
               </Box>
@@ -541,7 +484,7 @@ function Tables() {
                   وضعیت
                 </Th>
                 <Th borderColor={borderColor} color="gray.400">
-                  تاریخ ثبت نام
+                  شماره تماس
                 </Th>
                 <Th borderColor={borderColor}></Th>
               </Tr>
@@ -550,15 +493,15 @@ function Tables() {
               {userList.map((row, index, arr) => {
                 return (
                   <TablesTableRow
-                    name={row.name}
-                    logo={row.logo}
+                    name={row.full_name}
+                    logo={row.image}
                     email={row.email}
-                    subdomain={row.subdomain}
-                    domain={row.domain}
-                    status={row.status}
-                    date={row.date}
+                    subdomain={row.course.id}
+                    domain={row.course.name}
+                    status={"Online"} //{row.enable}
+                    date={row.phone}
                     isLast={index === arr.length - 1 ? true : false}
-                    key={index}
+                    key={row._id}
                   />
                 );
               })}

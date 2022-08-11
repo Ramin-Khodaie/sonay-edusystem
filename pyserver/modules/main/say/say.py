@@ -145,7 +145,8 @@ class SAY():
                 "enable": True,
                 "password": ps,
                 "full_name": "admin",
-                "course" : "",
+                "course" : {"id" : "0",
+                "name" : "آموزشگاه"},
                 "phone" : "123456",
                 "email" : "admin@gmail.com",
                 "image" : "",
@@ -515,7 +516,11 @@ class SAY():
             "image" :"",
             "roles": [
                 "visitor"
-            ]
+            ],
+            "course" : {
+                "id" : "-1",
+                "name" : "بازدید کننده"
+            }
         }
         col.insert_one(obj_ready)
         return 200, "ok", "user is registered", None
@@ -531,5 +536,5 @@ class SAY():
         if status != "":
             filters["status"] = status
         col : Collection = self.db.mongo_db["s_user"]
-        data = list(col.find(filters,{"_id" : 1,"image" : 1,"fullname" : 1 ,"email" : 1,"course" : 1,"enable" : 1,"phone" : 1}))
+        data = list(col.find(filters,{"_id" : 1,"image" : 1,"full_name" : 1 ,"email" : 1,"course" : 1,"enable" : 1,"phone" : 1}))
         return 200, "ok", "user is registered", data
