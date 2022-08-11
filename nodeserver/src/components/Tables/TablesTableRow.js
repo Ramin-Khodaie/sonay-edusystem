@@ -9,9 +9,10 @@ import {
   useColorModeValue
 } from "@chakra-ui/react";
 import React from "react";
+import UserEditModal from "components/Modal/userEdit";
 
 function TablesTableRow(props) {
-  const { logo, name, email, subdomain, domain, status, date, isLast } = props;
+  const { logo, name, email, subdomain, domain, status, date, isLast,handleSent , sent } = props;
   const textColor = useColorModeValue("gray.500", "white");
   const titleColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -70,16 +71,9 @@ function TablesTableRow(props) {
         </Text>
       </Td>
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-        <Button p="0px" bg="transparent" variant="no-effects">
-          <Text
-            fontSize="md"
-            color="gray.400"
-            fontWeight="bold"
-            cursor="pointer"
-          >
-            ویرایش
-          </Text>
-        </Button>
+
+        <UserEditModal changeSent={handleSent} sent={sent} />
+        
       </Td>
     </Tr>
   );
