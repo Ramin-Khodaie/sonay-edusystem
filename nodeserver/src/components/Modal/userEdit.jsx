@@ -47,7 +47,7 @@ function UserEditModal(props) {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody pt={"50px"}>
-            <UserForm changeSent={changeSent} sent={sent} mode="edit" userId={userId} />
+            <UserForm changeSent={changeSent} sent={sent} modalClose={onClose} mode="edit" userId={userId} />
           </ModalBody>
         </ModalContent>
       </Modal>

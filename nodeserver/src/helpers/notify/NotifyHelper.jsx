@@ -51,6 +51,7 @@ const NotifyHelper = (props) => {
             height: "80px",
             borderRadius: "5px",
             position: "fixed",
+            
           }}
         >
           <AlertIcon />

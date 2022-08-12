@@ -406,7 +406,7 @@ class SAY():
 
         return ret
 
-    def validate_user(self, user: dict, col: Collection):
+    def validate_save_user(self, user: dict, col: Collection ):
         required = {"username","email", "full_name", "phone", "password", "course", "roles"}
         if len(required.difference(set(user.keys()))) != 0 :
             return 422, "missing_field", "some fields are missing", None
@@ -414,6 +414,16 @@ class SAY():
             return 422, "empty_field", "can not accept empty fiels", None
         if len(list(col.find({"username": user["username"]}))) != 0:
             return 422, "not_unique", "user already exists", None
+
+        return 200, "ok", "is valid", None
+
+    def validate_edit_user(self, user: dict, col: Collection ):
+        required = {"username","email", "full_name", "phone", "course", "roles"}
+        if len(required.difference(set(user.keys()))) != 0 :
+            return 422, "missing_field", "some fields are missing", None
+        if not (user["username"] and user["full_name"] and user["email"] and user["phone"] and  user["course"] and user["roles"]):
+            return 422, "empty_field", "can not accept empty fiels", None
+
 
         return 200, "ok", "is valid", None
 
@@ -459,20 +469,36 @@ class SAY():
 
     def insert_new_user(self, user: dict):
         col: Collection = self.db.mongo_db["s_user"]
-        res = self.validate_user(user, col)
-        if res[0] != 200:
+
+        if user["_id"] != "":
+            #edit mode
+            res = self.edit_user(user,col)
             return res
 
-
-        has_pass = self.encode_pass(user["password"])
-        nu = {**user, '_id': str(ObjectId()), "password": has_pass,
+        res = self.validate_save_user(user, col )
+        if res[0] != 200:
+            return res
+        hash_pass = self.encode_pass(user["password"])
+        nu = {**user, '_id': str(ObjectId()), "password": hash_pass,
               "created": datetime.datetime.now(),
               "enable": True,
               "creator": "self",
               "image" : ""}
 
         col.insert_one(nu)
-        return 200, "ok", "user inserted", nu
+        return 200, "ok", "user inserted", None
+
+    def edit_user(self,user,col):
+        res = self.validate_edit_user(user, col)
+        if res[0] != 200:
+            return res
+        if "password" in user and user["password"] != "":
+            hash_pass = self.encode_pass(user["password"])
+            user = {**user,"password" : hash_pass}
+        idd=user["_id"]
+        del user["_id"]
+        col.update_one({"_id" : idd}, {"$set" : user})
+        return 200, "ok", "user updated", None
 
     def delete_user(self, userid: str):
 

@@ -23,7 +23,7 @@ import { useUser } from "hooks/users/useUser";
 import { useEffect } from "react";
 
 function UserForm(props) {
-  const { changeSent, sent, mode = "save", userId = "-1" } = props;
+  const { changeSent, sent,modalClose, mode = "save", userId = "-1" } = props;
   
   const currentUser = useUser(userId)
 
@@ -44,6 +44,7 @@ function UserForm(props) {
   ];
 
   const [formData, setFormData] = React.useState({
+    _id:"",
     username: "",
     full_name: "",
     phone: "",
@@ -60,11 +61,17 @@ function UserForm(props) {
     });
     setFormData({ ...formData, roles: cc });
   };
+  const handleChange = (event) => {
+    const field = event.target.id;
+    const value = event.target.value;
+    setFormData({ ...formData, [field]: value });
+  };
 
   function createPost() {
     changeSent({ sending: true });
     bixious
       .post("/users/createuser", {
+        _id : formData._id,
         username: formData.username,
         full_name: formData.full_name,
         phone: formData.phone,
@@ -75,9 +82,14 @@ function UserForm(props) {
       })
       .then((response) => {
         {
-          response.status === 200
-            ? changeSent({ status: true })
-            : changeSent({ sending: true });
+if( response.status === 200){
+  changeSent({ status: true })
+  notify("کابر با موفقیت ثبت شد" , true, "solid","success")
+}else{
+  changeSent({ sending: true });
+}
+
+         
         }
       })
       .catch((e) => {
@@ -124,11 +136,6 @@ function UserForm(props) {
   //   formData.email,
   //   formData.phone
   // );
-  const handleChange = (event) => {
-    const field = event.target.id;
-    const value = event.target.value;
-    setFormData({ ...formData, [field]: value });
-  };
 
   const handleOptionChange = (e) => {
     const newOpt = data.find((f) => f.id === e.target.value);
@@ -149,6 +156,7 @@ function UserForm(props) {
     if (currentUser.length != 0){
       setFormData({
         ...formData,
+        _id : currentUser[0]._id,
         username: currentUser[0].username ,
         full_name: currentUser[0].full_name ,
         phone: currentUser[0].phone ,
@@ -160,7 +168,6 @@ function UserForm(props) {
 
   },[currentUser])
 
-  console.log(formData.roles , 7474)
 
   return (
     <>
@@ -183,6 +190,7 @@ function UserForm(props) {
               </Flex>
 
               <Input
+              disabled={userId === "-1" ? false : true}
                 onChange={handleChange}
                 focusBorderColor="purple.300"
                 id="username"
