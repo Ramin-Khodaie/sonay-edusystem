@@ -132,6 +132,7 @@ function UserForm(props) {
 
   const handleOptionChange = (e) => {
     const newOpt = data.find((f) => f.id === e.target.value);
+    console.log(newOpt,9595)
 
     formData.roles.findIndex((itm) => itm.id == newOpt.id) === -1
       ? setFormData({ ...formData, roles: [...formData.roles, newOpt] })
@@ -158,6 +159,8 @@ function UserForm(props) {
     }
 
   },[currentUser])
+
+  console.log(formData.roles , 7474)
 
   return (
     <>

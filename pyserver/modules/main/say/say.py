@@ -463,12 +463,10 @@ class SAY():
         if res[0] != 200:
             return res
 
-        roles = [it['id'] for it in user["roles"]]
 
         has_pass = self.encode_pass(user["password"])
         nu = {**user, '_id': str(ObjectId()), "password": has_pass,
               "created": datetime.datetime.now(),
-              "roles": roles,
               "enable": True,
               "creator": "self",
               "image" : ""}

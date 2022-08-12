@@ -16,7 +16,6 @@ import useNotify from "helpers/notify/useNotify";
 import React from "react";
 
 const MultiSelect = ({ handleChange, handleDelete, data, options }) => {
-  console.log(data, 8787);
 
   const notify = useNotify();
 
