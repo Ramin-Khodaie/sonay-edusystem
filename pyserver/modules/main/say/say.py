@@ -141,6 +141,7 @@ class SAY():
             ps = self.encode_pass("admin")
 
             x = {
+                "_id" : str(ObjectId()),
                 "username": "admin",
                 "enable": True,
                 "password": ps,
@@ -152,7 +153,8 @@ class SAY():
                 "image" : "",
                 "creator": "admin",
                 "created": datetime.datetime.now(),
-                "roles": ["admin"],
+                "roles": [{"id":"admin",
+                "name":"ادمین"}],
             }
             col.insert_one(x)
 
@@ -339,19 +341,7 @@ class SAY():
         return list(q)
         # return SUser.objects.exclude('userid')
 
-    def get_user(self, userid, refresh: bool = False) -> SUser:
-        col: Collection = self.db.mongo_db["s_user"]
-        if userid in self._user_cache and not refresh:
-            return self._user_cache[userid]
-        else:
-            usr = list(col.find({"userid": userid}, {
-                       "password": 0, "image": 0, "refreshToken": 0}))
-            # usr = SUser.objects(userid=userid).exclude("password", "image", "refreshToken").first()
-            if len(usr) != 0:
-                self._user_cache[userid] = usr[0]
-                return usr[0]
-            else:
-                return None
+
 
     def get_user_by_query(self, query: dict, fields: dict):
         col: Collection = self.db.mongo_db["s_user"]
@@ -515,7 +505,8 @@ class SAY():
             "email": user_info["email"],
             "image" :"",
             "roles": [
-                "visitor"
+                {"id":"visitor",
+                "name":"بازدید کننده"}
             ],
             "course" : {
                 "id" : "-1",
@@ -538,3 +529,16 @@ class SAY():
         col : Collection = self.db.mongo_db["s_user"]
         data = list(col.find(filters,{"_id" : 1,"image" : 1,"full_name" : 1 ,"email" : 1,"course" : 1,"enable" : 1,"phone" : 1}))
         return 200, "ok", "user is registered", data
+    def get_user(self,user_id):
+        col: Collection = self.db.mongo_db["s_user"]
+        try:
+
+            res = list(col.find({"_id" : user_id}))
+            if len(res) == 0 :
+                res = None
+                return 200, "ok", "", res
+            return 200, "ok", "", res
+
+        except:
+            return 500, "server_error", "cant connect to database", None
+

@@ -15,18 +15,15 @@ import {
 import useNotify from "helpers/notify/useNotify";
 import React from "react";
 
-const MultiSelect = ({handleChange , handleDelete , data , options}) => {
-
- 
+const MultiSelect = ({ handleChange, handleDelete, data, options }) => {
+  console.log(data, 8787);
 
   const notify = useNotify();
-
-
 
   return (
     <>
       <Select
-       focusBorderColor='purple.300'
+        focusBorderColor="purple.300"
         onChange={handleChange}
         textAlign={"center"}
         placeholder="نقش کاربر را انتخاب کنید"
@@ -45,27 +42,30 @@ const MultiSelect = ({handleChange , handleDelete , data , options}) => {
         overflow="hidden"
       >
         <Wrap>
-          {options.map((d) => (
-            <WrapItem>
-              <Tag
-                size="lg"
-                key="lg"
-                borderRadius="full"
-                variant="solid"
-                colorScheme="blue"
-              >
-                <TagLabel my={"15px"}>{d.name}</TagLabel>
-
-                <IconButton
-                  onClick={handleDelete(d.id)}              
-                  size={"sm"}
+          {options.map((d) => {
+            
+            return (
+              <WrapItem>
+                <Tag
+                  size="lg"
+                  key="lg"
+                  borderRadius="full"
+                  variant="solid"
                   colorScheme="blue"
-                  aria-label="Search database"
-                  icon={<CloseIcon />}
-                />
-              </Tag>
-            </WrapItem>
-          ))}
+                >
+                  <TagLabel my={"15px"}>{d.name}</TagLabel>
+
+                  <IconButton
+                    onClick={handleDelete(d.id)}
+                    size={"sm"}
+                    colorScheme="blue"
+                    aria-label="Search database"
+                    icon={<CloseIcon />}
+                  />
+                </Tag>
+              </WrapItem>
+            );
+          })}
         </Wrap>
       </Box>
     </>

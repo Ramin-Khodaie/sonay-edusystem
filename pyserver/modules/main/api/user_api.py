@@ -66,6 +66,13 @@ def get_user_list(say : SAY , fullname = "" , course = "" , status = ""):
 
 
 
+
+@router.get("/getuser")
+@sn()
+def get_user(say : SAY , user_id ):
+    ret = say.get_user(user_id)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
 # @router.get("/userinfo")
 # def get_user_info(response : Response):
 #     pass

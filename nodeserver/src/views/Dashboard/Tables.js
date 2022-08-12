@@ -38,7 +38,6 @@ function Tables() {
   });
 
   const handleSent = (sentObj)=>{
-    console.log(sentObj)
     setSent(
       sentObj
     )
@@ -194,6 +193,7 @@ function Tables() {
                     key={row._id}
                     changeSent={handleSent}
                     sent={sent}
+                    userId={row._id}
                   />
                 );
               })}

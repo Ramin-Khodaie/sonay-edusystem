@@ -16,18 +16,21 @@ import {
   Box,
   Spacer,
   Select,
+  useUpdateEffect,
 } from "@chakra-ui/react";
 import UserForm from "components/Forms/userForm";
-import MultiSelect from "components/MultiSelect/MultiSelect";
-import React from "react";
+import { useUser } from "hooks/users/useUser";
+import React, { useEffect } from "react";
 
 function UserEditModal(props) {
-  const { changeSent, sent } = props;
+  const { changeSent, sent , userId } = props;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
+
+ 
 
   return (
     <>
@@ -44,7 +47,7 @@ function UserEditModal(props) {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody pt={"50px"}>
-            <UserForm changeSent={changeSent} sent={sent} />
+            <UserForm changeSent={changeSent} sent={sent} mode="edit" userId={userId} />
           </ModalBody>
         </ModalContent>
       </Modal>

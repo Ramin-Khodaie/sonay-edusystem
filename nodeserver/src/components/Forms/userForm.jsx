@@ -17,12 +17,19 @@ import {
 import React from "react";
 import MultiSelect from "components/MultiSelect/MultiSelect";
 import { bixious } from "services/main";
-import { useConfirmPassword } from "hooks/formValidation/useConfirmPassword";
-import { useConfirmUserEmailPhone } from "hooks/formValidation/useConfirmUserEmailPhone";
+
 import useNotify from "helpers/notify/useNotify";
+import { useUser } from "hooks/users/useUser";
+import { useEffect } from "react";
 
 function UserForm(props) {
-  const { changeSent, sent } = props;
+  const { changeSent, sent, mode = "save", userId = "-1" } = props;
+  
+  const currentUser = useUser(userId)
+
+
+
+
   const notify = useNotify();
   const data = [
     { id: "teacher", name: "دبیر" },
@@ -99,22 +106,24 @@ function UserForm(props) {
       });
   }
 
-  const { passMessage, passStatus } = useConfirmPassword(
-    formData.password,
-    formData.confirm_password
-  );
-  const {
-    userMessage,
-    userValid,
-    emailMessage,
-    emailValid,
-    phoneMessage,
-    phoneValid,
-  } = useConfirmUserEmailPhone(
-    formData.username,
-    formData.email,
-    formData.phone
-  );
+  // const { passMessage, passStatus } = useConfirmPassword(
+  //   formData.password,
+  //   formData.confirm_password
+  // );
+
+
+  // const {
+  //   userMessage,
+  //   userValid,
+  //   emailMessage,
+  //   emailValid,
+  //   phoneMessage,
+  //   phoneValid,
+  // } = useConfirmUserEmailPhone(
+  //   formData.username,
+  //   formData.email,
+  //   formData.phone
+  // );
   const handleChange = (event) => {
     const field = event.target.id;
     const value = event.target.value;
@@ -135,6 +144,21 @@ function UserForm(props) {
     setFormData({ ...formData, course: newOpt });
   };
 
+  useEffect(()=>{
+    if (currentUser.length != 0){
+      setFormData({
+        ...formData,
+        username: currentUser[0].username ,
+        full_name: currentUser[0].full_name ,
+        phone: currentUser[0].phone ,
+        email: currentUser[0].email ,
+        course: currentUser[0].course ,
+        roles: currentUser[0].roles ,
+      });
+    }
+
+  },[currentUser])
+
   return (
     <>
       <FormControl>
@@ -152,7 +176,6 @@ function UserForm(props) {
                 </FormLabel>
                 <Spacer />
                 <Text textAlign={"end"} color={"red"} fontSize={"14px"}>
-                  {userMessage}
                 </Text>
               </Flex>
 
@@ -198,7 +221,7 @@ function UserForm(props) {
                 </FormLabel>
                 <Spacer />
                 <Text textAlign={"end"} color={"red"} fontSize={"14px"}>
-                  {phoneMessage}
+                  {}
                 </Text>
               </Flex>
 
@@ -257,7 +280,6 @@ function UserForm(props) {
                 </FormLabel>
                 <Spacer />
                 <Text textAlign={"end"} color={"red"} fontWeight="medium">
-                  {emailMessage}
                 </Text>
               </Flex>
               <Input
@@ -272,6 +294,7 @@ function UserForm(props) {
                 placeholder="‌ایمیل را وارد کنید"
                 mb="10px"
                 size="lg"
+                value={formData.email}
               />
             </Box>
             <Box minH="80px">
@@ -301,7 +324,6 @@ function UserForm(props) {
                 <Spacer />
 
                 <Text textAlign={"end"} color={"red"} fontWeight="medium">
-                  {passMessage}
                 </Text>
               </Flex>
               <Input
