@@ -7,10 +7,10 @@ from bson import ObjectId
 import jwt
 import time
 from modules.main.s_settings import SSettings
+from modules.main.classes.user import SUser
 from modules.main.database.adatabase import ADatabase
 import copy
 from .session import ASession
-from .say_model import *
 import datetime
 import hashlib
 import base64
@@ -50,12 +50,7 @@ class SAY():
         self.refresh_expire = say["refresh_expire"]
         self.domains = copy.deepcopy(say["domains"])
         self._secret = self.encode_pass(self._secret)
-        self.anonymous_user = {"userid": "anonymous", "geo": {
-            "geoid": "", "name": "", "level": -1}, "roles": []}
-
-        # self._session_manager = ASessionManager()
-
-        pass
+       
 
     def encode_pass(self, passwd):
         m = hashlib.sha256()
@@ -126,7 +121,6 @@ class SAY():
         return ret
 
     def authorize(self, roles: list, headers) -> int:
-        # if os.environ['mode'] == 'development':
         aut = os.environ['aut'] if 'aut' in os.environ else 'yes'
         mode = os.environ['mode'] if 'mode' in os.environ else 'production'
         if len(roles) == 0 or (mode == 'development' and aut == 'no'):
@@ -210,8 +204,7 @@ class SAY():
                 result = 400
             else:
                 result = 200
-        # except jwt.exceptions.ExpiredSignature:
-        #     result = 401
+
         except Exception:
             result = 401
 
@@ -235,9 +228,7 @@ class SAY():
 
     def get_access_token_from_refresh(self, refresh_token):
 
-        print(self.settings.info)
-
-        # here
+     
         result, data = self.decode_token(refresh_token)
 
         if result == 200:
@@ -260,27 +251,13 @@ class SAY():
         return 401, None
 
     def all_users(self):
-        # SUser.field_names.
-        # return SUser.objects.exclude('password', 'refreshToken', 'image', 'id')
+        
         c = self.db.mongo_db["s_user"]
         q = c.find({}, {'_id': False, 'password': False,
                    'refreshToken': False, 'image': False})
 
         return list(q)
-        # return SUser.objects.exclude('userid')
 
-
-
-    def get_user_by_query(self, query: dict, fields: dict):
-        col: Collection = self.db.mongo_db["s_user"]
-
-        usr = list(col.find(query, fields))
-        # usr = SUser.objects(userid=userid).exclude("password", "image", "refreshToken").first()
-        if len(usr) != 0:
-
-            return usr[0]
-        else:
-            return None
 
     def check_password_policy(self, password: str) -> bool:
         length_error = len(password) < 8
@@ -302,14 +279,7 @@ class SAY():
         password_ok = not (
             length_error or digit_error or uppercase_error or lowercase_error or symbol_error)
         return password_ok
-        # return [password_ok,{
-        # 'password_ok' : password_ok,
-        # 'length_error' : length_error,
-        # 'digit_error' : digit_error,
-        # 'uppercase_error' : uppercase_error,
-        # 'lowercase_error' : lowercase_error,
-        # 'symbol_error' : symbol_error,
-        # ]
+
 
     def get_online_users(self):
         return self._session_manager.get_online_users()

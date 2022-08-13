@@ -6,7 +6,6 @@ from fastapi import Request, Response, HTTPException
 
 from modules.main.say.say import SAY
 from modules.main.say.session import ASession
-from modules.main.say.say_model import SUser
 from .s_settings import SSettings
 
 # from mongoengine.fields import BaseQuerySet
