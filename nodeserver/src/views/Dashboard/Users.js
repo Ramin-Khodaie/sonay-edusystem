@@ -30,7 +30,7 @@ import { useUserList } from "hooks/users/useUserList";
 import React from "react";
 
 
-function Tables() {
+function Users() {
 
 
   const courses = [
@@ -247,4 +247,4 @@ function Tables() {
   );
 }
 
-export default Tables;
+export default Users;

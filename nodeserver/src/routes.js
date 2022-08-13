@@ -1,13 +1,13 @@
 // import
 import React, { Component }  from 'react';
 import Dashboard from "./views/Dashboard/Dashboard.js";
-import Tables from "./views/Dashboard/Tables.js";
+import Users from "./views/Dashboard/Users.js";
 import Billing from "./views/Dashboard/Billing.js";
 import RTLPage from "./views/RTL/RTLPage.js";
 import Profile from "./views/Dashboard/Profile.js";
 import SignIn from "./views/Pages/SignIn.js";
 import SignUp from "./views/Pages/SignUp.js";
-
+import { Icon } from '@chakra-ui/react'
 import {
   HomeIcon,
   StatsIcon,
@@ -17,22 +17,22 @@ import {
   RocketIcon,
   SupportIcon,
 } from "./components/Icons/Icons";
-
+import {FaUserAlt} from "react-icons/fa"
 var dashRoutes = [
   {
     path: "/dashboard",
-    name: "Dashboard",
+    name: "داشبورد",
     rtlName: "لوحة القيادة",
-    icon: <HomeIcon color='inherit' />,
+    icon: <HomeIcon/>,
     component: Dashboard,
     layout: "/admin",
   },
   {
-    path: "/tables",
-    name: "Tables",
+    path: "/users",
+    name: "کاربران",
     rtlName: "لوحة القيادة",
-    icon: <StatsIcon color='inherit' />,
-    component: Tables,
+    icon: <FaUserAlt></FaUserAlt> ,
+    component: Users,
     layout: "/admin",
   },
   {
