@@ -57,7 +57,7 @@ const MultiSelect = ({ handleChange, handleDelete, data, options }) => {
                   <IconButton
                     onClick={handleDelete(d.id)}
                     size={"sm"}
-                    colorScheme="blue"
+                    colorScheme="transparent"
                     aria-label="Search database"
                     icon={<CloseIcon />}
                   />

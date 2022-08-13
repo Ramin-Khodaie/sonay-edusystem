@@ -32,10 +32,29 @@ import React from "react";
 
 function Tables() {
 
+
+  const courses = [
+    { id: "1", name: "کلاس ۱" },
+    { id: "2", name: "کلاس ۲" },
+    { id: "3", name: "کلاس ۳" },
+  ];
+
+  const status = [
+    { id: "onlinr", name: "آنلاین" },
+    { id: "ofline", name: "آفلاین" },
+  ];
+
   const [sent, setSent] = React.useState({
     status: false,
     sending: false,
   });
+
+
+  const [filter, setFilter] = React.useState({
+    fFullName : "",
+    fCourse : "",
+    fStatus : ""
+  })
 
   const handleSent = (sentObj)=>{
     setSent(
@@ -43,12 +62,22 @@ function Tables() {
     )
   }
 
+  const handleFilterChange = (e)=>{
+    const field = e.target.id;
+    const value = e.target.value;
+    setFilter({ ...filter, [field]: value });
+  }
+
   
   
   
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-  const userList = useUserList(sent.status);
+  const userList = useUserList(sent.status ,{
+    full_name : filter.fFullName,
+    course : filter.fCourse,
+    status : filter.fStatus
+  }, filter);
 
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -66,7 +95,7 @@ function Tables() {
 
         <CardBody>
 
-          <UserForm changeSent={handleSent} sent={sent} />
+          <UserForm changeSent={handleSent} sent={sent} courses={courses} />
          
         </CardBody>
       </Card>
@@ -111,8 +140,9 @@ function Tables() {
                   >
                     <Box>
                       <Input
+                      id="fFullName"
+                      onChange={handleFilterChange}
                         focusBorderColor="purple.300"
-                        id="username"
                         textAlign="right"
                         variant="outline"
                         fontSize="sm"
@@ -129,11 +159,18 @@ function Tables() {
                         focusBorderColor="purple.300"
                         textAlign={"center"}
                         placeholder="دوره کاربر را انتخاب کنید"
+                        id="fCourse"
+                      onChange={handleFilterChange}
                       >
-                        <option value="jk">"first"</option>
-                        <option value="jk">"first"</option>
-                        <option value="jk">"first"</option>
-                        <option value="jk">"first"</option>
+
+
+                      {
+                        courses.map((d)=>(
+                          <option value={d.id}>{d.name}</option>
+                        ))
+                      }
+
+
                       </Select>
                     </Box>
 
@@ -142,11 +179,15 @@ function Tables() {
                         focusBorderColor="purple.300"
                         textAlign={"center"}
                         placeholder="وضعیت کاربر را انتخاب کنید"
+
+                        id="fStatus"
+                        onChange={handleFilterChange}
                       >
-                        <option value="jk">"first"</option>
-                        <option value="jk">"first"</option>
-                        <option value="jk">"first"</option>
-                        <option value="jk">"first"</option>
+                        {
+                          status.map((d)=>(
+                            <option value={d.id}>{d.name}</option>
+                          ))
+                        }
                       </Select>
                     </Box>
                   </SimpleGrid>
@@ -194,6 +235,7 @@ function Tables() {
                     changeSent={handleSent}
                     sent={sent}
                     userId={row._id}
+                    courses={courses}
                   />
                 );
               })}

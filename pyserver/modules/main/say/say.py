@@ -541,13 +541,13 @@ class SAY():
         return 200, "ok", "user is registered", None
     
     
-    def get_user_list(self , fullname , course , status):
+    def get_user_list(self , full_name , course , status):
         
         filters = {}
-        if fullname != "" : 
-            filters["fullname"] = fullname #this will be text search
+        if full_name != "" : 
+            filters["full_name"] =  {'$regex': full_name} #this will be text search
         if course != "":
-            filters["course"] =course
+            filters["course.id"] =course
         if status != "":
             filters["status"] = status
         col : Collection = self.db.mongo_db["s_user"]

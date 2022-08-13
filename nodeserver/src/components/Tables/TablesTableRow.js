@@ -12,7 +12,7 @@ import React from "react";
 import UserEditModal from "components/Modal/userEdit";
 
 function TablesTableRow(props) {
-  const { logo, name, email, subdomain, domain, status, date, isLast ,changeSent , sent , userId } = props;
+  const { logo, name, email, subdomain, domain, status, date, isLast ,changeSent , sent , userId ,courses} = props;
   const textColor = useColorModeValue("gray.500", "white");
   const titleColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -71,7 +71,7 @@ function TablesTableRow(props) {
       </Td>
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
 
-        <UserEditModal  changeSent={changeSent} sent={sent} userId={userId} />
+        <UserEditModal  changeSent={changeSent} sent={sent} userId={userId} courses={courses} />
         
       </Td>
     </Tr>

@@ -23,7 +23,7 @@ import { useUser } from "hooks/users/useUser";
 import { useEffect } from "react";
 
 function UserForm(props) {
-  const { changeSent, sent,modalClose, mode = "save", userId = "-1" } = props;
+  const { changeSent, sent,courses, userId = "-1" } = props;
   
   const currentUser = useUser(userId)
 
@@ -37,11 +37,7 @@ function UserForm(props) {
     { id: "manager", name: "مدیر" },
   ];
 
-  const courses = [
-    { id: "1", name: "کلاس ۱" },
-    { id: "2", name: "کلاس ۲" },
-    { id: "3", name: "کلاس ۳" },
-  ];
+
 
   const [formData, setFormData] = React.useState({
     _id:"",
