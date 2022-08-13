@@ -6,6 +6,8 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
+from modules.main.say.say import SAY
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -24,6 +26,8 @@ fake_users_db = {
     }
 }
 
-class User:
-    def __init__(self) -> None:
-        pass
+class User(SAY):
+    def __init__(self):
+        super().__init__()
+        
+    

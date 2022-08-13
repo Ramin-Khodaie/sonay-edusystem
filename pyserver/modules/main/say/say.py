@@ -31,76 +31,7 @@ class SAY():
     _roles: list = []
     _all_inherited_roles: dict = {}
 
-    def get_roles(self):
-        return self._roles
-
-    _admin_role: dict
-
-    def finalize_roles(self):
-        self._all_inherited_roles = dict()
-        for r in self._roles:
-
-            if "inherits" not in r:
-                r["inherits"] = []
-            else:
-                inherits: list = r["inherits"]
-                children = self.get_all_child_roles(r)
-                self._all_inherited_roles[r["name"]] = children
-                r["all_inherits"] = children
-
-        for r in self._roles:
-            parents = self.get_all_parent_roles(r)
-            r["all_parents"] = parents
-
-    _local_admin_role = None
-
-    def add_roles(self, namespace: str, roles: list) -> None:
-        new_roles = [{**r, "namespace": namespace} for r in roles]
-        self._roles = self._roles + new_roles
-
-        for r in new_roles:
-            if r["name"] == "admin":
-                if "inherits" not in r:
-                    r["inherits"] = []
-                self._admin_role = r
-            if r["name"] == "local.admin":
-                self._local_admin_role = r
-
-            if '.' in r["name"] and r["name"].split(".")[1] == "local":
-                self._local_admin_role["inherits"].append(r["name"])
-            if "top" in r:
-                self._admin_role["inherits"].append(r["name"])
-        self.finalize_roles()
-
-    def get_all_parent_roles(self, role: dict) -> set:
-        ret = set()
-        for parent_role in self._roles:
-            if role["name"] in parent_role["all_inherits"]:
-                ret.add(parent_role["name"])
-        return list(ret)
-
-    def get_all_child_roles(self, role: dict) -> set:
-        if "inherits" in role and isinstance(role["inherits"], list):
-            ret = set()
-            inherits: list = role["inherits"]
-            for r in self._roles:
-                if r["name"] in inherits:
-                    ret = ret | set([r["name"]])
-                    ret = ret | set(self.get_all_child_roles(r))
-            return list(ret)
-        else:
-            return list()
-
-    def get_all_roles_of_roles(self, roles: list):
-        ret: set = set()
-        for r in roles:
-            if r in self._all_inherited_roles:
-                ret = ret | set(self._all_inherited_roles[r])
-        return ret | set(roles)
-
-    def get_all_full_roles(self, roles):
-        all_roles = list(self.get_all_roles_of_roles(roles))
-        return [r for r in self._roles if r["name"] in all_roles]
+    
 
     def get_session_token_name(self):
         return self.__session_token_name
@@ -108,16 +39,16 @@ class SAY():
     def get_session_manager(self):
         return self._session_manager
 
-    def __init__(self, aaa, settings: SSettings):
+    def __init__(self, say, settings: SSettings):
 
         super(SAY, self).__init__()
         self.collect_roles()
         self.settings = settings
-        self.database = aaa["database"]
-        self.prefix = aaa["prefix"]
-        self.access_expire = aaa["access_expire"]
-        self.refresh_expire = aaa["refresh_expire"]
-        self.domains = copy.deepcopy(aaa["domains"])
+        self.database = say["database"]
+        self.prefix = say["prefix"]
+        self.access_expire = say["access_expire"]
+        self.refresh_expire = say["refresh_expire"]
+        self.domains = copy.deepcopy(say["domains"])
         self._secret = self.encode_pass(self._secret)
         self.anonymous_user = {"userid": "anonymous", "geo": {
             "geoid": "", "name": "", "level": -1}, "roles": []}
@@ -164,9 +95,6 @@ class SAY():
             ASession.collect_garbage()
             self.init_users()
 
-    def activate_user(self, userid: str, editor: dict, state: bool):
-
-        pass
 
     def authenticate(self, user, password):
         res = {}
