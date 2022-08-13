@@ -2,6 +2,7 @@
 import React, { Component }  from 'react';
 import Dashboard from "./views/Dashboard/Dashboard.js";
 import Users from "./views/Dashboard/Users.js";
+import Courses from "./views/Dashboard/Courses.js";
 import Billing from "./views/Dashboard/Billing.js";
 import RTLPage from "./views/RTL/RTLPage.js";
 import Profile from "./views/Dashboard/Profile.js";
@@ -33,6 +34,14 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <FaUserAlt></FaUserAlt> ,
     component: Users,
+    layout: "/admin",
+  },
+  {
+    path: "/courses",
+    name: "دوره ها",
+    rtlName: "لوحة القيادة",
+    icon: <FaUserAlt></FaUserAlt> ,
+    component: Courses,
     layout: "/admin",
   },
   {

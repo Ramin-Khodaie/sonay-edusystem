@@ -8,7 +8,6 @@ from dependencies import get_token_header
 from modules.main.s_settings import SSettings
 from modules.main.say.say import SAY
 from modules.main.api_return import api_return
-from ..users.models import *
 
 from modules.main.sonay_app import sn
 class User:
