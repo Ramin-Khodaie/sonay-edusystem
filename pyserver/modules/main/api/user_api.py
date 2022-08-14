@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
 from os import stat
 from fastapi import Depends,  HTTPException, status , APIRouter ,  Response
-from fastapi.security import  OAuth2PasswordRequestForm
-from urllib3 import Retry
+
 
 from dependencies import get_token_header
 from modules.main.s_settings import SSettings
@@ -15,7 +14,7 @@ class User:
 
 
 
-router = APIRouter(prefix='/users')
+router = APIRouter(prefix='/users' ,tags=["user"])
 
 sn.add_router(router)
 

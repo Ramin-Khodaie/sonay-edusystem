@@ -8,15 +8,16 @@ from ..classes.course import SCourse
 
 
 
-router = APIRouter(prefix='/courses')
+router = APIRouter(prefix='/courses' , tags=["course"])
 
 sn.add_router(router)
 
-course=SCourse('educational_app' , 'courses')
+course=SCourse('educational_app' , 'course')
 
 
 @router.post("/createcourse")
 @sn(fast=True)
-def create_course(say: SAY , info : dict):
-    return
+def create_course(info : dict):
+    ret = course.insert_course(info)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
 

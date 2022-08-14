@@ -2,8 +2,9 @@ import email
 from importlib.metadata import requires
 import os
 import sys
-from typing import Collection, List
 from bson import ObjectId
+from pymongo.database import Database, Collection
+from typing import List
 import jwt
 import time
 from modules.main.s_settings import SSettings

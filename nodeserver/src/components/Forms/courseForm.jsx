@@ -51,7 +51,7 @@ function CourseForm(props) {
   function createPost() {
     changeSent({ sending: true });
     bixious
-      .post("/users/createcourse", {
+      .post("/courses/createcourse", {
         _id: formData._id,
         course_name: formData.courseName,
         status: formData.courseStatus,
