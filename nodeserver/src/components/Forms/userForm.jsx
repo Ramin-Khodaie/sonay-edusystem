@@ -16,19 +16,16 @@ import {
 
 import React from "react";
 import MultiSelect from "components/MultiSelect/MultiSelect";
-import { bixious } from "services/main";
 
 import useNotify from "helpers/notify/useNotify";
 import { useUser } from "hooks/users/useUser";
 import { useEffect } from "react";
+import { createUser } from "services/user";
 
 function UserForm(props) {
-  const { changeSent, sent,courses, userId = "-1" } = props;
-  
-  const currentUser = useUser(userId)
+  const { changeSent, sent, courses, userId = "-1" } = props;
 
-
-
+  const currentUser = useUser(userId);
 
   const notify = useNotify();
   const data = [
@@ -37,10 +34,8 @@ function UserForm(props) {
     { id: "manager", name: "مدیر" },
   ];
 
-
-
   const [formData, setFormData] = React.useState({
-    _id:"",
+    _id: "",
     username: "",
     full_name: "",
     phone: "",
@@ -51,6 +46,19 @@ function UserForm(props) {
     roles: [],
   });
 
+  const resetFormInputs = () => {
+    setFormData({
+      _id: "",
+      username: "",
+      full_name: "",
+      phone: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+      course: "",
+      roles: [],
+    });
+  };
   const handleDelete = (id) => (e) => {
     const cc = formData.roles.filter((element) => {
       return element.id !== id;
@@ -63,62 +71,54 @@ function UserForm(props) {
     setFormData({ ...formData, [field]: value });
   };
 
-  function createPost() {
+  const doSubmit = () => {
     changeSent({ sending: true });
-    bixious
-      .post("/users/createuser", {
-        _id : formData._id,
-        username: formData.username,
-        full_name: formData.full_name,
-        phone: formData.phone,
-        email: formData.email,
-        password: formData.password,
-        course: formData.course,
-        roles: formData.roles,
-      })
+    const newUser = {
+      _id: formData._id,
+      username: formData.username,
+      full_name: formData.full_name,
+      phone: formData.phone,
+      email: formData.email,
+      password: formData.password,
+      course: formData.course,
+      roles: formData.roles,
+    };
+    createUser(newUser)
       .then((response) => {
-        {
-if( response.status === 200){
-  changeSent({ status: true })
-  notify("کابر با موفقیت ثبت شد" , true, "solid","success")
-}else{
-  changeSent({ sending: true });
-}
-
-         
+        if ((response.result = "ok")) {
+          changeSent({ status: true });
+          resetFormInputs();
+          notify("کابر با موفقیت ثبت شد", true, "solid", "success");
         }
       })
       .catch((e) => {
-        if (
-          e.response &&
-          e.response.status === 422 &&
-          e.response.data.detail.result === "missing_field"
-        ) {
+        if (e.status === 422 && e.data.detail.result === "missing_field") {
           changeSent({ status: true });
           notify("خطا در ثبت داده", true, "solid", "error");
         } else if (
-          e.response &&
-          e.response.status === 422 &&
-          e.response.data.detail.result === "not_unique"
+          e &&
+          e.status === 422 &&
+          e.data.detail.result === "not_unique"
         ) {
           changeSent({ status: true });
           notify("این کاربر قبلا  ثبت نام کرده است", true, "solid", "error");
         } else if (
-          e.response &&
-          e.response.status === 422 &&
-          e.response.data.detail.result === "empty_field"
+          e &&
+          e.status === 422 &&
+          e.data.detail.result === "empty_field"
         ) {
           changeSent({ status: true });
           notify("لطفا تمامی فیلد ها را تکمیل نمایید", true, "solid", "error");
         }
       });
+  };
+  function handleSubmitform() {
+    doSubmit();
   }
-
   // const { passMessage, passStatus } = useConfirmPassword(
   //   formData.password,
   //   formData.confirm_password
   // );
-
 
   // const {
   //   userMessage,
@@ -135,8 +135,6 @@ if( response.status === 200){
 
   const handleOptionChange = (e) => {
     const newOpt = data.find((f) => f.id === e.target.value);
-    console.log(newOpt,9595)
-
     formData.roles.findIndex((itm) => itm.id == newOpt.id) === -1
       ? setFormData({ ...formData, roles: [...formData.roles, newOpt] })
       : notify("این آیتم قبلا انتخاب شده است", true, "solid", "warning");
@@ -144,30 +142,27 @@ if( response.status === 200){
 
   const handleCourseOptionChange = (e) => {
     const newOpt = courses.find((f) => f.id === e.target.value);
-
     setFormData({ ...formData, course: newOpt });
   };
 
-  useEffect(()=>{
-    if (currentUser.length != 0){
+  useEffect(() => {
+    if (currentUser.length != 0) {
       setFormData({
         ...formData,
-        _id : currentUser[0]._id,
-        username: currentUser[0].username ,
-        full_name: currentUser[0].full_name ,
-        phone: currentUser[0].phone ,
-        email: currentUser[0].email ,
-        course: currentUser[0].course ,
-        roles: currentUser[0].roles ,
+        _id: currentUser[0]._id,
+        username: currentUser[0].username,
+        full_name: currentUser[0].full_name,
+        phone: currentUser[0].phone,
+        email: currentUser[0].email,
+        course: currentUser[0].course,
+        roles: currentUser[0].roles,
       });
     }
-
-  },[currentUser])
-
+  }, [currentUser]);
 
   return (
     <>
-      <FormControl>
+      <FormControl onSubmit={handleSubmitform}>
         <SimpleGrid
           style={{ direction: "rtl" }}
           columns={{ sm: 1, md: 3, xl: 3 }}
@@ -181,12 +176,11 @@ if( response.status === 200){
                   نام کاربری
                 </FormLabel>
                 <Spacer />
-                <Text textAlign={"end"} color={"red"} fontSize={"14px"}>
-                </Text>
+                <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
               </Flex>
 
               <Input
-              disabled={userId === "-1" ? false : true}
+                disabled={userId === "-1" ? false : true}
                 onChange={handleChange}
                 focusBorderColor="purple.300"
                 id="username"
@@ -286,8 +280,11 @@ if( response.status === 200){
                   ایمیل{" "}
                 </FormLabel>
                 <Spacer />
-                <Text textAlign={"end"} color={"red"} fontWeight="medium">
-                </Text>
+                <Text
+                  textAlign={"end"}
+                  color={"red"}
+                  fontWeight="medium"
+                ></Text>
               </Flex>
               <Input
                 onChange={handleChange}
@@ -330,8 +327,11 @@ if( response.status === 200){
                 </FormLabel>
                 <Spacer />
 
-                <Text textAlign={"end"} color={"red"} fontWeight="medium">
-                </Text>
+                <Text
+                  textAlign={"end"}
+                  color={"red"}
+                  fontWeight="medium"
+                ></Text>
               </Flex>
               <Input
                 onChange={handleChange}
@@ -364,7 +364,7 @@ if( response.status === 200){
           </Box>
         </SimpleGrid>
         <Button
-          onClick={createPost}
+          onClick={handleSubmitform}
           color={"white"}
           fontSize="20px"
           fontFamily="Lalezar"

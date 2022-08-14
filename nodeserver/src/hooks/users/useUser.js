@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { bixious } from "services/main";
+import { bixios } from "services/main";
 
 export const useUser = (userId) => {
     const [user, setUser] = useState([]);
@@ -8,7 +8,7 @@ export const useUser = (userId) => {
   useEffect(() => {
     
 if(userId != "-1"){
-  bixious
+  bixios
   .get("/users/getuser" , {
       params: {
         user_id: userId,

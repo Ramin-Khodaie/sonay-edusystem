@@ -16,11 +16,12 @@ import {
 
 import React from "react";
 import MultiSelect from "components/MultiSelect/MultiSelect";
-import { bixious } from "services/main";
+
 
 import useNotify from "helpers/notify/useNotify";
 import { useUser } from "hooks/users/useUser";
 import { useEffect } from "react";
+import { bixios } from "services/main";
 
 function CourseForm(props) {
   const { changeSent, sent, courses, userId = "-1" } = props;
@@ -50,7 +51,7 @@ function CourseForm(props) {
 
   function createPost() {
     changeSent({ sending: true });
-    bixious
+    bixios
       .post("/courses/createcourse", {
         _id: formData._id,
         course_name: formData.courseName,
