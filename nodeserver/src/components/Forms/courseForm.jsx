@@ -38,6 +38,7 @@ function CourseForm(props) {
     courseName: "",
     courseStatus: {},
     nextCourse: {},
+    image : ""
     
   });
 
@@ -56,6 +57,7 @@ function CourseForm(props) {
         course_name: formData.courseName,
         status: formData.courseStatus,
         next_course: formData.nextCourse,
+        image : formData.image
         
       })
       .then((response) => {

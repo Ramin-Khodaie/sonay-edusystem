@@ -30,3 +30,13 @@ class SCourse:
         
     def edit_course(self , info ,col):
         pass
+    def get_course_list(self,full_name , status):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.course_collection]
+        filters = {}
+        if full_name != "" : 
+            filters["full_name"] =  {'$regex': full_name} #this will be text search
+        if status != "":
+            filters["status"] = status
+        cl = list(col.find(filters))
+        return 200, "ok", "ok", cl

@@ -27,6 +27,7 @@ import {
 import CourseForm from "components/Forms/courseForm";
   import UserForm from "components/Forms/userForm";
   import TablesTableRow from "components/Tables/TablesTableRow";
+import { useCourseList } from "hooks/users/useCourseList";
   import { useUserList } from "hooks/users/useUserList";
   import React from "react";
   
@@ -74,9 +75,9 @@ import CourseForm from "components/Forms/courseForm";
     
     const textColor = useColorModeValue("gray.700", "white");
     const borderColor = useColorModeValue("gray.200", "gray.600");
-    const userList = useUserList(sent.status ,{
+    const courseList = useCourseList(sent.status ,{
       full_name : filter.fFullName,
-      course : filter.fCourse,
+
       status : filter.fStatus
     }, filter);
   
@@ -127,7 +128,7 @@ import CourseForm from "components/Forms/courseForm";
                         textAlign={"right"}
                         my={"10px"}
                       >
-                        لیست کاربران{" "}
+                        لیست دوره ها{" "}
                       </Text>
                     </Box>
                   </Flex>
@@ -153,26 +154,6 @@ import CourseForm from "components/Forms/courseForm";
                           mb="10px"
                           size="md"
                         />
-                      </Box>
-  
-                      <Box>
-                        <Select
-                          focusBorderColor="purple.300"
-                          textAlign={"center"}
-                          placeholder="دوره کاربر را انتخاب کنید"
-                          id="fCourse"
-                        onChange={handleFilterChange}
-                        >
-  
-  
-                        {
-                          courses.map((d)=>(
-                            <option value={d.id}>{d.name}</option>
-                          ))
-                        }
-  
-  
-                        </Select>
                       </Box>
   
                       <Box>
@@ -206,37 +187,35 @@ import CourseForm from "components/Forms/courseForm";
               <Thead>
                 <Tr my=".8rem" pl="0px" color="gray.400">
                   <Th pl="0px" borderColor={borderColor} color="gray.400">
-                    کاربر
+                    نام دوره
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
-                    دوره فعلی
+                    دوره بعدی
                   </Th>
                   <Th borderColor={borderColor} color="gray.400">
                     وضعیت
                   </Th>
-                  <Th borderColor={borderColor} color="gray.400">
-                    شماره تماس
-                  </Th>
+              
                   <Th borderColor={borderColor}></Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {userList.map((row, index, arr) => {
+                {courseList.map((row, index, arr) => {
+                  console.log(courseList)
                   return (
                     <TablesTableRow
-                      name={row.full_name}
-                      logo={row.image}
-                      email={row.email}
-                      subdomain={row.course.id}
-                      domain={row.course.name}
-                      status={"Online"} //{row.enable}
-                      date={row.phone}
-                      isLast={index === arr.length - 1 ? true : false}
-                      key={row._id}
-                      changeSent={handleSent}
-                      sent={sent}
-                      userId={row._id}
-                      courses={courses}
+                    name={row.course_name}
+                    logo={row.image}
+                    subdomain={"hi"}
+                    domain={row.next_course.name}
+                    status={"Online"} //{row.enable}
+            
+                    isLast={index === arr.length - 1 ? true : false}
+                    key={row._id}
+                    changeSent={handleSent}
+                    sent={sent}
+                    userId={row._id}
+                    courses={courses}
                     />
                   );
                 })}

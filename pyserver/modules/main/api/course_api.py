@@ -21,3 +21,8 @@ def create_course(info : dict):
     ret = course.insert_course(info)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
+@router.get("/getcourselist")
+@sn(fast=True)
+def get_course_list(full_name = "" , status = ""):
+    ret = course.get_course_list(full_name , status)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
