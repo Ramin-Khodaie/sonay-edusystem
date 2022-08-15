@@ -22,7 +22,7 @@ import BgSignUp from "assets/img/BgSignUp.png";
 import useNotify from "helpers/notify/useNotify";
 import React, { useEffect } from "react";
 import { FaApple, FaFacebook, FaGoogle , FaTimes } from "react-icons/fa";
-import { bixious } from "services/main";
+import { bixios } from "services/main";
 
 function SignUp() {
   const bgForm = useColorModeValue("white", "navy.800");
@@ -36,7 +36,7 @@ function SignUp() {
 
   const checkUsernameAndEmail = (usn,eml) => {
 
-    bixious.get("/users/checkregisterform",
+    bixios.get("/users/checkregisterform",
     {
       params: {
         "user_name": usn,

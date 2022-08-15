@@ -1,25 +1,14 @@
 import {
   Modal,
   ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
+  ModalContent,  
   ModalBody,
   ModalCloseButton,
   useDisclosure,
   Button,
-  FormControl,
-  FormLabel,
-  Input,
-  SimpleGrid,
-  Flex,
-  Box,
-  Spacer,
-  Select,
-  useUpdateEffect,
 } from "@chakra-ui/react";
 import UserForm from "components/Forms/userForm";
-import { useUser } from "hooks/users/useUser";
+
 import React, { useEffect } from "react";
 
 function UserEditModal(props) {

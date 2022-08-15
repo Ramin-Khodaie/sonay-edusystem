@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { bixious } from "services/main";
+import { bixios } from "services/main";
 
 export const useUserList = (status , filters = {} , filter) => {
     const [userList, setUserList] = useState([]);
@@ -7,7 +7,7 @@ export const useUserList = (status , filters = {} , filter) => {
 
   useEffect(() => {
     
-    bixious
+    bixios
     .get("/users/getuserlist",{
       params:{
         full_name : filters.full_name,
@@ -22,7 +22,7 @@ export const useUserList = (status , filters = {} , filter) => {
     })
     .catch((e) => {});
 
-  }, [status , filter]);
+  }, []);
 
   return userList;
 };

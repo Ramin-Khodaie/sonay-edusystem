@@ -17,7 +17,7 @@ import {
 // Assets
 import signInImage from "assets/img/signInImage.png";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
-import { bixious } from "services/main";
+import { bixios } from "services/main";
 import { useNavigate } from "react-router-dom";
 import { withRouter } from "helpers/components/withRouter/withRouter";
 function SignIn(props) {
@@ -58,7 +58,7 @@ function createPost(){
   // fData.append("username", formData.username);
   // fData.append("password", formData.password);
 
-  bixious.post("/users/login" , {
+  bixios.post("/users/login" , {
     username: formData.username,
     password: formData.password,
  

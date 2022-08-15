@@ -9,15 +9,8 @@ import {
   useColorModeValue,
   Flex,
   Text,
-  Box,
-  Input,
-  Select,
   Accordion,
   AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Spacer,
 } from "@chakra-ui/react";
 
 // Custom components
@@ -26,12 +19,17 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import UserForm from "components/Forms/userForm";
 import TablesTableRow from "components/Tables/TablesTableRow";
+import UserListFilter from "components/UserListFilter/UserListFilter";
 import { useUserList } from "hooks/users/useUserList";
 import React from "react";
 
 
-function Users() {
+const Users = () => {
 
+  const [sent, setSent] = React.useState({
+    status: false,
+    sending: false,
+  });
 
   const courses = [
     { id: "1", name: "کلاس ۱" },
@@ -39,44 +37,35 @@ function Users() {
     { id: "3", name: "کلاس ۳" },
   ];
 
-  const status = [
-    { id: "onlinr", name: "آنلاین" },
-    { id: "ofline", name: "آفلاین" },
-  ];
-
-  const [sent, setSent] = React.useState({
-    status: false,
-    sending: false,
-  });
-
-
   const [filter, setFilter] = React.useState({
-    fFullName : "",
-    fCourse : "",
-    fStatus : ""
+    fFullName: "",
+    fCourse: "",
+    fStatus: ""
   })
 
-  const handleSent = (sentObj)=>{
+  const handleSent = (sentObj) => {
     setSent(
       sentObj
     )
   }
 
-  const handleFilterChange = (e)=>{
-    const field = e.target.id;
-    const value = e.target.value;
-    setFilter({ ...filter, [field]: value });
+  const handleFilterChange = (f) => {
+
+    setFilter(f)
+    // const field = e.target.id;
+    // const value = e.target.value;
+    // setFilter({ ...filter, [field]: value });
   }
 
-  
-  
-  
+
+
+
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-  const userList = useUserList(sent.status ,{
-    full_name : filter.fFullName,
-    course : filter.fCourse,
-    status : filter.fStatus
+  const userList = useUserList(sent.status, {
+    full_name: filter.fFullName,
+    course: filter.fCourse,
+    status: filter.fStatus
   }, filter);
 
   return (
@@ -96,7 +85,7 @@ function Users() {
         <CardBody>
 
           <UserForm changeSent={handleSent} sent={sent} courses={courses} />
-         
+
         </CardBody>
       </Card>
 
@@ -105,93 +94,8 @@ function Users() {
           <Flex direction="column">
             <Accordion allowToggle>
               <AccordionItem>
-                <Flex>
-                  <Box>
-                    <h2>
-                      <AccordionButton>
-                        <Box flex="1" textAlign="left">
-                          {" "}
-                          نمایش فیلتر ها{" "}
-                        </Box>
-                        <AccordionIcon />
-                      </AccordionButton>
-                    </h2>{" "}
-                  </Box>
-                  <Spacer />
-                  <Box>
-                    <Text
-                      fontSize="xl"
-                      color={textColor}
-                      fontWeight="bold"
-                      textAlign={"right"}
-                      my={"10px"}
-                    >
-                      لیست کاربران{" "}
-                    </Text>
-                  </Box>
-                </Flex>
+                <UserListFilter onChange={handleFilterChange} userFilter={filter} />
 
-                <AccordionPanel pb={4}>
-                  <SimpleGrid
-                    style={{ direction: "rtl" }}
-                    columns={{ sm: 1, md: 3, xl: 3 }}
-                    spacing="24px"
-                    mb="20px"
-                  >
-                    <Box>
-                      <Input
-                      id="fFullName"
-                      onChange={handleFilterChange}
-                        focusBorderColor="purple.300"
-                        textAlign="right"
-                        variant="outline"
-                        fontSize="sm"
-                        ms="4px"
-                        type="text"
-                        placeholder="نام و نام خانوادگی را وارد کنید"
-                        mb="10px"
-                        size="md"
-                      />
-                    </Box>
-
-                    <Box>
-                      <Select
-                        focusBorderColor="purple.300"
-                        textAlign={"center"}
-                        placeholder="دوره کاربر را انتخاب کنید"
-                        id="fCourse"
-                      onChange={handleFilterChange}
-                      >
-
-
-                      {
-                        courses.map((d)=>(
-                          <option value={d.id}>{d.name}</option>
-                        ))
-                      }
-
-
-                      </Select>
-                    </Box>
-
-                    <Box>
-                      <Select
-                        focusBorderColor="purple.300"
-                        textAlign={"center"}
-                        placeholder="وضعیت کاربر را انتخاب کنید"
-
-                        id="fStatus"
-                        onChange={handleFilterChange}
-                      >
-                        {
-                          status.map((d)=>(
-                            <option value={d.id}>{d.name}</option>
-                          ))
-                        }
-                      </Select>
-                    </Box>
-                  </SimpleGrid>
-                </AccordionPanel>
               </AccordionItem>
             </Accordion>
           </Flex>
