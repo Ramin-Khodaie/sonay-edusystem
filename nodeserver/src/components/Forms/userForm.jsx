@@ -21,11 +21,17 @@ import useNotify from "helpers/notify/useNotify";
 import { useUser } from "hooks/users/useUser";
 import { useEffect } from "react";
 import { createUser } from "services/user";
+import { useDispatch, useSelector } from "react-redux";
+import { createUserAction } from "redux/user/userCreate/userCreateAction";
 
 function UserForm(props) {
   const { changeSent, sent, courses, userId = "-1" } = props;
 
   const currentUser = useUser(userId);
+  const dispatch = useDispatch();
+  const { isLoading, message, error } = useSelector(
+    (state) => state.createuser
+  );
 
   const notify = useNotify();
   const data = [
@@ -71,8 +77,7 @@ function UserForm(props) {
     setFormData({ ...formData, [field]: value });
   };
 
-  const doSubmit = () => {
-    changeSent({ sending: true });
+  const doSubmit = async () => {
     const newUser = {
       _id: formData._id,
       username: formData.username,
@@ -83,35 +88,9 @@ function UserForm(props) {
       course: formData.course,
       roles: formData.roles,
     };
-    createUser(newUser)
-      .then((response) => {
-        if ((response.result = "ok")) {
-          changeSent({ status: true });
-          resetFormInputs();
-          notify("کابر با موفقیت ثبت شد", true, "solid", "success");
-        }
-      })
-      .catch((e) => {
-        if (e.status === 422 && e.data.detail.result === "missing_field") {
-          changeSent({ status: true });
-          notify("خطا در ثبت داده", true, "solid", "error");
-        } else if (
-          e &&
-          e.status === 422 &&
-          e.data.detail.result === "not_unique"
-        ) {
-          changeSent({ status: true });
-          notify("این کاربر قبلا  ثبت نام کرده است", true, "solid", "error");
-        } else if (
-          e &&
-          e.status === 422 &&
-          e.data.detail.result === "empty_field"
-        ) {
-          changeSent({ status: true });
-          notify("لطفا تمامی فیلد ها را تکمیل نمایید", true, "solid", "error");
-        }
-      });
+    await dispatch(createUserAction(newUser));   
   };
+
   function handleSubmitform() {
     doSubmit();
   }
@@ -145,6 +124,14 @@ function UserForm(props) {
     setFormData({ ...formData, course: newOpt });
   };
 
+  useEffect(() => {
+    if (message != "") {
+      notify("کابر با موفقیت ثبت شد", true, "solid", "success");
+    }
+    if (error) {
+      notify(error, true, "solid", "error");
+    }
+  }, [message, error]);
   useEffect(() => {
     if (currentUser.length != 0) {
       setFormData({

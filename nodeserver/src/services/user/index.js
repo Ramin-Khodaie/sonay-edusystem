@@ -1,9 +1,9 @@
 import { bixios } from "services/main";
 
-
-export const createUser =  (user)=>{
-   return new Promise( async (resolve, reject)=>{
-    await bixios.post('/users/createuser',{
+export const createUser = (user) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.post("/users/createuser", {
         _id: user._id,
         username: user.username,
         full_name: user.full_name,
@@ -12,8 +12,16 @@ export const createUser =  (user)=>{
         password: user.password,
         course: user.course,
         roles: user.roles,
-    }).then((res)=>{
-        if(res.status === 200) resolve(res.data)
-    }).catch((err)=>reject(err.response))
-   })
-}
+      });
+      
+      if (res.status === 200) {
+      console.log(res)
+        resolve(res.data);
+      }
+    } catch (error) {
+      console.log(99, error);
+      if (error.response.status === 422) resolve(error.response.data.detail);
+      if (error.response.status === 500) resolve(error.response.data.detail);
+    }
+  });
+};

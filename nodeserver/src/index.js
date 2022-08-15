@@ -23,12 +23,16 @@ import AuthLayout from "./layouts/Auth.js";
 import AdminLayout from "./layouts/Admin.js";
 import RTLLayout from "./layouts/RTL.js"; // Chakra imports
 import { ChakraProvider } from "@chakra-ui/react";
+import store from '../src/redux/store'
+import { Provider } from "react-redux";
 // Custom Chakra theme
 import theme from "./theme/theme.js";
 import "./index.css";
 
 ReactDOM.render(
   // <div className="body">
+  <Provider store={store}>
+
   <ChakraProvider theme={theme} resetCss={false} position="relative">
     <NotifyProvider>
       <HashRouter>
@@ -40,7 +44,8 @@ ReactDOM.render(
         </Switch>
       </HashRouter>
     </NotifyProvider>
-  </ChakraProvider>,
+  </ChakraProvider>
+  </Provider>,
 
   // </div>
   document.getElementById("root")
