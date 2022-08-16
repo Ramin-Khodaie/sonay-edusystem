@@ -25,7 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createUserAction } from "redux/user/userCreate/userCreateAction";
 
 function UserForm(props) {
-  const { changeSent, sent, courses, userId = "-1" } = props;
+  const {  courses, userId = "-1" } = props;
 
   const currentUser = useUser(userId);
   const dispatch = useDispatch();
@@ -90,6 +90,8 @@ function UserForm(props) {
     };
     await dispatch(createUserAction(newUser));   
   };
+
+
 
   function handleSubmitform() {
     doSubmit();
@@ -362,7 +364,8 @@ function UserForm(props) {
           mb={"20px"}
           type={"submit"}
         >
-          {sent.sending ? "در حال ثبت " : "ثبت "}
+          {/* {sent.sending ? "در حال ثبت " : "ثبت "} */}
+          {true ? "در حال ثبت " : "ثبت "}
         </Button>
       </FormControl>
     </>

@@ -25,3 +25,32 @@ export const createUser = (user) => {
     }
   });
 };
+
+
+
+
+
+
+export const userList = (filters) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/users/getuserlist", {
+        params:{
+          full_name : filters.full_name,
+          course : filters.course,
+          status : filters.status
+        }
+      }
+      
+      
+      );
+
+      
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+       resolve(error.response.data.detail);
+    }
+  });
+};

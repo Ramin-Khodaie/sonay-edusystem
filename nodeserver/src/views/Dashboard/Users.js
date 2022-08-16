@@ -26,47 +26,20 @@ import React from "react";
 
 const Users = () => {
 
-  const [sent, setSent] = React.useState({
-    status: false,
-    sending: false,
-  });
-
   const courses = [
     { id: "1", name: "کلاس ۱" },
     { id: "2", name: "کلاس ۲" },
     { id: "3", name: "کلاس ۳" },
   ];
 
-  const [filter, setFilter] = React.useState({
-    fFullName: "",
-    fCourse: "",
-    fStatus: ""
-  })
-
-  const handleSent = (sentObj) => {
-    setSent(
-      sentObj
-    )
-  }
-
-  const handleFilterChange = (f) => {
-
-    setFilter(f)
-    // const field = e.target.id;
-    // const value = e.target.value;
-    // setFilter({ ...filter, [field]: value });
-  }
-
-
-
-
+ 
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-  const userList = useUserList(sent.status, {
-    full_name: filter.fFullName,
-    course: filter.fCourse,
-    status: filter.fStatus
-  }, filter);
+  // const userList = useUserList(sent.status, {
+  //   full_name: filter.fFullName,
+  //   course: filter.fCourse,
+  //   status: filter.fStatus
+  // }, filter);
 
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -84,7 +57,7 @@ const Users = () => {
 
         <CardBody>
 
-          <UserForm changeSent={handleSent} sent={sent} courses={courses} />
+          <UserForm  courses={courses} />
 
         </CardBody>
       </Card>
@@ -94,7 +67,7 @@ const Users = () => {
           <Flex direction="column">
             <Accordion allowToggle>
               <AccordionItem>
-                <UserListFilter onChange={handleFilterChange} userFilter={filter} />
+                <UserListFilter />
 
               </AccordionItem>
             </Accordion>
@@ -124,7 +97,7 @@ const Users = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {userList.map((row, index, arr) => {
+              {/* {userList.map((row, index, arr) => {
                 return (
                   <TablesTableRow
                     name={row.full_name}
@@ -136,13 +109,11 @@ const Users = () => {
                     date={row.phone}
                     isLast={index === arr.length - 1 ? true : false}
                     key={row._id}
-                    changeSent={handleSent}
-                    sent={sent}
                     userId={row._id}
                     courses={courses}
                   />
                 );
-              })}
+              })} */}
             </Tbody>
           </Table>
         </CardBody>

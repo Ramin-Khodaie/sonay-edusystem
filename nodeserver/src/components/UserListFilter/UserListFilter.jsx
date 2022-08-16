@@ -16,13 +16,41 @@ import {
 import CourseSelector from "components/Selectors/CourseSelector";
 import StudentStatusSelector from "components/Selectors/StudentStatusSelector";
 import UserNameInput from "components/Selectors/UserNameInput";
-import React from "react";
+import React, { useEffect } from "react";
+import { userListAction } from "redux/user/UserList/UserListAction";
+import { useDispatch, useSelector } from "react-redux";
 
-const UserListFilter = ({ onChange, userFilter }) => {
+const UserListFilter = () => {
+  const dispatch = useDispatch();
+
+
+  const [filter, setFilter] = React.useState({
+    fFullName: "",
+    fCourse: "",
+    fStatus: ""
+  })
+
   const handleFilterChange = (f) => {
-    console.log(22, f);
-    onChange(f);
+    setFilter(f);
   };
+
+  const getUSerList = async () => {
+    
+    const filters = {
+
+    full_name: filter.fFullName,
+    course: filter.fCourse,
+    status: filter.fStatus
+    }
+    await dispatch(userListAction(filters)); 
+  };
+
+
+useEffect(() => {
+  getUSerList()
+} , [])
+
+
 
   const textColor = useColorModeValue("gray.700", "white");
 
@@ -65,15 +93,15 @@ const UserListFilter = ({ onChange, userFilter }) => {
             >
               <UserNameInput
                 onChange={handleFilterChange}
-                filter={userFilter}
+                filter={filter}
               />
               <CourseSelector
                 onChange={handleFilterChange}
-                filter={userFilter}
+                filter={filter}
               />
               <StudentStatusSelector
                 onChange={handleFilterChange}
-                filter={userFilter}
+                filter={filter}
               />
             </SimpleGrid>
           </AccordionPanel>
