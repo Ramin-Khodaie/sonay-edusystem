@@ -50,7 +50,7 @@ export const userList = (filters) => {
         resolve(res);
       }
     } catch (error) {
-       resolve(error.response.data.detail);
+       resolve(error.response.status);
     }
   });
 };

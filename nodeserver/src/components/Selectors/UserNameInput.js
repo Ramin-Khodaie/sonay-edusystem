@@ -1,10 +1,10 @@
 const { Box, Input } = require("@chakra-ui/react")
 
-const UserNameInput = ({ filter , setFilter }) => {
+const UserNameInput = ({ onChange, filter }) => {
 
     const handleFilterChange = (field) => (e) => {
         const { value } = e.target
-        setFilter({ ...filter, [field]: value })
+        onChange({ ...filter, [field]: value })
     }
     return (
         <Box>

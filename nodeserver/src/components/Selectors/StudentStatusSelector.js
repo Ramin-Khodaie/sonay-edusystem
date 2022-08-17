@@ -3,7 +3,7 @@ import { Box, Select } from "@chakra-ui/react";
 const StudentStatusSelector = ({ onChange, filter }) => {
 
     const studentStatus = [
-        { id: "onlinr", name: "آنلاین" },
+        { id: "online", name: "آنلاین" },
         { id: "ofline", name: "آفلاین" },
     ];
 
