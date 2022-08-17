@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { bixious } from "services/main";
+import { bixios } from "services/main";
 
 export const useCourseList = (status , filters = {} , filter) => {
     const [courseList, setourseList] = useState([]);
@@ -7,7 +7,7 @@ export const useCourseList = (status , filters = {} , filter) => {
 
   useEffect(() => {
     
-    bixious
+    bixios
     .get("/courses/getcourselist",{
       params:{
         full_name : filters.full_name,

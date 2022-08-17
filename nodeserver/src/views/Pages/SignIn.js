@@ -18,8 +18,9 @@ import {
 import signInImage from "assets/img/signInImage.png";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 import { bixios } from "services/main";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useHistory } from "react-router-dom";
 import { withRouter } from "helpers/components/withRouter/withRouter";
+
 function SignIn(props) {
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
@@ -49,7 +50,7 @@ function SignIn(props) {
   }
 
 
-  let history = props.history;
+  let history = useHistory();
 
 
 function createPost(){
@@ -286,4 +287,4 @@ function createPost(){
   );
 }
 
-export default withRouter(SignIn);
+export default SignIn;
