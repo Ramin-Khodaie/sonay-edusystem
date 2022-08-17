@@ -1,24 +1,21 @@
 import { bixios } from "services/main";
 
-export const createUser = (user) => {
+export const createCourse = (course) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await bixios.post("/users/createuser", {
-        _id: user._id,
-        username: user.username,
-        full_name: user.full_name,
-        phone: user.phone,
-        email: user.email,
-        password: user.password,
-        course: user.course,
-        roles: user.roles,
+      const res = await bixios.post("/courses/createcourse", {
+        _id: course._id,
+        course_name: course.course_name,
+        status: course.status,
+        next_course: course.next_course,
+        image : course.image
+
       });
       
       if (res.status === 200) {
         resolve(res.data);
       }
     } catch (error) {
-      console.log(99, error);
       if (error.response.status === 422) resolve(error.response.data.detail);
       if (error.response.status === 500) resolve(error.response.data.detail);
     }
@@ -30,10 +27,10 @@ export const createUser = (user) => {
 
 
 
-export const userList = (filters) => {
+export const courseList = (filters) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await bixios.get("/users/getuserlist", {
+      const res = await bixios.get("/courses/getcourselist", {
         params:{
           full_name : filters.full_name,
           course : filters.course,

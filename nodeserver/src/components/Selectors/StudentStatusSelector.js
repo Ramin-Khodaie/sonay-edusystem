@@ -2,10 +2,9 @@ import { Box, Select } from "@chakra-ui/react";
 
 const StudentStatusSelector = ({ onChange, filter }) => {
 
-    const studentStatus = [
-        { id: "online", name: "آنلاین" },
-        { id: "ofline", name: "آفلاین" },
-    ];
+    const studentStatus = require('../../status.json');
+    
+    
 
     const handleFilterChange = (field) => (e) => {
         const { value } = e.target
