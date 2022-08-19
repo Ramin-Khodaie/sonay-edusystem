@@ -1,14 +1,17 @@
 // import
 import React, { Component }  from 'react';
-import Dashboard from "./views/Dashboard/Dashboard.js";
-import Users from "./views/Dashboard/Users.js";
-import Courses from "./views/Dashboard/Courses.js";
-import Billing from "./views/Dashboard/Billing.js";
+import Dashboard from "./views/Admin/Dashboard.js";
+import Users from "./views/Admin/Users.js";
+import Courses from "./views/Admin/Courses.js";
+import Billing from "./views/Admin/Billing.js";
 import RTLPage from "./views/RTL/RTLPage.js";
-import Profile from "./views/Dashboard/Profile.js";
+import Profile from "./views/Admin/Profile.js";
 import SignIn from "./views/Pages/SignIn.js";
 import SignUp from "./views/Pages/SignUp.js";
-import { Icon } from '@chakra-ui/react'
+import Books from 'views/Student/Books.js';
+import Registration from 'views/Student/Registration.js';
+import Karne from 'views/Student/Karne.js';
+
 import {
   HomeIcon,
   StatsIcon,
@@ -18,7 +21,7 @@ import {
   RocketIcon,
   SupportIcon,
 } from "./components/Icons/Icons";
-import {FaUserAlt} from "react-icons/fa"
+import {FaUserAlt, FaRegistered, FaBook, FaPaperclip} from "react-icons/fa"
 var dashRoutes = [
   {
     path: "/dashboard",
@@ -51,6 +54,30 @@ var dashRoutes = [
     icon: <CreditIcon color='inherit' />,
     component: Billing,
     layout: "/admin",
+  },
+  {
+    path: "/karne",
+    name: "karne",
+    rtlName: "کارنامه",
+    icon: <FaPaperclip color='inherit' />,
+    component: Karne,
+    layout: "/student",
+  },
+  {
+    path: "/books",
+    name: "book",
+    rtlName: "کتاب",
+    icon: <FaBook color='inherit' />,
+    component: Books,
+    layout: "/student",
+  },
+  {
+    path: "/register",
+    name: "registration",
+    rtlName: "ثبت نام",
+    icon: <FaRegistered color='inherit' />,
+    component: Registration,
+    layout: "/student",
   },
   {
     path: "/rtl-support-page",
@@ -95,3 +122,48 @@ var dashRoutes = [
   },
 ];
 export default dashRoutes;
+
+export const getActiveRoute = (routes) => {
+  let activeRoute = "Default Brand Text";
+  for (let i = 0; i < routes.length; i++) {
+    if (routes[i].collapse) {
+      let collapseActiveRoute = getActiveRoute(routes[i].views);
+      if (collapseActiveRoute !== activeRoute) {
+        return collapseActiveRoute;
+      }
+    } else if (routes[i].category) {
+      let categoryActiveRoute = getActiveRoute(routes[i].views);
+      if (categoryActiveRoute !== activeRoute) {
+        return categoryActiveRoute;
+      }
+    } else {
+      if (
+        window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
+      ) {
+        return routes[i].name;
+      }
+    }
+  }
+  return activeRoute;
+};
+
+export const getActiveNavbar = (routes) => {
+  let activeNavbar = false;
+  for (let i = 0; i < routes.length; i++) {
+    if (routes[i].category) {
+      let categoryActiveNavbar = getActiveNavbar(routes[i].views);
+      if (categoryActiveNavbar !== activeNavbar) {
+        return categoryActiveNavbar;
+      }
+    } else {
+      if (
+        window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
+      ) {
+        if (routes[i].secondaryNavbar) {
+          return routes[i].secondaryNavbar;
+        }
+      }
+    }
+  }
+  return activeNavbar;
+};
