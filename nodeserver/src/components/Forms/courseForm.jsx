@@ -22,17 +22,23 @@ import useNotify from "helpers/notify/useNotify";
 import { useUser } from "hooks/users/useUser";
 import { useEffect } from "react";
 import { bixios } from "services/main";
+import { useDispatch, useSelector } from "react-redux";
+import { createCourseAction } from "redux/course/createCource/createCourseAction";
+import { courseListAction } from "redux/course/courseList/courseListAction";
 
 function CourseForm(props) {
-  const { changeSent, sent, courses, userId = "-1" } = props;
+  const { changeSent, sent, courses, courseId = "-1" } = props;
 
-  const currentUser = useUser(userId);
 
   const notify = useNotify();
   const status = [
     { id: "active", name: "فعال" },
     { id: "deactive", name: "غیرفعال" },
   ];
+
+
+
+
 
   const [formData, setFormData] = React.useState({
     _id: "",
@@ -50,52 +56,30 @@ function CourseForm(props) {
     setFormData({ ...formData, [field]: value });
   };
 
-  function createPost() {
-    changeSent({ sending: true });
-    bixios
-      .post("/courses/createcourse", {
-        _id: formData._id,
-        course_name: formData.courseName,
-        status: formData.courseStatus,
-        next_course: formData.nextCourse,
-        image : formData.image
-        
-      })
-      .then((response) => {
-        {
-          if (response.status === 200) {
-            changeSent({ status: true });
-            notify("دوره با موفقیت ثبت شد", true, "solid", "success");
-          } else {
-            changeSent({ sending: true });
-          }
-        }
-      })
-      .catch((e) => {
-        if (
-          e.response &&
-          e.response.status === 422 &&
-          e.response.data.detail.result === "missing_field"
-        ) {
-          changeSent({ status: true });
-          notify("خطا در ثبت داده", true, "solid", "error");
-        } else if (
-          e.response &&
-          e.response.status === 422 &&
-          e.response.data.detail.result === "not_unique"
-        ) {
-          changeSent({ status: true });
-          notify("این کاربر قبلا  ثبت نام کرده است", true, "solid", "error");
-        } else if (
-          e.response &&
-          e.response.status === 422 &&
-          e.response.data.detail.result === "empty_field"
-        ) {
-          changeSent({ status: true });
-          notify("لطفا تمامی فیلد ها را تکمیل نمایید", true, "solid", "error");
-        }
-      });
-  }
+  const dispatch = useDispatch();
+  const { isLoading, message, error } = useSelector(
+    (state) => state.createcourse
+  );
+
+
+
+  const createPost = async () => {
+    const newCourse = {
+      _id: formData._id,
+      course_name: formData.courseName,
+      status: formData.courseStatus,
+      next_course: formData.nextCourse,
+      image : formData.image
+    };
+    await dispatch(createCourseAction(newCourse));   
+    await dispatch(courseListAction({
+      "full_name" : "",
+      "course":"",
+      "status" : ""
+    }));   
+
+  };
+
 
   const handleCourseOptionChange = (e) => {
     const newOpt = courses.find((f) => f.id === e.target.value);
@@ -109,20 +93,18 @@ function CourseForm(props) {
     setFormData({ ...formData, courseStatus: newOpt });
   };
 
+
+
+
   useEffect(() => {
-    if (currentUser.length != 0) {
-      setFormData({
-        ...formData,
-        _id: currentUser[0]._id,
-        username: currentUser[0].username,
-        full_name: currentUser[0].full_name,
-        phone: currentUser[0].phone,
-        email: currentUser[0].email,
-        course: currentUser[0].course,
-        roles: currentUser[0].roles,
-      });
+    if (message != "") {
+      notify("دوره با موفقیت ثبت شد", true, "solid", "success");
     }
-  }, [currentUser]);
+    if (error) {
+      notify(error, true, "solid", "error");
+    }
+  }, [message, error]);
+
 
   return (
     <>

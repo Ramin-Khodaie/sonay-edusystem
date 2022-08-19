@@ -12,7 +12,6 @@ const CourseSelector = ({ onChange, filter }) => {
         const { value } = e.target
         onChange({ ...filter, [field]: value })
 
-        console.log(55, e.target.value)
     }
     return (
         <Box>

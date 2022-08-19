@@ -81,7 +81,10 @@ class SAY():
                 "creator": "admin",
                 "created": datetime.datetime.now(),
                 "roles": [{"id":"admin",
-                "name":"ادمین"}],
+                "name":"ادمین"},
+                          ],
+                "status" : {"id" : "reg",
+                                      "name" : "ثبت نام شده"}
             }
             col.insert_one(x)
 
@@ -381,6 +384,8 @@ class SAY():
         nu = {**user, '_id': str(ObjectId()), "password": hash_pass,
               "created": datetime.datetime.now(),
               "enable": True,
+              "status" : {"id" : "reg",
+                          "name" : "ثبت نام شده"},
               "creator": "self",
               "image" : ""}
 
@@ -434,7 +439,10 @@ class SAY():
             "course" : {
                 "id" : "-1",
                 "name" : "بازدید کننده"
-            }
+            },
+            
+              "status" : {"id" : "n_reg",
+                          "name" : "عدم ثبت نام"}
         }
         col.insert_one(obj_ready)
         return 200, "ok", "user is registered", None

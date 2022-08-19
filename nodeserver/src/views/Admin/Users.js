@@ -20,14 +20,23 @@ import CardHeader from "components/Card/CardHeader.js";
 import UserForm from "components/Forms/userForm";
 import TablesTableRow from "components/Tables/TablesTableRow";
 import UserListFilter from "components/UserListFilter/UserListFilter";
-import { useUserList } from "hooks/users/useUserList";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 
 
 const Users = () => {
 
+
+
+const [filter, setFilter] = React.useState({
+  fFullName: "",
+  fCourse: "",
+  fStatus: ""
+})
+
   const courses = [
-    { id: "1", name: "کلاس ۱" },
+    { id: "0", name: "کلاس ۱" },
     { id: "2", name: "کلاس ۲" },
     { id: "3", name: "کلاس ۳" },
   ];
@@ -35,12 +44,13 @@ const Users = () => {
  
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-  // const userList = useUserList(sent.status, {
-  //   full_name: filter.fFullName,
-  //   course: filter.fCourse,
-  //   status: filter.fStatus
-  // }, filter);
 
+  const { userList ,errorMessage , isPending  } = useSelector(
+    (state) => state.userList
+  );
+//  const filteredUserlist = userList.filter((i)=> i.full_name === filter.fFullName && i.course.id === filter.fCourse)
+console.log(11, filter)
+console.log(55,userList)
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
       <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
@@ -67,7 +77,7 @@ const Users = () => {
           <Flex direction="column">
             <Accordion allowToggle>
               <AccordionItem>
-                <UserListFilter />
+                <UserListFilter filter={filter} setFilter={setFilter} />
 
               </AccordionItem>
             </Accordion>
@@ -97,23 +107,25 @@ const Users = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {/* {userList.map((row, index, arr) => {
-                return (
-                  <TablesTableRow
-                    name={row.full_name}
-                    logo={row.image}
-                    email={row.email}
-                    subdomain={row.course.id}
-                    domain={row.course.name}
-                    status={"Online"} //{row.enable}
-                    date={row.phone}
-                    isLast={index === arr.length - 1 ? true : false}
-                    key={row._id}
-                    userId={row._id}
-                    courses={courses}
-                  />
-                );
-              })} */}
+              {
+                userList.filter((filtered) => (filtered.full_name === filter.fFullName &&
+                  filtered.course.id === filter.fCourse
+                  )).map(
+                  (row,index,arr) => <TablesTableRow
+                  name={row.full_name}
+                  logo={row.image}
+                  email={row.email}
+                  subdomain={row.course.id}
+                  domain={row.course.name}
+                  status={"Online"} //{row.enable}
+                  date={row.phone}
+                  isLast={index === arr.length - 1 ? true : false}
+                  key={row._id}
+                  userId={row._id}
+                  courses={courses}
+                  /> 
+                )
+              }
             </Tbody>
           </Table>
         </CardBody>
