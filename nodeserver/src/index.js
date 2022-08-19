@@ -28,6 +28,7 @@ import { Provider } from "react-redux";
 // Custom Chakra theme
 import theme from "./theme/theme.js";
 import "./index.css";
+import StudentLayout from "layouts/Student.js";
 
 ReactDOM.render(
   // <div className="body">
@@ -39,6 +40,7 @@ ReactDOM.render(
         <Switch>
           <Route path={`/auth`} component={AuthLayout} />
           <Route path={`/admin`} component={AdminLayout} />
+          <Route path={`/student`} component={StudentLayout}/>
           <Route path={`/rtl`} component={RTLLayout} />
           <Redirect from={`/`} to="/admin/dashboard" />
         </Switch>
