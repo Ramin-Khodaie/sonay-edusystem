@@ -18,21 +18,13 @@ import StudentStatusSelector from "components/Selectors/StudentStatusSelector";
 import UserNameInput from "components/Selectors/UserNameInput";
 import React, { useEffect } from "react";
 import { userListAction } from "redux/user/UserList/UserListAction";
-import { useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 
-const UserListFilter = () => {
+const UserListFilter = (props) => {
+  const {filter , setFilter} = props
   const dispatch = useDispatch();
 
 
-  const [filter, setFilter] = React.useState({
-    fFullName: "",
-    fCourse: "",
-    fStatus: ""
-  })
-
-  const handleFilterChange = (f) => {
-    setFilter(f);
-  };
 
   const getUSerList = async () => {
     
@@ -92,15 +84,15 @@ useEffect(() => {
               mb="20px"
             >
               <UserNameInput
-                onChange={handleFilterChange}
+                onChange={setFilter}
                 filter={filter}
               />
               <CourseSelector
-                onChange={handleFilterChange}
+                onChange={setFilter}
                 filter={filter}
               />
               <StudentStatusSelector
-                onChange={handleFilterChange}
+                onChange={setFilter}
                 filter={filter}
               />
             </SimpleGrid>

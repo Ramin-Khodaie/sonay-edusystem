@@ -1,11 +1,12 @@
 import { SiBreaker } from "react-icons/si";
 import { userList } from "services/user";
-import { userListSuccess } from "./UserListReducer";
+import { userListPending, userListSuccess , userListError } from "./UserListReducer";
 
 
 export const userListAction = (filters) => async (dispatch) => {
 
   
+  dispatch(userListPending());
 
   
   const res = await userList(filters);
@@ -15,5 +16,9 @@ export const userListAction = (filters) => async (dispatch) => {
 
       dispatch(userListSuccess(res.data.data));
    
-  }
+  } else {
+    
+    dispatch(userListError());
+  } 
+
 };
