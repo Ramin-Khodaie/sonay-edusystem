@@ -18,22 +18,31 @@ import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import UserForm from "components/Forms/userForm";
+import Pagination from "components/Pagination/pagination";
 import TablesTableRow from "components/Tables/TablesTableRow";
 import UserListFilter from "components/UserListFilter/UserListFilter";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-
-
 const Users = () => {
+ 
+  const textColor = useColorModeValue("gray.700", "white");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
 
 
+  const { userList, errorMessage, isPending } = useSelector(
+    (state) => state.userList
+  );
 
-const [filter, setFilter] = React.useState({
-  fFullName: "",
-  fCourse: "",
-  fStatus: ""
-})
+  const [state, setState] = useState([]);
+  useEffect(() => {
+    setState(userList);
+  }, [isPending]);
+
+  const [filter, setFilter] = React.useState({
+    fFullName: "",
+    fCourse: "",
+    fStatus: "",
+  });
 
   const courses = [
     { id: "0", name: "کلاس ۱" },
@@ -41,16 +50,36 @@ const [filter, setFilter] = React.useState({
     { id: "3", name: "کلاس ۳" },
   ];
 
- 
-  const textColor = useColorModeValue("gray.700", "white");
-  const borderColor = useColorModeValue("gray.200", "gray.600");
 
-  const { userList ,errorMessage , isPending  } = useSelector(
-    (state) => state.userList
-  );
-//  const filteredUserlist = userList.filter((i)=> i.full_name === filter.fFullName && i.course.id === filter.fCourse)
-console.log(11, filter)
-console.log(55,userList)
+  useEffect(() => {
+    setState(userList);
+    if (
+      filter.fCourse !== "" ||
+      filter.fFullName !== "" ||
+      filter.fStatus !== ""
+    ) {
+      doSearch();
+    }
+  }, [filter.fCourse, filter.fFullName]);
+
+
+  const doSearch = () => {
+    let tmp = userList;
+    if (filter.fFullName !== "") {
+      tmp = tmp.filter((f) => f.full_name === filter.fFullName);
+    }
+    if (filter.fCourse !== "") {
+      tmp = tmp.filter((f) => f.course.id === filter.fCourse);
+    }
+    setState(tmp);
+  };
+  const handleChange = (f) => {
+    setFilter(f);
+  };
+
+
+
+  
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
       <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
@@ -66,9 +95,7 @@ console.log(55,userList)
         </CardHeader>
 
         <CardBody>
-
-          <UserForm  courses={courses} />
-
+          <UserForm courses={courses} />
         </CardBody>
       </Card>
 
@@ -77,19 +104,18 @@ console.log(55,userList)
           <Flex direction="column">
             <Accordion allowToggle>
               <AccordionItem>
-                <UserListFilter filter={filter} setFilter={setFilter} />
-
+                <UserListFilter filter={filter} onChange={handleChange} />
               </AccordionItem>
             </Accordion>
           </Flex>
         </CardHeader>
-        <CardBody>
+        <CardBody >
           <Table
             style={{ direction: "rtl" }}
             variant="simple"
             color={textColor}
           >
-            <Thead>
+            <Thead style={{position: "sticky" }} >
               <Tr my=".8rem" pl="0px" color="gray.400">
                 <Th pl="0px" borderColor={borderColor} color="gray.400">
                   کاربر
@@ -106,32 +132,32 @@ console.log(55,userList)
                 <Th borderColor={borderColor}></Th>
               </Tr>
             </Thead>
-            <Tbody>
-              {
-                userList.filter((filtered) => (filtered.full_name === filter.fFullName &&
-                  filtered.course.id === filter.fCourse
-                  )).map(
-                  (row,index,arr) => <TablesTableRow
-                  name={row.full_name}
-                  logo={row.image}
-                  email={row.email}
-                  subdomain={row.course.id}
-                  domain={row.course.name}
-                  status={"Online"} //{row.enable}
-                  date={row.phone}
-                  isLast={index === arr.length - 1 ? true : false}
-                  key={row._id}
-                  userId={row._id}
-                  courses={courses}
-                  /> 
-                )
-              }
+            <Tbody  >
+              {state
+                // filter((filtered) => (filter.fFullName !== "" ? filtered.full_name === filter.fFullName ||
+                //   filtered.course.id === filter.fCourse : filtered
+                //   )).
+                .map((row, index, arr) => (
+                  <TablesTableRow
+                    name={row.full_name}
+                    logo={row.image}
+                    email={row.email}
+                    subdomain={row.course.id}
+                    domain={row.course.name}
+                    status={"Online"} //{row.enable}
+                    date={row.phone}
+                    isLast={index === arr.length - 1 ? true : false}
+                    key={row._id}
+                    userId={row._id}
+                    courses={courses}
+                  />
+                ))}
             </Tbody>
           </Table>
         </CardBody>
       </Card>
     </Flex>
   );
-}
+};
 
 export default Users;

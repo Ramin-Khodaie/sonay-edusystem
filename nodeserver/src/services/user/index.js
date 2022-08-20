@@ -18,7 +18,6 @@ export const createUser = (user) => {
         resolve(res.data);
       }
     } catch (error) {
-      console.log(99, error);
       if (error.response.status === 422) resolve(error.response.data.detail);
       if (error.response.status === 500) resolve(error.response.data.detail);
     }

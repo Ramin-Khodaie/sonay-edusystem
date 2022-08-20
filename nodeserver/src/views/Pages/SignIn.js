@@ -75,7 +75,6 @@ function createPost(){
   })
 
   .catch((err) => {
-    console.log(err)
   })
 }
 

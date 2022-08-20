@@ -78,7 +78,6 @@ function SignUp() {
         password_confirm: formData.confirm_password,
       })
       .then((response) => {
-        console.log(response.status)
         {
           response.status === 200
             ? setSent({ status: true })
