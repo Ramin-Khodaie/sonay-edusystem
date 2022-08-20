@@ -60,16 +60,21 @@ const Users = () => {
     ) {
       doSearch();
     }
-  }, [filter.fCourse, filter.fFullName]);
+  }, [filter.fCourse, filter.fFullName , filter.fStatus]);
 
 
   const doSearch = () => {
     let tmp = userList;
+
+
     if (filter.fFullName !== "") {
       tmp = tmp.filter((f) => f.full_name === filter.fFullName);
     }
     if (filter.fCourse !== "") {
       tmp = tmp.filter((f) => f.course.id === filter.fCourse);
+    }
+    if (filter.fStatus !== "") {
+      tmp = tmp.filter((f) => f.status.id === filter.fStatus);
     }
     setState(tmp);
   };
@@ -115,7 +120,7 @@ const Users = () => {
             variant="simple"
             color={textColor}
           >
-            <Thead style={{position: "sticky" }} >
+            <Thead>
               <Tr my=".8rem" pl="0px" color="gray.400">
                 <Th pl="0px" borderColor={borderColor} color="gray.400">
                   کاربر

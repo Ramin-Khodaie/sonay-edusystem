@@ -29,16 +29,17 @@ export const createUser = (user) => {
 
 
 
-export const userList = (filters) => {
+export const userList = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await bixios.get("/users/getuserlist", {
-        params:{
-          full_name : filters.full_name,
-          course : filters.course,
-          status : filters.status
-        }
-      }
+      const res = await bixios.get("/users/getuserlist"
+      //  {
+      //   params:{
+      //     full_name : filters.full_name,
+      //     course : filters.course,
+      //     status : filters.status
+      //   }
+      // }
       
       
       );
