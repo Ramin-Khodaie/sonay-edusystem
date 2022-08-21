@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 // Custom components
-
+import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 import React from "react";
 import MultiSelect from "components/MultiSelect/MultiSelect";
 
@@ -24,6 +24,7 @@ import { createUser } from "services/user";
 import { useDispatch, useSelector } from "react-redux";
 import { createUserAction } from "redux/user/userCreate/userCreateAction";
 import { userListAction } from "redux/user/UserList/UserListAction";
+import { useConfirmPassword } from "hooks/formValidation/useConfirmPassword";
 
 function UserForm(props) {
   const {  courses, userId = "-1" } = props;
@@ -91,6 +92,7 @@ function UserForm(props) {
     };
     await dispatch(createUserAction(newUser));   
     await dispatch(userListAction())
+    resetFormInputs()
   };
 
 
@@ -98,23 +100,12 @@ function UserForm(props) {
   function handleSubmitform() {
     doSubmit();
   }
-  // const { passMessage, passStatus } = useConfirmPassword(
-  //   formData.password,
-  //   formData.confirm_password
-  // );
+  const { passMessage, passStatus } = useConfirmPassword(
+    formData.password,
+    formData.confirm_password
+  );
 
-  // const {
-  //   userMessage,
-  //   userValid,
-  //   emailMessage,
-  //   emailValid,
-  //   phoneMessage,
-  //   phoneValid,
-  // } = useConfirmUserEmailPhone(
-  //   formData.username,
-  //   formData.email,
-  //   formData.phone
-  // );
+
 
   const handleOptionChange = (e) => {
     const newOpt = data.find((f) => f.id === e.target.value);
@@ -322,7 +313,9 @@ function UserForm(props) {
                   textAlign={"end"}
                   color={"red"}
                   fontWeight="medium"
-                ></Text>
+                >
+                  {passMessage}
+                </Text>
               </Flex>
               <Input
                 onChange={handleChange}
@@ -366,8 +359,8 @@ function UserForm(props) {
           mb={"20px"}
           type={"submit"}
         >
-          {/* {sent.sending ? "در حال ثبت " : "ثبت "} */}
-          {true ? "در حال ثبت " : "ثبت "}
+          {isLoading ? "در حال ثبت " : "ثبت "}
+          {/* {true ? "در حال ثبت " : "ثبت "} */}
         </Button>
       </FormControl>
     </>

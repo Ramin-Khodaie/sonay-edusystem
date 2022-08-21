@@ -11,6 +11,8 @@ import {
   Text,
   Accordion,
   AccordionItem,
+  Skeleton,
+  Stack
 } from "@chakra-ui/react";
 
 // Custom components
@@ -19,8 +21,10 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import UserForm from "components/Forms/userForm";
 import Pagination from "components/Pagination/pagination";
+import UserListSkleton from "components/Skleton/UserListSkleton/UserListSkleton";
 import TablesTableRow from "components/Tables/TablesTableRow";
 import UserListFilter from "components/UserListFilter/UserListFilter";
+import UserListTable from "components/UserListTable/UserListTable";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 const Users = () => {
@@ -82,8 +86,6 @@ const Users = () => {
     setFilter(f);
   };
 
-
-
   
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -114,52 +116,17 @@ const Users = () => {
             </Accordion>
           </Flex>
         </CardHeader>
-        <CardBody >
-          <Table
-            style={{ direction: "rtl" }}
-            variant="simple"
-            color={textColor}
-          >
-            <Thead>
-              <Tr my=".8rem" pl="0px" color="gray.400">
-                <Th pl="0px" borderColor={borderColor} color="gray.400">
-                  کاربر
-                </Th>
-                <Th borderColor={borderColor} color="gray.400">
-                  دوره فعلی
-                </Th>
-                <Th borderColor={borderColor} color="gray.400">
-                  وضعیت
-                </Th>
-                <Th borderColor={borderColor} color="gray.400">
-                  شماره تماس
-                </Th>
-                <Th borderColor={borderColor}></Th>
-              </Tr>
-            </Thead>
-            <Tbody  >
-              {state
-                // filter((filtered) => (filter.fFullName !== "" ? filtered.full_name === filter.fFullName ||
-                //   filtered.course.id === filter.fCourse : filtered
-                //   )).
-                .map((row, index, arr) => (
-                  <TablesTableRow
-                    name={row.full_name}
-                    logo={row.image}
-                    email={row.email}
-                    subdomain={row.course.id}
-                    domain={row.course.name}
-                    status={"Online"} //{row.enable}
-                    date={row.phone}
-                    isLast={index === arr.length - 1 ? true : false}
-                    key={row._id}
-                    userId={row._id}
-                    courses={courses}
-                  />
-                ))}
-            </Tbody>
-          </Table>
-        </CardBody>
+
+
+
+{
+  isPending ? <UserListSkleton /> : <UserListTable data={state} courses={courses} />
+
+}
+
+     
+
+
       </Card>
     </Flex>
   );
