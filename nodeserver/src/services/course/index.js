@@ -5,7 +5,7 @@ export const createCourse = (course) => {
     try {
       const res = await bixios.post("/courses/createcourse", {
         _id: course._id,
-        course_name: course.course_name,
+        name: course.name,
         status: course.status,
         next_course: course.next_course,
         image : course.image
@@ -27,16 +27,10 @@ export const createCourse = (course) => {
 
 
 
-export const courseList = (filters) => {
+export const courseList = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await bixios.get("/courses/getcourselist", {
-        params:{
-          full_name : filters.full_name,
-          course : filters.course,
-          status : filters.status
-        }
-      }
+      const res = await bixios.get("/courses/getcourselist"
       
       
       );

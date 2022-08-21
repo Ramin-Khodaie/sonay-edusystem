@@ -13,7 +13,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import CourseSelector from "components/Selectors/CourseSelector";
+import CustomSelector from "components/Selectors/CustomSelector";
 import StudentStatusSelector from "components/Selectors/StudentStatusSelector";
 import UserNameInput from "components/Selectors/UserNameInput";
 import React, { useEffect } from "react";
@@ -21,26 +21,12 @@ import { userListAction } from "redux/user/UserList/UserListAction";
 import { connect, useDispatch, useSelector } from "react-redux";
 
 const UserListFilter = (props) => {
-  const {filter , onChange} = props
-  const dispatch = useDispatch();
+  const { filter, onChange, courses ,selectChange , studentStatus } = props;
 
 
 
-  const getUSerList = async () => {
-    
-    const filters = {
-
-    full_name: filter.fFullName,
-    course: filter.fCourse,
-    status: filter.fStatus
-    }
-    await dispatch(userListAction(filters)); 
-  };
 
 
-useEffect(() => {
-  getUSerList()
-} , [])
 
 
 
@@ -83,17 +69,20 @@ useEffect(() => {
               spacing="24px"
               mb="20px"
             >
-              <UserNameInput
-                onChange={onChange}
-                filter={filter}
+              <UserNameInput onChange={onChange} filter={filter} />
+              <CustomSelector
+                onChange={selectChange}
+                data={courses}
+                state={filter}
+                placeHolder={"دوره کاربر را انتخاب کنید"}
+                fieldId={"fCourse"}
               />
-              <CourseSelector
-                onChange={onChange}
-                filter={filter}
-              />
-              <StudentStatusSelector
-                onChange={onChange}
-                filter={filter}
+              <CustomSelector
+                onChange={selectChange}
+                data={studentStatus}
+                state={filter}
+                placeHolder={"وضعیت کاربر را انتخاب کنید"}
+                fieldId={"fStatus"}
               />
             </SimpleGrid>
           </AccordionPanel>

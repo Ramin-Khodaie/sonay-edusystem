@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createUserAction } from "redux/user/userCreate/userCreateAction";
 import { userListAction } from "redux/user/UserList/UserListAction";
 import { useConfirmPassword } from "hooks/formValidation/useConfirmPassword";
+import CustomSelector from "components/Selectors/CustomSelector";
 
 function UserForm(props) {
   const {  courses, userId = "-1" } = props;
@@ -228,7 +229,7 @@ function UserForm(props) {
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                 دوره{" "}
               </FormLabel>
-              <Select
+              {/* <Select
                 onChange={handleCourseOptionChange}
                 id="course"
                 focusBorderColor="purple.300"
@@ -251,7 +252,11 @@ function UserForm(props) {
                     </option>
                   );
                 })}
-              </Select>
+              </Select> */}
+
+
+
+              <CustomSelector onChange={setFormData} state={formData} data={courses} fieldId={"course"} />
             </Box>
           </Box>
 

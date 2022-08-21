@@ -25,7 +25,6 @@ import {
   import TablesTableRow from "components/Tables/TablesTableRow";
   import UserListFilter from "components/UserListFilter/UserListFilter";
   import React, { useEffect, useState } from "react";
-  import { useDispatch, useSelector } from "react-redux";
   function UserListTable(props) {
     const {data , courses} = props
 

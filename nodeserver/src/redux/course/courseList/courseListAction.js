@@ -3,13 +3,13 @@ import { courseList } from "services/course";
 import { courseListPending, courseListSuccess , courseListError } from "./courseListReducer";
 
 
-export const courseListAction = (filters) => async (dispatch) => {
+export const courseListAction = () => async (dispatch) => {
 
   
   dispatch(courseListPending());
 
   
-  const res = await courseList(filters);
+  const res = await courseList();
   
 
   if (res.status === 200) {

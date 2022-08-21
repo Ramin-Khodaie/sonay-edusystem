@@ -12,7 +12,7 @@ import {
   Accordion,
   AccordionItem,
   Skeleton,
-  Stack
+  Stack,
 } from "@chakra-ui/react";
 
 // Custom components
@@ -27,15 +27,26 @@ import UserListFilter from "components/UserListFilter/UserListFilter";
 import UserListTable from "components/UserListTable/UserListTable";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { courseListAction } from "redux/course/courseList/courseListAction";
+import { userListAction } from "redux/user/UserList/UserListAction";
 const Users = () => {
- 
   const textColor = useColorModeValue("gray.700", "white");
-  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const dispatch = useDispatch();
 
-
+  const getList = async () => {
+    await dispatch(userListAction());
+    await dispatch(courseListAction());
+  };
+  useEffect(() => {
+    getList();
+    
+  }, []);
+const studentStatus = require('../../status.json');
   const { userList, errorMessage, isPending } = useSelector(
     (state) => state.userList
   );
+
+  const { courseList } = useSelector((state) => state.courseList);
 
   const [state, setState] = useState([]);
   useEffect(() => {
@@ -44,16 +55,9 @@ const Users = () => {
 
   const [filter, setFilter] = React.useState({
     fFullName: "",
-    fCourse: "",
-    fStatus: "",
+    fCourse: { id: "", name: "" },
+    fStatus: { id: "", name: "" },
   });
-
-  const courses = [
-    { id: "0", name: "کلاس ۱" },
-    { id: "2", name: "کلاس ۲" },
-    { id: "3", name: "کلاس ۳" },
-  ];
-
 
   useEffect(() => {
     setState(userList);
@@ -64,21 +68,23 @@ const Users = () => {
     ) {
       doSearch();
     }
-  }, [filter.fCourse, filter.fFullName , filter.fStatus]);
-
+  }, [filter.fCourse, filter.fFullName, filter.fStatus]);
 
   const doSearch = () => {
     let tmp = userList;
-
+ 
 
     if (filter.fFullName !== "") {
+
       tmp = tmp.filter((f) => f.full_name === filter.fFullName);
     }
-    if (filter.fCourse !== "") {
-      tmp = tmp.filter((f) => f.course.id === filter.fCourse);
+    if (filter.fCourse.id !== "") {
+
+      tmp = tmp.filter((f) => f.course.id === filter.fCourse.id);
     }
-    if (filter.fStatus !== "") {
-      tmp = tmp.filter((f) => f.status.id === filter.fStatus);
+    if (filter.fStatus.id !== "") {
+
+      tmp = tmp.filter((f) => f.status.id === filter.fStatus.id);
     }
     setState(tmp);
   };
@@ -86,7 +92,6 @@ const Users = () => {
     setFilter(f);
   };
 
-  
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
       <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
@@ -102,7 +107,7 @@ const Users = () => {
         </CardHeader>
 
         <CardBody>
-          <UserForm courses={courses} />
+          <UserForm courses={courseList} />
         </CardBody>
       </Card>
 
@@ -111,22 +116,23 @@ const Users = () => {
           <Flex direction="column">
             <Accordion allowToggle>
               <AccordionItem>
-                <UserListFilter filter={filter} onChange={handleChange} />
+                <UserListFilter
+                  courses={courseList}
+                  filter={filter}
+                  onChange={handleChange}
+                  selectChange={setFilter}
+                  studentStatus={studentStatus}
+                />
               </AccordionItem>
             </Accordion>
           </Flex>
         </CardHeader>
 
-
-
-{
-  isPending ? <UserListSkleton /> : <UserListTable data={state} courses={courses} />
-
-}
-
-     
-
-
+        {isPending ? (
+          <UserListSkleton />
+        ) : (
+          <UserListTable data={state} courses={courseList} />
+        )}
       </Card>
     </Flex>
   );

@@ -2,7 +2,6 @@ import { Box, Select } from "@chakra-ui/react";
 
 const StudentStatusSelector = ({ onChange, filter }) => {
 
-    const studentStatus = require('../../status.json');
     
     
 

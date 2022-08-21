@@ -1,25 +1,25 @@
 [{
-    "id" : "n_reg",
+    "_id" : "n_reg",
     "name" : "عدم ثبت نام",
     "inherit" :["mark"]
 },
 {
-    "id" : "reg",
+    "_id" : "reg",
     "name" : "ثبت نام شده",
     "inherit" :["report","dashboard"]
 },
 {
-    "id" : "ord",
+    "_id" : "ord",
     "name" : "سفارش کتاب",
     "inherit" :["dashboard"]
 },
 {
-    "id" : "mark",
+    "_id" : "mark",
     "name" : "مشاهده نمره",
     "inherit" :[]
 },
 {
-    "id" : "objection",
+    "_id" : "objection",
     "name" : "اعتراض به نمره",
     "inherit" :["dashboard"]
 }
