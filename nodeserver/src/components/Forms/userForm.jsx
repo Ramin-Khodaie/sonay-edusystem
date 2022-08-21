@@ -256,7 +256,7 @@ function UserForm(props) {
 
 
 
-              <CustomSelector onChange={setFormData} state={formData} data={courses} fieldId={"course"} />
+              <CustomSelector  onChange={setFormData} state={formData} data={courses} fieldId={"course"} />
             </Box>
           </Box>
 

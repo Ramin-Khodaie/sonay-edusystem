@@ -72,17 +72,21 @@ const studentStatus = require('../../status.json');
 
   const doSearch = () => {
     let tmp = userList;
+    console.log(filter)
  
 
     if (filter.fFullName !== "") {
+      console.log(1)
 
       tmp = tmp.filter((f) => f.full_name === filter.fFullName);
     }
     if (filter.fCourse.id !== "") {
+      console.log(2)
 
       tmp = tmp.filter((f) => f.course.id === filter.fCourse.id);
     }
     if (filter.fStatus.id !== "") {
+      console.log(3)
 
       tmp = tmp.filter((f) => f.status.id === filter.fStatus.id);
     }
