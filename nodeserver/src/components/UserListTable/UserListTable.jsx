@@ -23,7 +23,7 @@ import {
   import UserForm from "components/Forms/userForm";
   import Pagination from "components/Pagination/pagination";
   import TablesTableRow from "components/Tables/TablesTableRow";
-  import UserListFilter from "components/UserListFilter/UserListFilter";
+  import UserListFilter from "components/Filter/UserListFilter";
   import React, { useEffect, useState } from "react";
   function UserListTable(props) {
     const {data , courses} = props

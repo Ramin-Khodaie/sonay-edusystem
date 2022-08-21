@@ -29,9 +29,8 @@ import UserForm from "components/Forms/userForm";
 import CustomSelector from "components/Selectors/CustomSelector";
 import TablesTableRow from "components/Tables/TablesTableRow";
 import { useCourseList } from "hooks/users/useCourseList";
-import { useUserList } from "hooks/users/useUserList";
 import React, { useEffect, useState } from "react";
-
+import CourseListFilter from "components/Filter/CourseListFilter";
 import { useDispatch, useSelector } from "react-redux";
 import { courseListAction } from "redux/course/courseList/courseListAction";
 
@@ -50,10 +49,6 @@ function Courses() {
     setState(courseList);
   }, [isPending]);
 
-  const status = [
-    { id: "onlinr", name: "آنلاین" },
-    { id: "ofline", name: "آفلاین" },
-  ];
 
   const [sent, setSent] = React.useState({
     status: false,
@@ -62,15 +57,21 @@ function Courses() {
 
   const [filter, setFilter] = React.useState({
     fFullName: "",
-    fCourse: "",
-    fStatus: "",
+    fTeacher: {
+      "id" : "",
+      "name" : ""
+    },
+    fStatus: {
+      "id" : "",
+      "name" : ""
+    },
   });
 
   const handleSent = (sentObj) => {
     setSent(sentObj);
   };
 
-  const handleFilterChange = (e) => {
+  const handleChange = (e) => {
     const field = e.target.id;
     const value = e.target.value;
     setFilter({ ...filter, [field]: value });
@@ -86,6 +87,41 @@ function Courses() {
   useEffect(() => {
     getCourseList();
   }, []);
+
+
+  useEffect(() => {
+    setState(courseList);
+    if (
+      filter.fTeacher !== "" ||
+      filter.fFullName !== "" ||
+      filter.fStatus !== ""
+    ) {
+      doSearch();
+    }
+  }, [filter.fTeacher, filter.fFullName, filter.fStatus]);
+
+console.log(filter)
+  const doSearch = () => {
+    let tmp = courseList;
+ 
+
+    if (filter.fFullName !== "") {
+      console.log(1)
+
+      tmp = tmp.filter((f) => f.name === filter.fFullName);
+    }
+    // if (filter.fTeacher.id !== "") {
+    //   console.log(2)
+
+    //   tmp = tmp.filter((f) => f.teacher.id === filter.fTeacher.id);
+    // }
+    if (filter.fStatus.id !== "") {
+      console.log(3)
+
+      tmp = tmp.filter((f) => f.status.id === filter.fStatus.id);
+    }
+    setState(tmp);
+  };
 
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -121,72 +157,40 @@ function Courses() {
 
       <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
         <CardHeader p="6px 0px 22px 0px">
-          <Flex direction="column">
-            <Accordion allowToggle>
-              <AccordionItem>
-                <Flex>
-                  <Box>
-                    <h2>
-                      <AccordionButton>
-                        <Box flex="1" textAlign="left">
-                          {" "}
-                          نمایش فیلتر ها{" "}
-                        </Box>
-                        <AccordionIcon />
-                      </AccordionButton>
-                    </h2>{" "}
-                  </Box>
-                  <Spacer />
-                  <Box>
-                    <Text
-                      fontSize="xl"
-                      color={textColor}
-                      fontWeight="bold"
-                      textAlign={"right"}
-                      my={"10px"}
-                    >
-                      لیست دوره ها{" "}
-                    </Text>
-                  </Box>
-                </Flex>
+          
 
-                <AccordionPanel pb={4}>
-                  <SimpleGrid
-                    style={{ direction: "rtl" }}
-                    columns={{ sm: 1, md: 3, xl: 3 }}
-                    spacing="24px"
-                    mb="20px"
-                  >
-                    <Box>
-                      <Input
-                        id="fFullName"
-                        onChange={handleFilterChange}
-                        focusBorderColor="purple.300"
-                        textAlign="right"
-                        variant="outline"
-                        fontSize="sm"
-                        ms="4px"
-                        type="text"
-                        placeholder="نام و نام خانوادگی را وارد کنید"
-                        mb="10px"
-                        size="md"
-                      />
-                    </Box>
 
-                    <Box>
-                      <CustomSelector
-                        onChange={setFilter}
-                        state={filter}
-                        data={statusData}
-                        fieldId={"fStatus"}
-                        placeHolder={"وضعیت دوره را انتخاب کنید"}
-                      />
-                    </Box>
-                  </SimpleGrid>
-                </AccordionPanel>
-              </AccordionItem>
-            </Accordion>
-          </Flex>
+
+
+
+
+
+          <CourseListFilter
+          filter={filter}
+          onChange={handleChange}
+          courses={courseList}
+          selectChange={setFilter}
+          courseStatus={statusData}
+          teacher={[{"_id" : "5",
+        "name" : "aysan eshraghi"},
+        {"_id" : "6",
+        "name" : "jafar jafari"}]}
+
+
+           />
+
+
+
+
+
+
+
+
+
+
+
+
+
         </CardHeader>
         <CardBody>
           <Table
@@ -206,11 +210,17 @@ function Courses() {
                   وضعیت
                 </Th>
 
-                <Th borderColor={borderColor}></Th>
+                <Th borderColor={borderColor} color="gray.400">
+                  دبیر
+                </Th>
+                <Th borderColor={borderColor} color="gray.400">
+                  ویرایش
+                </Th>
+
               </Tr>
             </Thead>
             <Tbody>
-              {courseList.map((row, index, arr) => {
+              {state.map((row, index, arr) => {
                 return (
                   <TablesTableRow
                     name={row.name}
@@ -218,6 +228,7 @@ function Courses() {
                     subdomain={"hi"}
                     domain={row.next_course.name}
                     status={"Online"} //{row.enable}
+                    date={"اشراقی"}
                     isLast={index === arr.length - 1 ? true : false}
                     key={row._id}
                     changeSent={handleSent}

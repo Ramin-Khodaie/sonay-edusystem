@@ -23,7 +23,7 @@ import UserForm from "components/Forms/userForm";
 import Pagination from "components/Pagination/pagination";
 import UserListSkleton from "components/Skleton/UserListSkleton/UserListSkleton";
 import TablesTableRow from "components/Tables/TablesTableRow";
-import UserListFilter from "components/UserListFilter/UserListFilter";
+import UserListFilter from "components/Filter/UserListFilter";
 import UserListTable from "components/UserListTable/UserListTable";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -72,21 +72,17 @@ const studentStatus = require('../../status.json');
 
   const doSearch = () => {
     let tmp = userList;
-    console.log(filter)
  
 
     if (filter.fFullName !== "") {
-      console.log(1)
 
       tmp = tmp.filter((f) => f.full_name === filter.fFullName);
     }
     if (filter.fCourse.id !== "") {
-      console.log(2)
 
       tmp = tmp.filter((f) => f.course.id === filter.fCourse.id);
     }
     if (filter.fStatus.id !== "") {
-      console.log(3)
 
       tmp = tmp.filter((f) => f.status.id === filter.fStatus.id);
     }

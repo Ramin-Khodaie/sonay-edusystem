@@ -20,7 +20,6 @@ import MultiSelect from "components/MultiSelect/MultiSelect";
 import useNotify from "helpers/notify/useNotify";
 import { useUser } from "hooks/users/useUser";
 import { useEffect } from "react";
-import { createUser } from "services/user";
 import { useDispatch, useSelector } from "react-redux";
 import { createUserAction } from "redux/user/userCreate/userCreateAction";
 import { userListAction } from "redux/user/UserList/UserListAction";
