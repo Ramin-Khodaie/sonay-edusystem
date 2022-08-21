@@ -11,7 +11,6 @@ export const createUserAction = (user) => async (dispatch) => {
   dispatch(createUserPending());
   const res = await createUser(user);
   
-console.log(12, res)
   switch (res.result) {
     case "ok":
       dispatch(createUserSuccess("کاربر با موفقیت ثبت شد"));

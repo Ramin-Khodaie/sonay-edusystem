@@ -458,7 +458,7 @@ class SAY():
         if status != "":
             filters["status"] = status
         col : Collection = self.db.mongo_db["s_user"]
-        data = list(col.find(filters,{"_id" : 1,"image" : 1,"full_name" : 1 ,"email" : 1,"course" : 1,"enable" : 1,"phone" : 1}))
+        data = list(col.find(filters,{"_id" : 1,"image" : 1,"full_name" : 1 ,"email" : 1,"course" : 1,"enable" : 1,"phone" : 1 , "status" : 1}))
         return 200, "ok", "user is registered", data
     def get_user(self,user_id):
         col: Collection = self.db.mongo_db["s_user"]

@@ -23,6 +23,7 @@ import { useEffect } from "react";
 import { createUser } from "services/user";
 import { useDispatch, useSelector } from "react-redux";
 import { createUserAction } from "redux/user/userCreate/userCreateAction";
+import { userListAction } from "redux/user/UserList/UserListAction";
 
 function UserForm(props) {
   const {  courses, userId = "-1" } = props;
@@ -89,6 +90,7 @@ function UserForm(props) {
       roles: formData.roles,
     };
     await dispatch(createUserAction(newUser));   
+    await dispatch(userListAction())
   };
 
 

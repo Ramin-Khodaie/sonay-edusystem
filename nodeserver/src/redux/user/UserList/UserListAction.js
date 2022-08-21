@@ -3,13 +3,13 @@ import { userList } from "services/user";
 import { userListPending, userListSuccess , userListError } from "./UserListReducer";
 
 
-export const userListAction = (filters) => async (dispatch) => {
+export const userListAction = () => async (dispatch) => {
 
   
   dispatch(userListPending());
 
   
-  const res = await userList(filters);
+  const res = await userList();
   
 
   if (res.status === 200) {

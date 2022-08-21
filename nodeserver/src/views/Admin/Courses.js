@@ -201,7 +201,6 @@ import { useCourseList } from "hooks/users/useCourseList";
               </Thead>
               <Tbody>
                 {courseList.map((row, index, arr) => {
-                  console.log(courseList)
                   return (
                     <TablesTableRow
                     name={row.course_name}

@@ -4,6 +4,7 @@ const UserNameInput = ({ onChange, filter }) => {
 
     const handleFilterChange = (field) => (e) => {
         const { value } = e.target
+       
         onChange({ ...filter, [field]: value })
     }
     return (

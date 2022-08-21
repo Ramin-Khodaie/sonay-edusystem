@@ -44,7 +44,6 @@ function Billing() {
   const borderColor = useColorModeValue("#dee2e6", "transparent");
   const { colorMode } = useColorMode();
 
-  console.log(colorMode);
 
   return (
     <Flex direction='column' pt={{ base: "120px", md: "75px" }}>

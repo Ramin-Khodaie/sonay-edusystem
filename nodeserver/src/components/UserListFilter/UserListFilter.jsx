@@ -21,7 +21,7 @@ import { userListAction } from "redux/user/UserList/UserListAction";
 import { connect, useDispatch, useSelector } from "react-redux";
 
 const UserListFilter = (props) => {
-  const {filter , setFilter} = props
+  const {filter , onChange} = props
   const dispatch = useDispatch();
 
 
@@ -84,15 +84,15 @@ useEffect(() => {
               mb="20px"
             >
               <UserNameInput
-                onChange={setFilter}
+                onChange={onChange}
                 filter={filter}
               />
               <CourseSelector
-                onChange={setFilter}
+                onChange={onChange}
                 filter={filter}
               />
               <StudentStatusSelector
-                onChange={setFilter}
+                onChange={onChange}
                 filter={filter}
               />
             </SimpleGrid>
