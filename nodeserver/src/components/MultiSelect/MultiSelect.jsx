@@ -18,6 +18,7 @@ import React from "react";
 const MultiSelect = ({ handleChange, handleDelete, data, options }) => {
 
   const notify = useNotify();
+  console.log(options,data,89)
 
   return (
     <>
@@ -28,7 +29,7 @@ const MultiSelect = ({ handleChange, handleDelete, data, options }) => {
         placeholder="نقش کاربر را انتخاب کنید"
       >
         {data.map((d) => (
-          <option value={d.id}>{d.name}</option>
+          <option value={d._id}>{d.name}</option>
         ))}
       </Select>
 
@@ -41,7 +42,7 @@ const MultiSelect = ({ handleChange, handleDelete, data, options }) => {
         overflow="hidden"
       >
         <Wrap>
-          {options.map((d) => {
+          {options[0] && options.map((d) => {
             
             return (
               <WrapItem>
@@ -55,7 +56,7 @@ const MultiSelect = ({ handleChange, handleDelete, data, options }) => {
                   <TagLabel my={"15px"}>{d.name}</TagLabel>
 
                   <IconButton
-                    onClick={handleDelete(d.id)}
+                    onClick={handleDelete(d._id)}
                     size={"sm"}
                     colorScheme="transparent"
                     aria-label="Search database"
