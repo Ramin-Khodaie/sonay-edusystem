@@ -13,22 +13,24 @@ import {
 } from "@chakra-ui/react";
 
 // Custom components
-
+import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 import React from "react";
 import MultiSelect from "components/MultiSelect/MultiSelect";
 
 import useNotify from "helpers/notify/useNotify";
 import { useUser } from "hooks/users/useUser";
 import { useEffect } from "react";
-import { createUser } from "services/user";
 import { useDispatch, useSelector } from "react-redux";
 import { createUserAction } from "redux/user/userCreate/userCreateAction";
 import { userListAction } from "redux/user/UserList/UserListAction";
+import { useConfirmPassword } from "hooks/formValidation/useConfirmPassword";
+import CustomSelector from "components/Selectors/CustomSelector";
 
 function UserForm(props) {
   const {  courses, userId = "-1" } = props;
 
   const currentUser = useUser(userId);
+  console.log(currentUser,22)
   const dispatch = useDispatch();
   const { isLoading, message, error } = useSelector(
     (state) => state.createuser
@@ -91,6 +93,7 @@ function UserForm(props) {
     };
     await dispatch(createUserAction(newUser));   
     await dispatch(userListAction())
+    resetFormInputs()
   };
 
 
@@ -98,23 +101,12 @@ function UserForm(props) {
   function handleSubmitform() {
     doSubmit();
   }
-  // const { passMessage, passStatus } = useConfirmPassword(
-  //   formData.password,
-  //   formData.confirm_password
-  // );
+  const { passMessage, passStatus } = useConfirmPassword(
+    formData.password,
+    formData.confirm_password
+  );
 
-  // const {
-  //   userMessage,
-  //   userValid,
-  //   emailMessage,
-  //   emailValid,
-  //   phoneMessage,
-  //   phoneValid,
-  // } = useConfirmUserEmailPhone(
-  //   formData.username,
-  //   formData.email,
-  //   formData.phone
-  // );
+
 
   const handleOptionChange = (e) => {
     const newOpt = data.find((f) => f.id === e.target.value);
@@ -237,7 +229,7 @@ function UserForm(props) {
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                 دوره{" "}
               </FormLabel>
-              <Select
+              {/* <Select
                 onChange={handleCourseOptionChange}
                 id="course"
                 focusBorderColor="purple.300"
@@ -260,7 +252,11 @@ function UserForm(props) {
                     </option>
                   );
                 })}
-              </Select>
+              </Select> */}
+
+
+
+              <CustomSelector  onChange={setFormData} state={formData} data={courses} fieldId={"course"} />
             </Box>
           </Box>
 
@@ -322,7 +318,9 @@ function UserForm(props) {
                   textAlign={"end"}
                   color={"red"}
                   fontWeight="medium"
-                ></Text>
+                >
+                  {passMessage}
+                </Text>
               </Flex>
               <Input
                 onChange={handleChange}
@@ -366,8 +364,8 @@ function UserForm(props) {
           mb={"20px"}
           type={"submit"}
         >
-          {/* {sent.sending ? "در حال ثبت " : "ثبت "} */}
-          {true ? "در حال ثبت " : "ثبت "}
+          {isLoading ? "در حال ثبت " : "ثبت "}
+          {/* {true ? "در حال ثبت " : "ثبت "} */}
         </Button>
       </FormControl>
     </>

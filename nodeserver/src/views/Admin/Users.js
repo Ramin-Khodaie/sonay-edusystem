@@ -11,6 +11,8 @@ import {
   Text,
   Accordion,
   AccordionItem,
+  Skeleton,
+  Stack,
 } from "@chakra-ui/react";
 
 // Custom components
@@ -19,19 +21,32 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import UserForm from "components/Forms/userForm";
 import Pagination from "components/Pagination/pagination";
+import UserListSkleton from "components/Skleton/UserListSkleton/UserListSkleton";
 import TablesTableRow from "components/Tables/TablesTableRow";
-import UserListFilter from "components/UserListFilter/UserListFilter";
+import UserListFilter from "components/Filter/UserListFilter";
+import UserListTable from "components/UserListTable/UserListTable";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { courseListAction } from "redux/course/courseList/courseListAction";
+import { userListAction } from "redux/user/UserList/UserListAction";
 const Users = () => {
- 
   const textColor = useColorModeValue("gray.700", "white");
-  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const dispatch = useDispatch();
 
-
+  const getList = async () => {
+    await dispatch(userListAction());
+    await dispatch(courseListAction());
+  };
+  useEffect(() => {
+    getList();
+    
+  }, []);
+const studentStatus = require('../../status.json');
   const { userList, errorMessage, isPending } = useSelector(
     (state) => state.userList
   );
+
+  const { courseList } = useSelector((state) => state.courseList);
 
   const [state, setState] = useState([]);
   useEffect(() => {
@@ -40,16 +55,9 @@ const Users = () => {
 
   const [filter, setFilter] = React.useState({
     fFullName: "",
-    fCourse: "",
-    fStatus: "",
+    fCourse: { id: "", name: "" },
+    fStatus: { id: "", name: "" },
   });
-
-  const courses = [
-    { id: "0", name: "کلاس ۱" },
-    { id: "2", name: "کلاس ۲" },
-    { id: "3", name: "کلاس ۳" },
-  ];
-
 
   useEffect(() => {
     setState(userList);
@@ -60,21 +68,23 @@ const Users = () => {
     ) {
       doSearch();
     }
-  }, [filter.fCourse, filter.fFullName , filter.fStatus]);
-
+  }, [filter.fCourse, filter.fFullName, filter.fStatus]);
 
   const doSearch = () => {
     let tmp = userList;
-
+ 
 
     if (filter.fFullName !== "") {
+
       tmp = tmp.filter((f) => f.full_name === filter.fFullName);
     }
-    if (filter.fCourse !== "") {
-      tmp = tmp.filter((f) => f.course.id === filter.fCourse);
+    if (filter.fCourse.id !== "") {
+
+      tmp = tmp.filter((f) => f.course.id === filter.fCourse.id);
     }
-    if (filter.fStatus !== "") {
-      tmp = tmp.filter((f) => f.status.id === filter.fStatus);
+    if (filter.fStatus.id !== "") {
+
+      tmp = tmp.filter((f) => f.status.id === filter.fStatus.id);
     }
     setState(tmp);
   };
@@ -82,9 +92,6 @@ const Users = () => {
     setFilter(f);
   };
 
-
-
-  
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
       <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
@@ -100,7 +107,7 @@ const Users = () => {
         </CardHeader>
 
         <CardBody>
-          <UserForm courses={courses} />
+          <UserForm courses={courseList} />
         </CardBody>
       </Card>
 
@@ -109,57 +116,23 @@ const Users = () => {
           <Flex direction="column">
             <Accordion allowToggle>
               <AccordionItem>
-                <UserListFilter filter={filter} onChange={handleChange} />
+                <UserListFilter
+                  courses={courseList}
+                  filter={filter}
+                  onChange={handleChange}
+                  selectChange={setFilter}
+                  studentStatus={studentStatus}
+                />
               </AccordionItem>
             </Accordion>
           </Flex>
         </CardHeader>
-        <CardBody >
-          <Table
-            style={{ direction: "rtl" }}
-            variant="simple"
-            color={textColor}
-          >
-            <Thead>
-              <Tr my=".8rem" pl="0px" color="gray.400">
-                <Th pl="0px" borderColor={borderColor} color="gray.400">
-                  کاربر
-                </Th>
-                <Th borderColor={borderColor} color="gray.400">
-                  دوره فعلی
-                </Th>
-                <Th borderColor={borderColor} color="gray.400">
-                  وضعیت
-                </Th>
-                <Th borderColor={borderColor} color="gray.400">
-                  شماره تماس
-                </Th>
-                <Th borderColor={borderColor}></Th>
-              </Tr>
-            </Thead>
-            <Tbody  >
-              {state
-                // filter((filtered) => (filter.fFullName !== "" ? filtered.full_name === filter.fFullName ||
-                //   filtered.course.id === filter.fCourse : filtered
-                //   )).
-                .map((row, index, arr) => (
-                  <TablesTableRow
-                    name={row.full_name}
-                    logo={row.image}
-                    email={row.email}
-                    subdomain={row.course.id}
-                    domain={row.course.name}
-                    status={"Online"} //{row.enable}
-                    date={row.phone}
-                    isLast={index === arr.length - 1 ? true : false}
-                    key={row._id}
-                    userId={row._id}
-                    courses={courses}
-                  />
-                ))}
-            </Tbody>
-          </Table>
-        </CardBody>
+
+        {isPending ? (
+          <UserListSkleton />
+        ) : (
+          <UserListTable data={state} courses={courseList} />
+        )}
       </Card>
     </Flex>
   );

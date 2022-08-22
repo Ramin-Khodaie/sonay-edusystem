@@ -25,17 +25,13 @@ import { bixios } from "services/main";
 import { useDispatch, useSelector } from "react-redux";
 import { createCourseAction } from "redux/course/createCource/createCourseAction";
 import { courseListAction } from "redux/course/courseList/courseListAction";
+import CustomSelector from "components/Selectors/CustomSelector";
 
 function CourseForm(props) {
-  const { changeSent, sent, courses, courseId = "-1" } = props;
+  const { changeSent, sent, courses,statusData, courseId = "-1" } = props;
 
 
   const notify = useNotify();
-  const status = [
-    { id: "active", name: "فعال" },
-    { id: "deactive", name: "غیرفعال" },
-  ];
-
 
 
 
@@ -66,32 +62,29 @@ function CourseForm(props) {
   const createPost = async () => {
     const newCourse = {
       _id: formData._id,
-      course_name: formData.courseName,
+      name: formData.courseName,
       status: formData.courseStatus,
       next_course: formData.nextCourse,
       image : formData.image
     };
     await dispatch(createCourseAction(newCourse));   
-    await dispatch(courseListAction({
-      "full_name" : "",
-      "course":"",
-      "status" : ""
-    }));   
+    await dispatch(courseListAction());   
 
   };
 
 
-  const handleCourseOptionChange = (e) => {
-    const newOpt = courses.find((f) => f.id === e.target.value);
+  // const handleCourseOptionChange = (e) => {
+  //   const newOpt = courses.find((f) => f.id === e.target.value);
 
-    setFormData({ ...formData, nextCourse: newOpt });
-  };
+  //   setFormData({ ...formData, nextCourse: newOpt });
+  // };
 
   const handleStatusOptionChange = (e) => {
     const newOpt = status.find((f) => f.id === e.target.value);
 
     setFormData({ ...formData, courseStatus: newOpt });
   };
+
 
 
 
@@ -145,61 +138,22 @@ function CourseForm(props) {
             <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
               وضعیت{" "}
             </FormLabel>
-            <Select
-              onChange={handleStatusOptionChange}
-              id="courseStatus"
-              focusBorderColor="purple.300"
-              textAlign={"center"}
-              placeholder="وضعیت دوره را انتخاب کنید"
-            >
-              {status.map((row) => {
-                return (
-                  <option
-                    selected={
-                      formData.courseStatus &&
-                      formData.courseStatus.id === row.id
-                        ? true
-                        : false
-                    }
-                    value={row.id}
-                    key={row.id}
-                  >
-                    {" "}
-                    {row.name}
-                  </option>
-                );
-              })}
-            </Select>
+            <CustomSelector onChange={setFormData}
+                state={formData}
+                data={statusData}
+                fieldId={"courseStatus"} />
+
+           
           </Box>
 
           <Box minH="80px">
             <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
               دوره بعدی{" "}
             </FormLabel>
-            <Select
-              onChange={handleCourseOptionChange}
-              id="nextCourse"
-              focusBorderColor="purple.300"
-              textAlign={"center"}
-              placeholder="دوره بعدی را انتخاب کنید"
-            >
-              {courses.map((row) => {
-                return (
-                  <option
-                    selected={
-                      formData.nextCourse && formData.nextCourse.id === row.id
-                        ? true
-                        : false
-                    }
-                    value={row.id}
-                    key={row.id}
-                  >
-                    {" "}
-                    {row.name}
-                  </option>
-                );
-              })}
-            </Select>
+            <CustomSelector onChange={setFormData}
+                state={formData}
+                data={courses}
+                fieldId={"nextCourse"} />
           </Box>
 
           
@@ -219,7 +173,7 @@ function CourseForm(props) {
               w={"100%"}
               type={"submit"}
             >
-              {sent.sending ? "در حال ثبت " : "ثبت "}
+              {isLoading ? "در حال ثبت " : "ثبت "}
             </Button>
 
          
