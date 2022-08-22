@@ -9,6 +9,8 @@ import {
 import Card from "components/Card/Card";
 import IconBox from "components/Icons/IconBox";
 import { CartIcon } from "components/Icons/Icons";
+import { AddCartItems } from "redux/product/productReducer";
+import { useDispatch } from "react-redux";
 
 const Book = ({ item }) => {
   const iconBlue = useColorModeValue("blue.500", "blue.500");
@@ -18,8 +20,10 @@ const Book = ({ item }) => {
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const textTableColor = useColorModeValue("gray.500", "white");
 
+  const dispatch = useDispatch();
+
   const handleCart = () => {
-    console.log(55, "this is cart");
+    dispatch(AddCartItems(item));
   };
   return (
     <Card minH="125px">

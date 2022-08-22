@@ -26,6 +26,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import routes from "routes.js";
 import './StudentNavbarLink.css'
+import { useSelector } from "react-redux";
 
 export default function StudentNavbarLink(props) {
     const {
@@ -39,6 +40,8 @@ export default function StudentNavbarLink(props) {
     } = props;
 
     const { colorMode } = useColorMode();
+
+    const { cartItems } = useSelector(state => state.product)
 
     const iconBoxInside = useColorModeValue("white", "white");
     const textColor = useColorModeValue("gray.700", "white");
@@ -55,7 +58,7 @@ export default function StudentNavbarLink(props) {
         <Flex
             pe={{ sm: "0px", md: "16px" }}
             w={{ sm: "100%", md: "auto" }}
-            alignItems='center'        
+            alignItems='center'
             flexDirection='row'>
             {/* <SearchBar me='18px' /> */}
             <NavLink to='/auth/signin'>
@@ -109,7 +112,7 @@ export default function StudentNavbarLink(props) {
                 {...rest}
             />
             <IconBox
-                className="carticon"                                
+                className="carticon"
                 as="box"
                 h={"45px"}
                 w={"45px"}
@@ -121,8 +124,10 @@ export default function StudentNavbarLink(props) {
                     color={iconBoxInside}
                 //   onClick={handleCart}
                 />
-
-                <span >10</span>
+                {
+                    cartItems.length > 0 &&
+                    <span >{cartItems.length}</span>
+                }
             </IconBox>
             {/* <SettingsIcon
         cursor='pointer'
