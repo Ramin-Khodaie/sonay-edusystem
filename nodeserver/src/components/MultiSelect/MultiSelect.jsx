@@ -15,7 +15,7 @@ import {
 import useNotify from "helpers/notify/useNotify";
 import React from "react";
 
-const MultiSelect = ({ handleChange, handleDelete, data, options }) => {
+const MultiSelect = ({ handleChange, handleDelete, data, options , placeholder }) => {
 
   const notify = useNotify();
   console.log(options,data,89)
@@ -26,7 +26,7 @@ const MultiSelect = ({ handleChange, handleDelete, data, options }) => {
         focusBorderColor="purple.300"
         onChange={handleChange}
         textAlign={"center"}
-        placeholder="نقش کاربر را انتخاب کنید"
+        placeholder={placeholder}
       >
         {data.map((d) => (
           <option value={d._id}>{d.name}</option>

@@ -36,6 +36,7 @@ import { CheckIcon } from "@chakra-ui/icons";
 
 function ProductForm(props) {
   const { courses } = props;
+  const notify = useNotify()
 
   const [formData, setFormData] = React.useState({
     _id: "",
@@ -63,43 +64,22 @@ function ProductForm(props) {
 
   return (
     <>
-      <Grid
+      <SimpleGrid
+      dir="rtl"
         pb={"20px"}
-        templateRows="repeat(3, 1fr)"
-        templateColumns="repeat(12, 1fr)"
+        // templateRows="repeat(3, 1fr)"
+        // templateColumns="repeat(12, 1fr)"
         gap={3}
+        columns={{ sm: 1, md: 1, xl: 3 }}
+        
       >
-        <GridItem dir="rtl" rowSpan={3} colSpan={4}>
-          <Flex>
-            <FormLabel mb="5px" fontSize="sm" fontWeight="normal">
-              دوره های محصول{" "}
-            </FormLabel>
-            <Spacer />
-            <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
-          </Flex>
-          <MultiSelect
-            handleChange={handleOptionChange}
-            handleDelete={handleDelete}
-            data={courses}
-            options={formData.courses}
-          />
-        </GridItem>
 
-        <GridItem dir="rtl" rowSpan={3} colSpan={4}>
-          <Flex>
-            <FormLabel mb="5px" fontSize="sm" fontWeight="normal">
-              توضیحات محصول{" "}
-            </FormLabel>
-            <Spacer />
-            <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
-          </Flex>
-          <Textarea
-            resize={"none"}
-            height={"220px"}
-            placeholder="محصول خود را با چند جمله توصیف کنید"
-          />
-        </GridItem>
-        <GridItem dir="rtl" rowSpan={1} colSpan={4}>
+
+        <Box>
+
+
+
+        <Box mb={"10px"}>
           <Flex>
             <FormLabel mb="5px" fontSize="sm" fontWeight="normal">
               نام محصول{" "}
@@ -109,8 +89,8 @@ function ProductForm(props) {
           </Flex>
 
           <Input placeholder="large size" size="lg" />
-        </GridItem>
-        <GridItem dir="rtl" rowSpan={1} colSpan={4}>
+        </Box>
+        <Box mb={"15px"} >
           <Flex>
             <FormLabel mb="5px" fontSize="sm" fontWeight="normal">
               توضیحات محصول{" "}
@@ -131,9 +111,9 @@ function ProductForm(props) {
               children={<CheckIcon fontSize={"24px"} color="green.500" />}
             />
           </InputGroup>
-        </GridItem>
+        </Box>
 
-        <GridItem dir="rtl" rowSpan={1} colSpan={4}>
+        <Box >
           <SimpleGrid row={2} spacing={4}>
             <Checkbox size={"lg"} defaultChecked>
               آیا این محصول فعال است؟
@@ -142,8 +122,62 @@ function ProductForm(props) {
               آیا این محصول اصلی تلقی می شود؟
             </Checkbox>
           </SimpleGrid>
-        </GridItem>
-      </Grid>
+        </Box>
+            
+        </Box>
+
+
+        <Box>
+
+
+
+
+        <Box  rowSpan={3} colSpan={4}>
+          <Flex>
+            <FormLabel mb="5px" fontSize="sm" fontWeight="normal">
+              توضیحات محصول{" "}
+            </FormLabel>
+            <Spacer />
+            <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
+          </Flex>
+          <Textarea
+            resize={"none"}
+            height={"220px"}
+            placeholder="محصول خود را با چند جمله توصیف کنید"
+          />
+        </Box>
+
+
+
+        </Box>
+
+        <Box> 
+
+
+
+        <Box  >
+          <Flex>
+            <FormLabel mb="5px" fontSize="sm" fontWeight="normal">
+              دوره های محصول{" "}
+            </FormLabel>
+            <Spacer />
+            <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
+          </Flex>
+          <MultiSelect
+            handleChange={handleOptionChange}
+            handleDelete={handleDelete}
+            data={courses}
+            options={formData.courses}
+            placeholder="دوره محصول را انتخاب کنید"
+          />
+        </Box>
+
+
+        </Box>
+
+
+
+      </SimpleGrid>
     </>
   );
 }

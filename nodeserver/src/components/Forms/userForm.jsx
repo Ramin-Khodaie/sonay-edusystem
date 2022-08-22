@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 // Custom components
-import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
+import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import React from "react";
 import MultiSelect from "components/MultiSelect/MultiSelect";
 
@@ -27,7 +27,7 @@ import { useConfirmPassword } from "hooks/formValidation/useConfirmPassword";
 import CustomSelector from "components/Selectors/CustomSelector";
 
 function UserForm(props) {
-  const {  courses, userId = "-1" } = props;
+  const { courses, userId = "-1" } = props;
 
   const currentUser = useUser(userId);
   const dispatch = useDispatch();
@@ -90,12 +90,10 @@ function UserForm(props) {
       course: formData.course,
       roles: formData.roles,
     };
-    await dispatch(createUserAction(newUser));   
-    await dispatch(userListAction())
-    resetFormInputs()
+    await dispatch(createUserAction(newUser));
+    await dispatch(userListAction());
+    resetFormInputs();
   };
-
-
 
   function handleSubmitform() {
     doSubmit();
@@ -104,8 +102,6 @@ function UserForm(props) {
     formData.password,
     formData.confirm_password
   );
-
-
 
   const handleOptionChange = (e) => {
     const newOpt = data.find((f) => f._id === e.target.value);
@@ -253,9 +249,12 @@ function UserForm(props) {
                 })}
               </Select> */}
 
-
-
-              <CustomSelector  onChange={setFormData} state={formData} data={courses} fieldId={"course"} />
+              <CustomSelector
+                onChange={setFormData}
+                state={formData}
+                data={courses}
+                fieldId={"course"}
+              />
             </Box>
           </Box>
 
@@ -313,11 +312,7 @@ function UserForm(props) {
                 </FormLabel>
                 <Spacer />
 
-                <Text
-                  textAlign={"end"}
-                  color={"red"}
-                  fontWeight="medium"
-                >
+                <Text textAlign={"end"} color={"red"} fontWeight="medium">
                   {passMessage}
                 </Text>
               </Flex>
@@ -347,6 +342,7 @@ function UserForm(props) {
                 handleDelete={handleDelete}
                 data={data}
                 options={formData.roles}
+                placeholder="نقش کاربر را انتخاب کنید"
               />
             </Box>
           </Box>
