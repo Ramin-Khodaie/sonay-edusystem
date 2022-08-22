@@ -13,7 +13,6 @@ const Book = ({item}) =>{
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const textTableColor = useColorModeValue("gray.500", "white");
 
-    console.log(66, item)
     return(
         <Card minH='125px'>
           <Flex direction='column'>

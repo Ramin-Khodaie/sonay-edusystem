@@ -33,6 +33,7 @@ import React, { useEffect, useState } from "react";
 import CourseListFilter from "components/Filter/CourseListFilter";
 import { useDispatch, useSelector } from "react-redux";
 import { courseListAction } from "redux/course/courseList/courseListAction";
+import CourseListTable from "components/Tables/CourseListTable/CourseListTable";
 
 function Courses() {
   const statusData = [
@@ -100,23 +101,19 @@ function Courses() {
     }
   }, [filter.fTeacher, filter.fFullName, filter.fStatus]);
 
-console.log(filter)
   const doSearch = () => {
     let tmp = courseList;
  
 
     if (filter.fFullName !== "") {
-      console.log(1)
 
       tmp = tmp.filter((f) => f.name === filter.fFullName);
     }
     // if (filter.fTeacher.id !== "") {
-    //   console.log(2)
 
     //   tmp = tmp.filter((f) => f.teacher.id === filter.fTeacher.id);
     // }
     if (filter.fStatus.id !== "") {
-      console.log(3)
 
       tmp = tmp.filter((f) => f.status.id === filter.fStatus.id);
     }
@@ -175,6 +172,7 @@ console.log(filter)
         "name" : "aysan eshraghi"},
         {"_id" : "6",
         "name" : "jafar jafari"}]}
+        
 
 
            />
@@ -193,53 +191,7 @@ console.log(filter)
 
         </CardHeader>
         <CardBody>
-          <Table
-            style={{ direction: "rtl" }}
-            variant="simple"
-            color={textColor}
-          >
-            <Thead>
-              <Tr my=".8rem" pl="0px" color="gray.400">
-                <Th pl="0px" borderColor={borderColor} color="gray.400">
-                  نام دوره
-                </Th>
-                <Th borderColor={borderColor} color="gray.400">
-                  دوره بعدی
-                </Th>
-                <Th borderColor={borderColor} color="gray.400">
-                  وضعیت
-                </Th>
-
-                <Th borderColor={borderColor} color="gray.400">
-                  دبیر
-                </Th>
-                <Th borderColor={borderColor} color="gray.400">
-                  ویرایش
-                </Th>
-
-              </Tr>
-            </Thead>
-            <Tbody>
-              {state.map((row, index, arr) => {
-                return (
-                  <TablesTableRow
-                    name={row.name}
-                    logo={row.image}
-                    subdomain={"hi"}
-                    domain={row.next_course.name}
-                    status={"Online"} //{row.enable}
-                    date={"اشراقی"}
-                    isLast={index === arr.length - 1 ? true : false}
-                    key={row._id}
-                    changeSent={handleSent}
-                    sent={sent}
-                    userId={row._id}
-                    courses={courseList}
-                  />
-                );
-              })}
-            </Tbody>
-          </Table>
+         <CourseListTable statusData={statusData} data={state} courses={courseList}  />
         </CardBody>
       </Card>
     </Flex>

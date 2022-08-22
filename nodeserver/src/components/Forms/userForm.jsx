@@ -30,7 +30,6 @@ function UserForm(props) {
   const {  courses, userId = "-1" } = props;
 
   const currentUser = useUser(userId);
-  console.log(currentUser,22)
   const dispatch = useDispatch();
   const { isLoading, message, error } = useSelector(
     (state) => state.createuser

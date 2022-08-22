@@ -7,7 +7,7 @@ const CustomSelector = ({
   placeHolder = "انتخاب کنید",
   fieldId = "fCourse",
 }) => {
-    const na = "name"
+ 
 
 
 
@@ -15,7 +15,6 @@ const CustomSelector = ({
 
 
     const tmp = e.target.value.split(",");
-    // console.log(tmp,tmp.length,tmp.length < 2   )
 
     onChange({
         ...state,

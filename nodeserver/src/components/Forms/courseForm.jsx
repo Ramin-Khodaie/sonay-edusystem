@@ -26,14 +26,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { createCourseAction } from "redux/course/createCource/createCourseAction";
 import { courseListAction } from "redux/course/courseList/courseListAction";
 import CustomSelector from "components/Selectors/CustomSelector";
+import { useCourse } from "hooks/courses/useCourse";
 
 function CourseForm(props) {
-  const { changeSent, sent, courses,statusData, courseId = "-1" } = props;
+  const {courses,statusData, courseId = "-1" } = props;
 
 
   const notify = useNotify();
 
 
+  const currentCourse = useCourse(courseId);
+  console.log(currentCourse,courseId,45)
 
 
   const [formData, setFormData] = React.useState({
@@ -79,13 +82,6 @@ function CourseForm(props) {
   //   setFormData({ ...formData, nextCourse: newOpt });
   // };
 
-  const handleStatusOptionChange = (e) => {
-    const newOpt = status.find((f) => f.id === e.target.value);
-
-    setFormData({ ...formData, courseStatus: newOpt });
-  };
-
-
 
 
 
@@ -98,6 +94,19 @@ function CourseForm(props) {
     }
   }, [message, error]);
 
+  useEffect(() => {
+    if (currentCourse.length != 0) {
+      setFormData({
+        ...formData,
+        _id: currentCourse[0]._id,
+        courseName: currentCourse[0].name,
+        courseStatus: currentCourse[0].status,
+        nextCourse: currentCourse[0].next_course,
+        image: currentCourse[0].image,
+
+      });
+    }
+  }, [currentCourse]);
 
   return (
     <>
@@ -118,6 +127,7 @@ function CourseForm(props) {
             </Flex>
 
             <Input
+            // disabled={courseId != "-1" ? true : false}
               
               onChange={handleChange}
               focusBorderColor="purple.300"

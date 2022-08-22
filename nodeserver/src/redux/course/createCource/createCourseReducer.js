@@ -25,11 +25,17 @@ const courseCreateSlice = createSlice({
             state.isLoading = false
             state.message = ""
             state.error = payload
+        },
+        createCourseCleanUp:(state) =>{
+            state.isLoading = false
+            state.message = ""
+            state.error = ""
         }
+        
     }
 })
 
 
-export const {createCoursePending, createCourseSuccess, createCourseError} = courseCreateSlice.actions
+export const {createCoursePending, createCourseSuccess, createCourseError , createCourseCleanUp} = courseCreateSlice.actions
 
 export default courseCreateSlice.reducer

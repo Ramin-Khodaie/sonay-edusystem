@@ -33,7 +33,6 @@ import {
   export default function StudentLayout(props) {
     
     const { ...rest } = props;
-    console.log(2000, props, "this is student layout")
     // states and functions
     const [fixed, setFixed] = useState(false);
     const { colorMode } = useColorMode();

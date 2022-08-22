@@ -28,8 +28,21 @@ class SCourse:
         col.insert_one({**info , "_id" : str(ObjectId())})
         return 200, "ok", "course is inserted", None
         
-    def edit_course(self , info ,col):
-        pass
+    def edit_course(self , info ,col : Collection):
+        idd = info["_id"]
+        del info["_id"]
+        col.update_one({"_id" : idd},{"$set" : info})
+        return 200,"ok","ok",[]
+        
+    
+    def get_course(self , course_id):
+        db : Database = sn.databases[self.database].db
+        col : Collection = db[self.course_collection]
+        course = list(col.find({"_id" : course_id}))
+        if len(course) == 0:
+            return 404 , "not_found" , "could not find the course" , []
+        else:
+            return 200 , "ok" , "ok" , course
     def get_course_list(self,full_name , status):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]

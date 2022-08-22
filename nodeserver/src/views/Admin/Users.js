@@ -24,7 +24,7 @@ import Pagination from "components/Pagination/pagination";
 import UserListSkleton from "components/Skleton/UserListSkleton/UserListSkleton";
 import TablesTableRow from "components/Tables/TablesTableRow";
 import UserListFilter from "components/Filter/UserListFilter";
-import UserListTable from "components/UserListTable/UserListTable";
+import UserListTable from "components/Tables/UserListTable/UserListTable";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { courseListAction } from "redux/course/courseList/courseListAction";
