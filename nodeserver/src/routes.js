@@ -22,7 +22,7 @@ import {
   SupportIcon,
 } from "./components/Icons/Icons";
 import {FaUserAlt, FaRegistered, FaBook, FaPaperclip} from "react-icons/fa"
-import Product from 'views/Admin/Products.js';
+import Product from 'views/Admin/Product.js';
 var dashRoutes = [
   {
     path: "/dashboard",
@@ -52,7 +52,7 @@ var dashRoutes = [
     path: "/products",
     name: "محصولات",
     rtlName: "لوحة القيادة",
-    icon: <FaUserAlt></FaUserAlt> ,
+    icon: <FaBook /> ,
     component: Product,
     layout: "/admin",
   },

@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 // Custom components
-import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
+import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import React from "react";
 import MultiSelect from "components/MultiSelect/MultiSelect";
 
@@ -27,7 +27,7 @@ import { useConfirmPassword } from "hooks/formValidation/useConfirmPassword";
 import CustomSelector from "components/Selectors/CustomSelector";
 
 function UserForm(props) {
-  const {  courses, userId = "-1" } = props;
+  const { courses, userId = "-1" } = props;
 
   const currentUser = useUser(userId);
   const dispatch = useDispatch();
@@ -37,9 +37,9 @@ function UserForm(props) {
 
   const notify = useNotify();
   const data = [
-    { id: "teacher", name: "دبیر" },
-    { id: "student", name: "دانش آموز" },
-    { id: "manager", name: "مدیر" },
+    { _id: "teacher", name: "دبیر" },
+    { _id: "student", name: "دانش آموز" },
+    { _id: "manager", name: "مدیر" },
   ];
 
   const [formData, setFormData] = React.useState({
@@ -69,7 +69,7 @@ function UserForm(props) {
   };
   const handleDelete = (id) => (e) => {
     const cc = formData.roles.filter((element) => {
-      return element.id !== id;
+      return element._id !== id;
     });
     setFormData({ ...formData, roles: cc });
   };
@@ -90,12 +90,10 @@ function UserForm(props) {
       course: formData.course,
       roles: formData.roles,
     };
-    await dispatch(createUserAction(newUser));   
-    await dispatch(userListAction())
-    resetFormInputs()
+    await dispatch(createUserAction(newUser));
+    await dispatch(userListAction());
+ 
   };
-
-
 
   function handleSubmitform() {
     doSubmit();
@@ -105,11 +103,9 @@ function UserForm(props) {
     formData.confirm_password
   );
 
-
-
   const handleOptionChange = (e) => {
-    const newOpt = data.find((f) => f.id === e.target.value);
-    formData.roles.findIndex((itm) => itm.id == newOpt.id) === -1
+    const newOpt = data.find((f) => f._id === e.target.value);
+    formData.roles.findIndex((itm) => itm._id == newOpt._id) === -1
       ? setFormData({ ...formData, roles: [...formData.roles, newOpt] })
       : notify("این آیتم قبلا انتخاب شده است", true, "solid", "warning");
   };
@@ -253,9 +249,12 @@ function UserForm(props) {
                 })}
               </Select> */}
 
-
-
-              <CustomSelector  onChange={setFormData} state={formData} data={courses} fieldId={"course"} />
+              <CustomSelector
+                onChange={setFormData}
+                state={formData}
+                data={courses}
+                fieldId={"course"}
+              />
             </Box>
           </Box>
 
@@ -313,11 +312,7 @@ function UserForm(props) {
                 </FormLabel>
                 <Spacer />
 
-                <Text
-                  textAlign={"end"}
-                  color={"red"}
-                  fontWeight="medium"
-                >
+                <Text textAlign={"end"} color={"red"} fontWeight="medium">
                   {passMessage}
                 </Text>
               </Flex>
@@ -347,6 +342,7 @@ function UserForm(props) {
                 handleDelete={handleDelete}
                 data={data}
                 options={formData.roles}
+                placeholder="نقش کاربر را انتخاب کنید"
               />
             </Box>
           </Box>

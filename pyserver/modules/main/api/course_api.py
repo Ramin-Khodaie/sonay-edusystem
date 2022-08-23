@@ -13,7 +13,7 @@ router = APIRouter(prefix='/courses' , tags=["course"])
 
 sn.add_router(router)
 
-course=SCourse('educational_app' , 'course')
+course=SCourse('sonay' , 'course')
 
 
 @router.post("/createcourse")

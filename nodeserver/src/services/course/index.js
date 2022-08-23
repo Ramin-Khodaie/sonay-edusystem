@@ -8,7 +8,9 @@ export const createCourse = (course) => {
         name: course.name,
         status: course.status,
         next_course: course.next_course,
-        image : course.image
+        image : course.image,
+        price:course.price,
+        description : course.description
 
       });
       
