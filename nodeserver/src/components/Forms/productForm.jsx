@@ -35,7 +35,7 @@ import {
 import { createProductAction } from "redux/product/productCreate/productCreateAction";
 
   function ProductForm(props) {
-    const { courses } = props;
+    const { courses  } = props;
     const notify = useNotify();
   
 
