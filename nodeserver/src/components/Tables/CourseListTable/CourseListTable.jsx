@@ -28,7 +28,6 @@ import {
 import CourseListTableRow from "./CourseListTableRow";
   function CourseListTable(props) {
     const { data, courses ,statusData } = props;
-  
     const textColor = useColorModeValue("gray.700", "white");
     const borderColor = useColorModeValue("gray.200", "gray.600");
   
@@ -56,6 +55,9 @@ import CourseListTableRow from "./CourseListTableRow";
               دبیر
             </Th>
             <Th borderColor={borderColor} color="gray.400">
+            شهریه
+            </Th>
+            <Th borderColor={borderColor} color="gray.400">
               ویرایش
             </Th>
 
@@ -63,14 +65,19 @@ import CourseListTableRow from "./CourseListTableRow";
         </Thead>
         <Tbody>
           {data.map((row, index, arr) => {
+            console.log(row.teacher , 77)
             return (
               <CourseListTableRow
                 name={row.name}
+                
                 logo={row.image}
-                subdomain={"hi"}
-                domain={row.next_course.name}
-                status={"Online"} //{row.enable}
-                date={"اشراقی"}
+                nextCourse={row.next_course.name}
+                status={row.status.id} //{row.enable}
+                teacher={ row.teacher.length === 0 ? "انتخاب نشده" : row.teacher[0].full_name}
+                teacherUserName={ row.teacher.length === 0 ? "" : row.teacher[0].username}
+                // teacherImage={row.teacher.image}
+                // teacherUserName={row.teacher.username}
+                price={row.price}
                 isLast={index === arr.length - 1 ? true : false}
                 key={row._id}
                 courseId={row._id}

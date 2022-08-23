@@ -13,14 +13,16 @@ import {
 import CourseEditModal from "components/Modal/courseEdit";
   
   function CourseListTableRow(props) {
-    const { logo, name, email, subdomain, domain, status, date, isLast ,statusData , courseId ,courses} = props;
+    const { name , logo , nextCourse , status , teacher , teacherImage , teacherUserName, price , isLast , key ,courseId , courses , statusData} = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
     const borderColor = useColorModeValue("gray.200", "gray.600");
-    
+    // console.log(teacher,85)
     return (
       <Tr>
+
+        
         <Td
           minWidth={{ sm: "250px" }}
           pl="0px"
@@ -38,9 +40,7 @@ import CourseEditModal from "components/Modal/courseEdit";
               >
                 {name}
               </Text>
-              <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                {email}
-              </Text>
+
             </Flex>
           </Flex>
         </Td>
@@ -48,28 +48,39 @@ import CourseEditModal from "components/Modal/courseEdit";
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
             <Text fontSize="md" color={textColor} fontWeight="bold">
-              {domain}
+              {nextCourse}
             </Text>
-            <Text fontSize="sm" color="gray.400" fontWeight="normal">
+            {/* <Text fontSize="sm" color="gray.400" fontWeight="normal">
               {subdomain}
-            </Text>
+            </Text> */}
           </Flex>
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Badge
-            bg={status === "Online" ? "green.400" : bgStatus}
-            color={status === "Online" ? "white" : "white"}
+            bg={status === "active" ? "green.400" : bgStatus}
+            color={"white"}
             fontSize="16px"
             p="3px 10px"
             borderRadius="8px"
           >
-            {status}
+            {status === "active" ? "فعال" : "غیرفعال"}
           </Badge>
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-            {date}
+{teacher}
           </Text>
+           <Text fontSize="sm" color="gray.400" fontWeight="normal">
+{teacherUserName}
+            </Text>
+        </Td>
+
+        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+          <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
+          {price}  ریال  
+
+          </Text>
+
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
   

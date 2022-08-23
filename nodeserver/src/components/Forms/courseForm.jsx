@@ -14,7 +14,7 @@ import {
   InputGroup,
   Spacer,
   Textarea,
-    NumberInput,
+  NumberInput,
   NumberInputField,
   NumberInputStepper,
   NumberIncrementStepper,
@@ -25,7 +25,6 @@ import {
 
 import React from "react";
 import MultiSelect from "components/MultiSelect/MultiSelect";
-
 
 import useNotify from "helpers/notify/useNotify";
 import { useUser } from "hooks/users/useUser";
@@ -39,28 +38,23 @@ import { useCourse } from "hooks/courses/useCourse";
 import { CheckIcon } from "@chakra-ui/icons";
 
 function CourseForm(props) {
-  const {courses,statusData, courseId = "-1" } = props;
-
+  const { courses, statusData, courseId = "-1" } = props;
 
   const notify = useNotify();
 
-
   const currentCourse = useCourse(courseId);
-  console.log(currentCourse,courseId,45)
-
+  console.log(currentCourse, courseId, 45);
 
   const [formData, setFormData] = React.useState({
     _id: "",
     courseName: "",
     courseStatus: {},
     nextCourse: {},
-    description : "",
-    price : 0,
-    image : ""
-    
+    description: "",
+    price: "",
+    image: "",
   });
 
-  
   const handleChange = (event) => {
     const field = event.target.id;
     const value = event.target.value;
@@ -72,32 +66,25 @@ function CourseForm(props) {
     (state) => state.createcourse
   );
 
-
-
   const createPost = async () => {
     const newCourse = {
       _id: formData._id,
       name: formData.courseName,
       status: formData.courseStatus,
       next_course: formData.nextCourse,
-      description : formData.description,
-      price : formData.price,
-      image : formData.image
+      description: formData.description,
+      price: formData.price,
+      image: formData.image,
     };
-    await dispatch(createCourseAction(newCourse));   
-    await dispatch(courseListAction());   
-
+    await dispatch(createCourseAction(newCourse));
+    await dispatch(courseListAction());
   };
-
 
   // const handleCourseOptionChange = (e) => {
   //   const newOpt = courses.find((f) => f.id === e.target.value);
 
   //   setFormData({ ...formData, nextCourse: newOpt });
   // };
-
-
-
 
   useEffect(() => {
     if (message != "") {
@@ -116,10 +103,9 @@ function CourseForm(props) {
         courseName: currentCourse[0].name,
         courseStatus: currentCourse[0].status,
         nextCourse: currentCourse[0].next_course,
-        description : currentCourse[0].description,
-        price : currentCourse[0].price,
+        description: currentCourse[0].description,
+        price: currentCourse[0].price,
         image: currentCourse[0].image,
-
       });
     }
   }, [currentCourse]);
@@ -129,143 +115,125 @@ function CourseForm(props) {
       <FormControl>
         <SimpleGrid
           style={{ direction: "rtl" }}
-          columns={{ sm: 1, md: 3, xl:3 }}
+          columns={{ sm: 1, md: 3, xl: 3 }}
           spacing="24px"
           mb="20px"
         >
+          <Box>
+            <Box minH="80px">
+              <Flex>
+                <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                  نام دوره
+                </FormLabel>
+                <Spacer />
+                <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
+              </Flex>
 
+              <Input
+                // disabled={courseId != "-1" ? true : false}
 
+                onChange={handleChange}
+                focusBorderColor="purple.300"
+                id="courseName"
+                textAlign="right"
+                variant="filled"
+                fontSize="sm"
+                ms="4px"
+                type="text"
+                placeholder="نام دوره را وارد کنید"
+                mb="10px"
+                size="lg"
+                value={formData.courseName}
+              />
+            </Box>
 
-        <Box>
-          
-
-          <Box minH="80px">
-            <Flex>
+            <Box minH="80px">
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                نام دوره
+                وضعیت{" "}
               </FormLabel>
-              <Spacer />
-              <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
-            </Flex>
-
-            <Input
-            // disabled={courseId != "-1" ? true : false}
-              
-              onChange={handleChange}
-              focusBorderColor="purple.300"
-              id="courseName"
-              textAlign="right"
-              variant="filled"
-              fontSize="sm"
-              ms="4px"
-              type="text"
-              placeholder="نام دوره را وارد کنید"
-              mb="10px"
-              size="lg"
-              value={formData.courseName}
-            />
-          </Box>
-
-          <Box minH="80px">
-            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-              وضعیت{" "}
-            </FormLabel>
-            <CustomSelector onChange={setFormData}
+              <CustomSelector
+                onChange={setFormData}
                 state={formData}
                 data={statusData}
-                fieldId={"courseStatus"} />
+                fieldId={"courseStatus"}
+              />
+            </Box>
 
-           
-          </Box>
-
-          <Box minH="80px">
-            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-              دوره بعدی{" "}
-            </FormLabel>
-            <CustomSelector onChange={setFormData}
+            <Box minH="80px">
+              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                دوره بعدی{" "}
+              </FormLabel>
+              <CustomSelector
+                onChange={setFormData}
                 state={formData}
                 data={courses}
-                fieldId={"nextCourse"} />
-          </Box>
-
-        </Box>
-
-
-        <Box>
-        <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-              توضیحات دوره{" "}
-            </FormLabel>
-        <Textarea
-            resize={"none"}
-            height={"220px"}
-            placeholder="دوره را با چند جمله توصیف کنید"
-            onChange={handleChange}
-            id="description"
-            value={formData.description}
-          />
-        </Box>
-
-
-        <Box>
-  
-          <Box minH="80px">
-          <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-              هزینه دوره{" "}
-            </FormLabel>
-         
-            <NumberInput size={"lg"} dir='ltr' defaultValue={0} >
-            <InputLeftElement
-              pointerEvents="none"
-              color="gray.300"
-              fontSize="1.2em"
-              children="ریال"
-             
-            />
-  <NumberInputField textAlign={"center"} />
-  <NumberInputStepper>
-    <NumberIncrementStepper />
-    <NumberDecrementStepper />
-  </NumberInputStepper>
-</NumberInput>
-           
-
-         
+                fieldId={"nextCourse"}
+              />
+            </Box>
           </Box>
 
           <Box>
+            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+              توضیحات دوره{" "}
+            </FormLabel>
+            <Textarea
+              resize={"none"}
+              height={"220px"}
+              placeholder="دوره را با چند جمله توصیف کنید"
+              onChange={handleChange}
+              id="description"
+              value={formData.description}
+            />
+          </Box>
 
-          </Box >
+          <Box>
+            <Box minH="80px">
+              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                هزینه دوره{" "}
+              </FormLabel>
 
+              <NumberInput
+                
+                size={"lg"}
+                dir="ltr"
+                defaultValue={0}
+              >
+                <InputLeftElement
+                  pointerEvents="none"
+                  color="gray.300"
+                  fontSize="1.2em"
+                  children="ریال"
+                />
+                <NumberInputField onChange={handleChange}
+                id="price"
+                value={formData.price} textAlign={"center"} />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </Box>
 
-<Box>
+            <Box></Box>
 
-<Button
-              onClick={createPost}
-              color={"white"}
-              fontSize="20px"
-              fontFamily="Lalezar"
-              bg="blue.400"
-              fontWeight="bold"
-              mt={"25px"}
-              h="45"
-              w={"100%"}
-              type={"submit"}
-            >
-              {isLoading ? "در حال ثبت " : "ثبت "}
-            </Button>
-
-</Box>
-        </Box>
-
-        
-
-
-
-          
-    
+            <Box>
+              <Button
+                onClick={createPost}
+                color={"white"}
+                fontSize="20px"
+                fontFamily="Lalezar"
+                bg="blue.400"
+                fontWeight="bold"
+                mt={"25px"}
+                h="45"
+                w={"100%"}
+                type={"submit"}
+              >
+                {isLoading ? "در حال ثبت " : "ثبت "}
+              </Button>
+            </Box>
+          </Box>
         </SimpleGrid>
-
-       
       </FormControl>
     </>
   );
