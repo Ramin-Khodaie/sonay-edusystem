@@ -18,7 +18,6 @@ import React from "react";
 const MultiSelect = ({ handleChange, handleDelete, data, options , placeholder }) => {
 
   const notify = useNotify();
-  console.log(options,data,89)
 
   return (
     <>

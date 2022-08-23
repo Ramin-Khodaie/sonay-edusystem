@@ -18,7 +18,6 @@ import CourseEditModal from "components/Modal/courseEdit";
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
     const borderColor = useColorModeValue("gray.200", "gray.600");
-    // console.log(teacher,85)
     return (
       <Tr>
 

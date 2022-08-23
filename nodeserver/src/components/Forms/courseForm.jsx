@@ -43,7 +43,6 @@ function CourseForm(props) {
   const notify = useNotify();
 
   const currentCourse = useCourse(courseId);
-  console.log(currentCourse, courseId, 45);
 
   const [formData, setFormData] = React.useState({
     _id: "",

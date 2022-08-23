@@ -65,7 +65,6 @@ import CourseListTableRow from "./CourseListTableRow";
         </Thead>
         <Tbody>
           {data.map((row, index, arr) => {
-            console.log(row.teacher , 77)
             return (
               <CourseListTableRow
                 name={row.name}

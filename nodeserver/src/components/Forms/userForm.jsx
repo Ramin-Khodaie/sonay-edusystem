@@ -110,10 +110,10 @@ function UserForm(props) {
       : notify("این آیتم قبلا انتخاب شده است", true, "solid", "warning");
   };
 
-  const handleCourseOptionChange = (e) => {
-    const newOpt = courses.find((f) => f.id === e.target.value);
-    setFormData({ ...formData, course: newOpt });
-  };
+  // const handleCourseOptionChange = (e) => {
+  //   const newOpt = courses.find((f) => f.id === e.target.value);
+  //   setFormData({ ...formData, course: newOpt });
+  // };
 
   useEffect(() => {
     if (message != "") {
