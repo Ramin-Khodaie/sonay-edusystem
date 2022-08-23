@@ -1,3 +1,4 @@
+from xmlrpc.client import Boolean
 from pymongo.database import Database, Collection
 from modules.main.sonay_app import sn
 from bson import ObjectId
@@ -15,7 +16,7 @@ class SProduct:
         required = {"name", "_id", "price", "is_main" , "is_active"}
         if len(required.difference(set(product.keys()))) != 0:
             return 422, "missing_field", "some fields are missing", None
-        if not (product["name"] and product["price"] and product["is_main"] and product["is_active"]):
+        if not (product["name"] and product["price"] and type(product["is_main"] == Boolean) and type(product["is_active"] == Boolean) ):
             return 422, "empty_field", "can not accept empty fiels", None
         if "_id" in product and product["_id"] == "" and len(list(col.find({"name": product["name"]}))) != 0:
             return 422, "not_unique", "user already exists", None

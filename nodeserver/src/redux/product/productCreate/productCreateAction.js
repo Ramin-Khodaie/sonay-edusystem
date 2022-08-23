@@ -1,5 +1,5 @@
 import { SiBreaker } from "react-icons/si";
-import { createProduct } from "services/Product";
+import { createProduct } from "services/product";
 import {
   createProductPending,
   createProductError,

@@ -32,16 +32,14 @@ import {
   import { useEffect } from "react";
   import { bixios } from "services/main";
   import { useDispatch, useSelector } from "react-redux";
-  import { createCourseAction } from "redux/course/createCource/createCourseAction";
-  import { courseListAction } from "redux/course/courseList/courseListAction";
-  import CustomSelector from "components/Selectors/CustomSelector";
-  import { useCourse } from "hooks/courses/useCourse";
-  import { CheckIcon } from "@chakra-ui/icons";
-  
+import { createProductAction } from "redux/product/productCreate/productCreateAction";
+
   function ProductForm(props) {
     const { courses } = props;
     const notify = useNotify();
   
+
+    const dispatch = useDispatch();
     const [formData, setFormData] = React.useState({
       _id: "",
       name: "",
@@ -78,7 +76,7 @@ import {
         courses: formData.courses,
       };
       await dispatch(createProductAction(newProduct));
-      await dispatch(userListAction());
+      // await dispatch(userListAction());
     };
   
     function handleSubmitform() {
@@ -90,7 +88,12 @@ import {
       const value = event.target.value;
       setFormData({ ...formData, [field]: value });
     };
-  
+
+    const handleCheckBoxChange = (event) => {
+      const field = event.target.id;
+      const value = event.target.checked;
+      setFormData({ ...formData, [field]: value });
+    }
   
     return (
       <>
@@ -116,7 +119,7 @@ import {
                 onChange={handleChange}
                 id="name"
                 value={formData.name}
-                placeholder="large size"
+                placeholder="نام محصول را وارد نمایید"
                 size="lg"
               />
             </Box>
@@ -155,10 +158,10 @@ import {
   
             <Box>
               <SimpleGrid row={2} spacing={4}>
-                <Checkbox size={"lg"} defaultChecked>
+                <Checkbox onChange={handleCheckBoxChange} id="isActive" size={"lg"} defaultChecked>
                   آیا این محصول فعال است؟
                 </Checkbox>
-                <Checkbox size={"lg"} defaultChecked>
+                <Checkbox onChange={handleCheckBoxChange} id="isMain" size={"lg"} defaultChecked>
                   آیا این محصول اصلی تلقی می شود؟
                 </Checkbox>
               </SimpleGrid>

@@ -5,7 +5,7 @@ from modules.main.say.say import SAY
 from modules.main.api_return import api_return
 
 from modules.main.sonay_app import sn
-from pyserver.modules.main.classes.product import SProduct
+from modules.main.classes.product import SProduct
 
 
 

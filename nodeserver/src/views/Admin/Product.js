@@ -46,7 +46,7 @@ import ProductForm from "components/Forms/productForm";
               fontWeight="bold"
               textAlign={"right"}
             >
-              ثبت کاربر جدید
+              ثبت محصول جدید
             </Text>
           </CardHeader>
 
