@@ -4,6 +4,8 @@ import {
   createCoursePending,
   createCourseError,
   createCourseSuccess,
+  createCourseCleanUp
+
 } from "./createCourseReducer";
 
 export const createCourseAction = (course) => async (dispatch) => {
@@ -17,6 +19,7 @@ export const createCourseAction = (course) => async (dispatch) => {
   switch (res.result) {
     case "ok":
       dispatch(createCourseSuccess("دوره با موفقیت ثبت شد"));
+      
       break;
     case "empty_field":
       dispatch(createCourseError("تمامی فیلدها تکمیل شوند."));
@@ -25,4 +28,9 @@ export const createCourseAction = (course) => async (dispatch) => {
       dispatch(createCourseError("دوره از قبل ثبت شده است."));
       break;
   }
+
+
+
+  dispatch(createCourseCleanUp())
+
 };

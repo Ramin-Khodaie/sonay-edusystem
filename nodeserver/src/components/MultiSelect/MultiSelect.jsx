@@ -15,7 +15,7 @@ import {
 import useNotify from "helpers/notify/useNotify";
 import React from "react";
 
-const MultiSelect = ({ handleChange, handleDelete, data, options }) => {
+const MultiSelect = ({ handleChange, handleDelete, data, options , placeholder }) => {
 
   const notify = useNotify();
 
@@ -25,10 +25,10 @@ const MultiSelect = ({ handleChange, handleDelete, data, options }) => {
         focusBorderColor="purple.300"
         onChange={handleChange}
         textAlign={"center"}
-        placeholder="نقش کاربر را انتخاب کنید"
+        placeholder={placeholder}
       >
         {data.map((d) => (
-          <option value={d.id}>{d.name}</option>
+          <option value={d._id}>{d.name}</option>
         ))}
       </Select>
 
@@ -41,7 +41,7 @@ const MultiSelect = ({ handleChange, handleDelete, data, options }) => {
         overflow="hidden"
       >
         <Wrap>
-          {options.map((d) => {
+          {options[0] && options.map((d) => {
             
             return (
               <WrapItem>
@@ -55,7 +55,7 @@ const MultiSelect = ({ handleChange, handleDelete, data, options }) => {
                   <TagLabel my={"15px"}>{d.name}</TagLabel>
 
                   <IconButton
-                    onClick={handleDelete(d.id)}
+                    onClick={handleDelete(d._id)}
                     size={"sm"}
                     colorScheme="transparent"
                     aria-label="Search database"

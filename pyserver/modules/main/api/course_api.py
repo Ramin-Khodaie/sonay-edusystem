@@ -1,3 +1,4 @@
+from ast import Return
 from fastapi import APIRouter 
 
 from modules.main.say.say import SAY
@@ -12,7 +13,7 @@ router = APIRouter(prefix='/courses' , tags=["course"])
 
 sn.add_router(router)
 
-course=SCourse('educational_app' , 'course')
+course=SCourse('sonay' , 'course')
 
 
 @router.post("/createcourse")
@@ -26,3 +27,10 @@ def create_course(info : dict):
 def get_course_list(full_name = "" , status = ""):
     ret = course.get_course_list(full_name , status)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+@router.get("/getcourse")
+@sn()
+def get_course(course_id):
+    ret = course.get_course(course_id)
+    return api_return(ret[0] , ret[1] , ret[2] , ret[3])

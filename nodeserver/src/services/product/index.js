@@ -1,16 +1,16 @@
 import { bixios } from "services/main";
 
-export const createCourse = (course) => {
+export const createProduct = (product) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await bixios.post("/courses/createcourse", {
-        _id: course._id,
-        name: course.name,
-        status: course.status,
-        next_course: course.next_course,
-        image : course.image,
-        price:course.price,
-        description : course.description
+      const res = await bixios.post("/products/createproduct", {
+        _id: product._id,
+        name: product.name,
+        price: product.price,
+        is_main: product.isMain,
+        is_active : product.isActive,
+        courses:product.courses,
+        description : product.description
 
       });
       
@@ -29,10 +29,10 @@ export const createCourse = (course) => {
 
 
 
-export const courseList = () => {
+export const productList = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await bixios.get("/courses/getcourselist"
+      const res = await bixios.get("/products/getproductlist"
       
       
       );

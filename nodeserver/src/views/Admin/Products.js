@@ -29,69 +29,57 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { courseListAction } from "redux/course/courseList/courseListAction";
 import { userListAction } from "redux/user/UserList/UserListAction";
-const Users = () => {
-  const textColor = useColorModeValue("gray.700", "white");
+import ProductForm from "components/Forms/productForm";
+import ProductListFilter from "components/Filter/ProductListFilter";
+import ProductListTable from "components/Tables/ProductListTable/ProductListTable";
+import { productListAction } from "redux/product/productList/ProductListAction";
+const Product = () => {
+  const { courseList } = useSelector((state) => state.courseList);
   const dispatch = useDispatch();
 
-  const getList = async () => {
-    await dispatch(userListAction());
-    await dispatch(courseListAction());
+  const textColor = useColorModeValue("gray.700", "white");
+  const [filter, setFilter] = React.useState({
+    name: "",
+    isMain: true,
+    isActive: true,
+    courses: { id: "", name: "" },
+  });
+  
+  const handleChange = (e) => {
+    const field = e.target.id;
+    const value = e.target.value;
+    setFilter({ ...filter, [field]: value });
   };
-  useEffect(() => {
-    getList();
-    
-  }, []);
-const studentStatus = require('../../status.json');
-  const { userList, errorMessage, isPending } = useSelector(
-    (state) => state.userList
+
+  const handleCheckBoxChange = (event) => {
+    const field = event.target.id;
+    const value = event.target.checked;
+    setFilter({ ...filter, [field]: value });
+  }
+
+
+  
+  const { productList, errorMessage, isPending } = useSelector(
+    (state) => state.productList
   );
 
-  const { courseList } = useSelector((state) => state.courseList);
-
   const [state, setState] = useState([]);
-  useEffect(() => {
-    setState(userList);
-  }, [isPending]);
+  // useEffect(() => {
+  //   setState(courseList);
+  // }, [isPending]);
 
-  const [filter, setFilter] = React.useState({
-    fFullName: "",
-    fCourse: { id: "", name: "" },
-    fStatus: { id: "", name: "" },
-  });
+const getList = async () => {
+  await dispatch(productListAction());
+  await dispatch(courseListAction());
 
-  useEffect(() => {
-    setState(userList);
-    if (
-      filter.fCourse !== "" ||
-      filter.fFullName !== "" ||
-      filter.fStatus !== ""
-    ) {
-      doSearch();
-    }
-  }, [filter.fCourse, filter.fFullName, filter.fStatus]);
+};
+useEffect(() => {
+  getList();
+  
+}, []);
 
-  const doSearch = () => {
-    let tmp = userList;
- 
 
-    if (filter.fFullName !== "") {
-
-      tmp = tmp.filter((f) => f.full_name === filter.fFullName);
-    }
-    if (filter.fCourse.id !== "") {
-
-      tmp = tmp.filter((f) => f.course.id === filter.fCourse.id);
-    }
-    if (filter.fStatus.id !== "") {
-
-      tmp = tmp.filter((f) => f.status.id === filter.fStatus.id);
-    }
-    setState(tmp);
-  };
-  const handleChange = (f) => {
-    setFilter(f);
-  };
-
+// console.log(productList,33)
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
       <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
@@ -102,12 +90,12 @@ const studentStatus = require('../../status.json');
             fontWeight="bold"
             textAlign={"right"}
           >
-            ثبت کاربر جدید
+            ثبت محصول جدید
           </Text>
         </CardHeader>
 
         <CardBody>
-          <UserForm courses={courseList} />
+          <ProductForm courses={courseList} />
         </CardBody>
       </Card>
 
@@ -116,26 +104,28 @@ const studentStatus = require('../../status.json');
           <Flex direction="column">
             <Accordion allowToggle>
               <AccordionItem>
-                <UserListFilter
-                  courses={courseList}
-                  filter={filter}
-                  onChange={handleChange}
-                  selectChange={setFilter}
-                  studentStatus={studentStatus}
+                <ProductListFilter
+                filter={filter}
+                onChange={handleChange}
+                courses = {courseList}
+                selectChange={setFilter}
+                handleCheckBoxChange = {handleCheckBoxChange}
                 />
               </AccordionItem>
             </Accordion>
           </Flex>
         </CardHeader>
 
-        {isPending ? (
-          <UserListSkleton />
-        ) : (
-          <UserListTable data={state} courses={courseList} />
-        )}
+        <ProductListTable data={productList} courses={courseList} />
+          
+          {/* {isPending ? (
+            <UserListSkleton />
+          ) : (
+            <ProductListTable data={productList} courses={courseList} />
+          )} */}
       </Card>
     </Flex>
   );
 };
 
-export default Users;
+export default Product;

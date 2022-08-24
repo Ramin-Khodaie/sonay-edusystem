@@ -1,5 +1,4 @@
-
-  // Chakra imports
+// Chakra imports
 import {
     SimpleGrid,
     Table,
@@ -13,7 +12,7 @@ import {
     Accordion,
     AccordionItem,
     Skeleton,
-    Stack
+    Stack,
   } from "@chakra-ui/react";
   
   // Custom components
@@ -25,21 +24,16 @@ import {
   import TablesTableRow from "components/Tables/TablesTableRow";
   import UserListFilter from "components/Filter/UserListFilter";
   import React, { useEffect, useState } from "react";
-  function UserListTable(props) {
-    const {data , courses} = props
-
+  import ProductListTableRow from "components/Tables/ProductListTable/ProductListTableRow";
+  function ProductListTable(props) {
+    const { data, courses } = props;
+  
     const textColor = useColorModeValue("gray.700", "white");
     const borderColor = useColorModeValue("gray.200", "gray.600");
   
-
-  
     return (
-        <CardBody >
-        <Table
-          style={{ direction: "rtl" }}
-          variant="simple"
-          color={textColor}
-        >
+      <CardBody>
+        <Table style={{ direction: "rtl" }} variant="simple" color={textColor}>
           <Thead>
             <Tr my=".8rem" pl="0px" color="gray.400">
               <Th pl="0px" borderColor={borderColor} color="gray.400">
@@ -57,42 +51,32 @@ import {
               <Th borderColor={borderColor}></Th>
             </Tr>
           </Thead>
-        
-
-          <Tbody  >
-
-
-
+  
+          <Tbody>
             {data
               // filter((filtered) => (filter.fFullName !== "" ? filtered.full_name === filter.fFullName ||
               //   filtered.course.id === filter.fCourse : filtered
               //   )).
               .map((row, index, arr) => (
-             
-
-
-<TablesTableRow
-                  name={row.full_name}
+                <ProductListTableRow
+                  name={row.name}
                   logo={row.image}
-                  email={row.email}
-                  subdomain={row.course.id}
-                  domain={row.course.name}
-                  status={"Online"} //{row.enable}
-                  date={row.phone}
+                  price={row.price}
+                  isMain={row.is_main}
+                  isActive={is_active}
+                  productCourse={row.courses}
+            
                   isLast={index === arr.length - 1 ? true : false}
                   key={row._id}
-                  userId={row._id}
+                  productId={row._id}
                   courses={courses}
                 />
-
-       
               ))}
           </Tbody>
-        
         </Table>
       </CardBody>
     );
   }
   
-  export default UserListTable;
+  export default ProductListTable;
   

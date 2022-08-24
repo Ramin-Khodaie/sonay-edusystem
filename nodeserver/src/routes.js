@@ -22,6 +22,7 @@ import {
   SupportIcon,
 } from "./components/Icons/Icons";
 import {FaUserAlt, FaRegistered, FaBook, FaPaperclip} from "react-icons/fa"
+import Product from 'views/Admin/Products.js';
 var dashRoutes = [
   {
     path: "/dashboard",
@@ -29,6 +30,14 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <HomeIcon/>,
     component: Dashboard,
+    layout: "/admin",
+  },
+  {
+    path: "/courses",
+    name: "دوره ها",
+    rtlName: "لوحة القيادة",
+    icon: <FaUserAlt></FaUserAlt> ,
+    component: Courses,
     layout: "/admin",
   },
   {
@@ -40,13 +49,14 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/courses",
-    name: "دوره ها",
+    path: "/products",
+    name: "محصولات",
     rtlName: "لوحة القيادة",
-    icon: <FaUserAlt></FaUserAlt> ,
-    component: Courses,
+    icon: <FaBook /> ,
+    component: Product,
     layout: "/admin",
   },
+  
   {
     path: "/billing",
     name: "Billing",
