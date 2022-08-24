@@ -90,6 +90,14 @@ var dashRoutes = [
     layout: "/student",
   },
   {
+    path: "/checkouts",
+    name: "book",
+    rtlName: "کتاب",
+    icon: <FaBook color='inherit' />,
+    component: Products,
+    layout: "/student",
+  },
+  {
     path: "/rtl-support-page",
     name: "RTL",
     rtlName: "آرتيإل",

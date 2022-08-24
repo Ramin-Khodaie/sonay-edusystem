@@ -27,6 +27,7 @@ import { NavLink } from "react-router-dom";
 import routes from "routes.js";
 import './StudentNavbarLink.css'
 import { useSelector } from "react-redux";
+import DropDown from "components/DropDown/DropDown";
 
 export default function StudentNavbarLink(props) {
     const {
@@ -111,33 +112,7 @@ export default function StudentNavbarLink(props) {
                 routes={routes}
                 {...rest}
             />
-            <IconBox
-                className="carticon"
-                as="box"
-                h={"45px"}
-                w={"45px"}
-            // bg={iconBlue}
-            >
-                <CartIcon
-                    h={"24px"}
-                    w={"24px"}
-                    color={iconBoxInside}
-                //   onClick={handleCart}
-                />
-                {
-                    cartItems.length > 0 &&
-                    <span >{cartItems.length}</span>
-                }
-            </IconBox>
-            {/* <SettingsIcon
-        cursor='pointer'
-        ms={{ base: "16px", xl: "0px" }}
-        me='16px'
-        onClick={props.onOpen}
-        color={navbarIcon}
-        w='18px'
-        h='18px'
-      /> */}
+       
             <Menu>
                 <MenuButton>
                     <BellIcon color={navbarIcon} w='18px' h='18px' />
@@ -174,6 +149,7 @@ export default function StudentNavbarLink(props) {
                     </Flex>
                 </MenuList>
             </Menu>
+            <DropDown/>
         </Flex>
     );
 }
