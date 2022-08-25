@@ -27,9 +27,6 @@ import {
     const textColor = useColorModeValue("gray.700", "white");
 
 
-    
- 
-  console.log(filter,88)
     return (
       <Flex direction="column">
         <Accordion allowToggle>
@@ -93,9 +90,9 @@ import {
                 />
 
           
-                <Checkbox onChange={handleCheckBoxChange} id="isActive" size={"lg"} defaultChecked>
+                <Checkbox onChange={handleCheckBoxChange} id="isActive" size={"lg"} >
 فقط محصولات فعال                </Checkbox>
-                <Checkbox onChange={handleCheckBoxChange} id="isMain" size={"lg"} defaultChecked>
+                <Checkbox onChange={handleCheckBoxChange} id="isMain" size={"lg"} >
 فقط محصولات اصلی                </Checkbox>
              
 

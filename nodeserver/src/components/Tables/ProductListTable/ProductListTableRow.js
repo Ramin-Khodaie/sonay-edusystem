@@ -20,7 +20,6 @@ import { CheckIcon, CloseIcon, SmallCloseIcon } from "@chakra-ui/icons";
     const borderColor = useColorModeValue("gray.200", "gray.600");
 
 
-    console.log(courses)
     return (
       <Tr>
         <Td
@@ -87,7 +86,7 @@ import { CheckIcon, CloseIcon, SmallCloseIcon } from "@chakra-ui/icons";
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
          
 
-        {courses.map((c)=> (
+        {productCourse.map((c)=> (
 
 
         <Text fontSize="md" color={textColor} fontWeight="bold">
