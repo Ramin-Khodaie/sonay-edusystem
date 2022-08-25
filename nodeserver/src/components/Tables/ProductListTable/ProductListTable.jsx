@@ -37,17 +37,19 @@ import {
           <Thead>
             <Tr my=".8rem" pl="0px" color="gray.400">
               <Th pl="0px" borderColor={borderColor} color="gray.400">
-                کاربر
+                نام محصول
               </Th>
               <Th borderColor={borderColor} color="gray.400">
-                دوره فعلی
-              </Th>
+قیمت محصول              </Th>
               <Th borderColor={borderColor} color="gray.400">
                 وضعیت
               </Th>
               <Th borderColor={borderColor} color="gray.400">
-                شماره تماس
-              </Th>
+اصلی            </Th>
+
+
+<Th borderColor={borderColor} color="gray.400">
+دوره            </Th>
               <Th borderColor={borderColor}></Th>
             </Tr>
           </Thead>

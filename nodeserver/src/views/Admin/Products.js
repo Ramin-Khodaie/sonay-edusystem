@@ -77,10 +77,8 @@ const Product = () => {
 
   const doSearch = () => {
     let tmp = productList;
-    console.log("here", filter, tmp, 80);
 
     if (filter.name !== "") {
-      console.log(1);
 
       tmp = tmp.filter((f) => f.name === filter.name);
     }
@@ -102,13 +100,10 @@ const Product = () => {
       });
     }
     if (filter.isActive) {
-      console.log(3);
-
       tmp = tmp.filter((f) => f.is_active === filter.isActive);
     }
 
     if (filter.isMain) {
-      console.log(4);
 
       tmp = tmp.filter((f) => f.is_main === filter.isMain);
     }
@@ -128,7 +123,6 @@ const Product = () => {
     setState(productList);
   }, [isPending]);
 
-  console.log(filter, 85);
 
   return (
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
