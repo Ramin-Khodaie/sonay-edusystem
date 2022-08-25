@@ -63,7 +63,7 @@ import {
                   logo={row.image}
                   price={row.price}
                   isMain={row.is_main}
-                  isActive={is_active}
+                  isActive={row.is_active}
                   productCourse={row.courses}
             
                   isLast={index === arr.length - 1 ? true : false}

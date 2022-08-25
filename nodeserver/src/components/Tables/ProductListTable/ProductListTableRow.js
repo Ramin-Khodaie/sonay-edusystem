@@ -10,6 +10,7 @@ import {
   } from "@chakra-ui/react";
   import React from "react";
   import UserEditModal from "components/Modal/userEdit";
+import { CheckIcon, CloseIcon, SmallCloseIcon } from "@chakra-ui/icons";
   
   function UserListTableRow(props) {
     const { logo, name, price , isMain,isActive ,productCourse , isLast , key , productId , courses } = props;
@@ -17,6 +18,9 @@ import {
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
     const borderColor = useColorModeValue("gray.200", "gray.600");
+
+
+    console.log(courses)
     return (
       <Tr>
         <Td
@@ -44,7 +48,7 @@ import {
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
             <Text fontSize="md" color={textColor} fontWeight="bold">
-              ریال {price}
+               {price} ریال
             </Text>
             {/* <Text fontSize="sm" color="gray.400" fontWeight="normal">
               {subdomain}
@@ -59,17 +63,49 @@ import {
             p="3px 10px"
             borderRadius="8px"
           >
-            {status}
+
+            {isActive ? "فعال"  : "غیرفعال"}
+       
           </Badge>
         </Td>
+
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-            {date}
-          </Text>
+          <Badge
+            color={isMain ? "green.400" : "red.400"}
+            fontSize="24px"
+            p="3px 10px"
+            borderRadius="8px"
+            bg={"no"}
+          >
+
+            {isMain ?  <CheckIcon /> : <SmallCloseIcon /> }
+       
+          </Badge>
+        </Td>
+
+
+        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+         
+
+        {courses.map((c)=> (
+
+
+        <Text fontSize="md" color={textColor} fontWeight="bold">
+{c.name}
+
+            </Text>
+
+        ))}
+
+
+
+
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
   
-          <UserEditModal  changeSent={changeSent} sent={sent} userId={userId} courses={courses} />
+          <UserEditModal  
+          // changeSent={changeSent} sent={sent} userId={userId} courses={courses}
+           />
           
         </Td>
       </Tr>
