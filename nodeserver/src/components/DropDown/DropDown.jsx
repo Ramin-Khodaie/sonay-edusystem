@@ -1,5 +1,5 @@
 import {
-    Button,
+  Button,
   Flex,
   Menu,
   MenuButton,
@@ -7,18 +7,18 @@ import {
   MenuList,
   useColorModeValue,
 } from "@chakra-ui/react";
-import IconBox from "components/Icons/IconBox";
 import { CartIcon } from "components/Icons/Icons";
-import { ItemContent } from "components/Menu/ItemContent";
 import { useSelector } from "react-redux";
-import { useRef } from "react";
 import { ProductContent } from "components/Menu/ProductContent";
+import {useHistory} from "react-router-dom"
 const DropDown = () => {
   const iconBoxInside = useColorModeValue("white", "white");
   let menuBg = useColorModeValue("white", "navy.800");
-  const { cartItems } = useSelector((state) => state.product);
-
-  
+  const { cartItems } = useSelector((state) => state.order);
+  const history = useHistory()
+  const handleClick = () => {
+    history.push('/student/checkout')
+  };
   return (
     <Menu>
       <MenuButton>
@@ -32,7 +32,7 @@ const DropDown = () => {
           <Flex flexDirection="column">
             {cartItems.map((item) => (
               <MenuItem borderRadius="8px" mb="10px">
-                <ProductContent                  
+                <ProductContent
                   desc={item.description}
                   title={item.title}
                   aName={item.title}
@@ -41,16 +41,16 @@ const DropDown = () => {
                   count={item.quantity}
                 />
               </MenuItem>
-              
             ))}
-            <Button   disabled={cartItems.length === 0}>Go to Checkout</Button>
+            <Button disabled={cartItems.length === 0} onClick={handleClick}>
+              Go to Checkout
+            </Button>
           </Flex>
         ) : (
-          <Flex height="250px" justifyContent="center" alignItems="center">Cart is empty 
-          
+          <Flex height="250px" justifyContent="center" alignItems="center">
+            Cart is empty
           </Flex>
         )}
-           
       </MenuList>
     </Menu>
   );

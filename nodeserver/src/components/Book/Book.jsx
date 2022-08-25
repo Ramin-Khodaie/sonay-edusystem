@@ -9,7 +9,7 @@ import {
 import Card from "components/Card/Card";
 import IconBox from "components/Icons/IconBox";
 import { CartIcon } from "components/Icons/Icons";
-import { AddCartItems } from "redux/product/productReducer";
+import { AddCartItems } from "redux/product/orderReducer";
 import { useDispatch } from "react-redux";
 
 const Book = ({ item }) => {
