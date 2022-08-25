@@ -8,7 +8,7 @@ import RTLPage from "./views/RTL/RTLPage.js";
 import Profile from "./views/Admin/Profile.js";
 import SignIn from "./views/Pages/SignIn.js";
 import SignUp from "./views/Pages/SignUp.js";
-import Books from 'views/Student/Books.js';
+import Products from 'views/Student/Products.js';
 import Registration from 'views/Student/Registration.js';
 import Karne from 'views/Student/Karne.js';
 
@@ -78,7 +78,7 @@ var dashRoutes = [
     name: "book",
     rtlName: "کتاب",
     icon: <FaBook color='inherit' />,
-    component: Books,
+    component: Products,
     layout: "/student",
   },
   {
@@ -87,6 +87,14 @@ var dashRoutes = [
     rtlName: "ثبت نام",
     icon: <FaRegistered color='inherit' />,
     component: Registration,
+    layout: "/student",
+  },
+  {
+    path: "/checkouts",
+    name: "book",
+    rtlName: "کتاب",
+    icon: <FaBook color='inherit' />,
+    component: Products,
     layout: "/student",
   },
   {

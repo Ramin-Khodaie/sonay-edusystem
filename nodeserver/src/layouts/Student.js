@@ -29,10 +29,12 @@ import {
   import bgAdmin from "assets/img/admin-background.png";
   
   import {getActiveNavbar, getActiveRoute} from '../routes'
+import StudentNavbar from "components/Navbars/StudentNavbar";
 
   export default function StudentLayout(props) {
     
     const { ...rest } = props;
+
     // states and functions
     const [fixed, setFixed] = useState(false);
     const { colorMode } = useColorMode();
@@ -108,7 +110,7 @@ import {
             xl: "calc(100% - 275px)",
           }}>
           <Portal>
-            <AdminNavbar
+            <StudentNavbar
               onOpen={onOpen}
               brandText={getActiveRoute(routes)}
               secondary={getActiveNavbar(routes)}

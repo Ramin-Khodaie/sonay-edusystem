@@ -4,15 +4,17 @@ import book2 from 'assets/img/books/book2.png'
 import Book from "components/Book/Book"
 
 
-const Books = () => {
+const Products = () => {
 
     const books = [{
+        id:1,
         title: "American file1",
         description: "this is amarican file1.",
         price: 250000,
         imageUrl: book1,
         isMain: false
     }, {
+        id:2,
         title: "American file2",
         description: "this is amarican file2.",
         price: 250000,
@@ -35,4 +37,4 @@ const Books = () => {
     )
 }
 
-export default Books
+export default Products
