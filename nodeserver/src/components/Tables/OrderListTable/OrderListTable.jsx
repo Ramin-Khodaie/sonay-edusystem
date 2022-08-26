@@ -47,13 +47,9 @@ const OrderListTable = (props) => {
           cartItems.map((item, idx) => {
             return (
               <OrderListTableRow
-                id={item.id}
+                cartitem={item}
                 key={item.id}
-                image={item.imageUrl}
-                title={item.title}
-                desc={item.description}
-                count={item.quantity}
-                price={item.price}
+                
               />
             );
           })

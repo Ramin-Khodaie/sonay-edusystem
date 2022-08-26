@@ -17,121 +17,68 @@ import { RemoveAnItem } from "redux/product/orderReducer";
 import { DeleteCartItem } from "redux/product/orderReducer";
 
 const OrderListTableRow = (props) => {
-  const { image, title, desc, count, price } = props;
-  const textColor = useColorModeValue("gray.500", "white");
+  const { imageUrl, title, desc, quantity, price } = props.cartitem;
+  const textColor = useColorModeValue("gray.700", "white");
   const titleColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "navy.900");
   const borderColor = useColorModeValue("gray.200", "gray.600");
 
   const dispatch = useDispatch();
-  const handleDeleteItem = (id) => {
-    dispatch(DeleteCartItem(id));
+  const handleDeleteItem = () => {
+    dispatch(DeleteCartItem(props.cartitem));
   };
-  const handleRemoveOneItem = (id) => {
-    dispatch(RemoveAnItem(id));
+  const handleRemoveOneItem = () => {
+    dispatch(RemoveAnItem(props.cartitem));
   };
   const handleAddOneItem = (id) => {
-    dispatch(AddCartItems(id));
+    dispatch(AddCartItems(props.cartitem));
   };
+
   return (
     <Tr>
-      <Td
-        minWidth={{ sm: "250px" }}
-        pl="0px"
-        borderColor={borderColor}
-        // borderBottom={isLast ? "none" : null}
-      >
+      <Td minWidth={{ sm: "250px" }} pl="0px" borderColor={borderColor} >
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          <Avatar src={image} w="50px" borderRadius="12px" me="18px" />
-          {/* <Flex direction="column">
-            <Text
-              fontSize="md"
-              color={titleColor}
-              fontWeight="bold"
-              minWidth="100%"
-            >{title}</Text>
-          </Flex> */}
+          <Avatar src={imageUrl} w="50px" borderRadius="12px" me="18px" />
         </Flex>
       </Td>
-      <Td
-        borderColor={borderColor}
-        //   borderBottom={isLast ? "none" : null}
-      >
+      <Td borderColor={borderColor} textAlign="center">
         <Flex direction="column">
-          <Text fontSize="md" color={textColor} fontWeight="bold">
+          <Text fontSize="md" color={textColor} fontWeight="bold" >
             {title}
           </Text>
-          {/* <Text fontSize="sm" color="gray.400" fontWeight="normal">
-              {subdomain}
-            </Text> */}
         </Flex>
       </Td>
-      <Td
-        borderColor={borderColor}
-        //   borderBottom={isLast ? "none" : null}
-      >
+      <Td borderColor={borderColor}>
         <Flex direction="column">
           <Text fontSize="md" color={textColor} fontWeight="bold">
             {desc}
           </Text>
-          {/* <Text fontSize="sm" color="gray.400" fontWeight="normal">
-              {subdomain}
-            </Text> */}
         </Flex>
       </Td>
-      <Td
-        borderColor={borderColor}
-        //   borderBottom={isLast ? "none" : null}
-      >
+      <Td borderColor={borderColor}>
         <Flex justifyContent="space-between" justifyItems="center">
-          <Button
-            size="sm"
-            justifyItems="center"
-            onClick={() => handleRemoveOneItem(props.id)}
-          >
+          <Button colorScheme="whatsapp" color="blackAlpha.900" size="sm" justifyItems="center" onClick={handleRemoveOneItem}>
             -
           </Button>
-          <Text alignSelf="center">{count}</Text>
-          <Button
-            size="sm"
-            justifyItems="center"
-            onClick={() => handleAddOneItem(props.id)}
-          >
+          <Text alignSelf="center">{quantity}</Text>
+          <Button colorScheme="whatsapp" color="blackAlpha.900" size="sm" justifyItems="center" onClick={handleAddOneItem}>
             +
           </Button>
         </Flex>
       </Td>
 
-      <Td
-        borderColor={borderColor}
-        //    borderBottom={isLast ? "none" : null}
-      >
+      <Td borderColor={borderColor} textAlign="center">
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
           {price} ریال
         </Text>
       </Td>
-      <Td
-        borderColor={borderColor}
-        //   borderBottom={isLast ? "none" : null}
-      >
+      <Td borderColor={borderColor}>
         <IconBox>
-          <DeleteIcon onClick={() => handleDeleteItem(props.id)} />
+          <DeleteIcon onClick={handleDeleteItem} color="red.500"/>
         </IconBox>
-        {/* <CourseEditModal
-          courseId={courseId}
-          courses={courses}
-          statusData={statusData}
-        /> */}
       </Td>
     </Tr>
   );
 };
 export default OrderListTableRow;
 
-OrderListTableRow.PropTypes = {
-  image: PropTypes.string,
-  title: PropTypes.string,
-  desc: PropTypes.string,
-  count: PropTypes.number,
-  price: PropTypes.number,
-};

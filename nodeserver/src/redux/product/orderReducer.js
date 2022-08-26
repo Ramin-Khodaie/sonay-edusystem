@@ -20,8 +20,7 @@ const orderReducer = createSlice({
         DeleteCartItem:(state, {payload})=>{            
             state.cartItems = DeleteCartitem(state.cartItems, payload)
         },
-        RemoveAnItem:(state,{payload})=>{
-            console.log(44, payload)
+        RemoveAnItem:(state,{payload})=>{            
             state.cartItems = RemoveOneItem(state.cartItems, payload)
         }
     }
