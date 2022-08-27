@@ -24,6 +24,7 @@ import {
 } from "./components/Icons/Icons";
 import {FaUserAlt, FaRegistered, FaBook, FaPaperclip} from "react-icons/fa"
 import Product from 'views/Admin/Products.js';
+import AddMark from 'views/Teacher/AddMark.js';
 var dashRoutes = [
   {
     path: "/dashboard",
@@ -56,6 +57,14 @@ var dashRoutes = [
     icon: <FaBook /> ,
     component: Product,
     layout: "/admin",
+  },
+  {
+    path: "/managemark",
+    name: "نمرات",
+    rtlName: " نمرات",
+    icon: <FaRegistered color='inherit' />,
+    component: AddMark,
+    layout: "/student",
   },
   
   {

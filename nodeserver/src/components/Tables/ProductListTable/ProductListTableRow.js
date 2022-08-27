@@ -1,116 +1,105 @@
 import {
-    Avatar,
-    Badge,
-    Button,
-    Flex,
-    Td,
-    Text,
-    Tr,
-    useColorModeValue
-  } from "@chakra-ui/react";
-  import React from "react";
-  import UserEditModal from "components/Modal/userEdit";
+  Avatar,
+  Badge,
+  Button,
+  Flex,
+  Td,
+  Text,
+  Tr,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import React from "react";
+import UserEditModal from "components/Modal/userEdit";
 import { CheckIcon, CloseIcon, SmallCloseIcon } from "@chakra-ui/icons";
-  
-  function UserListTableRow(props) {
-    const { logo, name, price , isMain,isActive ,productCourse , isLast , key , productId , courses } = props;
-    const textColor = useColorModeValue("gray.500", "white");
-    const titleColor = useColorModeValue("gray.700", "white");
-    const bgStatus = useColorModeValue("gray.400", "navy.900");
-    const borderColor = useColorModeValue("gray.200", "gray.600");
+import ProductEditModal from "components/Modal/productEdit";
 
+function UserListTableRow(props) {
+  const {
+    logo,
+    name,
+    price,
+    isMain,
+    isActive,
+    productCourse,
+    isLast,
+    key,
+    productId,
+    courses,
+  } = props;
+  const textColor = useColorModeValue("gray.500", "white");
+  const titleColor = useColorModeValue("gray.700", "white");
+  const bgStatus = useColorModeValue("gray.400", "navy.900");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
 
-    console.log(courses)
-    return (
-      <Tr>
-        <Td
-          minWidth={{ sm: "250px" }}
-          pl="0px"
-          borderColor={borderColor}
-          borderBottom={isLast ? "none" : null}
-        >
-          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-            <Avatar src={logo} w="50px" borderRadius="12px" me="18px" />
-            <Flex direction="column">
-              <Text
-                fontSize="md"
-                color={titleColor}
-                fontWeight="bold"
-                minWidth="100%"
-              >
-                {name}
-              </Text>
-              
-            </Flex>
-          </Flex>
-        </Td>
-  
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+  return (
+    <Tr>
+      <Td
+        minWidth={{ sm: "250px" }}
+        pl="0px"
+        borderColor={borderColor}
+        borderBottom={isLast ? "none" : null}
+      >
+        <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
+          <Avatar src={logo} w="50px" borderRadius="12px" me="18px" />
           <Flex direction="column">
-            <Text fontSize="md" color={textColor} fontWeight="bold">
-               {price} ریال
+            <Text
+              fontSize="md"
+              color={titleColor}
+              fontWeight="bold"
+              minWidth="100%"
+            >
+              {name}
             </Text>
-            {/* <Text fontSize="sm" color="gray.400" fontWeight="normal">
+          </Flex>
+        </Flex>
+      </Td>
+
+      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+        <Flex direction="column">
+          <Text fontSize="md" color={textColor} fontWeight="bold">
+            {price} ریال
+          </Text>
+          {/* <Text fontSize="sm" color="gray.400" fontWeight="normal">
               {subdomain}
             </Text> */}
-          </Flex>
-        </Td>
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <Badge
-            bg={isMain ? "green.400" : bgStatus}
-            color={"white"}
-            fontSize="16px"
-            p="3px 10px"
-            borderRadius="8px"
-          >
+        </Flex>
+      </Td>
+      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+        <Badge
+          bg={isActive ? "green.400" : bgStatus}
+          color={"white"}
+          fontSize="16px"
+          p="3px 10px"
+          borderRadius="8px"
+        >
+          {isActive ? "فعال" : "غیرفعال"}
+        </Badge>
+      </Td>
 
-            {isActive ? "فعال"  : "غیرفعال"}
-       
-          </Badge>
-        </Td>
+      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+        <Badge
+          color={isMain ? "green.400" : "red.400"}
+          fontSize="24px"
+          p="3px 10px"
+          borderRadius="8px"
+          bg={"no"}
+        >
+          {isMain ? <CheckIcon /> : <SmallCloseIcon />}
+        </Badge>
+      </Td>
 
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <Badge
-            color={isMain ? "green.400" : "red.400"}
-            fontSize="24px"
-            p="3px 10px"
-            borderRadius="8px"
-            bg={"no"}
-          >
-
-            {isMain ?  <CheckIcon /> : <SmallCloseIcon /> }
-       
-          </Badge>
-        </Td>
-
-
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-         
-
-        {courses.map((c)=> (
-
-
-        <Text fontSize="md" color={textColor} fontWeight="bold">
-{c.name}
-
-            </Text>
-
+      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+        {productCourse.map((c) => (
+          <Text fontSize="md" color={textColor} fontWeight="bold">
+            {c.name}
+          </Text>
         ))}
+      </Td>
+      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+        <ProductEditModal productId={productId} courses={courses} />
+      </Td>
+    </Tr>
+  );
+}
 
-
-
-
-        </Td>
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-  
-          <UserEditModal  
-          // changeSent={changeSent} sent={sent} userId={userId} courses={courses}
-           />
-          
-        </Td>
-      </Tr>
-    );
-  }
-  
-  export default UserListTableRow;
-  
+export default UserListTableRow;

@@ -28,11 +28,18 @@ import {
   import { bixios } from "services/main";
   import { useDispatch, useSelector } from "react-redux";
 import { createProductAction } from "redux/product/productCreate/productCreateAction";
+import { productListAction } from "redux/product/productList/ProductListAction";
+import { useProduct } from "hooks/products/useProduct";
+import { isConstTypeReference } from "typescript";
 
   function ProductForm(props) {
-    const { courses  } = props;
+    const { courses,productId="-1"  } = props;
     const notify = useNotify();
+    const { isLoading, message, error } = useSelector(
+      (state) => state.createProduct
+    );
   
+    const currentProduct = useProduct(productId)
 
     const dispatch = useDispatch();
     const [formData, setFormData] = React.useState({
@@ -71,7 +78,7 @@ import { createProductAction } from "redux/product/productCreate/productCreateAc
         courses: formData.courses,
       };
       await dispatch(createProductAction(newProduct));
-      // await dispatch(userListAction());
+      await dispatch(productListAction());
     };
   
     function handleSubmitform() {
@@ -89,7 +96,33 @@ import { createProductAction } from "redux/product/productCreate/productCreateAc
       const value = event.target.checked;
       setFormData({ ...formData, [field]: value });
     }
-  
+
+
+    
+  useEffect(() => {
+    if (message != "") {
+      notify("دوره با موفقیت ثبت شد", true, "solid", "success");
+    }
+    if (error) {
+      notify(error, true, "solid", "error");
+    }
+  }, [message, error]);
+
+  useEffect(() => {
+    if (currentProduct.length != 0) {
+      setFormData({
+        ...formData,
+        _id: currentProduct[0]._id,
+        name: currentProduct[0].name,
+        price: currentProduct[0].price,
+        isMain: currentProduct[0].is_main,
+        isActive: currentProduct[0].is_active,
+        description: currentProduct[0].description,
+        courses: currentProduct[0].courses,
+      });
+    }
+  }, [currentProduct]);
+  console.log(formData,63)
     return (
       <>
         <SimpleGrid
@@ -116,6 +149,7 @@ import { createProductAction } from "redux/product/productCreate/productCreateAc
                 value={formData.name}
                 placeholder="نام محصول را وارد نمایید"
                 size="lg"
+                
               />
             </Box>
             <Box mb={"15px"}>
@@ -132,6 +166,8 @@ import { createProductAction } from "redux/product/productCreate/productCreateAc
                   size={"lg"}
                   dir="ltr"
                   defaultValue={0}
+                  value={formData.price}
+
                 >
                   <InputLeftElement
                     pointerEvents="none"
@@ -139,9 +175,10 @@ import { createProductAction } from "redux/product/productCreate/productCreateAc
                     fontSize="1.2em"
                     children="ریال"
                   />
-                  <NumberInputField onChange={handleChange}
+                  <NumberInputField 
+                   onChange={handleChange}
                   id="price"
-                  value={formData.price} textAlign={"center"} />
+                   textAlign={"center"} />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
@@ -153,10 +190,17 @@ import { createProductAction } from "redux/product/productCreate/productCreateAc
   
             <Box>
               <SimpleGrid row={2} spacing={4}>
-                <Checkbox onChange={handleCheckBoxChange} id="isActive" size={"lg"} defaultChecked>
+                <Checkbox 
+                onChange={handleCheckBoxChange} 
+                id="isActive" 
+                size={"lg"}
+                isChecked= {formData.isActive ? true : false}
+                
+                 >
                   آیا این محصول فعال است؟
                 </Checkbox>
-                <Checkbox onChange={handleCheckBoxChange} id="isMain" size={"lg"} defaultChecked>
+                <Checkbox onChange={handleCheckBoxChange} id="isMain" size={"lg"} 
+                        isChecked= {formData.isMain ? true : false}>
                   آیا این محصول اصلی تلقی می شود؟
                 </Checkbox>
               </SimpleGrid>
