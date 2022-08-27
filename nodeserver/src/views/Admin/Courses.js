@@ -1,23 +1,9 @@
 // Chakra imports
 import {
-  SimpleGrid,
-  Table,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
   useColorModeValue,
   Flex,
   Text,
-  Box,
-  Input,
-  Select,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Spacer,
+
 } from "@chakra-ui/react";
 
 // Custom components
@@ -25,10 +11,6 @@ import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CourseForm from "components/Forms/courseForm";
-import UserForm from "components/Forms/userForm";
-import CustomSelector from "components/Selectors/CustomSelector";
-import TablesTableRow from "components/Tables/TablesTableRow";
-import { useCourseList } from "hooks/users/useCourseList";
 import React, { useEffect, useState } from "react";
 import CourseListFilter from "components/Filter/CourseListFilter";
 import { useDispatch, useSelector } from "react-redux";
