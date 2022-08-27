@@ -4,7 +4,7 @@ import UserListReducer from './user/UserList/UserListReducer';
 import CreateCourseReducer from './course/createCource/createCourseReducer'
 import courseListReducer from './course/courseList/courseListReducer'
 
-import ProductReducer from './product/productReducer';
+import OrderReducer from './product/orderReducer';
 
 import productListReducer from './product/productList/ProductListReducer'
 import productCreateReducer from './product/productCreate/productCreateReducer'
@@ -17,7 +17,7 @@ const store = configureStore({
                 createcourse: CreateCourseReducer,
                 courseList: courseListReducer,
 
-                product: ProductReducer,
+                order: OrderReducer,
 
                 createProduct: productCreateReducer,
                 productList: productListReducer

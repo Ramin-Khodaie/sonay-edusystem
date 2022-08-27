@@ -11,6 +11,7 @@ import SignUp from "./views/Pages/SignUp.js";
 import Products from 'views/Student/Products.js';
 import Registration from 'views/Student/Registration.js';
 import Karne from 'views/Student/Karne.js';
+import Checkout from 'views/Student/Checkouts'
 
 import {
   HomeIcon,
@@ -90,11 +91,11 @@ var dashRoutes = [
     layout: "/student",
   },
   {
-    path: "/checkouts",
-    name: "book",
+    path: "/checkout",
+    name: "checkout",
     rtlName: "کتاب",
     icon: <FaBook color='inherit' />,
-    component: Products,
+    component: Checkout,
     layout: "/student",
   },
   {

@@ -42,7 +42,7 @@ export default function StudentNavbarLink(props) {
 
     const { colorMode } = useColorMode();
 
-    const { cartItems } = useSelector(state => state.product)
+
 
     const iconBoxInside = useColorModeValue("white", "white");
     const textColor = useColorModeValue("gray.700", "white");
@@ -112,7 +112,7 @@ export default function StudentNavbarLink(props) {
                 routes={routes}
                 {...rest}
             />
-       
+
             <Menu>
                 <MenuButton>
                     <BellIcon color={navbarIcon} w='18px' h='18px' />
@@ -149,7 +149,7 @@ export default function StudentNavbarLink(props) {
                     </Flex>
                 </MenuList>
             </Menu>
-            <DropDown/>
+            <DropDown />
         </Flex>
     );
 }
