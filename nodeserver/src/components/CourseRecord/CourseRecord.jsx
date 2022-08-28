@@ -1,50 +1,45 @@
 import { DocumentIcon } from "components/Icons/Icons";
-import { Flex, Stat, StatLabel, StatNumber, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  Divider,
+  Flex,
+  Stat,
+  StatLabel,
+  StatNumber,
+  Text,
+} from "@chakra-ui/react";
 import Card from "components/Card/Card";
 import IconBox from "components/Icons/IconBox";
 
 import "./CourseRecord.css";
 
-const CourseRecord = () => {
+const CourseRecord = ({ courserecord }) => {
+  const { courseName, endDate, image, startDate, teacherName } = courserecord;
+  console.log(courserecord);
   return (
-    <div
-      className="record-card"
-     
-    >
-      <Card minH="125px">
-        <Flex direction="column">
+    <div className="record-card">
+      <Card minH="150px" >
+        <Flex flexDirection="column" justifyContent="space-between">
           <Flex
             flexDirection="row"
             align="center"
-            justify="center"
-            w="100%"
-            mb="25px"
+            justifyContent="space-between"
           >
-            <Stat me="auto">
-              <StatLabel
-                fontSize="xs"
-                color="gray.400"
-                fontWeight="bold"
-                textTransform="uppercase"
-              >
-                New Clients
-              </StatLabel>
-              <Flex>
-                <StatNumber fontSize="lg" fontWeight="bold">
-                  +2,503
-                </StatNumber>
-              </Flex>
-            </Stat>
-            <IconBox borderRadius="50%" as="box" h={"45px"} w={"45px"}>
-              <DocumentIcon h={"24px"} w={"24px"} />
-            </IconBox>
-          </Flex>
-          <Text color="gray.400" fontSize="sm">
-            <Text as="span" color="red.500" fontWeight="bold">
-              -2.82%{" "}
-            </Text>
-            Since last month
-          </Text>
+            <Avatar
+              name={courseName}
+              src={image}
+              borderRadius="12px"
+              alignItems="center"
+              width="50%"
+              height="30%"
+              objectFit="cover"
+            />
+            <Flex flexDirection="column" justifyContent="space-between">            
+              <Text>{courseName}</Text>
+              <Divider border="1px solid"></Divider>
+              <Text mt="10px">{teacherName}</Text>
+            </Flex>
+          </Flex>          
         </Flex>
       </Card>
     </div>
