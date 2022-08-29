@@ -1,0 +1,28 @@
+.slider-container {
+  width: 90%;
+  height: 180px;
+
+  position: center;
+  display: flex;
+  align-items: center;
+}
+
+.slider-icon.left,
+.slider-icon.right {
+  background-color: white;
+  color: black;
+  border-radius: 100%;
+  position: absolute;
+  opacity: 0.2;
+}
+.slider-icon.left:hover,
+.slider-icon.right:hover {
+  opacity: 1;
+}
+.left {
+  left: 5%;
+}
+
+.right {
+  right: 5%;
+}
