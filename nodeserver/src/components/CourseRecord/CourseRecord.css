@@ -2,7 +2,10 @@
     height: 100%;
     display: inline-block;
     margin-left: 5px;
-    margin-right: 5px;
-    
+    margin-right: 5px;    
     /* box-shadow: 2px 2px 2px 2px rgb(0 0 0 / 12%); */
+}
+
+.record-card:hover{
+    cursor: pointer;
 }

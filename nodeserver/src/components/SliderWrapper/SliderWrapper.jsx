@@ -3,14 +3,16 @@ import React, { useRef } from "react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import "./SliderWrapper.css";
 const SliderWrapper = (props) => {
-  const handlescrollLeft = () => {
-    const slider = document.getElementById("slider");
-    slider.scrollLeft = slider.scrollLeft + 500;
+
+
+  const sliderRef = useRef(undefined)
+  const {onLeft} = props
+  const handlescrollLeft = () => {   
+    sliderRef.current.gotoLeft()
   };
 
-  const handlescrollRight = () => {
-    const slider = document.getElementById("slider");    
-    slider.scrollLeft = slider.scrollLeft - 500;
+  const handlescrollRight = () => {    
+    sliderRef.current.gotoRight()
   };
 
   return (
@@ -20,7 +22,7 @@ const SliderWrapper = (props) => {
         className="slider-icon left"
         onClick={handlescrollLeft}
       />
-      {props.children}
+      {React.Children.map(props.children,child=>React.cloneElement(child,{ref:sliderRef}))}
       <MdChevronRight
         size={25}
         className="slider-icon right"

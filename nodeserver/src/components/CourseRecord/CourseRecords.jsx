@@ -1,9 +1,9 @@
 import courseImage1 from "assets/img/courses/ielts.png";
 import CourseRecord from "./CourseRecord";
-
+import { forwardRef, useImperativeHandle } from "react";
 import "./CourseRecords.css";
 
-const CourseRecords = (props) => {
+const CourseRecords = ({onSelectCourse, slideToLeft},ref) => {
   const records = [
     {
       courseName: "IELTS",
@@ -77,13 +77,30 @@ const CourseRecords = (props) => {
     },
   ];
 
+  const handleSliderLeft = () =>{
+    const slider = document.getElementById("slider")
+    slider.scrollLeft = slider.scrollLeft + 500
+  }
+
+  const handleSliderRight = () =>{
+    console.log(9000, "here")
+    const slider = document.getElementById("slider")
+    slider.scrollLeft = slider.scrollLeft - 500
+  }
+
+
+useImperativeHandle(ref, ()=>({
+  gotoLeft : handleSliderLeft,
+  gotoRight:handleSliderRight
+}))
+
   return (
-    <div className="records-container" id="slider">
+    <div className="records-container"  id="slider" >
       {records.map((record, idx) => (
-        <CourseRecord key={idx} courserecord={record} />
+        <CourseRecord key={idx} courserecord={record} onSelect = {onSelectCourse}/>
       ))}
     </div>
   );
 };
 
-export default CourseRecords;
+export default forwardRef(CourseRecords);
