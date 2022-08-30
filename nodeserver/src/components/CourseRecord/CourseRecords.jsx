@@ -3,7 +3,7 @@ import CourseRecord from "./CourseRecord";
 import { forwardRef, useImperativeHandle } from "react";
 import "./CourseRecords.css";
 
-const CourseRecords = ({onSelectCourse, slideToLeft},ref) => {
+const CourseRecords = ({onSelectCourse},ref) => {
   const records = [
     {
       courseName: "IELTS",

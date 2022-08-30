@@ -21,7 +21,7 @@ const OrderListTable = (props) => {
   console.log(cartItems);
   return (
     <Table style={{ direction: "rtl" }} variant="simple" color={textColor}>
-      <Thead>
+      <Thead verticalAlign={true}>
         <Tr my=".8rem" pl="0px" color="gray.400">
           <Th pl="0px" borderColor={borderColor} color="gray.400"></Th>
           <Th borderColor={borderColor} color="gray.400" textAlign="center">

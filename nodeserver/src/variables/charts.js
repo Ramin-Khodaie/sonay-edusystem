@@ -5,6 +5,84 @@ export const barChartData = [
   },
 ];
 
+export const workbookChartData = [
+  {
+    name:"performance",
+    data:[80,90,100,75,80,95,90]
+  }  
+]
+export const workbookChartOptions={
+  xaxis: {
+    categories: ["class activity", "speaking", "listening","writing", "reading", "homework", "final status"],
+    labels: {
+      style: {
+        colors: "#8c98a8",
+        fontSize: "16px",
+      },
+    },
+    show: true,
+    axisBorder: {
+      show: false,
+    },
+    axisTicks: {
+      show: true,
+      borderType: 'solid',
+      color: '#78909C',
+      height: 6,
+      padding:20,
+      offsetX: 0,
+      offsetY: 0
+  },
+  },
+  
+  yaxis: {
+    show: true,
+    color: "#A0AEC0",
+    labels: {
+      show: true,
+      style: {
+        colors: "#A0AEC0",
+        fontSize: "14px",
+      },
+    },
+  },
+  fill: {
+    colors: "#ED8936",
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  grid: {
+    strokeDashArray: 5,
+  },
+  plotOptions: {
+    bar: {
+      borderRadius: 15,
+      columnWidth: "15px",
+      horizantal:true,
+    },
+  },
+  responsive: [
+    {
+      breakpoint: 768,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 0,
+          },
+        },
+      },
+    },
+  ],
+  chart: {
+    toolbar: {
+      show: false,
+    },
+  },
+  tooltip: {
+    theme: "dark",
+  },
+}
 export const barChartOptions = {
   chart: {
     toolbar: {
