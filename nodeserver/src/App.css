@@ -1,5 +1,5 @@
 :root {
-    --background:#fff6f9;
+    --background:#fff6f9;    
     --dark-text:#000000;
     --light-text:#ffffff;
     --purpule:#CDB4DB;
@@ -9,4 +9,5 @@
     --light-blue:#BDE0FE;
     --dark-blue:#A2D2FF;
     --red:#ff70a5;
+    --light-purple:#e9e4f0;
 }

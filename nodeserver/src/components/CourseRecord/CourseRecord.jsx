@@ -13,11 +13,10 @@ import IconBox from "components/Icons/IconBox";
 
 import "./CourseRecord.css";
 
-const CourseRecord = ({ courserecord }) => {
-  const { courseName, endDate, image, startDate, teacherName } = courserecord;
-  console.log(courserecord);
+const CourseRecord = ({ courserecord, onSelect }) => {
+  const { courseName, endDate, image, startDate, teacherName } = courserecord;  
   return (
-    <div className="record-card">
+    <div className="record-card" onClick={()=>onSelect(courserecord)}>
       <Card minH="150px" >
         <Flex flexDirection="column" justifyContent="space-between">
           <Flex

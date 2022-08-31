@@ -8,9 +8,9 @@ import RTLPage from "./views/RTL/RTLPage.js";
 import Profile from "./views/Admin/Profile.js";
 import SignIn from "./views/Pages/SignIn.js";
 import SignUp from "./views/Pages/SignUp.js";
-import Products from 'views/Student/Products.js';
-import Registration from 'views/Student/Registration.js';
-import Karne from 'views/Student/Karne.js';
+import Products from 'views/Student/Products.jsx';
+import Registration from 'views/Student/Registration.jsx';
+import Karne from 'views/Student/Karne.jsx';
 import Checkout from 'views/Student/Checkouts'
 
 import {
