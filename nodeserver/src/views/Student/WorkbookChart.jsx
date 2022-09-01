@@ -11,12 +11,12 @@ const WorkbookChart = () => {
     <Card
     
       my="50px"
-      maxW="50%"
+      maxW="100%"
       overflowX={{ sm: "scroll", xl: "hidden" }}
       pb="0px"
     >
       <Flex direction="column" mb="40px" p="28px 0px 0px 22px">
-        <Text color="gray.500" fontSize="sm" fontWeight="bold" mb="6px">
+        <Text color="gray.500" fontSize="xl" fontWeight="bold" mb="6px">
           PERFORMANCE IN CLASS
         </Text>
         
