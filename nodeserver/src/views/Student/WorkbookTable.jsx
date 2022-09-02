@@ -17,7 +17,7 @@ const WorkbookTable = () => {
       alignSelf="flex-start"
       
       my="50px"
-      maxW="45%"
+      maxW="100%"
       overflowX={{ sm: "scroll", xl: "hidden" }}
       pb="0px"
     >
