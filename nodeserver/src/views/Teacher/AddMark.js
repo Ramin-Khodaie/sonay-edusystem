@@ -19,6 +19,7 @@ import { courseByTeacher } from "services/course";
 import useNotify from "helpers/notify/useNotify";
 import { notInitialized } from "react-redux/es/utils/useSyncExternalStore";
 import CustomSelector from "components/Selectors/CustomSelector";
+import { studentByCourse } from "services/user";
 function AddMark() {
   const notify = useNotify()
   const { colorMode } = useColorMode();
@@ -29,26 +30,32 @@ function AddMark() {
   });
 
   const [myCourses , setMyCourses] = useState([])
-  const getList = async ()=>{
-    const res = await courseByTeacher();
-  
-    if(res.status === 200){
+  const [myStudents , setmyStudents] = useState([])
+  const getCourseList = async ()=>{
+    const coursesList = await courseByTeacher();
+    if(coursesList.status === 200){
+      setMyCourses(coursesList.data.data)
+    }
 
-     
+  }
 
 
-      setMyCourses(res.data.data)
-
-    }else{
-      // notify("خطا در بارگذاری اطلاعات" , true , "solid" , "error")
+  const getStudentList = async ()=>{
+    
+    const studentsList = await studentByCourse(selectedItems.course.id)
+    if(studentsList.length > 0){
+      setmyStudents(studentsList)
     }
   }
 
   useEffect(() => {
-    getList();
-    
+    getCourseList(); 
   }, []);
-  console.log(65,myCourses)
+
+  useEffect(()=>{
+    getStudentList()
+    
+  },[selectedItems.course])
   return (
    
      <>

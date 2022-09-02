@@ -53,3 +53,36 @@ export const userList = () => {
     }
   });
 };
+
+
+
+
+
+export const studentByCourse= (courseId) => {
+ if(courseId !== ""){
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/users/getuserbycourse",
+       {
+        params:{
+          course_id : courseId,
+          role : 'student',
+      
+        }
+      }
+      
+      
+      );
+
+      
+      if (res.status === 200) {
+        resolve(res.data.data);
+      }
+    } catch (error) {
+       resolve(error.response.status);
+    }
+  });
+ }else{
+return([])
+ }
+};
