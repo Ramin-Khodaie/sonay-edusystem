@@ -1,24 +1,63 @@
 // Chakra imports
-import { Flex, Box, Avatar, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Avatar,
+  Text,
+  Select,
+  useColorMode,
+} from "@chakra-ui/react";
 import Card from "components/Card/Card";
-
-import React, { useEffect, useState } from "react";
-
+import SliderWrapper from "components/SliderWrapper/SliderWrapper";
+import CourseRecords from "components/CourseRecord/CourseRecords";
+import React, { useEffect, useState, useRef } from "react";
+import { forwardRef, useImperativeHandle } from "react";
+import StudentRecords from "components/StudentRecord/StudentRecords";
+import MarkForm from "components/Forms/markForm";
 function AddMark() {
+  const { colorMode } = useColorMode();
+
+  const [selectedCourse, setSelectedCourse] = useState(undefined);
+  const handleSelectCourse = (course) => {
+    setSelectedCourse(course);
+  };
+  const [selectedStudent, setSelectedStudent] = useState(undefined);
+  const handleSelectStudent = (student) => {
+    setSelectedStudent(student);
+  };
+
   return (
-    <Flex justify={"center"} direction="row" pt={{ base: "120px", md: "75px" }}>
-      <Box borderRadius={"2rem"} bg={"whiteSmoke"} p="4" m="4">
-        <Flex  dir="rtl" direction={"row"}>
-        <Avatar
-          size={"lg"}
-          name="blaaaah"
-          src="https://bit.ly/dan-abramov"
-          mx={"10px"}
+   
+     <>
+     
+     <Box mt="60px"  px="55px" py="5" w="100%"  dir="rtl">
+        <Select
+   
+          w={{sm:"100%" , md :"50%" , lg : "40%"}}
+          textAlign={"center"}
+          bg={colorMode === "light" ? 'white' : "cyan.500"}
+          placeholder="کلاس را انتخاب کنید"
+          size="lg"
         />
-        <Text fontSize={"24px"} py={"15px"}>blaaaah</Text>
-        </Flex>
       </Box>
-    </Flex>
+
+      <Flex flexDirection="column" mb="30 px"   h="100%" align={'center'}>
+          <SliderWrapper>
+        <StudentRecords onSelectStudent={handleSelectStudent} />
+      </SliderWrapper>
+
+
+      </Flex>
+
+    
+
+
+
+      <MarkForm />
+     
+     
+     </>
+
   );
 }
 

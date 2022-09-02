@@ -6,6 +6,7 @@ import {
     BreadcrumbLink,
     Flex,
     Link,
+    Spacer,
     useColorModeValue
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
@@ -116,12 +117,12 @@ export default function StudentNavbar(props) {
             <Flex
                 w="100%"
                 flexDirection={{
-                    sm: "column",
+                    sm: "row",
                     md: "row",
                 }}
                 alignItems={{ xl: "center" }}
             >
-                <Box mb={{ sm: "8px", md: "0px" }} ml={{ sm: "15px", md: "10px" }}>
+                <Box w={{ sm: "60%", md: "unset" }}  mb={{ sm: "8px", md: "0px" }} ml={{ sm: "15px", md: "10px" }}>
                     <Breadcrumb>
                         <BreadcrumbItem color={mainText}>
                             <BreadcrumbLink href="#" color={secondaryText}>
@@ -155,7 +156,9 @@ export default function StudentNavbar(props) {
                         {brandText}
                     </Link>
                 </Box>
-                <Box ms="auto" w={{ sm: "100%", md: "unset" }}>
+                <Spacer />
+       
+                <Box dir='rtl' ms="auto" w={{ sm: "40%", md: "unset" }}>
                     <StudentNavbarLink
                         onOpen={props.onOpen}
                         logoText={props.logoText}
