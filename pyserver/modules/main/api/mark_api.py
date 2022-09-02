@@ -22,3 +22,5 @@ mark=SMark('sonay' , 'mark')
 def create_mark(info : dict):
     ret = mark.insert_mark(info)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+

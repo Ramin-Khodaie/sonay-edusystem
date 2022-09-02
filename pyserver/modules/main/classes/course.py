@@ -5,14 +5,16 @@ from bson import ObjectId
 
 class SCourse:
     database: str = "database"
-    course_collection: str = ""
+    course_collection: str = 'course'
+    user_collection: str = 's_user'
 
-    def __init__(self, database, course_collection):
+    def __init__(self, database, course_collection, user_collection):
         self.database = database
         self.course_collection = course_collection
+        self.user_collection = user_collection
 
     def validate_course(self, course, col):
-        required = {"name", "_id", "next_course", "status" , "price"}
+        required = {"name", "_id", "next_course", "status", "price"}
         if len(required.difference(set(course.keys()))) != 0:
             return 422, "missing_field", "some fields are missing", None
         if not (course["name"] and course["status"] and course["price"]):
@@ -84,4 +86,26 @@ class SCourse:
                 }
             }
         ]))
+        return 200, "ok", "ok", cl
+
+    def get_course_by_teacher(self, teacher_id):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.user_collection]
+        cl = list(col.aggregate([
+            {
+                '$match': {
+                    # 'username': teacher_id,
+                    'roles.id': 'teacher'
+                }
+            }, {
+                '$group': {
+                    '_id': '$course.id',
+                    'name': {
+                        '$first': '$course.name'
+                    }
+                }
+            }
+        ]))
+
+
         return 200, "ok", "ok", cl

@@ -30,19 +30,3 @@ export const createMark = (mark) => {
     }
   });
 };
-
-// export const productList = () => {
-//   return new Promise(async (resolve, reject) => {
-//     try {
-//       const res = await bixios.get("/products/getproductlist"
-
-//       );
-
-//       if (res.status === 200) {
-//         resolve(res);
-//       }
-//     } catch (error) {
-//        resolve(error.response.status);
-//     }
-//   });
-// };

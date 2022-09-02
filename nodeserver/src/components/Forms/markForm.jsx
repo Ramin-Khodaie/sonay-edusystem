@@ -100,7 +100,6 @@ function MarkForm(props) {
   }
   }
 
-  console.log("formData", formData);
   return (
     <>
       <SimpleGrid dir="rtl" columns={{ sm: 1, md: 2, xl: 3 }} spacing={15}>
