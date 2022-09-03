@@ -7,13 +7,14 @@ import {
     useDisclosure,
     Button,
   } from "@chakra-ui/react";
+import MarkForm from "components/Forms/markForm";
 import ProductForm from "components/Forms/productForm";
   import UserForm from "components/Forms/userForm";
   
   import React, { useEffect } from "react";
   
   function MarkEditModal(props) {
-    const { productId , courses  } = props;
+    const {selectedCourse, selectedStudent } = props;
   
     const { isOpen, onOpen, onClose } = useDisclosure();
   
@@ -24,8 +25,8 @@ import ProductForm from "components/Forms/productForm";
   
     return (
       <>
-        {/* <Button onClick={onOpen}>ویرایش</Button>
-   */}
+        <Button onClick={onOpen}>ویرایش</Button>
+   
         <Modal
           size={"5xl"}
           initialFocusRef={initialRef}
@@ -37,16 +38,12 @@ import ProductForm from "components/Forms/productForm";
           <ModalContent>
             <ModalCloseButton />
             <ModalBody pt={"50px"}>
-              <ProductForm 
+             
 
-courses={courses}
-productId={productId}
+             <MarkForm selectedCourse={selectedCourse} selectedStudent={selectedStudent} />
               
               
-              
-              
-              
-              />
+            
             </ModalBody>
           </ModalContent>
         </Modal>

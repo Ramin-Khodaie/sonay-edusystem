@@ -12,6 +12,7 @@ import {
   import UserEditModal from "components/Modal/userEdit";
   import { CheckIcon, CloseIcon, SmallCloseIcon } from "@chakra-ui/icons";
   import ProductEditModal from "components/Modal/productEdit";
+import MarkEditModal from "components/Modal/MarkEdit";
   
   function MarkListTableRow(props) {
     const {
@@ -24,6 +25,8 @@ import {
             isLast,
             key,
             markId,
+            selectedCourse,
+            selectedStudent
      
     } = props;
     const textColor = useColorModeValue("gray.500", "white");
@@ -66,14 +69,13 @@ import {
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Badge
-            bg={"green.400"}
+            bg={status === 'failed' ? "red.500" : "green.400"}
             color={"white"}
             fontSize="16px"
             p="3px 10px"
             borderRadius="8px"
           >
-            {/* {isActive ? "فعال" : "غیرفعال"} */}
-            {status}
+            {status === 'failed' ? "مردود" : "قبول"}
           </Badge>
         </Td>
   
@@ -87,7 +89,8 @@ import {
           {course.name}
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          {/* <ProductEditModal markId={markId} /> */}
+          
+          <MarkEditModal selectedCourse={selectedCourse} selectedStudent={selectedStudent} />
         </Td>
       </Tr>
     );

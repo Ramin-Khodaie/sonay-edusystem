@@ -1,8 +1,10 @@
+from datetime import datetime
+import imp
 from xmlrpc.client import Boolean
 from pymongo.database import Database, Collection
 from modules.main.sonay_app import sn
 from bson import ObjectId
-
+from persiantools.jdatetime import JalaliDate
 
 class SMark:
     database: str = "database"
@@ -23,13 +25,17 @@ class SMark:
 
         return 200, "ok", "is valid", None
 
-    def insert_mark(self, info):
+    def insert_mark(self, info , st):
 
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
         valid = self.validate_mark(info, col)
         if valid[0] != 200:
             return valid
+
+        cc = JalaliDate.today()
+        info['date'] = f"{cc.year}/{cc.month}/{cc.day}"
+        info['status'] = 'passed' if info['sum'] >= st.info['PassMarkLimit'] else 'failed'
         if "_id" in info and info["_id"] != "":
             res = self.edit_mark(info, col)
             return res

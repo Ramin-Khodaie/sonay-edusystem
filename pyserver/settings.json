@@ -10,7 +10,8 @@
       "customerCode":"ESTG",
       "code": "heelo dear",
       "expiration" : "1401/5/20",
-      "daysToNotify" : 10
+      "daysToNotify" : 10,
+      "PassMarkLimit" : 70
   
     },
     "API": {

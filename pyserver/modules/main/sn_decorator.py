@@ -48,9 +48,9 @@ def sn_decorator(say: SAY, settings: SSettings, *, roles : List[str] = [], fast:
             if v.__str__().find('.SAY') != -1:
                 extras[param] = say
 
-            elif v.__str__().find('.ASettings') != -1:
+            elif v.__str__().find('.SSettings') != -1:
                 extras[param] = settings
-            elif v.__str__().find('.ASession') != -1:
+            elif v.__str__().find('.SSession') != -1:
                 session_param_name = param
                 extras[param] = None
             

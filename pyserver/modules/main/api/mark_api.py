@@ -6,6 +6,7 @@ from modules.main.api_return import api_return
 
 from modules.main.sonay_app import sn
 from modules.main.classes.mark import SMark
+from modules.main.s_settings import SSettings
 
 
 
@@ -19,8 +20,8 @@ mark=SMark('sonay' , 'mark')
 
 @router.post("/createmark")
 @sn(fast=True)
-def create_mark(info : dict):
-    ret = mark.insert_mark(info)
+def create_mark(st:SSettings, info : dict):
+    ret = mark.insert_mark(info , st)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 

@@ -3,14 +3,14 @@ import {
   Flex,
   Box,
   Avatar,
-  Text,
-  
-  
+  Skeleton, SkeletonCircle, SkeletonText,
   Accordion,
   AccordionItem,
   Select,
+  Stack,
   useColorMode,
   SimpleGrid,
+  Center,
 } from "@chakra-ui/react";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -31,32 +31,38 @@ import MarkListFilter from "components/Filter/MarkFilter";
 import { markByTeacher } from "services/mark";
 import MarkListTable from "components/Tables/MarkListTable/MarkListTable";
 function AddMark() {
-  const notify = useNotify()
+  const notify = useNotify();
   const { colorMode } = useColorMode();
 
   const [selectedItems, setSelectedItems] = useState({
-    "course" : {id:"",name:""},
-    "student" : {id:"",name:""}
+    course: { id: "", name: "" },
+    student: { id: "", name: "" },
   });
-  
 
   const [filter, setFilter] = React.useState({
     name: "",
     courses: { id: "", name: "" },
     isFailed: false,
-
   });
 
-  const [myCourses , setMyCourses] = useState([])
-  const [myStudents , setmyStudents] = useState([])
-  const [markList , setMarkList] = useState([])
-  const getCourseList = async ()=>{
+  const [myCourses, setMyCourses] = useState([]);
+  const [myStudents, setmyStudents] = useState([]);
+  const [markList, setMarkList] = useState([]);
+  const getCourseList = async () => {
     const coursesList = await courseByTeacher();
-    if(coursesList.status === 200){
-      setMyCourses(coursesList.data.data)
+    if (coursesList.status === 200) {
+      if (coursesList.data.data.length > 0) {
+        setMyCourses(coursesList.data.data);
+        setSelectedItems({
+          ...selectedItems,
+          course: {
+            id: coursesList.data.data[0]._id,
+            name: coursesList.data.data[0].name,
+          },
+        });
+      }
     }
-
-  }
+  };
 
   const handleCheckBoxChange = (event) => {
     const field = event.target.id;
@@ -69,59 +75,47 @@ function AddMark() {
     setFilter({ ...filter, [field]: value });
   };
 
-  const getStudentList = async ()=>{
-    
-    const studentsList = await studentByCourse(selectedItems.course.id)
-    if(studentsList.length > 0){
-      setmyStudents(studentsList)
+  const getStudentList = async () => {
+    const studentsList = await studentByCourse(selectedItems.course.id);
+    if (studentsList.length > 0) {
+      setmyStudents(studentsList);
     }
-  }
+  };
 
+  const getMarkList = async () => {
+    const markListC = await markByTeacher("0");
 
-  const getMarkList = async()=>{
-    const markListC = await markByTeacher("0")
-
-    if(markListC.length > 0){
-      setMarkList(markListC)
+    if (markListC.length > 0) {
+      setMarkList(markListC);
     }
-  }
+  };
 
   useEffect(() => {
-    getCourseList(); 
-    getMarkList()
+    getCourseList();
+    getMarkList();
   }, []);
 
-  useEffect(()=>{
-    getStudentList()
+  useEffect(() => {
+    getStudentList();
+  }, [selectedItems.course]);
 
-    
-  },[selectedItems.course])
-
-
-  const handleStudentSelect = (_id , name)=>{
-
-    setSelectedItems({...selectedItems , student : {"id" : _id , "name" : name}})
-
-
-  }
-console.log(4444, selectedItems);
+  const handleStudentSelect = (_id, name) => {
+    setSelectedItems({ ...selectedItems, student: { id: _id, name: name } });
+  };
 
   return (
-   
-     <>
-     
-     <Box mt="60px"  px="55px" py="5"  w='100%'  dir='rtl'  >
-      <SimpleGrid columns={2} >
-      <CustomSelector
-              onChange={setSelectedItems}
-              data={myCourses}
-              state={selectedItems}
-              placeHolder={"انتخاب کنید"}
-              fieldId={"course"}
-              bg = {colorMode === "light" ? 'white' : "navy.700"}
-            />
-      </SimpleGrid>
-
+    <>
+      <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">
+        <SimpleGrid columns={2}>
+          <CustomSelector
+            onChange={setSelectedItems}
+            data={myCourses}
+            state={selectedItems}
+            placeHolder={"انتخاب کنید"}
+            fieldId={"course"}
+            bg={colorMode === "light" ? "white" : "navy.700"}
+          />
+        </SimpleGrid>
 
         {/* <Select
    
@@ -133,39 +127,61 @@ console.log(4444, selectedItems);
         /> */}
       </Box>
 
-      <Flex flexDirection="column" mb="30 px"   h="100%" align={'center'}>
+      {selectedItems.course.id == "" ? (
+
+
+
+
+
+
+<Flex borderRadius={'3rem'} bg='white'  mt={"25px"} mx={{sm:"25px" , md:"60px" , lg:"80px"}} mb={'55px'}  py={'20px'}>
+  <Center w={{sm:"150px" , md:"200px" , lg:"250px"}} >
+  <SkeletonCircle mx={{sm:"25px" , md:"60px" , lg:"80px"}}  size='81' />
+
+   
+  </Center>
+  
+  <Box flex='1' >
+   
+  <Stack mr={{sm:"25px" , md:"60px" , lg:"80px"}}>
+  <Skeleton height='20px' />
+  <Skeleton height='20px' />
+  <Skeleton height='20px' />
+</Stack>
+  </Box>
+</Flex>
+
+
+      ) : (
+        <Flex flexDirection="column" mb="30 px" h="100%" align={"center"}>
           <SliderWrapper>
-        <StudentRecords data={myStudents} handleStudentSelect={handleStudentSelect} />
-      </SliderWrapper>
+            <StudentRecords
+              data={myStudents}
+              handleStudentSelect={handleStudentSelect}
+              selectedItems={selectedItems}
+            />
+          </SliderWrapper>
+        </Flex>
+      )}
 
-
-      </Flex>
-
-      <MarkForm selectedCourse={selectedItems.course} selectedStudent={selectedItems.student} />
-
-
-
-
-<Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
+      <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
         <CardHeader p="6px 0px 22px 0px">
           <Flex direction="column">
             <Accordion allowToggle>
               <AccordionItem>
-               
-<MarkListFilter filter={filter}
+                <MarkListFilter
+                  filter={filter}
                   onChange={handleChange}
                   courses={myCourses}
                   selectChange={setFilter}
                   handleCheckBoxChange={handleCheckBoxChange}
-                 />
-
-
+                />
               </AccordionItem>
             </Accordion>
           </Flex>
         </CardHeader>
 
-        <MarkListTable data={markList}/>
+        <MarkListTable data={markList} />
 
         {/* {isPending ? (
             <UserListSkleton />
@@ -173,9 +189,7 @@ console.log(4444, selectedItems);
             <ProductListTable data={productList} courses={courseList} />
           )} */}
       </Card>
-     
-     </>
-
+    </>
   );
 }
 

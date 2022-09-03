@@ -3,7 +3,7 @@ import StudentRecord from "./StudentRecord";
 import { forwardRef, useImperativeHandle } from "react";
 
 
-const StudentRecords = ({ data , handleStudentSelect},ref) => {
+const StudentRecords = ({ data , handleStudentSelect , selectedItems},ref) => {
 
   const handleSliderLeft = () =>{
     const slider = document.getElementById("studentSlider")
@@ -25,7 +25,8 @@ useImperativeHandle(ref, ()=>({
   return (
     <div className="records-container"  id="studentSlider" >
       {data.map((record, idx) => (
-        <StudentRecord key={idx} studentRecord={record} handleStudentSelect={handleStudentSelect}/>
+        <StudentRecord key={idx}  studentRecord={record} handleStudentSelect={handleStudentSelect}
+        selectedItems={selectedItems} />
       ))}
     </div>
   );

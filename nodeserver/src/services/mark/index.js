@@ -9,7 +9,7 @@ export const createMark = (mark) => {
         extra: mark.extra,
         midterm: mark.midterm,
         final: mark.final,
-        sum: mark.summ,
+        sum: mark.sum,
         homework: mark.homework,
         writing: mark.writing,
         reading: mark.reading,

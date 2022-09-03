@@ -5,8 +5,7 @@ import {
   Text,
   Box,
   Textarea,
-  FormControl,
-  Input,
+  Avatar,
   FormLabel,
   Button,
   Spacer,
@@ -18,12 +17,12 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Select,
+  Divider 
 } from "@chakra-ui/react";
 // Custom components
 
 import React from "react";
 import MultiSelect from "components/MultiSelect/MultiSelect";
-
 import useNotify from "helpers/notify/useNotify";
 import { useEffect } from "react";
 import { bixios } from "services/main";
@@ -134,6 +133,47 @@ function MarkForm(props) {
   return (
     <>
       <SimpleGrid dir="rtl" columns={{ sm: 1, md: 2, xl: 3 }} spacing={15}>
+      <Box>
+
+
+
+        <Box textAlign={'center'}>
+        <Avatar size="xl" name={selectedStudent.name} />
+  
+        <Text fontFamily={'Lalezar'} fontSize={'3xl'}>{selectedStudent.name}</Text>
+        <Text  fontSize={'sm'}>{selectedCourse.name}</Text>
+      <Divider mb={"10px"}  />
+
+
+
+
+
+        </Box>
+
+
+
+
+
+          <Box>
+          <Flex>
+            <FormLabel my="5px" fontSize="sm" fontWeight="normal">
+              متن پیام به کاربر{" "}
+            </FormLabel>
+            <Spacer />
+            <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
+          </Flex>
+
+          <Textarea
+            id="message"
+            onChange={handleChange}
+            value={formData.message}
+            resize={"none"}
+            height={"220px"}
+            mb={"15px"}
+            placeholder="در این کادر متن پیام خود را برای کاربر بنویسید. این متن در انتهای کارنامه کاربر قابل مشاهده خواهد بود"
+          />
+          </Box>
+        </Box>
         <Box>
           <Box>
             <Flex>
@@ -421,25 +461,7 @@ function MarkForm(props) {
             />
           </Box>
         </Box>
-        <Box>
-          <Flex>
-            <FormLabel my="5px" fontSize="sm" fontWeight="normal">
-              متن پیام به کاربر{" "}
-            </FormLabel>
-            <Spacer />
-            <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
-          </Flex>
-
-          <Textarea
-            id="message"
-            onChange={handleChange}
-            value={formData.message}
-            resize={"none"}
-            height={"220px"}
-            mb={"15px"}
-            placeholder="در این کادر متن پیام خود را برای کاربر بنویسید. این متن در انتهای کارنامه کاربر قابل مشاهده خواهد بود"
-          />
-        </Box>
+    
       </SimpleGrid>
       <Button
         onClick={handleSubmitform}
