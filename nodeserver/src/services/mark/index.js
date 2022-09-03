@@ -18,6 +18,7 @@ export const createMark = (mark) => {
         activiy: mark.activiy,
         message: mark.message,
         student : mark.student,
+        course : mark.course,
         teacher : mark.teacher
       });
 
@@ -30,3 +31,23 @@ export const createMark = (mark) => {
     }
   });
 };
+
+
+export const markByTeacher = (teacherId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/marks/getmarkbyteacher", {
+        params:{
+          teacher_id : teacherId
+        }
+      });
+
+      if (res.status === 200) {
+        resolve(res.data.data);
+      }
+    } catch (error) {
+      return([])
+    }
+  });
+};
+

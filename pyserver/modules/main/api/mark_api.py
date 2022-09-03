@@ -24,3 +24,11 @@ def create_mark(info : dict):
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 
+
+@router.get("/getmarkbyteacher")
+@sn(fast=True)
+def get_mark_by_teacher(teacher_id : str):
+    ret = mark.get_mark_by_teacher(teacher_id)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+

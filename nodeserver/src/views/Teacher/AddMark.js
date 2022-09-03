@@ -4,11 +4,18 @@ import {
   Box,
   Avatar,
   Text,
+  
+  
+  Accordion,
+  AccordionItem,
   Select,
   useColorMode,
   SimpleGrid,
 } from "@chakra-ui/react";
-import Card from "components/Card/Card";
+import Card from "components/Card/Card.js";
+import CardBody from "components/Card/CardBody.js";
+import CardHeader from "components/Card/CardHeader.js";
+
 import SliderWrapper from "components/SliderWrapper/SliderWrapper";
 import CourseRecords from "components/CourseRecord/CourseRecords";
 import React, { useEffect, useState, useRef } from "react";
@@ -20,6 +27,9 @@ import useNotify from "helpers/notify/useNotify";
 import { notInitialized } from "react-redux/es/utils/useSyncExternalStore";
 import CustomSelector from "components/Selectors/CustomSelector";
 import { studentByCourse } from "services/user";
+import MarkListFilter from "components/Filter/MarkFilter";
+import { markByTeacher } from "services/mark";
+import MarkListTable from "components/Tables/MarkListTable/MarkListTable";
 function AddMark() {
   const notify = useNotify()
   const { colorMode } = useColorMode();
@@ -28,9 +38,18 @@ function AddMark() {
     "course" : {id:"",name:""},
     "student" : {id:"",name:""}
   });
+  
+
+  const [filter, setFilter] = React.useState({
+    name: "",
+    courses: { id: "", name: "" },
+    isFailed: false,
+
+  });
 
   const [myCourses , setMyCourses] = useState([])
   const [myStudents , setmyStudents] = useState([])
+  const [markList , setMarkList] = useState([])
   const getCourseList = async ()=>{
     const coursesList = await courseByTeacher();
     if(coursesList.status === 200){
@@ -39,6 +58,16 @@ function AddMark() {
 
   }
 
+  const handleCheckBoxChange = (event) => {
+    const field = event.target.id;
+    const value = event.target.checked;
+    setFilter({ ...filter, [field]: value });
+  };
+  const handleChange = (e) => {
+    const field = e.target.id;
+    const value = e.target.value;
+    setFilter({ ...filter, [field]: value });
+  };
 
   const getStudentList = async ()=>{
     
@@ -48,17 +77,35 @@ function AddMark() {
     }
   }
 
+
+  const getMarkList = async()=>{
+    const markListC = await markByTeacher("0")
+
+    if(markListC.length > 0){
+      setMarkList(markListC)
+    }
+  }
+
   useEffect(() => {
     getCourseList(); 
+    getMarkList()
   }, []);
 
   useEffect(()=>{
     getStudentList()
+
     
   },[selectedItems.course])
 
 
-  console.log(myStudents,87)
+  const handleStudentSelect = (_id , name)=>{
+
+    setSelectedItems({...selectedItems , student : {"id" : _id , "name" : name}})
+
+
+  }
+console.log(4444, selectedItems);
+
   return (
    
      <>
@@ -88,18 +135,44 @@ function AddMark() {
 
       <Flex flexDirection="column" mb="30 px"   h="100%" align={'center'}>
           <SliderWrapper>
-        <StudentRecords data={myStudents} />
+        <StudentRecords data={myStudents} handleStudentSelect={handleStudentSelect} />
       </SliderWrapper>
 
 
       </Flex>
 
-    
+      <MarkForm selectedCourse={selectedItems.course} selectedStudent={selectedItems.student} />
 
-{/* 
 
-      <MarkForm />
-      */}
+
+
+<Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
+        <CardHeader p="6px 0px 22px 0px">
+          <Flex direction="column">
+            <Accordion allowToggle>
+              <AccordionItem>
+               
+<MarkListFilter filter={filter}
+                  onChange={handleChange}
+                  courses={myCourses}
+                  selectChange={setFilter}
+                  handleCheckBoxChange={handleCheckBoxChange}
+                 />
+
+
+              </AccordionItem>
+            </Accordion>
+          </Flex>
+        </CardHeader>
+
+        <MarkListTable data={markList}/>
+
+        {/* {isPending ? (
+            <UserListSkleton />
+          ) : (
+            <ProductListTable data={productList} courses={courseList} />
+          )} */}
+      </Card>
      
      </>
 

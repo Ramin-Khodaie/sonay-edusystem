@@ -8,11 +8,11 @@ class SMark:
     database: str = "database"
     product_collection: str = ""
 
-    def __init__(self, database, product_collection):
+    def __init__(self, database, mark_collection):
         self.database = database
-        self.product_collection = product_collection
+        self.mark_collection = mark_collection
 
-    def validate_product(self, product, col):
+    def validate_mark(self, product, col):
         # required = {"name", "_id", "price", "is_main" , "is_active"}
         # if len(required.difference(set(product.keys()))) != 0:
         #     return 422, "missing_field", "some fields are missing", None
@@ -26,8 +26,8 @@ class SMark:
     def insert_mark(self, info):
 
         db: Database = sn.databases[self.database].db
-        col: Collection = db[self.product_collection]
-        valid = self.validate_product(info, col)
+        col: Collection = db[self.mark_collection]
+        valid = self.validate_mark(info, col)
         if valid[0] != 200:
             return valid
         if "_id" in info and info["_id"] != "":
@@ -35,6 +35,17 @@ class SMark:
             return res
         col.insert_one({**info, "_id": str(ObjectId())})
         return 200, "ok", "mark is inserted", None
+    
+    
+    
+    def get_mark_by_teacher(self,teacher_id):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.mark_collection]
+        # res = list(col.find({"teacher.id" : teacher_id}))
+        res = list(col.find({}))
+        return 200, "ok", "", res
+        
+        
 
     def edit_product(self, info, col: Collection):
         idd = info["_id"]

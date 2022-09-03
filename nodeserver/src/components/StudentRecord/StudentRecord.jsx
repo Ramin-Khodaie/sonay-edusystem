@@ -12,31 +12,48 @@ import {
   useColorMode,
   Grid,
   Badge,
+  useDisclosure,
   GridItem,
   SimpleGrid,
+  Modal,
+  ModalOverlay,
+  ModalContent,  
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+
 import Card from "components/Card/Card";
 import IconBox from "components/Icons/IconBox";
 import { StarIcon } from "@chakra-ui/icons";
+import MarkEditModal from "components/Modal/MarkEdit";
+// onClick={()=>handleStudentSelect(_id, full_name)}
+const StudentRecord = ({ studentRecord , handleStudentSelect }) => {
+  const { full_name , _id } = studentRecord;
 
-const StudentRecord = ({ studentRecord, onSelect }) => {
-  const { StudentName, endDate, image, startDate, teacherName } = studentRecord;
-  const property = {
-    imageUrl: "https://bit.ly/2Z4KKcF",
-    imageAlt: "Rear view of modern home with pool",
-    beds: 3,
-    baths: 2,
-    title: "Modern home in city center in the heart of historic Los Angeles",
-    formattedPrice: "$1,900.00",
-    reviewCount: 34,
-    rating: 4,
-  };
+    
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  
+  const initialRef = React.useRef(null);
+  const finalRef = React.useRef(null);
+
+
+const handleOpenCard = ()=>{
+
+
+  handleStudentSelect(_id, full_name)
+  onOpen()
+
+
+
+}
+  
+
   const { colorMode } = useColorMode();
 
   return (
-    <div className="record-card" onClick={() => onSelect(StudentRecord)}>
-
-<SimpleGrid  w={{ sm: "180px", md: "250px", lg: "320px" }}
+    <div className="record-card" onClick={handleOpenCard} >
+<SimpleGrid   w={{ sm: "180px", md: "250px", lg: "320px" }}
         h="120px"
         borderWidth="1px"
         borderRadius="2rem"
@@ -79,7 +96,27 @@ const StudentRecord = ({ studentRecord, onSelect }) => {
   </Box>
 
 </SimpleGrid>
-       
+
+<Modal
+          size={"5xl"}
+          initialFocusRef={initialRef}
+          finalFocusRef={finalRef}
+          isOpen={isOpen}
+          onClose={onClose}
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalCloseButton />
+            <ModalBody pt={"50px"}>
+        
+
+
+
+        
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+
 
 
     </div>

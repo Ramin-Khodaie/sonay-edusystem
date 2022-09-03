@@ -3,79 +3,7 @@ import StudentRecord from "./StudentRecord";
 import { forwardRef, useImperativeHandle } from "react";
 
 
-const StudentRecords = ({onSelectStudent , data},ref) => {
-  const records = [
-    {
-      studentName: "IELTS",
-      teacherName: "حسن محبی",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
-    },
-    {
-        studentName: "IELTS",
-      teacherName: "کاظم اشتری",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
-    },
-    {
-        studentName: "IELTS",
-      teacherName: "مختار ثقفی",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
-    },
-    {
-        studentName: "IELTS",
-      teacherName: "John Doe",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
-    },
-    {
-        studentName: "IELTS",
-      teacherName: "John Doe",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
-    },
-    {
-        studentName: "IELTS",
-      teacherName: "John Doe",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
-    },
-    {
-        studentName: "IELTS",
-      teacherName: "John Doe",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
-    },
-    {
-        studentName: "IELTS",
-      teacherName: "John Doe",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
-    },
-    {
-        studentName: "IELTS",
-      teacherName: "John Doe",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
-    },
-    {
-        studentName: "IELTS",
-      teacherName: "John Doe",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
-    },
-  ];
+const StudentRecords = ({ data , handleStudentSelect},ref) => {
 
   const handleSliderLeft = () =>{
     const slider = document.getElementById("studentSlider")
@@ -97,7 +25,7 @@ useImperativeHandle(ref, ()=>({
   return (
     <div className="records-container"  id="studentSlider" >
       {data.map((record, idx) => (
-        <StudentRecord key={idx} studentRecord={record} onSelect = {onSelectStudent}/>
+        <StudentRecord key={idx} studentRecord={record} handleStudentSelect={handleStudentSelect}/>
       ))}
     </div>
   );

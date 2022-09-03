@@ -37,16 +37,17 @@ import { useState } from "react";
 import { createMark } from "services/mark";
 
 function MarkForm(props) {
+  const { selectedCourse, selectedStudent } = props;
   const data = [
     { _id: "outstanding", name: "بسیار عالی" },
     { _id: "good", name: "عالی" },
     { _id: "satisfactory", name: "قابل قبول" },
     { _id: "weak", name: "ضعیف" },
   ];
-  const notify = useNotify()
+  const notify = useNotify();
 
   const [formData, setFormData] = useState({
-    _id : "",
+    _id: "",
     classActivity: 0,
     quiz: 0,
     extra: 0,
@@ -61,44 +62,74 @@ function MarkForm(props) {
 
     activiy: { id: "", name: "" },
     message: "",
-    student:{"name" : "کاظم قنبری",
-  "_id" : "123456789"},
-  teacher:{"name" : "مختار عمی",
-  "_id" : "123456789"}
-  
-  },
-  );
+    student: selectedStudent,
+    course: selectedCourse,
+
+    teacher: { name: "مختار عمی", _id: "123456789" },
+  });
 
   const handleChange = (event) => {
     const field = event.target.id;
     const value = event.target.value;
+    console.log(typeof value);
+
     setFormData({ ...formData, [field]: value });
   };
 
+  const handleNumbersChange = (event) => {
+    const field = event.target.id;
+    const value = event.target.value;
 
+    setFormData({ ...formData, [field]: Number(value) });
+  };
 
-
-  
   function handleSubmitform() {
     createPost();
   }
 
-
   const createPost = async () => {
     const res = await createMark(formData);
-  
-  switch (res.result) {
-    case "ok":
-      notify("نمره با موفقیت ثبت شد" , true , "solid" , "success")
-    break;
-    case "empty_field":
-      dispatch(createProductError("تمامی فیلدها تکمیل شوند."));
-      break;
-    case "not_unique":
-      dispatch(createProductError("کاربر از قبل ثبت شده است."));
-      break;
-  }
-  }
+
+    switch (res.result) {
+      case "ok":
+        notify("نمره با موفقیت ثبت شد", true, "solid", "success");
+        break;
+      case "empty_field":
+        dispatch(createProductError("تمامی فیلدها تکمیل شوند."));
+        break;
+      case "not_unique":
+        dispatch(createProductError("کاربر از قبل ثبت شده است."));
+        break;
+    }
+  };
+
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      course: selectedCourse,
+      student: selectedStudent,
+    });
+  }, [selectedCourse, selectedStudent]);
+
+  useEffect(() => {
+    let ss =
+      formData.classActivity +
+      formData.quiz +
+      formData.extra +
+      formData.midterm +
+      formData.final;
+
+    setFormData({
+      ...formData,
+      sum: ss,
+    });
+  }, [
+    formData.classActivity,
+    formData.quiz,
+    formData.extra,
+    formData.midterm,
+    formData.final,
+  ]);
 
   return (
     <>
@@ -121,7 +152,7 @@ function MarkForm(props) {
               />
               <NumberInputField
                 defaultValue={0}
-                onChange={handleChange}
+                onChange={handleNumbersChange}
                 id="classActivity"
                 value={formData.classActivity}
                 textAlign={"center"}
@@ -150,7 +181,7 @@ function MarkForm(props) {
               />
               <NumberInputField
                 defaultValue={0}
-                onChange={handleChange}
+                onChange={handleNumbersChange}
                 id="quiz"
                 value={formData.quiz}
                 textAlign={"center"}
@@ -179,7 +210,7 @@ function MarkForm(props) {
               />
               <NumberInputField
                 defaultValue={0}
-                onChange={handleChange}
+                onChange={handleNumbersChange}
                 id="extra"
                 value={formData.extra}
                 textAlign={"center"}
@@ -208,7 +239,7 @@ function MarkForm(props) {
               />
               <NumberInputField
                 defaultValue={0}
-                onChange={handleChange}
+                onChange={handleNumbersChange}
                 id="midterm"
                 value={formData.midterm}
                 textAlign={"center"}
@@ -237,7 +268,7 @@ function MarkForm(props) {
               />
               <NumberInputField
                 defaultValue={0}
-                onChange={handleChange}
+                onChange={handleNumbersChange}
                 id="final"
                 value={formData.final}
                 textAlign={"center"}
@@ -263,7 +294,7 @@ function MarkForm(props) {
               size={"md"}
               dir="ltr"
               defaultValue={0}
-              onChange={handleChange}
+              onChange={handleNumbersChange}
               id="sum"
               value={formData.sum}
               textAlign={"center"}
@@ -411,7 +442,7 @@ function MarkForm(props) {
         </Box>
       </SimpleGrid>
       <Button
-      onClick={handleSubmitform}
+        onClick={handleSubmitform}
         style={{ right: "0px" }}
         color={"white"}
         fontSize="20px"
