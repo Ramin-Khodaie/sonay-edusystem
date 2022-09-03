@@ -56,6 +56,9 @@ function AddMark() {
     getStudentList()
     
   },[selectedItems.course])
+
+
+  console.log(myStudents,87)
   return (
    
      <>
@@ -68,7 +71,7 @@ function AddMark() {
               state={selectedItems}
               placeHolder={"انتخاب کنید"}
               fieldId={"course"}
-              bg = {colorMode === "light" ? 'white' : "cyan.500"}
+              bg = {colorMode === "light" ? 'white' : "navy.700"}
             />
       </SimpleGrid>
 
@@ -85,7 +88,7 @@ function AddMark() {
 
       <Flex flexDirection="column" mb="30 px"   h="100%" align={'center'}>
           <SliderWrapper>
-        <StudentRecords />
+        <StudentRecords data={myStudents} />
       </SliderWrapper>
 
 
@@ -93,10 +96,10 @@ function AddMark() {
 
     
 
-
+{/* 
 
       <MarkForm />
-     
+      */}
      
      </>
 

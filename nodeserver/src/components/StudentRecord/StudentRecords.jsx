@@ -3,7 +3,7 @@ import StudentRecord from "./StudentRecord";
 import { forwardRef, useImperativeHandle } from "react";
 
 
-const StudentRecords = ({onSelectStudent},ref) => {
+const StudentRecords = ({onSelectStudent , data},ref) => {
   const records = [
     {
       studentName: "IELTS",
@@ -96,7 +96,7 @@ useImperativeHandle(ref, ()=>({
 
   return (
     <div className="records-container"  id="studentSlider" >
-      {records.map((record, idx) => (
+      {data.map((record, idx) => (
         <StudentRecord key={idx} studentRecord={record} onSelect = {onSelectStudent}/>
       ))}
     </div>
