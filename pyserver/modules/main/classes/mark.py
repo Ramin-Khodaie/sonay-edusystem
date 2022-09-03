@@ -41,6 +41,17 @@ class SMark:
             return res
         col.insert_one({**info, "_id": str(ObjectId())})
         return 200, "ok", "mark is inserted", None
+
+
+    def get_mark(self , mark_id):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.mark_collection]
+        res = list(col.find({"_id" : mark_id }))
+        if len(res) != 1:
+            return 403,"not_found" , "mark not found " , []
+
+        return 200, "ok", "mark is inserted", res
+
     
     
     

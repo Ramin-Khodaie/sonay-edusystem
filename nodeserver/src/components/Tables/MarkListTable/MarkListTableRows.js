@@ -90,7 +90,7 @@ import MarkEditModal from "components/Modal/MarkEdit";
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           
-          <MarkEditModal selectedCourse={selectedCourse} selectedStudent={selectedStudent} />
+          <MarkEditModal selectedCourse={selectedCourse} selectedStudent={selectedStudent} markId={markId} />
         </Td>
       </Tr>
     );

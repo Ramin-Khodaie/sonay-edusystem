@@ -14,7 +14,7 @@ import ProductForm from "components/Forms/productForm";
   import React, { useEffect } from "react";
   
   function MarkEditModal(props) {
-    const {selectedCourse, selectedStudent } = props;
+    const {selectedCourse, selectedStudent , markId } = props;
   
     const { isOpen, onOpen, onClose } = useDisclosure();
   
@@ -40,7 +40,7 @@ import ProductForm from "components/Forms/productForm";
             <ModalBody pt={"50px"}>
              
 
-             <MarkForm selectedCourse={selectedCourse} selectedStudent={selectedStudent} />
+             <MarkForm selectedCourse={selectedCourse} selectedStudent={selectedStudent} markId={markId} />
               
               
             

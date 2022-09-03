@@ -17,7 +17,7 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Select,
-  Divider 
+  Divider,
 } from "@chakra-ui/react";
 // Custom components
 
@@ -34,9 +34,10 @@ import { isConstTypeReference } from "typescript";
 import CustomSelector from "components/Selectors/CustomSelector";
 import { useState } from "react";
 import { createMark } from "services/mark";
+import { useMark } from "hooks/marks/useMark";
 
 function MarkForm(props) {
-  const { selectedCourse, selectedStudent } = props;
+  const { selectedCourse, selectedStudent, markId = "-1" } = props;
   const data = [
     { _id: "outstanding", name: "بسیار عالی" },
     { _id: "good", name: "عالی" },
@@ -44,7 +45,7 @@ function MarkForm(props) {
     { _id: "weak", name: "ضعیف" },
   ];
   const notify = useNotify();
-
+  const currentMark = useMark(markId);
   const [formData, setFormData] = useState({
     _id: "",
     classActivity: 0,
@@ -85,6 +86,32 @@ function MarkForm(props) {
   function handleSubmitform() {
     createPost();
   }
+
+  useEffect(() => {
+    if (currentMark.length != 0) {
+      console.log(currentMark , 7878)
+      setFormData({
+        ...formData,
+        _id: currentMark[0]._id,
+        classActivity: currentMark[0].classActivity,
+        quiz: currentMark[0].quiz,
+        extra: currentMark[0].extra,
+        midterm: currentMark[0].midterm,
+        final: currentMark[0].final,
+        sum: currentMark[0].sum,
+        homework: currentMark[0].homework,
+        writing: currentMark[0].writing,
+        reading: currentMark[0].reading,
+        listening: currentMark[0].listening,
+        speaking: currentMark[0].speaking,
+        activiy: currentMark[0].activiy,
+        message: currentMark[0].message,
+        student: currentMark[0].student,
+        course: currentMark[0].course,
+        teacher: currentMark[0].teacher,
+      });
+    }
+  }, [currentMark]);
 
   const createPost = async () => {
     const res = await createMark(formData);
@@ -133,45 +160,35 @@ function MarkForm(props) {
   return (
     <>
       <SimpleGrid dir="rtl" columns={{ sm: 1, md: 2, xl: 3 }} spacing={15}>
-      <Box>
+        <Box>
+          <Box textAlign={"center"}>
+            <Avatar size="xl" name={selectedStudent.name} />
 
-
-
-        <Box textAlign={'center'}>
-        <Avatar size="xl" name={selectedStudent.name} />
-  
-        <Text fontFamily={'Lalezar'} fontSize={'3xl'}>{selectedStudent.name}</Text>
-        <Text  fontSize={'sm'}>{selectedCourse.name}</Text>
-      <Divider mb={"10px"}  />
-
-
-
-
-
-        </Box>
-
-
-
-
+            <Text fontFamily={"Lalezar"} fontSize={"3xl"}>
+              {selectedStudent.name}
+            </Text>
+            <Text fontSize={"sm"}>{selectedCourse.name}</Text>
+            <Divider mb={"10px"} />
+          </Box>
 
           <Box>
-          <Flex>
-            <FormLabel my="5px" fontSize="sm" fontWeight="normal">
-              متن پیام به کاربر{" "}
-            </FormLabel>
-            <Spacer />
-            <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
-          </Flex>
+            <Flex>
+              <FormLabel my="5px" fontSize="sm" fontWeight="normal">
+                متن پیام به کاربر{" "}
+              </FormLabel>
+              <Spacer />
+              <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
+            </Flex>
 
-          <Textarea
-            id="message"
-            onChange={handleChange}
-            value={formData.message}
-            resize={"none"}
-            height={"220px"}
-            mb={"15px"}
-            placeholder="در این کادر متن پیام خود را برای کاربر بنویسید. این متن در انتهای کارنامه کاربر قابل مشاهده خواهد بود"
-          />
+            <Textarea
+              id="message"
+              onChange={handleChange}
+              value={formData.message}
+              resize={"none"}
+              height={"220px"}
+              mb={"15px"}
+              placeholder="در این کادر متن پیام خود را برای کاربر بنویسید. این متن در انتهای کارنامه کاربر قابل مشاهده خواهد بود"
+            />
           </Box>
         </Box>
         <Box>
@@ -184,17 +201,17 @@ function MarkForm(props) {
               <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
             </Flex>
 
-            <NumberInput size={"md"} dir="ltr">
+            <NumberInput size={"md"} dir="ltr" value={formData.classActivity} >
               <InputLeftElement
                 pointerEvents="none"
                 color="gray.300"
                 fontSize="1.2em"
               />
               <NumberInputField
-                defaultValue={0}
+           
                 onChange={handleNumbersChange}
                 id="classActivity"
-                value={formData.classActivity}
+         
                 textAlign={"center"}
               />
               <NumberInputStepper>
@@ -213,17 +230,16 @@ function MarkForm(props) {
               <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
             </Flex>
 
-            <NumberInput size={"md"} dir="ltr">
+            <NumberInput size={"md"} dir="ltr"                 value={formData.quiz}
+>
               <InputLeftElement
                 pointerEvents="none"
                 color="gray.300"
                 fontSize="1.2em"
               />
               <NumberInputField
-                defaultValue={0}
                 onChange={handleNumbersChange}
                 id="quiz"
-                value={formData.quiz}
                 textAlign={"center"}
               />
               <NumberInputStepper>
@@ -242,17 +258,16 @@ function MarkForm(props) {
               <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
             </Flex>
 
-            <NumberInput size={"md"} dir="ltr">
+            <NumberInput size={"md"} dir="ltr"                 value={formData.extra}
+>
               <InputLeftElement
                 pointerEvents="none"
                 color="gray.300"
                 fontSize="1.2em"
               />
               <NumberInputField
-                defaultValue={0}
                 onChange={handleNumbersChange}
                 id="extra"
-                value={formData.extra}
                 textAlign={"center"}
               />
               <NumberInputStepper>
@@ -271,17 +286,16 @@ function MarkForm(props) {
               <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
             </Flex>
 
-            <NumberInput size={"md"} dir="ltr">
+            <NumberInput size={"md"} dir="ltr"                 value={formData.midterm}
+>
               <InputLeftElement
                 pointerEvents="none"
                 color="gray.300"
                 fontSize="1.2em"
               />
               <NumberInputField
-                defaultValue={0}
                 onChange={handleNumbersChange}
                 id="midterm"
-                value={formData.midterm}
                 textAlign={"center"}
               />
               <NumberInputStepper>
@@ -300,14 +314,13 @@ function MarkForm(props) {
               <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
             </Flex>
 
-            <NumberInput size={"md"} dir="ltr">
+            <NumberInput size={"md"} dir="ltr"  value={formData.final}>
               <InputLeftElement
                 pointerEvents="none"
                 color="gray.300"
                 fontSize="1.2em"
               />
               <NumberInputField
-                defaultValue={0}
                 onChange={handleNumbersChange}
                 id="final"
                 value={formData.final}
@@ -461,7 +474,6 @@ function MarkForm(props) {
             />
           </Box>
         </Box>
-    
       </SimpleGrid>
       <Button
         onClick={handleSubmitform}

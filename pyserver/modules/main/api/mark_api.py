@@ -33,3 +33,11 @@ def get_mark_by_teacher(teacher_id : str):
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 
+
+
+@router.get("/getmark")
+@sn(fast=True)
+def get_mark(mark_id : str):
+    ret = mark.get_mark(mark_id)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
