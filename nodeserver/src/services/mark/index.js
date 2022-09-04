@@ -53,3 +53,22 @@ export const markByTeacher = (teacherId) => {
 };
 
 
+
+
+export const markBySearch = (filter) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.put("/marks/getmarkbysearch", {
+        filter
+      });
+
+      if (res.status === 200) {
+        resolve(res.data.data);
+      }
+    } catch (error) {
+      return([])
+    }
+  });
+};
+
+

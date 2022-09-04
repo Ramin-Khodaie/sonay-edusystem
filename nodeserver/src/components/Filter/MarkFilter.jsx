@@ -37,19 +37,15 @@ const MarkListFilter = (props) => {
     courses,
     selectChange,
     handleCheckBoxChange,
+    handleSliderChange,
+    slider,
+    handleStartDateChange,
+    handleEndDateChange
   } = props;
-  const [sliderStartValue, setSliderStartValue] = React.useState(5);
-  const [sliderEndValue, setSliderEndValue] = React.useState(5);
+
   const [showTooltip, setShowTooltip] = React.useState(false);
 
 
-  const handleSliderChange = (v)=>{
-    setSliderStartValue(v[0])
-    setSliderEndValue(v[1])
-
-
-
-  }
 
   const textColor = useColorModeValue("gray.700", "white");
   return (
@@ -77,7 +73,7 @@ const MarkListFilter = (props) => {
                 textAlign={"right"}
                 my={"10px"}
               >
-                لیست نمرات وارد شده توسط شما{" "}
+                لیست نمرات وارد شده  {" "}
               </Text>
             </Box>
           </Flex>
@@ -90,6 +86,9 @@ const MarkListFilter = (props) => {
               mb="20px"
             >
               <Box>
+                <Text>
+                  نام کاربر:
+                </Text>
                 <Input
                   id="name"
                   onChange={onChange}
@@ -100,9 +99,12 @@ const MarkListFilter = (props) => {
                   ms="4px"
                   type="text"
                   placeholder="نام کاربر را وارد کنید"
-                  mb="10px"
+             
                   size="md"
                 />
+                <Text>
+                  دوره کاربر:
+                </Text>
                 <CustomSelector
                   onChange={selectChange}
                   data={courses}
@@ -113,45 +115,48 @@ const MarkListFilter = (props) => {
               </Box>
 
               <Box>
-                <Flex>
-                  <Text pl={"5px"}>از تاریخ:</Text>
+                <Box>
+                  <Text  >از تاریخ:</Text>
 
                   <DatePicker
+                  placeholder="تاریخ شروع را وارد کنید"
                     calendar={persian}
                     locale={persian_fa}
                     style={{ padding: "17px", width: "300px" }}
+                    selected={filter.startDate}
+                   
+                    onChange={(v)=>{handleStartDateChange(v)}}
                   />
-                </Flex>
+                </Box>
 
-                <Flex pt={"15px"}>
-                  <Text pl={"5px"}>تا تاریخ:</Text>
+                <Box >
+                  <Text  >تا تاریخ:</Text>
                   <DatePicker
+                  placeholder="تاریخ پایان را وارد کنید"
                     calendar={persian}
                     locale={persian_fa}
                     style={{ padding: "17px", width: "300px" }}
+                
+                    selected={filter.endDate}
+
+                    onChange={(v)=>{handleEndDateChange(v)}}
                   />
-                </Flex>
+                </Box>
               </Box>
 
               <Box>
-                <Text>بازه نمره</Text>
+                <Text >بازه نمره</Text>
 
                 <RangeSlider
                   aria-label={["min", "max"]}
-                  defaultValue={[10, 30]}
-                  onChange={(v) => handleSliderChange(v)}
+                  defaultValue={[5, 90]}
+                  onChangeEnd={(v) => handleSliderChange(v)}
                   onMouseEnter={() => setShowTooltip(true)}
                   onMouseLeave={() => setShowTooltip(false)}
+                  my={"20px"}
+                 
                 >
-                   <SliderMark value={25} mt='1' ml='-2.5' fontSize='sm'>
-        25%
-      </SliderMark>
-      <SliderMark value={50} mt='1' ml='-2.5' fontSize='sm'>
-        50%
-      </SliderMark>
-      <SliderMark value={75} mt='1' ml='-2.5' fontSize='sm'>
-        75%
-      </SliderMark>
+                  
                   <RangeSliderTrack>
                     <RangeSliderFilledTrack />
                   </RangeSliderTrack>
@@ -161,7 +166,7 @@ const MarkListFilter = (props) => {
                     color="white"
                     placement="top"
                     isOpen={showTooltip}
-                    label={sliderStartValue}
+                    label={slider[0]}
                   >
 
  <RangeSliderThumb index={0} />
@@ -176,7 +181,7 @@ const MarkListFilter = (props) => {
                     color="white"
                     placement="top"
                     isOpen={showTooltip}
-                    label={sliderEndValue}
+                    label={slider[1]}
                   >
 
  <RangeSliderThumb index={1} />

@@ -30,6 +30,7 @@ import { studentByCourse } from "services/user";
 import MarkListFilter from "components/Filter/MarkFilter";
 import { markByTeacher } from "services/mark";
 import MarkListTable from "components/Tables/MarkListTable/MarkListTable";
+import { markBySearch } from "services/mark";
 function AddMark() {
   const notify = useNotify();
   const { colorMode } = useColorMode();
@@ -43,9 +44,11 @@ function AddMark() {
     name: "",
     courses: { id: "", name: "" },
     isFailed: false,
-    isPasses:false,
+    isPassed:false,
     startDate : "",
     endDate:"",
+    startMark:"",
+    endMark:""
     
 
   });
@@ -74,7 +77,7 @@ function AddMark() {
     const value = event.target.checked;
     setFilter({ ...filter, [field]: value });
   };
-  const handleChange = (e) => {
+  const handleFilterChange = (e) => {
     const field = e.target.id;
     const value = e.target.value;
     setFilter({ ...filter, [field]: value });
@@ -108,6 +111,53 @@ function AddMark() {
     setSelectedItems({ ...selectedItems, student: { id: _id, name: name } });
   };
 
+
+  
+  const doSearch = async() => {
+    console.log("pooooooooooop")
+    const tmp = await markBySearch(filter)
+    setMarkList(tmp)
+  };
+
+
+  useEffect(() => {
+    setMarkList(markList);
+
+    if (
+      filter.name !== "" ||
+      filter.isFailed ||
+      filter.isPassed ||
+      filter.courses.id !== "" ||
+      filter.startDate !== "" ||
+      filter.endDate !== "" ||
+      filter.startMark !== "" ||
+      filter.endMark !== ""
+    ) {
+      doSearch();
+    }
+  }, [filter]);
+
+  const [slider , setSlider] = useState([0,100])
+
+    const handleSliderChange = (v)=>{
+      setSlider(v)
+      setFilter({...filter , startMark : v[0] , endMark : v[1]})
+  
+    }
+
+    const handleStartDateChange = (v)=>{
+      setFilter({...filter , startDate : `${v.year}/${v.month}/${v.day}` })
+  
+    }
+
+    const handleEndDateChange = (v)=>{
+      setFilter({...filter , endDate : `${v.year}/${v.month}/${v.day}` })
+  
+    }
+
+
+
+console.log(filter)
   return (
     <>
       <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">
@@ -176,10 +226,14 @@ function AddMark() {
               <AccordionItem>
                 <MarkListFilter
                   filter={filter}
-                  onChange={handleChange}
+                  onChange={handleFilterChange}
                   courses={myCourses}
                   selectChange={setFilter}
                   handleCheckBoxChange={handleCheckBoxChange}
+                  handleSliderChange={handleSliderChange}
+                  slider={slider}
+                  handleStartDateChange={handleStartDateChange}
+                  handleEndDateChange={handleEndDateChange}
                 />
               </AccordionItem>
             </Accordion>

@@ -69,7 +69,7 @@ function SignUp() {
 
  function createPost() {
     setSent({ sending: true });
-    bixious
+    bixios
       .post("/users/register", {
         username: formData.username,
         email: formData.email,
