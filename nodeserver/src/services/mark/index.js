@@ -4,6 +4,7 @@ export const createMark = (mark) => {
   return new Promise(async (resolve, reject) => {
     try {
       const res = await bixios.post("/marks/createmark", {
+        _id:mark._id,
         classActivity: mark.classActivity,
         quiz: mark.quiz,
         extra: mark.extra,

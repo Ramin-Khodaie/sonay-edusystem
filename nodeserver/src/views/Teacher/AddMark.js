@@ -43,6 +43,11 @@ function AddMark() {
     name: "",
     courses: { id: "", name: "" },
     isFailed: false,
+    isPasses:false,
+    startDate : "",
+    endDate:"",
+    
+
   });
 
   const [myCourses, setMyCourses] = useState([]);
