@@ -70,3 +70,13 @@ def get_final_status(student_id : str , course_id : str):
     ret = mark.get_final_status(student_id=student_id , course_id=course_id)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
+
+
+@router.get("/getcomparechartdata")
+@sn(fast=True)
+def get_compare_chart_data(student_id : str , course_id : str):
+    ret = mark.get_compare_chart_data(student_id=student_id , course_id=course_id)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+

@@ -108,10 +108,10 @@ class SMark:
     def get_final_status(self, student_id, course_id):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
-        res = list( col.find({"student.id": student_id, 'course.id': course_id}))
-        if len(res) > 0 :
-            
-        
+        res = list(
+            col.find({"student.id": student_id, 'course.id': course_id}))
+        if len(res) > 0:
+
             final_status = self.get_value_of_properties(res[0])
             return 200, "ok", "", [final_status]
 
@@ -129,7 +129,75 @@ class SMark:
             values[mark['listening']['id']] +
             values[mark['speaking']['id']] +
             values[mark['activity']['id']]) / 6
-        
+
         final_mean = (mean + int(mark['sum'])) / 2
         return final_mean
-        
+
+    def get_compare_chart_data(self, student_id, course_id):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.mark_collection]
+        query_res = list(col.aggregate([
+            {
+                '$facet': {
+                    'avg': [
+                        {
+                            '$match': {
+                                'student.id': '631220cfc5808a9a505e5d8f',
+                                'course.id': {
+                                    '$ne': '6304edc9a07b1216dc904522'
+                                }
+                            }
+                        }, {
+                            '$group': {
+                                '_id': '$student.id',
+                                'avg_classActivity': {
+                                    '$avg': '$classActivity'
+                                },
+                                'avg_quiz': {
+                                    '$avg': '$quiz'
+                                },
+                                'avg_extra': {
+                                    '$avg': '$extra'
+                                },
+                                'avg_midterm': {
+                                    '$avg': '$midterm'
+                                },
+                                'avg_final': {
+                                    '$avg': '$final'
+                                },
+                                'avg_sum': {
+                                    '$avg': '$sum'
+                                }
+                            }
+                        }, {
+                            '$project': {
+                                '_id': 0
+                            }
+                        }
+                    ],
+                    'actual': [
+                        {
+                            '$match': {
+                                'student.id': '631220cfc5808a9a505e5d8f',
+                                'course.id': '6304edc9a07b1216dc904522'
+                            }
+                        }, {
+                            '$project': {
+                                '_id': 0,
+                                'classActivity': 1,
+                                'quiz': 1,
+                                'extra': 1,
+                                'midterm': 1,
+                                'final': 1,
+                                'sum': 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ])
+
+        )
+        item_ready = [{'name': "میانگین ترم های قبل", "data": list(query_res[0]['avg'].values)},
+                      {'name' : "نمرات این ترم" , "data" :  list(query_res[0]['actual'].values) }]
+        return 200, "ok", "", item_ready
