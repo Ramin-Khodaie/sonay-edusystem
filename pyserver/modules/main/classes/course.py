@@ -8,10 +8,11 @@ class SCourse:
     course_collection: str = 'course'
     user_collection: str = 's_user'
 
-    def __init__(self, database, course_collection, user_collection):
+    def __init__(self, database, course_collection, user_collection , mark_collection):
         self.database = database
         self.course_collection = course_collection
         self.user_collection = user_collection
+        self.mark_collection = mark_collection
 
     def validate_course(self, course, col):
         required = {"name", "_id", "next_course", "status", "price"}
@@ -108,4 +109,28 @@ class SCourse:
         ]))
 
 
+        return 200, "ok", "ok", cl
+
+    
+    
+    def get_course_by_student(self,student_id):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.mark_collection]
+        cl = list(col.aggregate([
+            {
+                '$match': {
+                    # 'username': teacher_id,
+                    'student.id': student_id
+                }
+            }, {
+                '$group': {
+                    '_id': '$course.id',
+                    'name': {
+                        '$first': '$course.name'
+                    }
+                }
+            }
+        ]))
+        
+        
         return 200, "ok", "ok", cl

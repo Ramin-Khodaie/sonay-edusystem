@@ -6,6 +6,7 @@ from modules.main.sonay_app import sn
 from bson import ObjectId
 from persiantools.jdatetime import JalaliDate
 
+
 class SMark:
     database: str = "database"
     product_collection: str = ""
@@ -25,7 +26,7 @@ class SMark:
 
         return 200, "ok", "is valid", None
 
-    def insert_mark(self, info , st):
+    def insert_mark(self, info, st):
 
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
@@ -39,53 +40,95 @@ class SMark:
         if "_id" in info and info["_id"] != "":
             res = self.edit_mark(info, col)
             return res
+        info['g_date'] = datetime.today()
         col.insert_one({**info, "_id": str(ObjectId())})
         return 200, "ok", "mark is inserted", None
 
-
-    def get_mark(self , mark_id):
+    def get_mark(self, mark_id):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
-        res = list(col.find({"_id" : mark_id }))
+        res = list(col.find({"_id": mark_id}))
         if len(res) != 1:
-            return 403,"not_found" , "mark not found " , []
+            return 403, "not_found", "mark not found ", []
 
         return 200, "ok", "mark is inserted", res
 
-    
-    
-    
-    def get_mark_by_teacher(self,teacher_id):
+    def get_mark_by_teacher(self, teacher_id):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
         # res = list(col.find({"teacher.id" : teacher_id}))
         res = list(col.find({}))
         return 200, "ok", "", res
-        
-        
 
-    def edit_product(self, info, col: Collection):
+    def edit_mark(self, info, col: Collection):
         idd = info["_id"]
         del info["_id"]
         col.update_one({"_id": idd}, {"$set": info})
         return 200, "ok", "ok", []
 
-    def get_product(self, product_id):
+    def get_mark_by_search(self, filter):
         db: Database = sn.databases[self.database].db
-        col: Collection = db[self.product_collection]
-        product = list(col.find({"_id": product_id}))
-        if len(product) == 0:
-            return 404, "not_found", "could not find the product", []
-        else:
-            return 200, "ok", "ok", product
+        col: Collection = db[self.mark_collection]
+        and_li = []
+        if 'name' in filter and filter['name'] != "":
+            and_li.append({'student.name': {'$regex': filter['name']}})
+        if 'courses' in filter and filter['courses']['id'] != "":
+            and_li.append({'course.id': filter['courses']['id']})
+        if 'isFailed' in filter and filter['isFailed']:
+            and_li.append({'status': 'failed'})
+        if 'isPassed' in filter and filter['isPassed']:
+            and_li.append({'status': 'passed'})
+        if 'startMark' in filter and filter['startMark'] != '':
+            and_li.append({'sum': {"$gte": int(filter['startMark'])}})
+        if 'endMark' in filter and filter['endMark'] != '':
+            and_li.append({'sum': {"$lte": int(filter['endMark'])}})
 
-    def get_product_list(self):
+        if 'startDate' in filter and filter['startDate'] != '':
+            cc = filter['startDate'].split('/')
+            sd = JalaliDate(int(cc[0]), int(cc[1]), int(cc[2])).to_gregorian()
+            sg = datetime(sd.year, sd.month, sd.day)
+            and_li.append({'g_date': {"$gte": sg}})
+
+        if 'endDate' in filter and filter['endDate'] != '':
+            cc = filter['endDate'].split('/')
+            sd = JalaliDate(int(cc[0]), int(cc[1]), int(cc[2])).to_gregorian()
+            sg = datetime(sd.year, sd.month, sd.day)
+            and_li.append({'g_date': {"$lte": sg}})
+
+        data = list(col.find({"$and": and_li}))
+        return 200, "ok", "ok", data
+
+    def get_selected_mark(self, student_id, course_id):
         db: Database = sn.databases[self.database].db
-        col: Collection = db[self.product_collection]
-        # filters = {}
-        # if full_name != "" :
-        #     filters["full_name"] =  {'$regex': full_name} #this will be text search
-        # if status != "":
-        #     filters["status"] = status
-        cl = list(col.find({}))
-        return 200, "ok", "ok", cl
+        col: Collection = db[self.mark_collection]
+        res = list(
+            col.find({"student.id": student_id, 'course.id': course_id}))
+        return 200, "ok", "", res
+
+    def get_final_status(self, student_id, course_id):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.mark_collection]
+        res = list( col.find({"student.id": student_id, 'course.id': course_id}))
+        if len(res) > 0 :
+            
+        
+            self.get_value_of_properties(res[0])
+
+    def get_value_of_properties(self, mark):
+        values = {
+            'outstanding': 100,
+            'good': 75,
+            'satisfactory': 50,
+            'weak': 25
+        }
+        mean = (
+            values[mark['homework']['id']] +
+            values[mark['writing']['id']] +
+            values[mark['reading']['id']] +
+            values[mark['listening']['id']] +
+            values[mark['speaking']['id']] +
+            values[mark['activity']['id']]) / 6
+        
+        final_mean = (mean + int(mark['sum'])) / 2
+        return final_mean
+        

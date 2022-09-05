@@ -6,7 +6,7 @@ const WorkbookTable = () => {
     course: "IELTS",
     studentName: "jafar azhdari",
     totalWork: "out_standing",
-    classActiviy: "20.1",
+    classActivity: "20.1",
     quizzes: "9.2",
     midterm: "4.5",
     final: "6.8",
@@ -43,7 +43,7 @@ const WorkbookTable = () => {
         </Tr>
         <Tr>
           <Td>Class Activity</Td>
-          <Td>{workbook.classActiviy}</Td>
+          <Td>{workbook.classActivity}</Td>
         </Tr>
         <Tr>
           <Td>Quizzes</Td>

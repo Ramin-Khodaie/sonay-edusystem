@@ -60,7 +60,7 @@ function MarkForm(props) {
     listening: { id: "", name: "" },
     speaking: { id: "", name: "" },
 
-    activiy: { id: "", name: "" },
+    activity: { id: "", name: "" },
     message: "",
     student: selectedStudent,
     course: selectedCourse,
@@ -104,7 +104,7 @@ function MarkForm(props) {
         reading: currentMark[0].reading,
         listening: currentMark[0].listening,
         speaking: currentMark[0].speaking,
-        activiy: currentMark[0].activiy,
+        activity: currentMark[0].activity,
         message: currentMark[0].message,
         student: currentMark[0].student,
         course: currentMark[0].course,
@@ -470,7 +470,7 @@ function MarkForm(props) {
               data={data}
               state={formData}
               placeHolder={"انتخاب کنید"}
-              fieldId={"activiy"}
+              fieldId={"activity"}
             />
           </Box>
         </Box>

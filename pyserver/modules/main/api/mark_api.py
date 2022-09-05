@@ -41,3 +41,32 @@ def get_mark(mark_id : str):
     ret = mark.get_mark(mark_id)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
+
+
+@router.put("/getmarkbysearch")
+@sn(fast=True)
+def get_mark(filter : dict):
+    ret = mark.get_mark_by_search(filter['filter'])
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+
+@router.get("/getselectedmark")
+@sn(fast=True)
+def get_selected_mark(student_id : str , course_id : str):
+    ret = mark.get_selected_mark(student_id=student_id , course_id=course_id)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+
+
+
+
+@router.get("/getfinalstatus")
+@sn(fast=True)
+def get_final_status(student_id : str , course_id : str):
+    ret = mark.get_final_status(student_id=student_id , course_id=course_id)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+

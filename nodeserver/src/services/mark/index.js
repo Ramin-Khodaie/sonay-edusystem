@@ -16,7 +16,7 @@ export const createMark = (mark) => {
         reading: mark.reading,
         listening: mark.listening,
         speaking: mark.speaking,
-        activiy: mark.activiy,
+        activity: mark.activity,
         message: mark.message,
         student : mark.student,
         course : mark.course,
