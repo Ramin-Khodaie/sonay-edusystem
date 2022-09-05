@@ -112,7 +112,8 @@ class SMark:
         if len(res) > 0 :
             
         
-            self.get_value_of_properties(res[0])
+            final_status = self.get_value_of_properties(res[0])
+            return 200, "ok", "", [final_status]
 
     def get_value_of_properties(self, mark):
         values = {
