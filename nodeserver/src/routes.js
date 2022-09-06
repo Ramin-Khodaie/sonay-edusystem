@@ -93,7 +93,7 @@ var dashRoutes = [
   },
   {
     path: "/register",
-    name: "registration",
+    name: "ثبت نام",
     rtlName: "ثبت نام",
     icon: <FaRegistered color='inherit' />,
     component: Registration,

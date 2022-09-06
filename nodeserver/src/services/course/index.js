@@ -46,3 +46,21 @@ export const courseList = () => {
     }
   });
 };
+
+
+
+export const courseByTeacher = (teacherId="0") => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/courses/getcoursebyteacher" , {params:{teacher_id : teacherId}}
+
+      );
+
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+       resolve(error.response.status);
+    }
+  });
+};

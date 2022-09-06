@@ -6,6 +6,8 @@ const CustomSelector = ({
   data,
   placeHolder = "انتخاب کنید",
   fieldId = "fCourse",
+  bg = ''
+
 }) => {
  
 
@@ -32,6 +34,8 @@ const CustomSelector = ({
         textAlign={"center"}
         placeholder={placeHolder}
         onChange={handleChange}
+        bg={bg === '' ?  'none' : bg}
+  
       >
         {data.map((d) => (
 

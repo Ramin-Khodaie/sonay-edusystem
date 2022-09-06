@@ -106,7 +106,7 @@ function UserForm(props) {
   const handleOptionChange = (e) => {
     const newOpt = data.find((f) => f._id === e.target.value);
     formData.roles.findIndex((itm) => itm._id == newOpt._id) === -1
-      ? setFormData({ ...formData, roles: [...formData.roles, newOpt] })
+      ? setFormData({ ...formData, roles: [...formData.roles, {"id" : newOpt._id , "name" : newOpt.name}] })
       : notify("این آیتم قبلا انتخاب شده است", true, "solid", "warning");
   };
 

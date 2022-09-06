@@ -472,4 +472,10 @@ class SAY():
 
         except:
             return 500, "server_error", "cant connect to database", None
+    def get_user_by_course(self,course_id , role):
+        col: Collection = self.db.mongo_db["s_user"]
+        res = list(col.find({"course.id" : course_id , "roles.id" : role}))
+        return 200, "ok", "", res
+
+
 

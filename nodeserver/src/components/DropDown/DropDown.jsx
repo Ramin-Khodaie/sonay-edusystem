@@ -23,8 +23,9 @@ const DropDown = () => {
     <Menu>
       <MenuButton>
         <div className="carticon" as="box" h={"45px"} w={"45px"}>
-          <CartIcon h={"24px"} w={"24px"} color={iconBoxInside} />
+          <CartIcon h={"24px"} w={"24px"} color={iconBoxInside}  />
           {cartItems.length > 0 && <span>{cartItems.length}</span>}
+
         </div>
       </MenuButton>
       <MenuList p="16px 4px" bg={menuBg} justifyContent="center">
