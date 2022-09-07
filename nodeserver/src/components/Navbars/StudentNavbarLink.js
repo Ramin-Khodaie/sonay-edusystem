@@ -62,6 +62,9 @@ export default function StudentNavbarLink(props) {
             alignItems='center'
             flexDirection='row'>
             {/* <SearchBar me='18px' /> */}
+
+            <DropDown />
+
             <NavLink to='/auth/signin'>
                 <Button
                     ms='0px'
@@ -149,7 +152,6 @@ export default function StudentNavbarLink(props) {
                     </Flex>
                 </MenuList>
             </Menu>
-            <DropDown />
         </Flex>
     );
 }

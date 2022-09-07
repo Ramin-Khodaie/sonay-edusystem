@@ -11,43 +11,101 @@ import {
   Button,
   SimpleGrid,
   Center,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import Card from "components/Card/Card";
 import IconBox from "components/Icons/IconBox";
-import { CheckIcon } from "@chakra-ui/icons";
+import { ArrowRightIcon, CheckIcon } from "@chakra-ui/icons";
 
 const CourseRegisterRecord = (props) => {
-  const {} = props;
+  const { data } = props;
+
+  let bgAttendedButton = useColorModeValue("green.300", "green.400");
+  let bgCurrentButton = useColorModeValue("yellow.300", "yellow.400");
+  let bgUpComingButton = useColorModeValue("gray.300", "gray.400");
+
+  let bgAttendedDivider = useColorModeValue("green.300", "green.400");
+  let bgCurrentDivider = useColorModeValue("yellow.300", "yellow.400");
+  let bgUpComingDivider = useColorModeValue("gray.300", "gray.400");
+
+  let bgAttendedIcon = useColorModeValue("green.300", "green.400");
+  let bgCurrentIcon = useColorModeValue("yellow.300", "yellow.400");
+  let bgUpComingIcon = useColorModeValue("gray.300", "gray.400");
+
+  let bgButtonHover = useColorModeValue("white", "navy.900");
+
+  let dividerColor = useColorModeValue("white", "navy.900");
+  let textColor = useColorModeValue("white", "navy.900");
+
   return (
     <div className="record-card">
-       <SimpleGrid columns={3} spacing={0}>
-       <Box>
-       <Divider variant={'dashed'} borderColor={'green'} borderRadius={"50%"} borderBottomWidth={'3px'} my={'50px'} />
-
-
-      </Box>
-      <Flex>
-      <Center h={"100px"} w="80px">
-          <Button
+      <SimpleGrid w={"150px"} columns={2} spacing={0}>
+        <Flex>
+          <Divider
+            borderColor={
+              data.state === "attended"
+                ? bgAttendedDivider
+                : data.state === "upcoming"
+                ? bgUpComingDivider
+                : bgCurrentDivider
+            }
             borderRadius={"50%"}
-            bg={"green.400"}
-  
-            iconSpacing={"0px"}
-            padding={'30px'}
-           
-          >
+            borderBottomWidth={"3px"}
+            mt={"35px"}
+          />
 
-<CheckIcon  />
-          </Button>
-        </Center>
-      </Flex>
-      
-        <Box>
-        <Divider variant={'dashed'} borderColor={'green'} borderRadius={"50%"} borderBottomWidth={'3px'} my={'50px'} />
-        </Box>
+          <ArrowRightIcon
+            color={
+              data.state === "attended"
+                ? bgAttendedIcon
+                : data.state === "upcoming"
+                ? bgUpComingIcon
+                : bgCurrentIcon
+            }
+            mt={"28px"}
+          />
 
-       </SimpleGrid>
+          <Divider
+            borderColor={
+              data.state === "attended"
+                ? bgAttendedDivider
+                : data.state === "upcoming"
+                ? bgUpComingDivider
+                : bgCurrentDivider
+            }
+            borderRadius={"50%"}
+            borderBottomWidth={"3px"}
+            mt={"35px"}
+          />
+        </Flex>
 
+        <Flex>
+          <Center h={"100px"} w="80px">
+            <Box>
+              <Button
+                borderRadius={"100%"}
+                bg={
+                  data.state === "attended"
+                    ? bgAttendedButton
+                    : data.state === "upcoming"
+                    ? bgUpComingButton
+                    : bgCurrentButton
+                }
+                iconSpacing={"0px"}
+                padding={"25px"}
+              >
+                <CheckIcon />
+              </Button>
+
+              <Text fontSize={"18px"} textAlign={"center"}>
+                {" "}
+                b h blah
+              </Text>
+            </Box>
+          </Center>
+        </Flex>
+
+      </SimpleGrid>
     </div>
   );
 };
