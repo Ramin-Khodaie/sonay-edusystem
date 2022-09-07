@@ -10,7 +10,7 @@ import SignIn from "./views/Pages/SignIn.js";
 import SignUp from "./views/Pages/SignUp.js";
 import Products from 'views/Student/Products.jsx';
 import Registration from 'views/Student/Registration.jsx';
-import Karne from 'views/Student/Karne.jsx';
+import Karne from 'views/Student/Workbook';
 import Checkout from 'views/Student/Checkouts'
 
 import {
@@ -76,8 +76,8 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/karne",
-    name: "karne",
+    path: "/workbook",
+    name: "کارنامه",
     rtlName: "کارنامه",
     icon: <FaPaperclip color='inherit' />,
     component: Karne,
@@ -85,7 +85,7 @@ var dashRoutes = [
   },
   {
     path: "/books",
-    name: "book",
+    name: "کتاب",
     rtlName: "کتاب",
     icon: <FaBook color='inherit' />,
     component: Products,
