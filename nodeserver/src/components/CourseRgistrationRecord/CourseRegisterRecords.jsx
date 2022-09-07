@@ -64,7 +64,9 @@ const CourseRegisterRecords = ({}, ref) => {
   const lightStyle = {
  
     "border-radius": "2rem",
-    'background-color' : 'white'
+    'background-color' : 'white' , 
+
+    
     
   }
 
@@ -84,7 +86,8 @@ const CourseRegisterRecords = ({}, ref) => {
       id="slider"
       dir="ltr"
       
-      style={colorMode.colorMode === 'light' ? lightStyle : darkStyle}
+      style={colorMode.colorMode === 'light' ? lightStyle : darkStyle }
+ 
     >
       {records.map((record, idx) => (
         <>

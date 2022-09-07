@@ -11,7 +11,6 @@ const StudentRecords = ({ data , handleStudentSelect , selectedItems},ref) => {
   }
 
   const handleSliderRight = () =>{
-    console.log(9000, "here")
     const slider = document.getElementById("studentSlider")
     slider.scrollLeft = slider.scrollLeft - 500
   }

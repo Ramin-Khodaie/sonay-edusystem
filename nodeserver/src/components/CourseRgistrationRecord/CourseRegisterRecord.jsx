@@ -12,6 +12,9 @@ import {
   SimpleGrid,
   Center,
   useColorModeValue,
+  Grid,
+  GridItem,
+  Square,
 } from "@chakra-ui/react";
 import Card from "components/Card/Card";
 import IconBox from "components/Icons/IconBox";
@@ -39,73 +42,97 @@ const CourseRegisterRecord = (props) => {
 
   return (
     <div className="record-card">
-      <SimpleGrid w={"150px"} columns={2} spacing={0}>
-        <Flex>
-          <Divider
-            borderColor={
-              data.state === "attended"
-                ? bgAttendedDivider
-                : data.state === "upcoming"
-                ? bgUpComingDivider
-                : bgCurrentDivider
-            }
-            borderRadius={"50%"}
-            borderBottomWidth={"3px"}
-            mt={"35px"}
-          />
+      <Grid
+        h="110px"
+        w={{sm : "120px" , "md" : "180px" , "lg" : "200px"}}
+        templateRows="repeat(3, 1fr)"
+        templateColumns="repeat(3, 1fr)"
+        gap={0}
+      >
+        <GridItem colSpan={1} rowSpan={2}>
+          <Flex>
+            <Divider
+              borderColor={
+                data.state === "attended"
+                  ? bgAttendedDivider
+                  : data.state === "upcoming"
+                  ? bgUpComingDivider
+                  : bgCurrentDivider
+              }
+              borderRadius={"50%"}
+              borderBottomWidth={"3px"}
+              mt={"50px"}
+            />
+          </Flex>
+        </GridItem>
+        <GridItem colSpan={1} rowSpan={2}>
+          <Square>
+            <Button
+              borderRadius={"100%"}
+              bg={
+                data.state === "attended"
+                  ? bgAttendedButton
+                  : data.state === "upcoming"
+                  ? bgUpComingButton
+                  : bgCurrentButton
+              }
+              iconSpacing={"0px"}
+              px={{sm : "15px" , md : "20px" , lg : "25px"}}
+              py={{sm : "22px" , md : "27px" , lg : "32px"}}
+              // px={"20%"}
+              // py={"32%"}
+              mt={{sm : "22px" , md : "18px" , lg : "13px"}}
+            >
+              <CheckIcon />
+            </Button>
+          </Square>
+        </GridItem>
+        <GridItem colSpan={1} rowSpan={2}>
+          <Flex>
+            <Divider
+              mt={"50px"}
+              borderColor={
+                data.state === "attended"
+                  ? bgAttendedDivider
+                  : data.state === "upcoming"
+                  ? bgUpComingDivider
+                  : bgCurrentDivider
+              }
+              borderBottomWidth={"3px"}
+              borderRadius={"50%"}
+            />
 
-          <ArrowRightIcon
-            color={
-              data.state === "attended"
-                ? bgAttendedIcon
-                : data.state === "upcoming"
-                ? bgUpComingIcon
-                : bgCurrentIcon
-            }
-            mt={"28px"}
-          />
+            <ArrowRightIcon
+              color={
+                data.state === "attended"
+                  ? bgAttendedIcon
+                  : data.state === "upcoming"
+                  ? bgUpComingIcon
+                  : bgCurrentIcon
+              }
+              mt={"43px"}
+            />
+          </Flex>
+        </GridItem>
+        <GridItem colSpan={3} rowSpan={1}>
+          <Text
+            overflow={"hidden"}
+            maxW={{sm : "120px" , "md" : "180px" , "lg" : "200px"}}
+            fontSize={"18px"}
+            textAlign={"center"}
+       
+            mt={'5px'}
+          >
+            {" "}
+          sdf sd dfg sdfgfdfg fgdg
+          </Text>
+        </GridItem>
+      </Grid>
 
-          <Divider
-            borderColor={
-              data.state === "attended"
-                ? bgAttendedDivider
-                : data.state === "upcoming"
-                ? bgUpComingDivider
-                : bgCurrentDivider
-            }
-            borderRadius={"50%"}
-            borderBottomWidth={"3px"}
-            mt={"35px"}
-          />
-        </Flex>
+      {/* <SimpleGrid w={"150px"} columns={2} spacing={0}>
+        
 
-        <Flex>
-          <Center h={"100px"} w="80px">
-            <Box>
-              <Button
-                borderRadius={"100%"}
-                bg={
-                  data.state === "attended"
-                    ? bgAttendedButton
-                    : data.state === "upcoming"
-                    ? bgUpComingButton
-                    : bgCurrentButton
-                }
-                iconSpacing={"0px"}
-                padding={"25px"}
-              >
-                <CheckIcon />
-              </Button>
-
-              <Text fontSize={"18px"} textAlign={"center"}>
-                {" "}
-                b h blah
-              </Text>
-            </Box>
-          </Center>
-        </Flex>
-
-      </SimpleGrid>
+      </SimpleGrid> */}
     </div>
   );
 };

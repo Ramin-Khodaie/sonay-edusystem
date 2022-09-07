@@ -9,7 +9,10 @@ const Registration = () =>{
 <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">
 
 
-<Flex flexDirection="column" mb="30 px" h="100%" align={"center"} >
+
+
+
+<Flex flexDirection="column" mb="30px" h="100%" align={"center"} >
 
 
         <SliderWrapper >
