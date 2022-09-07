@@ -23,8 +23,8 @@ const DropDown = () => {
     <Menu>
       <MenuButton>
         <div className="carticon" as="box" h={"45px"} w={"45px"}>
+         {cartItems.length > 0 && <span>{cartItems.length}</span>}
           <CartIcon h={"24px"} w={"24px"} color={iconBoxInside}  />
-          {cartItems.length > 0 && <span>{cartItems.length}</span>}
 
         </div>
       </MenuButton>

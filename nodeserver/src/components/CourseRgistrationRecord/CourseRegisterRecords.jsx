@@ -1,79 +1,48 @@
 import courseImage1 from "assets/img/courses/ielts.png";
 import CourseRegisterRecord from "./CourseRegisterRecord";
 import { forwardRef, useImperativeHandle } from "react";
+import {  useColorMode } from "@chakra-ui/react";
 
 const CourseRegisterRecords = ({}, ref) => {
   const records = [
+
     {
-      courseName: "IELTS",
-      teacherName: "حسن محبی",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
+      name: "IELTS",
+      id: "cc",
+      state : "attended"
     },
     {
-      courseName: "IELTS",
-      teacherName: "کاظم اشتری",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
+      name: "IELTS",
+      id: "cc",
+      state : "attended"
     },
     {
-      courseName: "IELTS",
-      teacherName: "مختار ثقفی",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
+      name: "IELTS",
+      id: "cc",
+      state : "current"
     },
     {
-      courseName: "IELTS",
-      teacherName: "John Doe",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
+      name: "IELTS",
+      id: "cc",
+      state : "upcoming"
     },
     {
-      courseName: "IELTS",
-      teacherName: "John Doe",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
+      name: "IELTS",
+      id: "cc",
+      state : "upcoming"
     },
     {
-      courseName: "IELTS",
-      teacherName: "John Doe",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
+      name: "IELTS",
+      id: "cc",
+      state : "upcoming"
     },
     {
-      courseName: "IELTS",
-      teacherName: "John Doe",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
+      name: "IELTS",
+      id: "cc",
+      state : "upcoming"
     },
-    {
-      courseName: "IELTS",
-      teacherName: "John Doe",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
-    },
-    {
-      courseName: "IELTS",
-      teacherName: "John Doe",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
-    },
-    {
-      courseName: "IELTS",
-      teacherName: "John Doe",
-      image: courseImage1,
-      startDate: "2022/05/01",
-      endDate: "2022/06/01",
-    },
+
+    
   ];
 
   const handleSliderLeft = () => {
@@ -91,19 +60,38 @@ const CourseRegisterRecords = ({}, ref) => {
     gotoLeft: handleSliderLeft,
     gotoRight: handleSliderRight,
   }));
+  const colorMode = useColorMode()
+  const lightStyle = {
+ 
+    "border-radius": "2rem",
+    'background-color' : 'white'
+    
+  }
+
+  const darkStyle = {
+ 
+    "border-radius": "2rem",
+    'background-color' : '#1b254b'
+    
+  }
+  console.log(colorMode)
+
+
 
   return (
     <div
       className="records-container"
       id="slider"
-      style={{
-        "background-color": "#EDF2F7",
-        "border-radius": "2rem",
-        
-      }}
+      dir="ltr"
+      
+      style={colorMode.colorMode === 'light' ? lightStyle : darkStyle}
     >
       {records.map((record, idx) => (
-        <CourseRegisterRecord key={idx} />
+        <>
+              <CourseRegisterRecord key={idx} data={record} />
+
+        </>
+  
       ))}
     </div>
   );
