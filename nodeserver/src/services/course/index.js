@@ -64,3 +64,21 @@ export const courseByTeacher = (teacherId="0") => {
     }
   });
 };
+
+
+
+export const courseHistory = (courseId="0") => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/courses/getcoursehistory" , {params:{course_id : courseId}}
+
+      );
+
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+       resolve(error.response.status);
+    }
+  });
+};

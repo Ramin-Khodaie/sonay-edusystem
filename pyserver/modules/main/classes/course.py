@@ -164,6 +164,13 @@ class SCourse:
                     '$match': {
                         '_id': '6319f37824421e690f2751e5'
                     }
+                },
+                {
+                    "$project" : {
+                        'id' : "$_id",
+                        "name" : "$name",
+                        '_id' : 0
+                    }
                 }
             ], 
             'nxt': [
@@ -178,7 +185,7 @@ class SCourse:
                         'connectFromField': 'next_course.id', 
                         'connectToField': '_id', 
                         'as': 'nxt', 
-                        'maxDepth': 3, 
+                        'maxDepth': 2, 
                         'depthField': 'order'
                     }
                 }, {
@@ -204,7 +211,7 @@ class SCourse:
                         'connectFromField': 'prev_course.id', 
                         'connectToField': '_id', 
                         'as': 'prv', 
-                        'maxDepth': 3, 
+                        'maxDepth': 2, 
                         'depthField': 'order'
                     }
                 }, {
@@ -213,7 +220,8 @@ class SCourse:
                     '$project': {
                         'id': '$prv._id', 
                         'name': '$prv.name', 
-                        'order': '$prv.order'
+                        'order': '$prv.order' , 
+                        '_id' : 0
                     }
                 }
             ]
@@ -223,7 +231,16 @@ class SCourse:
 
 
         nxt =  sorted(raw[0]['nxt'], key=lambda x: x['order'])
+        for itm in nxt:
+            itm['state'] = 'upcoming'
         prv =  sorted(raw[0]['prv'], key=lambda x: x['order'], reverse=True)
+        for itm in prv:
+            itm['state'] = 'attended'
+
+        raw[0]['item'][0]['state'] = 'current'
         final = prv + raw[0]['item'] + nxt
+       
+
+
      
         return 200, "ok", "ok", final

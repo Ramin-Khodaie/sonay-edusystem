@@ -3,7 +3,7 @@ import CourseRegisterRecord from "./CourseRegisterRecord";
 import { forwardRef, useImperativeHandle } from "react";
 import {  useColorMode } from "@chakra-ui/react";
 
-const CourseRegisterRecords = ({}, ref) => {
+const CourseRegisterRecords = ({data}, ref) => {
   const records = [
 
     {
@@ -44,7 +44,7 @@ const CourseRegisterRecords = ({}, ref) => {
 
     
   ];
-  
+
 
   const handleSliderLeft = () => {
     const slider = document.getElementById("slider");
@@ -90,7 +90,7 @@ const CourseRegisterRecords = ({}, ref) => {
       style={colorMode.colorMode === 'light' ? lightStyle : darkStyle }
  
     >
-      {records.map((record, idx) => (
+      {data.map((record, idx) => (
         <>
               <CourseRegisterRecord key={idx} data={record} />
 

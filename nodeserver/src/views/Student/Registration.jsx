@@ -18,12 +18,34 @@ import CourseRegisterRecords from "components/CourseRgistrationRecord/CourseRegi
 import SliderWrapper from "components/SliderWrapper/SliderWrapper";
 
 import RegistrationCard from "components/RegistrationCard/RegistrationCard";
+import { courseHistory } from "services/course";
+import { useState  } from "react";
+import { useEffect } from "react";
 const Registration = () => {
+
+
+
+  const [myCourseHistory , setMyCourseHistory] = useState([])
+  const getCourseHistoryData = async () => {
+    const courseHistoryData = await courseHistory();
+    if (courseHistoryData.status === 200) {
+      if (courseHistoryData.data.data.length > 0) {
+        setMyCourseHistory(courseHistoryData.data.data);
+        
+      }
+    }
+  };
+
+  useEffect(() => {
+    getCourseHistoryData();
+  }, []);
+
+
   return (
     <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">
       <Flex flexDirection="column" mb="30px" h="100%" align={"center"}>
         <SliderWrapper>
-          <CourseRegisterRecords />
+          <CourseRegisterRecords data={myCourseHistory} />
         </SliderWrapper>
       </Flex>
 

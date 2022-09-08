@@ -23,6 +23,11 @@ import { FaMinus } from "react-icons/fa";
 
 const CourseRegisterRecord = (props) => {
   const { data } = props;
+  
+
+
+  console.log(data,8787)
+  
 
   let bgAttendedButton = useColorModeValue("green.300", "green.400");
   let bgCurrentButton = useColorModeValue("yellow.300", "yellow.400");
@@ -143,7 +148,7 @@ const CourseRegisterRecord = (props) => {
             mt={'5px'}
           >
             {" "}
-          sdf sd dfg sdfgfdfg fgdg
+        {data.name}
           </Text>
         </GridItem>
       </Grid>
