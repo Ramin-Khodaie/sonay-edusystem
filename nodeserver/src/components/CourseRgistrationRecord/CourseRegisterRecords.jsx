@@ -44,6 +44,7 @@ const CourseRegisterRecords = ({}, ref) => {
 
     
   ];
+  
 
   const handleSliderLeft = () => {
     const slider = document.getElementById("slider");

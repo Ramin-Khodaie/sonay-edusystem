@@ -18,7 +18,8 @@ import {
 } from "@chakra-ui/react";
 import Card from "components/Card/Card";
 import IconBox from "components/Icons/IconBox";
-import { ArrowRightIcon, CheckIcon } from "@chakra-ui/icons";
+import { ArrowRightIcon, CheckIcon, CloseIcon, SpinnerIcon } from "@chakra-ui/icons";
+import { FaMinus } from "react-icons/fa";
 
 const CourseRegisterRecord = (props) => {
   const { data } = props;
@@ -68,6 +69,12 @@ const CourseRegisterRecord = (props) => {
         <GridItem colSpan={1} rowSpan={2}>
           <Square>
             <Button
+            disabled={
+              data.state === "upcoming"
+                ?             true
+                : false
+                        
+            }
               borderRadius={"100%"}
               bg={
                 data.state === "attended"
@@ -83,7 +90,19 @@ const CourseRegisterRecord = (props) => {
               // py={"32%"}
               mt={{sm : "22px" , md : "18px" , lg : "13px"}}
             >
-              <CheckIcon />
+
+
+{
+                data.state === "attended"
+                  ?              <CheckIcon />
+                  : data.state === "upcoming"
+                  ?  <CloseIcon />
+                  :    <SpinnerIcon />          
+              }
+
+
+
+
             </Button>
           </Square>
         </GridItem>
