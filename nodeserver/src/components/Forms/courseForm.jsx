@@ -48,7 +48,7 @@ function CourseForm(props) {
     _id: "",
     courseName: "",
     courseStatus: {},
-    nextCourse: {},
+    prevCourse: {id : '' , name : ''},
     description: "",
     price: "",
     image: "",
@@ -70,7 +70,7 @@ function CourseForm(props) {
       _id: formData._id,
       name: formData.courseName,
       status: formData.courseStatus,
-      next_course: formData.nextCourse,
+      prev_course: formData.prevCourse,
       description: formData.description,
       price: formData.price,
       image: formData.image,
@@ -82,7 +82,7 @@ function CourseForm(props) {
   // const handleCourseOptionChange = (e) => {
   //   const newOpt = courses.find((f) => f.id === e.target.value);
 
-  //   setFormData({ ...formData, nextCourse: newOpt });
+  //   setFormData({ ...formData, prevCourse: newOpt });
   // };
 
   useEffect(() => {
@@ -101,7 +101,7 @@ function CourseForm(props) {
         _id: currentCourse[0]._id,
         courseName: currentCourse[0].name,
         courseStatus: currentCourse[0].status,
-        nextCourse: currentCourse[0].next_course,
+        prevCourse: currentCourse[0].prev_course,
         description: currentCourse[0].description,
         price: currentCourse[0].price,
         image: currentCourse[0].image,
@@ -160,13 +160,13 @@ function CourseForm(props) {
 
             <Box minH="80px">
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                دوره بعدی{" "}
+                دوره قبلی{" "}
               </FormLabel>
               <CustomSelector
                 onChange={setFormData}
                 state={formData}
                 data={courses}
-                fieldId={"nextCourse"}
+                fieldId={"prevCourse"}
               />
             </Box>
           </Box>

@@ -13,7 +13,7 @@ import {
 import CourseEditModal from "components/Modal/courseEdit";
   
   function CourseListTableRow(props) {
-    const { name , logo , nextCourse , status , teacher , teacherImage , teacherUserName, price , isLast , key ,courseId , courses , statusData} = props;
+    const { name , logo , prevCourse , status , teacher , teacherImage , teacherUserName, price , isLast , key ,courseId , courses , statusData} = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -47,7 +47,7 @@ import CourseEditModal from "components/Modal/courseEdit";
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
             <Text fontSize="md" color={textColor} fontWeight="bold">
-              {nextCourse}
+              {prevCourse}
             </Text>
             {/* <Text fontSize="sm" color="gray.400" fontWeight="normal">
               {subdomain}

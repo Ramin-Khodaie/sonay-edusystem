@@ -52,3 +52,15 @@ def get_course_by_teacher(teacher_id : str):
 def get_course_by_student(student_id : str):
     ret = course.get_course_by_student(student_id)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+
+@router.get("/getcoursehistory")
+@sn(fast=True)
+def get_course_history(course_id : str):
+    ret = course.get_course_history(course_id)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+        

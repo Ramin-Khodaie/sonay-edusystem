@@ -45,7 +45,7 @@ import CourseListTableRow from "./CourseListTableRow";
               نام دوره
             </Th>
             <Th borderColor={borderColor} color="gray.400">
-              دوره بعدی
+              دوره قبلی
             </Th>
             <Th borderColor={borderColor} color="gray.400">
               وضعیت
@@ -70,7 +70,7 @@ import CourseListTableRow from "./CourseListTableRow";
                 name={row.name}
                 
                 logo={row.image}
-                nextCourse={row.next_course.name}
+                prevCourse={row.prev_course.name}
                 status={row.status.id} //{row.enable}
                 teacher={ row.teacher.length === 0 ? "انتخاب نشده" : row.teacher[0].full_name}
                 teacherUserName={ row.teacher.length === 0 ? "" : row.teacher[0].username}

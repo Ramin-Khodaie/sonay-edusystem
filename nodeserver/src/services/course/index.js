@@ -7,7 +7,7 @@ export const createCourse = (course) => {
         _id: course._id,
         name: course.name,
         status: course.status,
-        next_course: course.next_course,
+        prev_course: course.prev_course,
         image : course.image,
         price:course.price,
         description : course.description
