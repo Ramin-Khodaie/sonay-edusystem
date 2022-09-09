@@ -82,3 +82,25 @@ export const courseHistory = (courseId="0") => {
     }
   });
 };
+
+
+
+
+export const courseDetail = (courseId="0" , studentId="0" , State) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/courses/getcoursedetail" , {params:{course_id : courseId,
+      student_id : studentId,
+    state : State}}
+
+      );
+
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+       resolve(error.response.status);
+    }
+  });
+};
+

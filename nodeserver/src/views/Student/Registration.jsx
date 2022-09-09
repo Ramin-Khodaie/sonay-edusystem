@@ -19,20 +19,50 @@ import SliderWrapper from "components/SliderWrapper/SliderWrapper";
 
 import RegistrationCard from "components/RegistrationCard/RegistrationCard";
 import { courseHistory } from "services/course";
-import { useState  } from "react";
+import { useState } from "react";
 import { useEffect } from "react";
+import { courseDetail } from "services/course";
 const Registration = () => {
-
-
-
-  const [myCourseHistory , setMyCourseHistory] = useState([])
-  const [selectedCourse , setSelectedCourse] = useState({'id' : '', 'name' : '' , 'state' : ''})
+  const [myCourseHistory, setMyCourseHistory] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState({
+    id: "",
+    name: "",
+    state: "",
+  });
+  const [courseDetailData, setCourseDetailData] = useState({});
   const getCourseHistoryData = async () => {
-    const courseHistoryData = await courseHistory();
-    if (courseHistoryData.status === 200) {
-      if (courseHistoryData.data.data.length > 0) {
-        setMyCourseHistory(courseHistoryData.data.data);
-        
+    const ch = await courseHistory();
+    if (ch.status === 200) {
+      if (ch.data.data.length > 0) {
+        setMyCourseHistory(ch.data.data);
+      }
+    }
+  };
+
+  const getCourseDetail = async () => {
+    if (selectedCourse.id !== "") {
+      const cd = await courseDetail(selectedCourse.course , "student-id" , selectedCourse.state);
+    
+      if (cd.status === 200) {
+        if (cd.data.data.length > 0) {
+                   
+
+                    setCourseDetailData(cd.data.data[0]);
+        }
+      }
+    }
+  };
+  const handleSetDefaultCourse = () => {
+    if (myCourseHistory != []) {
+      const tmp = myCourseHistory.filter(function (item) {
+        return item.state === "current";
+      });
+      if (tmp.length === 1) {
+        setSelectedCourse({
+          id: tmp[0].id,
+          name: tmp[0].name,
+          state: tmp[0].state,
+        });
       }
     }
   };
@@ -41,23 +71,32 @@ const Registration = () => {
     getCourseHistoryData();
   }, []);
 
-  const handleSelectCourseHistory = (courseId , courseName , state)=>{
+  useEffect(() => {
+    getCourseDetail();
+  }, [selectedCourse]);
 
-    setSelectedCourse({'id' : courseId , 'name':courseName , 'state' : state})
-  }
+  useEffect(() => {
+    handleSetDefaultCourse();
+  }, [myCourseHistory]);
 
+  console.log(courseDetailData, 999);
+
+  const handleSelectCourseHistory = (courseId, courseName, state) => {
+    setSelectedCourse({ id: courseId, name: courseName, state: state });
+  };
 
   return (
     <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">
       <Flex flexDirection="column" mb="30px" h="100%" align={"center"}>
         <SliderWrapper>
-          <CourseRegisterRecords handleSelectCourseHistory={handleSelectCourseHistory} data={myCourseHistory} />
+          <CourseRegisterRecords
+            handleSelectCourseHistory={handleSelectCourseHistory}
+            data={myCourseHistory}
+          />
         </SliderWrapper>
       </Flex>
 
-      <RegistrationCard />
-
-
+      <RegistrationCard courseDetailData={courseDetailData} />
     </Box>
   );
 };

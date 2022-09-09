@@ -256,5 +256,108 @@ class SCourse:
         if len(mark) != 1:
             return 422, 'invalid_result',  'no or more than one mark found', []
 
-    def get_course_registration_item(self, student_id, course_id):
-        pass
+    def get_course_registration_detail(self, st, student_id, course_id, state):
+        course_id = '631b0d2a4856643c53278f6a'
+        student_id = '631b183d5fb563f8d27ef07f'
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.user_collection]
+        col2: Collection = db[self.course_collection]
+        col3: Collection = db[self.registration_collection]
+        if state == 'current':
+            res = list(col.aggregate([
+                {
+                    '$facet': {
+                        't_obj': [
+                            {
+                                '$match': {
+                                    'roles.id': 'teacher',
+                                    'courses.id': course_id
+                                }
+                            }, {
+                                '$project': {
+                                    'full_name': 1
+                                }
+                            }
+                        ],
+                        's_obj': [
+                            {
+                                '$match': {
+                                    '_id': student_id
+                                }
+                            }, {
+                                '$lookup': {
+                                    'from': 'course',
+                                    'localField': 'courses.0.id',
+                                    'foreignField': '_id',
+                                    'pipeline': [
+                                        {
+                                            '$project': {
+                                                '_id': 0,
+                                                'price': 1,
+                                                'name': 1,
+                                                'description' : 1
+                                            }
+                                        }
+                                    ],
+                                    'as': 'c_obj'
+                                }
+                            }, {
+                                '$project': {
+                                    'c_obj': 1,
+                                    'full_name': 1,
+                                    'courses': 1,
+                                    'status': 1
+                                }
+                            }
+                        ],
+                        'm_obj': [
+                            {
+                                '$match': {
+                                    '_id': student_id
+                                }
+                            }, {
+                                '$lookup': {
+                                    'from': 'mark',
+                                    'localField': '_id',
+                                    'foreignField': 'student.id',
+                                    'pipeline': [
+                                        {
+                                            '$match': {
+                                                'course.id': course_id
+                                            }
+                                        }, {
+                                            '$project': {
+                                                '_id': 1,
+                                                'sum': 1
+                                            }
+                                        }
+                                    ],
+                                    'as': 'm_obj'
+                                }
+                            }, {
+                                '$project': {
+                                    'sum': {
+                                        '$first': '$m_obj.sum'
+                                    },
+                                    '_id': 0
+                                }
+                            }
+                        ]
+                    }
+                }
+            ])
+            )
+            if len(res[0]['m_obj']) == 0:
+                return 404, 'no_mark', 'mark has not found', res
+            else:
+                sum = res[0]['m_obj'][0]['sum']
+                if sum < st.info['PassMarkLimit']:
+                    return 403, 'failed', 'student has failed and cant register', res
+
+            if len(res[0]['s_obj'][0]['c_obj']) == 0:
+                return 404, 'no_course', 'course has not found', []
+            return 200, 'ok', 'ok', res
+        elif state == 'attended':
+            pass
+        else:
+            return 422, 'invalid_state', "state only accept cuurent or upcoming", []

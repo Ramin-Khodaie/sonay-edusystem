@@ -5,6 +5,7 @@ from modules.main.say.say import SAY
 from modules.main.api_return import api_return
 
 from modules.main.sonay_app import sn
+from modules.main.s_settings import SSettings
 from ..classes.course import SCourse
 
 
@@ -73,10 +74,10 @@ def course_registration(student_id : str,course_id : str):
 
 
                 
-@router.get("/getcourseresgistrationitem")
+@router.get("/getcoursedetail")
 @sn(fast=True)
-def get_course_registration_item(student_id : str,course_id : str):
-    ret = course.get_course_registration_item(student_id,course_id)
+def get_course_registration_detail( st:SSettings,student_id : str,course_id : str , state : str):
+    ret = course.get_course_registration_detail(st , student_id,course_id,state)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 

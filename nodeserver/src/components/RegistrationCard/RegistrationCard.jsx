@@ -30,6 +30,7 @@ import { FaRegCheckCircle } from "react-icons/fa";
   import React, { useEffect } from "react";
   
   function RegistrationCard(props) {
+    const {courseDetailData} = props
 
     const colorMode = useColorMode();
 
@@ -39,7 +40,7 @@ import { FaRegCheckCircle } from "react-icons/fa";
       <Card mb={"20px"}>
         <CardHeader h={"auto"} pb={"10px"}>
           <Text textAlign={"center"} fontSize={"25px"} fontFamily={"Lalezar"}>
-            شما در حال ثبت نام برای دوره family and friend هستید
+            شما در حال ثبت نام برای دوره {courseDetailData.s_obj && courseDetailData.s_obj[0].c_obj[0].name} هستید
           </Text>
           <Text textAlign={"center"} fontSize={"sm"}>
             جهت ثبت نام برای این دوره روی دکمه سبز رنگ "ثبت نام " کلیک کنید. قبل
@@ -53,13 +54,15 @@ import { FaRegCheckCircle } from "react-icons/fa";
           <SimpleGrid columns={{ sm: 1, md: 2, lg: 2 }}>
             <Box>
               <Text textAlign={"center"} fontSize={"30px"}>
-                Family and Friends
+                {courseDetailData.s_obj && courseDetailData.s_obj[0].c_obj[0].name}
               </Text>
               <Text py={"15px"} textAlign={"start"}>
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه وهای
-                اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد
-                استفاده قرار گیرد.
+
+
+
+
+                {courseDetailData.s_obj && courseDetailData.s_obj[0].c_obj[0].description}
+
               </Text>
               <Divider />
               <Text>دبیر:</Text>
@@ -77,14 +80,15 @@ import { FaRegCheckCircle } from "react-icons/fa";
                       pt={"15px"}
                       textAlign={"center"}
                       fontFamily={"Lalezar"}
+                      fontSize={"25px"}
                     >
                       {" "}
-                      آیسان اشراقی اسکویی یک اسم طولا هست
+                      {courseDetailData.t_obj && courseDetailData.t_obj[0].full_name}
                     </Text>
                   </Box>
 
                   <Center flex="1" borderRadius={"2rem"}>
-                    <Avatar size="lg" name="Ryan Florence" src={avatar6} />
+                    <Avatar size="lg" name= {courseDetailData.t_obj && courseDetailData.t_obj[0].full_name}  />
                   </Center>
                 </Flex>
               </Center>
@@ -94,7 +98,7 @@ import { FaRegCheckCircle } from "react-icons/fa";
 
               <Text textAlign={'center'}>
 
-150000 ریال
+              {courseDetailData.s_obj && courseDetailData.s_obj[0].c_obj[0].price} ریال
 
               </Text>
 
