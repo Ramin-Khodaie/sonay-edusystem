@@ -55,7 +55,7 @@ const MultiSelect = ({ handleChange, handleDelete, data, options , placeholder }
                   <TagLabel my={"15px"}>{d.name}</TagLabel>
 
                   <IconButton
-                    onClick={handleDelete(d._id)}
+                    onClick={handleDelete(d.id)}
                     size={"sm"}
                     colorScheme="transparent"
                     aria-label="Search database"

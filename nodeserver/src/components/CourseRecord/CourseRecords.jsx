@@ -83,7 +83,6 @@ const CourseRecords = ({onSelectCourse},ref) => {
   }
 
   const handleSliderRight = () =>{
-    console.log(9000, "here")
     const slider = document.getElementById("slider")
     slider.scrollLeft = slider.scrollLeft - 500
   }

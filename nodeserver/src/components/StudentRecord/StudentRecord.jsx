@@ -30,7 +30,7 @@ import MarkEditModal from "components/Modal/MarkEdit";
 import MarkForm from "components/Forms/markForm";
 // onClick={()=>handleStudentSelect(_id, full_name)}
 const StudentRecord = ({ studentRecord , handleStudentSelect , selectedItems }) => {
-  const { full_name , _id , course } = studentRecord;
+  const { full_name , _id , courses } = studentRecord;
 
     
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -89,7 +89,7 @@ const handleOpenCard = ()=>{
   <Box  textAlign={"center"}>
     <Text fontFamily={"Lalezar"} pt={"5px"} fontSize={"xl"}>{full_name}</Text>
     <Divider />
-    <Text textAlign={"center"} fontSize={"sm"} >{course.name}</Text>
+    <Text textAlign={"center"} fontSize={"sm"} >{courses[0].name}</Text>
     <Badge colorScheme='purple'>شاگرد ممتاز</Badge>
     <Text fontSize={"sm"}>معدل کل : 98.5</Text>
 

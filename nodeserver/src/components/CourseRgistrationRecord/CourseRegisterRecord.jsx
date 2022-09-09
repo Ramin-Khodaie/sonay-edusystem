@@ -21,12 +21,11 @@ import IconBox from "components/Icons/IconBox";
 import { ArrowRightIcon, CheckIcon, CloseIcon, SpinnerIcon } from "@chakra-ui/icons";
 import { FaMinus } from "react-icons/fa";
 
-const CourseRegisterRecord = (props) => {
-  const { data } = props;
+const CourseRegisterRecord = (props ) => {
+  const { data , handleSelectCourseHistory } = props;
   
 
 
-  console.log(data,8787)
   
 
   let bgAttendedButton = useColorModeValue("green.300", "green.400");
@@ -45,7 +44,9 @@ const CourseRegisterRecord = (props) => {
 
   let dividerColor = useColorModeValue("white", "navy.900");
   let textColor = useColorModeValue("white", "navy.900");
-
+   const handleCourseSelect = ()=>{
+    handleSelectCourseHistory(data.id , data.name , data.state)
+   }
   return (
     <div className="record-card">
       <Grid
@@ -74,6 +75,7 @@ const CourseRegisterRecord = (props) => {
         <GridItem colSpan={1} rowSpan={2}>
           <Square>
             <Button
+            onClick={handleCourseSelect}
             disabled={
               data.state === "upcoming"
                 ?             true

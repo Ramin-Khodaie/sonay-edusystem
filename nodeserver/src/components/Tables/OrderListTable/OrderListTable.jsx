@@ -18,7 +18,6 @@ const OrderListTable = (props) => {
   const borderColor = useColorModeValue("gray.200", "gray.600");
 
   const { cartItems } = useSelector((state) => state.order);
-  console.log(cartItems);
   return (
     <Table style={{ direction: "rtl" }} variant="simple" color={textColor}>
       <Thead verticalAlign={true}>

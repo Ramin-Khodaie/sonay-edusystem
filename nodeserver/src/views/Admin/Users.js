@@ -72,7 +72,17 @@ const studentStatus = require('../../status.json');
     }
     if (filter.fCourse.id !== "") {
 
-      tmp = tmp.filter((f) => f.course.id === filter.fCourse.id);
+      tmp = tmp.filter((f) => {
+        const arry = f.courses;
+        let res = false;
+        arry.map((itm, key) => {
+
+          if (itm.id === filter.fCourse.id) {
+            res = true;
+          }
+        });
+        return res;
+      });
     }
     if (filter.fStatus.id !== "") {
 

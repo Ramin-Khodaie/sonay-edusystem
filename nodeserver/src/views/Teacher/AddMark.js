@@ -114,7 +114,6 @@ function AddMark() {
 
   
   const doSearch = async() => {
-    console.log("pooooooooooop")
     const tmp = await markBySearch(filter)
     setMarkList(tmp)
   };
@@ -155,9 +154,6 @@ function AddMark() {
   
     }
 
-
-
-console.log(filter)
   return (
     <>
       <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">

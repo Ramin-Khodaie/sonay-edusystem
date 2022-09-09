@@ -122,7 +122,6 @@ import { isConstTypeReference } from "typescript";
       });
     }
   }, [currentProduct]);
-  console.log(formData,63)
     return (
       <>
         <SimpleGrid

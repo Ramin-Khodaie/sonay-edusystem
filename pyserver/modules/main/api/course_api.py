@@ -13,7 +13,7 @@ router = APIRouter(prefix='/courses' , tags=["course"])
 
 sn.add_router(router)
 
-course=SCourse('sonay' , 'course' , 's_user' , 'mark')
+course=SCourse('sonay' , 'course' , 's_user' , 'mark' , 'registration')
 
 
 @router.post("/createcourse")
@@ -60,6 +60,23 @@ def get_course_by_student(student_id : str):
 @sn(fast=True)
 def get_course_history(course_id : str):
     ret = course.get_course_history(course_id)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+        
+@router.get("/courseregistration")
+@sn(fast=True)
+def course_registration(student_id : str,course_id : str):
+    ret = course.course_registration(student_id,course_id)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+                
+@router.get("/getcourseresgistrationitem")
+@sn(fast=True)
+def get_course_registration_item(student_id : str,course_id : str):
+    ret = course.get_course_registration_item(student_id,course_id)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 

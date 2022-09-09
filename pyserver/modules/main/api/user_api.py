@@ -81,5 +81,7 @@ def get_user(say : SAY , course_id , role ):
 
 
 # @router.get("/userinfo")
-# def get_user_info(response : Response):
+# def get_user_info():
+#     ret = say.get_user_by_course(course_id , role)
+#     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 #     pass

@@ -26,6 +26,7 @@ const Registration = () => {
 
 
   const [myCourseHistory , setMyCourseHistory] = useState([])
+  const [selectedCourse , setSelectedCourse] = useState({'id' : '', 'name' : '' , 'state' : ''})
   const getCourseHistoryData = async () => {
     const courseHistoryData = await courseHistory();
     if (courseHistoryData.status === 200) {
@@ -40,12 +41,17 @@ const Registration = () => {
     getCourseHistoryData();
   }, []);
 
+  const handleSelectCourseHistory = (courseId , courseName , state)=>{
+
+    setSelectedCourse({'id' : courseId , 'name':courseName , 'state' : state})
+  }
+
 
   return (
     <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">
       <Flex flexDirection="column" mb="30px" h="100%" align={"center"}>
         <SliderWrapper>
-          <CourseRegisterRecords data={myCourseHistory} />
+          <CourseRegisterRecords handleSelectCourseHistory={handleSelectCourseHistory} data={myCourseHistory} />
         </SliderWrapper>
       </Flex>
 

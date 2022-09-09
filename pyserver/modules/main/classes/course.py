@@ -9,11 +9,12 @@ class SCourse:
     course_collection: str = 'course'
     user_collection: str = 's_user'
 
-    def __init__(self, database, course_collection, user_collection, mark_collection):
+    def __init__(self, database, course_collection, user_collection, mark_collection, registration_collection):
         self.database = database
         self.course_collection = course_collection
         self.user_collection = user_collection
         self.mark_collection = mark_collection
+        self.registration_collection = registration_collection
 
     def validate_course(self, course, col):
         required = {"name", "_id", "prev_course", "status", "price"}
@@ -38,11 +39,11 @@ class SCourse:
             return res
         idd = str(ObjectId())
 
-        col.insert_one({**info, "_id": idd })
+        col.insert_one({**info, "_id": idd})
         if info['prev_course']['id'] != '' and info['prev_course']['name'] != '':
-        # if 'id' in info['prev_course']:    
+            # if 'id' in info['prev_course']:
             col.update_one({"_id": info["prev_course"]["id"]},
-                           {"$set": {"next_course.id":idd,
+                           {"$set": {"next_course.id": idd,
                                      'next_course.name': info['name']}})
 
         return 200, "ok", "course is inserted", None
@@ -52,13 +53,13 @@ class SCourse:
         del info["_id"]
         col.update_one({"_id": idd}, {"$set": info})
         if info['prev_course']['id'] != '' and info['prev_course']['name'] != '':
-        # if 'id' in info['prev_course']:    
+            # if 'id' in info['prev_course']:
             col.update_one({"_id": info["prev_course"]["id"]},
-                           {"$set": {"next_course.id":idd,
+                           {"$set": {"next_course.id": idd,
                                      'next_course.name': info['name']}})
         else:
             col.update_one({"next_course.id": idd},
-                           {"$set": {"next_course.id":"",
+                           {"$set": {"next_course.id": "",
                                      'next_course.name': ""}})
 
         return 200, "ok", "ok", []
@@ -118,10 +119,12 @@ class SCourse:
                     'roles.id': 'teacher'
                 }
             }, {
+                "$unwind": '$courses'
+            }, {
                 '$group': {
-                    '_id': '$course.id',
+                    '_id': '$courses.id',
                     'name': {
-                        '$first': '$course.name'
+                        '$first': '$courses.name'
                     }
                 }
             }
@@ -151,96 +154,107 @@ class SCourse:
         return 200, "ok", "ok", cl
 
     def get_course_history(self, course_id):
-
+        course_id = "631b0d3a4856643c53278f6b"
 
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
 
         raw = list(col.aggregate([
-    {
-        '$facet': {
-            'item': [
-                {
-                    '$match': {
-                        '_id': '6319f37824421e690f2751e5'
-                    }
-                },
-                {
-                    "$project" : {
-                        'id' : "$_id",
-                        "name" : "$name",
-                        '_id' : 0
-                    }
+            {
+                '$facet': {
+                    'item': [
+                        {
+                            '$match': {
+                                '_id': course_id
+                            }
+                        },
+                        {
+                            "$project": {
+                                'id': "$_id",
+                                "name": "$name",
+                                '_id': 0
+                            }
+                        }
+                    ],
+                    'nxt': [
+                        {
+                            '$match': {
+                                '_id': course_id
+                            }
+                        }, {
+                            '$graphLookup': {
+                                'from': 'course',
+                                'startWith': '$next_course.id',
+                                'connectFromField': 'next_course.id',
+                                'connectToField': '_id',
+                                'as': 'nxt',
+                                'maxDepth': 2,
+                                'depthField': 'order'
+                            }
+                        }, {
+                            '$unwind': '$nxt'
+                        }, {
+                            '$project': {
+                                'id': '$nxt._id',
+                                'name': '$nxt.name',
+                                'order': '$nxt.order',
+                                '_id': 0
+                            }
+                        }
+                    ],
+                    'prv': [
+                        {
+                            '$match': {
+                                '_id': course_id
+                            }
+                        }, {
+                            '$graphLookup': {
+                                'from': 'course',
+                                'startWith': '$prev_course.id',
+                                'connectFromField': 'prev_course.id',
+                                'connectToField': '_id',
+                                'as': 'prv',
+                                'maxDepth': 2,
+                                'depthField': 'order'
+                            }
+                        }, {
+                            '$unwind': '$prv'
+                        }, {
+                            '$project': {
+                                'id': '$prv._id',
+                                'name': '$prv.name',
+                                'order': '$prv.order',
+                                '_id': 0
+                            }
+                        }
+                    ]
                 }
-            ], 
-            'nxt': [
-                {
-                    '$match': {
-                        '_id': '6319f37824421e690f2751e5'
-                    }
-                }, {
-                    '$graphLookup': {
-                        'from': 'course', 
-                        'startWith': '$next_course.id', 
-                        'connectFromField': 'next_course.id', 
-                        'connectToField': '_id', 
-                        'as': 'nxt', 
-                        'maxDepth': 2, 
-                        'depthField': 'order'
-                    }
-                }, {
-                    '$unwind': '$nxt'
-                }, {
-                    '$project': {
-                        'id': '$nxt._id', 
-                        'name': '$nxt.name', 
-                        'order': '$nxt.order', 
-                        '_id': 0
-                    }
-                }
-            ], 
-            'prv': [
-                {
-                    '$match': {
-                        '_id': '6319f37824421e690f2751e5'
-                    }
-                }, {
-                    '$graphLookup': {
-                        'from': 'course', 
-                        'startWith': '$prev_course.id', 
-                        'connectFromField': 'prev_course.id', 
-                        'connectToField': '_id', 
-                        'as': 'prv', 
-                        'maxDepth': 2, 
-                        'depthField': 'order'
-                    }
-                }, {
-                    '$unwind': '$prv'
-                }, {
-                    '$project': {
-                        'id': '$prv._id', 
-                        'name': '$prv.name', 
-                        'order': '$prv.order' , 
-                        '_id' : 0
-                    }
-                }
-            ]
-        }
-    }
-]))
+            }
+        ]))
 
-
-        nxt =  sorted(raw[0]['nxt'], key=lambda x: x['order'])
+        nxt = sorted(raw[0]['nxt'], key=lambda x: x['order'])
         for itm in nxt:
             itm['state'] = 'upcoming'
-        prv =  sorted(raw[0]['prv'], key=lambda x: x['order'], reverse=True)
+        prv = sorted(raw[0]['prv'], key=lambda x: x['order'], reverse=True)
         for itm in prv:
             itm['state'] = 'attended'
 
         raw[0]['item'][0]['state'] = 'current'
         final = prv + raw[0]['item'] + nxt
-       
 
-
-     
         return 200, "ok", "ok", final
+
+    def course_registration(self, student_id, course_id):
+
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.mark_collection]
+        col2: Collection = db[self.course_collection]
+        col3: Collection = db[self.registration_collection]
+
+        mark = list(
+            col.find({'student.id': student_id, 'course.id': course_id}))
+        if len(mark) != 1:
+            return 422, 'invalid_result',  'no or more than one mark found', []
+
+    def get_course_registration_item(self, student_id, course_id):
+        pass

@@ -12,7 +12,7 @@ import {
   import UserEditModal from "components/Modal/userEdit";
   
   function UserListTableRow(props) {
-    const { logo, name, email, subdomain, domain, status, date, isLast ,changeSent , sent , userId ,courses} = props;
+    const { logo, name, email, domain, status, date, isLast ,changeSent , sent , userId ,courses} = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -45,12 +45,12 @@ import {
   
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Flex direction="column">
-            <Text fontSize="md" color={textColor} fontWeight="bold">
-              {domain}
+            {domain.map((itm,id)=>(
+              <Text fontSize="md" color={textColor} fontWeight="bold">
+              {itm.name}
             </Text>
-            <Text fontSize="sm" color="gray.400" fontWeight="normal">
-              {subdomain}
-            </Text>
+            ))}
+      
           </Flex>
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>

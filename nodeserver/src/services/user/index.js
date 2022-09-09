@@ -10,7 +10,7 @@ export const createUser = (user) => {
         phone: user.phone,
         email: user.email,
         password: user.password,
-        course: user.course,
+        courses: user.courses,
         roles: user.roles,
       });
       

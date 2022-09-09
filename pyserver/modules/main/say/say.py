@@ -73,8 +73,8 @@ class SAY():
                 "enable": True,
                 "password": ps,
                 "full_name": "admin",
-                "course" : {"id" : "0",
-                "name" : "آموزشگاه"},
+                "courses" : [{"id" : "0",
+                "name" : "آموزشگاه"}],
                 "phone" : "123456",
                 "email" : "admin@gmail.com",
                 "image" : "",
@@ -309,10 +309,10 @@ class SAY():
         return ret
 
     def validate_save_user(self, user: dict, col: Collection ):
-        required = {"username","email", "full_name", "phone", "password", "course", "roles"}
+        required = {"username","email", "full_name", "phone", "password", "courses", "roles"}
         if len(required.difference(set(user.keys()))) != 0 :
             return 422, "missing_field", "some fields are missing", None
-        if not (user["username"] and user["full_name"] and user["email"] and user["phone"] and user["password"] and user["course"] and user["roles"]):
+        if not (user["username"] and user["full_name"] and user["email"] and user["phone"] and user["password"] and user["courses"] and user["roles"]):
             return 422, "empty_field", "can not accept empty fiels", None
         if len(list(col.find({"username": user["username"]}))) != 0:
             return 422, "not_unique", "user already exists", None
@@ -320,10 +320,10 @@ class SAY():
         return 200, "ok", "is valid", None
 
     def validate_edit_user(self, user: dict, col: Collection ):
-        required = {"username","email", "full_name", "phone", "course", "roles"}
+        required = {"username","email", "full_name", "phone", "courses", "roles"}
         if len(required.difference(set(user.keys()))) != 0 :
             return 422, "missing_field", "some fields are missing", None
-        if not (user["username"] and user["full_name"] and user["email"] and user["phone"] and  user["course"] and user["roles"]):
+        if not (user["username"] and user["full_name"] and user["email"] and user["phone"] and  user["courses"] and user["roles"]):
             return 422, "empty_field", "can not accept empty fiels", None
 
 
@@ -458,7 +458,7 @@ class SAY():
         if status != "":
             filters["status"] = status
         col : Collection = self.db.mongo_db["s_user"]
-        data = list(col.find(filters,{"_id" : 1,"image" : 1,"full_name" : 1 ,"email" : 1,"course" : 1,"enable" : 1,"phone" : 1 , "status" : 1}))
+        data = list(col.find(filters,{"_id" : 1,"image" : 1,"full_name" : 1 ,"email" : 1,"courses" : 1,"enable" : 1,"phone" : 1 , "status" : 1}))
         return 200, "ok", "user is registered", data
     def get_user(self,user_id):
         col: Collection = self.db.mongo_db["s_user"]
@@ -474,7 +474,7 @@ class SAY():
             return 500, "server_error", "cant connect to database", None
     def get_user_by_course(self,course_id , role):
         col: Collection = self.db.mongo_db["s_user"]
-        res = list(col.find({"course.id" : course_id , "roles.id" : role}))
+        res = list(col.find({"courses.id" : course_id , "roles.id" : role}))
         return 200, "ok", "", res
 
 

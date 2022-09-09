@@ -71,7 +71,6 @@ function MarkForm(props) {
   const handleChange = (event) => {
     const field = event.target.id;
     const value = event.target.value;
-    console.log(typeof value);
 
     setFormData({ ...formData, [field]: value });
   };
@@ -89,7 +88,6 @@ function MarkForm(props) {
 
   useEffect(() => {
     if (currentMark.length != 0) {
-      console.log(currentMark , 7878)
       setFormData({
         ...formData,
         _id: currentMark[0]._id,

@@ -50,8 +50,8 @@ function UserForm(props) {
     email: "",
     password: "",
     confirm_password: "",
-    course: "",
     roles: [],
+    courses: [],
   });
 
   const resetFormInputs = () => {
@@ -63,13 +63,13 @@ function UserForm(props) {
       email: "",
       password: "",
       confirm_password: "",
-      course: "",
       roles: [],
+      courses: [],
     });
   };
   const handleDelete = (id) => (e) => {
     const cc = formData.roles.filter((element) => {
-      return element._id !== id;
+      return element.id !== id;
     });
     setFormData({ ...formData, roles: cc });
   };
@@ -87,12 +87,11 @@ function UserForm(props) {
       phone: formData.phone,
       email: formData.email,
       password: formData.password,
-      course: formData.course,
+      courses: formData.courses,
       roles: formData.roles,
     };
     await dispatch(createUserAction(newUser));
     await dispatch(userListAction());
- 
   };
 
   function handleSubmitform() {
@@ -106,8 +105,28 @@ function UserForm(props) {
   const handleOptionChange = (e) => {
     const newOpt = data.find((f) => f._id === e.target.value);
     formData.roles.findIndex((itm) => itm._id == newOpt._id) === -1
-      ? setFormData({ ...formData, roles: [...formData.roles, {"id" : newOpt._id , "name" : newOpt.name}] })
+      ? setFormData({
+          ...formData,
+          roles: [...formData.roles, { id: newOpt._id, name: newOpt.name }],
+        })
       : notify("این آیتم قبلا انتخاب شده است", true, "solid", "warning");
+  };
+
+  const handleOptionCourseChange = (e) => {
+    const newOpt = courses.find((f) => f._id === e.target.value);
+    formData.courses.findIndex((itm) => itm.id == newOpt._id) === -1
+      ? setFormData({
+          ...formData,
+          courses: [...formData.courses, { id: newOpt._id, name: newOpt.name }],
+        })
+      : notify("این آیتم قبلا انتخاب شده است", true, "solid", "warning");
+  };
+
+  const handleOptionCourseDelete = (id) => (e) => {
+    const cc = formData.courses.filter((element) => {
+      return element.id !== id;
+    });
+    setFormData({ ...formData, courses: cc });
   };
 
   // const handleCourseOptionChange = (e) => {
@@ -137,6 +156,34 @@ function UserForm(props) {
       });
     }
   }, [currentUser]);
+
+  const handleSinleOptionChange = (e) => {
+    const tmp = e.target.value.split(",");
+
+    setFormData({
+      ...formData,
+      courses: [
+        {
+          id: tmp.length < 2 ? "" : tmp[1],
+          name: tmp.length < 2 ? "" : tmp[0],
+        },
+      ],
+    });
+  };
+
+  function containsObject(_id, list) {
+    var i;
+    for (i = 0; i < list.length; i++) {
+      if (list[i]["id"] === _id) {
+        console.log("trueeeee");
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  console.log(formData.courses, 333);
 
   return (
     <>
@@ -224,37 +271,36 @@ function UserForm(props) {
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                 دوره{" "}
               </FormLabel>
-              {/* <Select
-                onChange={handleCourseOptionChange}
-                id="course"
-                focusBorderColor="purple.300"
-                textAlign={"center"}
-                placeholder="دوره کاربر را انتخاب کنید"
-              >
-                {courses.map((row) => {
-                  return (
+
+              {containsObject("teacher", formData.roles) ? (
+                <MultiSelect
+                  handleChange={handleOptionCourseChange}
+                  handleDelete={handleOptionCourseDelete}
+                  data={courses}
+                  options={formData.courses}
+                  placeholder="دوره کاربر را انتخاب کنید"
+                />
+              ) : (
+                <Select
+                  focusBorderColor="purple.300"
+                  textAlign={"center"}
+                  placeholder={"دوره کاربر را انتخاب کنید"}
+                  onChange={handleSinleOptionChange}
+                >
+                  {courses.map((d) => (
                     <option
                       selected={
-                        formData.course && formData.course.id === row.id
+                        formData.courses[0] && formData.courses[0].id === d._id
                           ? true
                           : false
                       }
-                      value={row.id}
-                      key={row.id}
+                      value={[d.name, d._id]}
                     >
-                      {" "}
-                      {row.name}
+                      {d.name}
                     </option>
-                  );
-                })}
-              </Select> */}
-
-              <CustomSelector
-                onChange={setFormData}
-                state={formData}
-                data={courses}
-                fieldId={"course"}
-              />
+                  ))}
+                </Select>
+              )}
             </Box>
           </Box>
 
