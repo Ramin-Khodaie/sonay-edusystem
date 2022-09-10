@@ -101,5 +101,5 @@ async def userinfo(user: SUser):
          }
     if '_id' in u:
         del u["_id"]
-    ret = {**u, "info": sn.Settings.info.__dict__}
+    ret = {**u, "info": sn.Settings.info}
     return ret

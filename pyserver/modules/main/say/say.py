@@ -172,7 +172,7 @@ class SAY():
 
     algorithm = 'HS256'
     jwt_options = {
-        'verify_signature': False,
+        'verify_signature': True,
         'verify_exp': True,
         'verify_nbf': False,
         'verify_iat': True,
@@ -206,15 +206,17 @@ class SAY():
     def decode_token(self, token: str) -> tuple:
         result = 200
         data = None
-        
-        data = jwt.decode(token, self._secret, 'utf-8',
-                            algorithms=[self.algorithm], options=self.jwt_options)
-        if 'sub' not in data or 'type' not in data:
+        try:
+            data = jwt.decode(token, self._secret, 'utf-8',
+                                algorithms=[self.algorithm], options=self.jwt_options)
+            if 'sub' not in data or 'type' not in data:
+                result = 401
+            elif not (data['type'] == 'access_token' or data['type'] == 'refresh_token'):
+                result = 400
+            else:
+                result = 200
+        except Exception:
             result = 401
-        elif not (data['type'] == 'access_token' or data['type'] == 'refresh_token'):
-            result = 400
-        else:
-            result = 200
 
         
         return result, data
@@ -233,7 +235,7 @@ class SAY():
             user: SUser = self.get_user(user_id=userid)
             if user is None:
                 user = self.anonymous_user
-            return user
+            return user[3][0]
 
     def get_access_token_from_refresh(self, refresh_token):
 
