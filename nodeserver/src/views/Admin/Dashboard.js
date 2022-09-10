@@ -33,7 +33,9 @@ import {
 } from "components/Icons/Icons.js";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { userInfo } from "services/user";
+import { useDispatch , useSelector } from "react-redux";
+import { userInfoAction } from "redux/user/UserInfo/UserInfoAction";
+import { getUserInfo } from "services/user";
 // Variables
 import {
   barChartData,
@@ -56,20 +58,18 @@ export default function Dashboard() {
 
   const[usrinfo , setUsrInfo] = useState({})
 
+
+  const dispatch = useDispatch();
+  
   const getUserInfo = async () => {
-    const ui = await userInfo();
-    if (ui.status === 200) {
-      console.log(9898 , ui)
-    }
+    await dispatch(userInfoAction());
+
   };
-  
 
-
-  
+  const { userInfo } = useSelector((state) => state.getUserInfo);
   useEffect(() => {
     getUserInfo();
   }, []);
-
 
 
 

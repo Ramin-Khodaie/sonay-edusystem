@@ -8,6 +8,7 @@ import OrderReducer from './product/orderReducer';
 
 import productListReducer from './product/productList/ProductListReducer'
 import productCreateReducer from './product/productCreate/productCreateReducer'
+import UserInfoReducer from './user/UserInfo/UserInfoReducer';
 
 
 const store = configureStore({
@@ -20,7 +21,10 @@ const store = configureStore({
                 order: OrderReducer,
 
                 createProduct: productCreateReducer,
-                productList: productListReducer
+                productList: productListReducer,
+
+                getUserInfo : UserInfoReducer,
+                
 
         }
 })

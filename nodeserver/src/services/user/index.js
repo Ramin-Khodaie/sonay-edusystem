@@ -5,7 +5,7 @@ import { bixios } from "services/main";
 
 
 
-export const userInfo = () => {
+export const getUserInfo = () => {
   return new Promise(async (resolve, reject) => {
     try {
       const res = await bixios.get("/users/userinfo"
@@ -22,6 +22,7 @@ export const userInfo = () => {
 
       
       if (res.status === 200) {
+        
         resolve(res);
       }
     } catch (error) {
