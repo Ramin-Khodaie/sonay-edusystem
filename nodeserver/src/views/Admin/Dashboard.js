@@ -31,7 +31,9 @@ import {
   GlobeIcon,
   WalletIcon,
 } from "components/Icons/Icons.js";
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { userInfo } from "services/user";
 // Variables
 import {
   barChartData,
@@ -51,6 +53,23 @@ export default function Dashboard() {
   const textTableColor = useColorModeValue("gray.500", "white");
 
   const { colorMode } = useColorMode();
+
+  const[usrinfo , setUsrInfo] = useState({})
+
+  const getUserInfo = async () => {
+    const ui = await userInfo();
+    if (ui.status === 200) {
+      console.log(9898 , ui)
+    }
+  };
+  
+
+
+  
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
 
 
 

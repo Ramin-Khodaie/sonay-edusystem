@@ -1,5 +1,36 @@
 import { bixios } from "services/main";
 
+
+
+
+
+
+export const userInfo = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/users/userinfo"
+      //  {
+      //   params:{
+      //     full_name : filters.full_name,
+      //     course : filters.course,
+      //     status : filters.status
+      //   }
+      // }
+      
+      
+      );
+
+      
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+       resolve(error.response.status);
+    }
+  });
+};
+
+
 export const createUser = (user) => {
   return new Promise(async (resolve, reject) => {
     try {

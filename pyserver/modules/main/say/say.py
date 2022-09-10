@@ -99,11 +99,9 @@ class SAY():
         res = {}
         passwd = self.encode_pass(password)
         usr: SUser = None
-        try:
-            usr = self.get_user_by_query({"userid": user, "password": passwd}, {
+        usr = self.get_user_by_query({"username": user, "password": passwd}, {
                                          "image": 0, "password": 0, "refreshToken": 0})
-        except:
-            return 500, "databaseError", 'cant connect to database', {"at": "", "rf": "", "usr": None}
+
         if usr is None:
             return 403, "incorrectUserPassword", 'incorrect user name or password', {"at": "", "rf": "", "usr": None}
         # elif not usr["enable"]:
@@ -111,7 +109,7 @@ class SAY():
         else:
             at = self.encode_auth_token(user, 'access_token')
             rt = self.encode_auth_token(user, 'refresh_token')
-            self._user_cache[usr["userid"]] = usr
+            self._user_cache[usr["username"]] = usr
 
             self._user_cache[user] = usr
 
@@ -123,6 +121,15 @@ class SAY():
         if status == 200:
             ret = self.get_user(userid=data)
         return ret
+    
+    def get_user_by_query(self , query : dict , fields : dict):
+        col : Collection = self.db.mongo_db["s_user"]
+        x= list(col.find(query , fields))
+        if len(x) == 0:
+            return None
+        else :
+            return x[0]
+        
 
     def authorize(self, roles: list, headers) -> int:
         aut = os.environ['aut'] if 'aut' in os.environ else 'yes'
@@ -199,25 +206,23 @@ class SAY():
     def decode_token(self, token: str) -> tuple:
         result = 200
         data = None
-        try:
-            data = jwt.decode(token, self._secret, 'utf-8',
-                              algorithms=[self.algorithm], options=self.jwt_options)
-            if 'sub' not in data or 'type' not in data:
-                result = 401
-            elif not (data['type'] == 'access_token' or data['type'] == 'refresh_token'):
-                result = 400
-            else:
-                result = 200
-
-        except Exception:
+        
+        data = jwt.decode(token, self._secret, 'utf-8',
+                            algorithms=[self.algorithm], options=self.jwt_options)
+        if 'sub' not in data or 'type' not in data:
             result = 401
+        elif not (data['type'] == 'access_token' or data['type'] == 'refresh_token'):
+            result = 400
+        else:
+            result = 200
 
+        
         return result, data
 
     anonymous_user = None
 
     def get_user_from_token(self, token):
-        if token == "":
+        if token == "null" or token == '':
             return self.anonymous_user
 
         [result, data] = self.decode_token(token=token)
@@ -225,7 +230,7 @@ class SAY():
             return self.anonymous_user
         else:
             userid = data["sub"]
-            user: SUser = self.get_user(userid=userid)
+            user: SUser = self.get_user(user_id=userid)
             if user is None:
                 user = self.anonymous_user
             return user
@@ -464,7 +469,7 @@ class SAY():
         col: Collection = self.db.mongo_db["s_user"]
         try:
 
-            res = list(col.find({"_id" : user_id}))
+            res = list(col.find({"username" : user_id}))
             if len(res) == 0 :
                 res = None
                 return 200, "ok", "", res

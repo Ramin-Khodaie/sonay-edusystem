@@ -6,6 +6,7 @@ from fastapi import Request, Response, HTTPException
 
 from modules.main.say.say import SAY
 from modules.main.say.session import ASession
+from modules.main.classes.user import SUser
 from .s_settings import SSettings
 
 # from mongoengine.fields import BaseQuerySet
@@ -90,9 +91,10 @@ def sn_decorator(say: SAY, settings: SSettings, *, roles : List[str] = [], fast:
             if user_parameter_name in extras:
                 um = usr
                 usr_dict = um
-                rls = say.get_all_full_roles(usr["roles"])
-                final_user_object = {**usr_dict, "full_roles": rls, "all_roles": [r["name"] for r in rls]}
-                extras[user_parameter_name] = final_user_object
+                # rls = say.get_all_full_roles(usr["roles"])
+                # final_user_object = {**usr_dict, "full_roles": rls, "all_roles": [r["name"] for r in rls]}
+                # extras[user_parameter_name] = final_user_object
+                extras[user_parameter_name] = usr_dict
 
             session_id: str = request.cookies.get(session_token_name)
 

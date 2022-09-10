@@ -9,6 +9,7 @@ from modules.main.say.say import SAY
 from modules.main.api_return import api_return
 
 from modules.main.sonay_app import sn
+from modules.main.classes.user import SUser
 class User:
     pass
 
@@ -80,8 +81,25 @@ def get_user(say : SAY , course_id , role ):
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 
-# @router.get("/userinfo")
-# def get_user_info():
-#     ret = say.get_user_by_course(course_id , role)
-#     return api_return(ret[0],ret[1],ret[2],data=ret[3])
-#     pass
+
+
+@router.get("/userinfo")
+@sn(roles=[], fast=True)
+async def userinfo(user: SUser):
+    # UTC = datetime.datetime.now()
+    # date = cal.get_date_props(UTC)
+    # datestr = cal.to_jalali(UTC)
+    # year = date['year']
+    # month = date['month']
+    # day = date['day']
+    # weekday = weekdays_g[UTC.weekday()]
+    # pweekday = weekdays_j[UTC.weekday()]
+    # today = {'year': year, 'month': month, 'day': day, 'datastr': datestr, 'weekday': weekday, 'pweekday': pweekday,
+    #          'utc': UTC}
+    u = {**user, "refreshToken": "", "password": "",
+        #  "today": today
+         }
+    if '_id' in u:
+        del u["_id"]
+    ret = {**u, "info": sn.Settings.info.__dict__}
+    return ret
