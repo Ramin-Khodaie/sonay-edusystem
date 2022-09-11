@@ -23,6 +23,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { courseDetail } from "services/course";
 import { useSelector } from "react-redux";
+import { registrationSuccess } from "services/course";
 const Registration = () => {
   const { userInfo } = useSelector((state) => state.getUserInfo);
 
@@ -83,11 +84,14 @@ const Registration = () => {
     handleSetDefaultCourse();
   }, [myCourseHistory]);
 
-  console.log(courseDetailData, 999);
 
   const handleSelectCourseHistory = (courseId, courseName, state) => {
     setSelectedCourse({ id: courseId, name: courseName, state: state });
   };
+
+  const registerCourse = async()=>{
+    const res = await registrationSuccess(selectedCourse.id , userInfo.username )
+  }
 
 
 
@@ -102,7 +106,7 @@ const Registration = () => {
         </SliderWrapper>
       </Flex>
 
-      <RegistrationCard courseDetailData={courseDetailData} />
+      <RegistrationCard courseDetailData={courseDetailData } registerCourse={registerCourse} />
     </Box>
   );
 };

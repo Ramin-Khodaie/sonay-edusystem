@@ -1,46 +1,49 @@
 import {
-    Modal,
-    ModalOverlay,
-    ModalContent,  
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure,
-    Button,
-    Box,
-    Center,
-    Flex,
-    SimpleGrid,
-    Text,
-    Image,
-    Divider,
-    Avatar,
-
-
-
-    IconButton,
-    useColorMode,
-  } from "@chakra-ui/react";
+  useDisclosure,
+  Button,
+  Box,
+  Center,
+  Flex,
+  SimpleGrid,
+  Text,
+  Image,
+  Divider,
+  Avatar,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  IconButton,
+  useColorMode,
+} from "@chakra-ui/react";
 import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
 import avatar6 from "assets/img/avatars/avatar6.png";
 import { CheckIcon } from "@chakra-ui/icons";
 import { FaRegCheckCircle } from "react-icons/fa";
-  
-  import React, { useEffect } from "react";
-  
-  function RegistrationCard(props) {
-    const {courseDetailData} = props
 
-    const colorMode = useColorMode();
+import React, { useEffect } from "react";
 
-  
-    return (
-      <>
+function RegistrationCard(props) {
+  const { courseDetailData , registerCourse } = props;
+
+  const colorMode = useColorMode();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+
+  return (
+    <>
       <Card mb={"20px"}>
         <CardHeader h={"auto"} pb={"10px"}>
           <Text textAlign={"center"} fontSize={"25px"} fontFamily={"Lalezar"}>
-            شما در حال ثبت نام برای دوره {courseDetailData.s_obj && courseDetailData.s_obj[0].c_obj[0].name} هستید
+            شما در حال ثبت نام برای دوره{" "}
+            {courseDetailData.s_obj && courseDetailData.s_obj[0].c_obj[0].name}{" "}
+            هستید
           </Text>
           <Text textAlign={"center"} fontSize={"sm"}>
             جهت ثبت نام برای این دوره روی دکمه سبز رنگ "ثبت نام " کلیک کنید. قبل
@@ -54,15 +57,12 @@ import { FaRegCheckCircle } from "react-icons/fa";
           <SimpleGrid columns={{ sm: 1, md: 2, lg: 2 }}>
             <Box>
               <Text textAlign={"center"} fontSize={"30px"}>
-                {courseDetailData.s_obj && courseDetailData.s_obj[0].c_obj[0].name}
+                {courseDetailData.s_obj &&
+                  courseDetailData.s_obj[0].c_obj[0].name}
               </Text>
               <Text py={"15px"} textAlign={"start"}>
-
-
-
-
-                {courseDetailData.s_obj && courseDetailData.s_obj[0].c_obj[0].description}
-
+                {courseDetailData.s_obj &&
+                  courseDetailData.s_obj[0].c_obj[0].description}
               </Text>
               <Divider />
               <Text>دبیر:</Text>
@@ -83,12 +83,19 @@ import { FaRegCheckCircle } from "react-icons/fa";
                       fontSize={"25px"}
                     >
                       {" "}
-                      {courseDetailData.t_obj && courseDetailData.t_obj[0].full_name}
+                      {courseDetailData.t_obj &&
+                        courseDetailData.t_obj[0].full_name}
                     </Text>
                   </Box>
 
                   <Center flex="1" borderRadius={"2rem"}>
-                    <Avatar size="lg" name= {courseDetailData.t_obj && courseDetailData.t_obj[0].full_name}  />
+                    <Avatar
+                      size="lg"
+                      name={
+                        courseDetailData.t_obj &&
+                        courseDetailData.t_obj[0].full_name
+                      }
+                    />
                   </Center>
                 </Flex>
               </Center>
@@ -96,30 +103,52 @@ import { FaRegCheckCircle } from "react-icons/fa";
               <Divider />
               <Text>هزینه دوره:</Text>
 
-              <Text textAlign={'center'}>
-
-              {courseDetailData.s_obj && courseDetailData.s_obj[0].c_obj[0].price} ریال
-
+              <Text textAlign={"center"}>
+                {courseDetailData.s_obj &&
+                  courseDetailData.s_obj[0].c_obj[0].price}{" "}
+                ریال
               </Text>
 
               <Divider pt={"15px"} />
 
               <Center pt={"40px"}>
                 <Button
-
-                
-                size={"lg"}
-                fontSize={'30px'}
-                fontFamily={'Lalezar'}
-                 bg={"green.400"}
+                  onClick={onOpen}
+                  size={"lg"}
+                  fontSize={"30px"}
+                  fontFamily={"Lalezar"}
+                  bg={"green.400"}
                   aria-label="Search database"
-              
                 >
-                  <FaRegCheckCircle   />
-                  
+                  <FaRegCheckCircle />
                   ثبت نام
-                  
                 </Button>
+
+                <Modal isCentered  isOpen={isOpen} onClose={onClose}>
+                  <ModalOverlay       backdropFilter='blur(9px)' />
+                  <ModalContent>
+                    <ModalHeader textAlign={'center'} >آیا مطمعن هستید؟</ModalHeader>
+                    <ModalCloseButton />
+
+ <ModalBody textAlign={'end'}>
+ <Text>
+                      شما در حال ثبت نام برای {courseDetailData.s_obj && courseDetailData.s_obj[0].c_obj[0].name} هستید 
+                    </Text>
+
+                    <Text>
+                      هزینه دوره {courseDetailData.s_obj &&
+                  courseDetailData.s_obj[0].c_obj[0].price}{" "} ریال می باشد قبل از ادامه لطفا وی پی ان و پروکسی خود را خاموش کنید
+                    </Text>
+ </ModalBody>
+        
+                    <ModalFooter>
+                      <Button  variant="ghost"  mr={3} onClick={onClose}>
+                        لغو
+                      </Button>
+                      <Button onClick={registerCourse} colorScheme="blue"> ادامه</Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
               </Center>
             </Box>
 
@@ -129,15 +158,14 @@ import { FaRegCheckCircle } from "react-icons/fa";
                 w={{ sm: "400px", md: "300px", lg: "500px" }}
                 src={avatar6}
                 alt="Dan Abramov"
-                borderRadius={'2rem'}
+                borderRadius={"2rem"}
               />
             </Center>
           </SimpleGrid>
         </CardBody>
       </Card>
-      </>
-    );
-  }
-  
-  export default RegistrationCard;
-  
+    </>
+  );
+}
+
+export default RegistrationCard;

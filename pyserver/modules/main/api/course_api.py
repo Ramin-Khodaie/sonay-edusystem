@@ -82,3 +82,11 @@ def get_course_registration_detail( st:SSettings,username : str,course_id : str 
 
 
         
+@router.get("/registrationsuccess")
+@sn(fast=True)
+def course_registration_success( st:SSettings,username : str,course_id : str ):
+    ret = course.course_registration_success(st , username,course_id)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+        

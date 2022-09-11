@@ -2,7 +2,8 @@ from cmath import inf
 from pymongo.database import Database, Collection
 from modules.main.sonay_app import sn
 from bson import ObjectId
-
+from persiantools.jdatetime import JalaliDate
+from datetime import datetime
 
 class SCourse:
     database: str = "database"
@@ -359,3 +360,29 @@ class SCourse:
             pass
         else:
             return 422, 'invalid_state', "state only accept cuurent or upcoming", []
+    def course_registration_success(self , st , username,course_id):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.user_collection]
+        col2: Collection = db[self.registration_collection]
+        col3: Collection = db[self.course_collection]
+        cc = JalaliDate.today()
+
+        itm_ready = {
+            'date' : f"{cc.year}/{cc.month}/{cc.day}",
+            'g_date' : datetime.today(),
+            'username' : username,
+            'course_id' : course_id
+ 
+        }
+        col2.insert_one(itm_ready)
+        
+        course = list(col3.find({"_id" : course_id}))
+        if len(course) != 1:
+            return 404 , "not_found" , 'no course or more than one found' , None
+        
+        col.update_one({'username' : username} , {"$set" : {"courses" : [{
+            'id' : course[0]['_id'],
+            'name' : course[0]['name']
+        }]}})
+        
+        
