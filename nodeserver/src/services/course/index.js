@@ -86,11 +86,12 @@ export const courseHistory = (courseId="0") => {
 
 
 
-export const courseDetail = (courseId="0" , studentId="0" , State) => {
+export const courseDetail = (courseId="0" , username="0" , State) => {
   return new Promise(async (resolve, reject) => {
     try {
+      console.log(courseId)
       const res = await bixios.get("/courses/getcoursedetail" , {params:{course_id : courseId,
-      student_id : studentId,
+        username : username,
     state : State}}
 
       );

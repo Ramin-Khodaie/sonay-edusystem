@@ -76,8 +76,8 @@ def course_registration(student_id : str,course_id : str):
                 
 @router.get("/getcoursedetail")
 @sn(fast=True)
-def get_course_registration_detail( st:SSettings,student_id : str,course_id : str , state : str):
-    ret = course.get_course_registration_detail(st , student_id,course_id,state)
+def get_course_registration_detail( st:SSettings,username : str,course_id : str , state : str):
+    ret = course.get_course_registration_detail(st , username,course_id,state)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 

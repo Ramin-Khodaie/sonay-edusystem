@@ -40,8 +40,6 @@ const Product = () => {
     const value = e.target.value;
     setFilter({ ...filter, [field]: value });
   };
-  const { userInfo } = useSelector((state) => state.getUserInfo);
-console.log(userInfo , 8585)
 
   const handleCheckBoxChange = (event) => {
     const field = event.target.id;

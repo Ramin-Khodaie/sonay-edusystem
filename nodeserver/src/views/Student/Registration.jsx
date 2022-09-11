@@ -22,7 +22,10 @@ import { courseHistory } from "services/course";
 import { useState } from "react";
 import { useEffect } from "react";
 import { courseDetail } from "services/course";
+import { useSelector } from "react-redux";
 const Registration = () => {
+  const { userInfo } = useSelector((state) => state.getUserInfo);
+
   const [myCourseHistory, setMyCourseHistory] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState({
     id: "",
@@ -31,7 +34,7 @@ const Registration = () => {
   });
   const [courseDetailData, setCourseDetailData] = useState({});
   const getCourseHistoryData = async () => {
-    const ch = await courseHistory();
+    const ch = await courseHistory(userInfo.courses[0].id);
     if (ch.status === 200) {
       if (ch.data.data.length > 0) {
         setMyCourseHistory(ch.data.data);
@@ -41,13 +44,14 @@ const Registration = () => {
 
   const getCourseDetail = async () => {
     if (selectedCourse.id !== "") {
-      const cd = await courseDetail(selectedCourse.course , "student-id" , selectedCourse.state);
+      const cd = await courseDetail(selectedCourse.id , userInfo.username , selectedCourse.state);
     
       if (cd.status === 200) {
+
         if (cd.data.data.length > 0) {
                    
 
-                    setCourseDetailData(cd.data.data[0]);
+         setCourseDetailData(cd.data.data[0]);
         }
       }
     }
@@ -66,8 +70,8 @@ const Registration = () => {
       }
     }
   };
-
   useEffect(() => {
+    
     getCourseHistoryData();
   }, []);
 
@@ -84,6 +88,8 @@ const Registration = () => {
   const handleSelectCourseHistory = (courseId, courseName, state) => {
     setSelectedCourse({ id: courseId, name: courseName, state: state });
   };
+
+
 
   return (
     <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">

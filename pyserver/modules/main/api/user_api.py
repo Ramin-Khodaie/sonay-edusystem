@@ -69,8 +69,12 @@ def get_user_list(say : SAY , full_name = "" , course = "" , status = ""):
 @router.get("/getuser")
 @sn()
 def get_user(say : SAY , user_id ):
-    ret = say.get_user(user_id)
-    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+    try:
+        ret = say.get_user_by_query({'_id' : user_id} , {})
+        return api_return(200 , 'ok' , 'ok',data=[ret])
+
+    except:
+        return 500 , "server_error" , 'cant connect to DataBAse' , []
 
 
 

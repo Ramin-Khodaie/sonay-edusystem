@@ -154,8 +154,7 @@ class SCourse:
         return 200, "ok", "ok", cl
 
     def get_course_history(self, course_id):
-        course_id = "631b0d3a4856643c53278f6b"
-
+   
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
 
@@ -256,9 +255,8 @@ class SCourse:
         if len(mark) != 1:
             return 422, 'invalid_result',  'no or more than one mark found', []
 
-    def get_course_registration_detail(self, st, student_id, course_id, state):
-        course_id = '631b0d2a4856643c53278f6a'
-        student_id = '631b183d5fb563f8d27ef07f'
+    def get_course_registration_detail(self, st, username, course_id, state):
+  
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.user_collection]
         col2: Collection = db[self.course_collection]
@@ -282,7 +280,7 @@ class SCourse:
                         's_obj': [
                             {
                                 '$match': {
-                                    '_id': student_id
+                                    'username': username
                                 }
                             }, {
                                 '$lookup': {
@@ -313,7 +311,7 @@ class SCourse:
                         'm_obj': [
                             {
                                 '$match': {
-                                    '_id': student_id
+                                    'username': username
                                 }
                             }, {
                                 '$lookup': {

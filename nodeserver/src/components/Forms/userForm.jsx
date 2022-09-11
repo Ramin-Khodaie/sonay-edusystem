@@ -151,7 +151,7 @@ function UserForm(props) {
         full_name: currentUser[0].full_name,
         phone: currentUser[0].phone,
         email: currentUser[0].email,
-        course: currentUser[0].course,
+        courses: currentUser[0].courses,
         roles: currentUser[0].roles,
       });
     }
