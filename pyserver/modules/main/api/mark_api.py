@@ -15,7 +15,7 @@ router = APIRouter(prefix='/marks' , tags=["mark"])
 
 sn.add_router(router)
 
-mark=SMark('sonay' , 'mark')
+mark=SMark('sonay' , 'mark' , 's_user')
 
 
 @router.post("/createmark")
@@ -45,7 +45,7 @@ def get_mark(mark_id : str):
 
 @router.put("/getmarkbysearch")
 @sn(fast=True)
-def get_mark(filter : dict):
+def get_mark_by_search(filter : dict):
     ret = mark.get_mark_by_search(filter['filter'])
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 

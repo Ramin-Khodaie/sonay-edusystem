@@ -8,11 +8,7 @@
     "name" : "ثبت نام شده",
     "inherit" :["report","dashboard"]
 },
-{
-    "_id" : "ord",
-    "name" : "سفارش کتاب",
-    "inherit" :["dashboard"]
-},
+
 {
     "_id" : "mark",
     "name" : "مشاهده نمره",

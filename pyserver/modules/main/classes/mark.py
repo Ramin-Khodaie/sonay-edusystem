@@ -11,9 +11,10 @@ class SMark:
     database: str = "database"
     product_collection: str = ""
 
-    def __init__(self, database, mark_collection):
+    def __init__(self, database, mark_collection , user_collection):
         self.database = database
         self.mark_collection = mark_collection
+        self.user_collection = user_collection
 
     def validate_mark(self, product, col):
         # required = {"name", "_id", "price", "is_main" , "is_active"}
@@ -30,6 +31,7 @@ class SMark:
 
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
+        col2: Collection = db[self.user_collection]
         valid = self.validate_mark(info, col)
         if valid[0] != 200:
             return valid
@@ -41,7 +43,9 @@ class SMark:
             res = self.edit_mark(info, col)
             return res
         info['g_date'] = datetime.today()
-        col.insert_one({**info, "_id": str(ObjectId())})
+        idd = str(ObjectId())
+        col.insert_one({**info, "_id": idd})
+        col2.update_one({'_id' : info['student']['id']} , {"$set" : {'status' : {'id' : "mark" , "name" : "مشاهده نمره"}}})
         return 200, "ok", "mark is inserted", None
 
     def get_mark(self, mark_id):

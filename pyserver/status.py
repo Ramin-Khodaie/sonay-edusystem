@@ -8,11 +8,7 @@ statuses = [{
     "name" : "ثبت نام شده",
     "inherit" :["report","dashboard"]
 },
-{
-    "id" : "ord",
-    "name" : "سفارش کتاب",
-    "inherit" :["dashboard"]
-},
+
 {
     "id" : "mark",
     "name" : "مشاهده نمره",

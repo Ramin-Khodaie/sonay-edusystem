@@ -5,6 +5,7 @@ from bson import ObjectId
 from persiantools.jdatetime import JalaliDate
 from datetime import datetime
 
+
 class SCourse:
     database: str = "database"
     course_collection: str = 'course'
@@ -155,11 +156,11 @@ class SCourse:
         return 200, "ok", "ok", cl
 
     def get_course_history(self, course_id):
-   
+
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
-        
-        cur = list(col.find({"_id" : course_id}))
+
+        cur = list(col.find({"_id": course_id}))
         if len(cur) != 1 or 'next_course' not in cur[0]:
             return 422, "missing_next_course", "next course for user is not defined", []
         else:
@@ -263,18 +264,18 @@ class SCourse:
             return 422, 'invalid_result',  'no or more than one mark found', []
 
     def get_course_registration_detail(self, st, username, course_id, state):
-  
+
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.user_collection]
         col2: Collection = db[self.course_collection]
         col3: Collection = db[self.registration_collection]
-        
-        cur = list(col2.find({"_id" : course_id}))
+
+        cur = list(col2.find({"_id": course_id}))
         if len(cur) != 1 or 'prev_course' not in cur[0]:
             return 422, "missing_prev_course", "prev course for user is not defined", []
         else:
             prev = cur[0]['prev_course']['id']
-        
+
         if state == 'current':
             res = list(col.aggregate([
                 {
@@ -328,10 +329,9 @@ class SCourse:
                 }
             ])
             )
-            
+
             res[0]['c_obj'] = cur
-            
-            
+
             if res[0]['m_obj'][0] == {}:
                 return 422, 'no_mark', 'mark has not found', res
             else:
@@ -346,7 +346,8 @@ class SCourse:
             pass
         else:
             return 422, 'invalid_state', "state only accept cuurent or upcoming", []
-    def course_registration_success(self , st , username,course_id):
+
+    def course_registration_success(self, st, username, course_id):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.user_collection]
         col2: Collection = db[self.registration_collection]
@@ -354,24 +355,23 @@ class SCourse:
         cc = JalaliDate.today()
 
         itm_ready = {
-            'date' : f"{cc.year}/{cc.month}/{cc.day}",
-            'g_date' : datetime.today(),
-            'username' : username,
-            'course_id' : course_id
- 
+            'date': f"{cc.year}/{cc.month}/{cc.day}",
+            'g_date': datetime.today(),
+            'username': username,
+            'course_id': course_id
+
         }
         col2.insert_one(itm_ready)
-        
-        course = list(col3.find({"_id" : course_id}))
+        col.update_one({"username": username}, {"$set": {'status': {"id": "reg",
+                                                                    "name": "ثبت نام شده"}}})
+
+        course = list(col3.find({"_id": course_id}))
         if len(course) != 1:
-            return 404 , "not_found" , 'no course or more than one found' , None
-        
-        col.update_one({'username' : username} , {"$set" : {"courses" : [{
-            'id' : course[0]['_id'],
-            'name' : course[0]['name']
+            return 404, "not_found", 'no course or more than one found', None
+
+        col.update_one({'username': username}, {"$set": {"courses": [{
+            'id': course[0]['_id'],
+            'name': course[0]['name']
         }]}})
-        
-        
-        
+
         return 200, "ok", "ok", None
-        
