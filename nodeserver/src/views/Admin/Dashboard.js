@@ -56,7 +56,6 @@ export default function Dashboard() {
 
   const { colorMode } = useColorMode();
 
-  const[usrinfo , setUsrInfo] = useState({})
 
 
   const dispatch = useDispatch();

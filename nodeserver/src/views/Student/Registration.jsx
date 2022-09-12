@@ -22,9 +22,20 @@ import { courseHistory } from "services/course";
 import { useState } from "react";
 import { useEffect } from "react";
 import { courseDetail } from "services/course";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { registrationSuccess } from "services/course";
+import { userInfoAction } from "redux/user/UserInfo/UserInfoAction";
 const Registration = () => {
+
+  
+  const dispatch = useDispatch();
+  
+  
+  const getUserInfo = async () => {
+    console.log("yayyy")
+    // await dispatch(userInfoAction());
+
+  };
   const { userInfo } = useSelector((state) => state.getUserInfo);
 
   const [myCourseHistory, setMyCourseHistory] = useState([]);
@@ -72,9 +83,17 @@ const Registration = () => {
     }
   };
   useEffect(() => {
+    getUserInfo()
     
-    getCourseHistoryData();
   }, []);
+
+
+  useEffect(() => {
+    getCourseHistoryData();
+
+    
+  }, [userInfo]);
+
 
   useEffect(() => {
     getCourseDetail();

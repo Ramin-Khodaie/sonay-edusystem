@@ -29,13 +29,20 @@ import { Provider } from "react-redux";
 import theme from "./theme/theme.js";
 import "./index.css";
 import StudentLayout from "layouts/Student.js";
+import { persistStore } from 'redux-persist'
+import { PersistGate } from 'redux-persist/integration/react'
 
+
+const persistore = persistStore(store)
 ReactDOM.render(
   // <div className="body">
   <Provider store={store}>
 
   <ChakraProvider theme={theme} resetCss={false} position="relative">
-    <NotifyProvider>
+
+    <PersistGate persistor={persistore} loading={null}>
+
+  <NotifyProvider>
       <HashRouter>
         <Switch>
           <Route path={`/auth`} component={AuthLayout} />
@@ -46,6 +53,9 @@ ReactDOM.render(
         </Switch>
       </HashRouter>
     </NotifyProvider>
+
+    </PersistGate>
+  
   </ChakraProvider>
   </Provider>,
 

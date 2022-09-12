@@ -158,6 +158,12 @@ class SCourse:
    
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
+        
+        cur = list(col.find({"_id" : course_id}))
+        if len(cur) != 1 or 'next_course' not in cur[0]:
+            return 422, "missing_next_course", "next course for user is not defined", []
+        else:
+            nxt = cur[0]['next_course']['id']
 
         raw = list(col.aggregate([
             {
@@ -165,7 +171,7 @@ class SCourse:
                     'item': [
                         {
                             '$match': {
-                                '_id': course_id
+                                '_id': nxt
                             }
                         },
                         {
@@ -179,7 +185,7 @@ class SCourse:
                     'nxt': [
                         {
                             '$match': {
-                                '_id': course_id
+                                '_id': nxt
                             }
                         }, {
                             '$graphLookup': {
@@ -205,7 +211,7 @@ class SCourse:
                     'prv': [
                         {
                             '$match': {
-                                '_id': course_id
+                                '_id': nxt
                             }
                         }, {
                             '$graphLookup': {
@@ -346,7 +352,7 @@ class SCourse:
                 }
             ])
             )
-            if len(res[0]['m_obj']) == 0:
+            if res[0]['m_obj'][0] == {}:
                 return 404, 'no_mark', 'mark has not found', res
             else:
                 sum = res[0]['m_obj'][0]['sum']
@@ -385,4 +391,7 @@ class SCourse:
             'name' : course[0]['name']
         }]}})
         
+        
+        
+        return 200, "ok", "ok", None
         
