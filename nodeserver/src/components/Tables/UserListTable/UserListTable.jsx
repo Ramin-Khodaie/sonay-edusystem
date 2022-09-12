@@ -24,7 +24,6 @@ function UserListTable(props) {
 
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-  console.log(data,544)
   return (
     <CardBody>
       <Table style={{ direction: "rtl" }} variant="simple" color={textColor}>

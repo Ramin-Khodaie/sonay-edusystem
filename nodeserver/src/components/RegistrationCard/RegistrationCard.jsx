@@ -18,6 +18,15 @@ import {
   ModalCloseButton,
   IconButton,
   useColorMode,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
 } from "@chakra-ui/react";
 import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
@@ -27,14 +36,39 @@ import { CheckIcon } from "@chakra-ui/icons";
 import { FaRegCheckCircle } from "react-icons/fa";
 
 import React, { useEffect } from "react";
+import ProductSubOrder from "components/ProductSubOrder/ProductSubOrder";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import { number } from "prop-types";
 
 function RegistrationCard(props) {
-  const { courseDetailData , registerCourse } = props;
+  const { courseDetailData, registerCourse } = props;
 
   const colorMode = useColorMode();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-console.log(98 , courseDetailData)
+
+  const { cartItems } = useSelector((state) => state.order);
+  const books = [
+    {
+      id: 1,
+      name: "Americanfile1",
+      description: "this is amarican file1.",
+      price: 250000,
+
+      isMain: false,
+    },
+    {
+      id: 2,
+      name: "American dsfgdfg dfgdfg file2",
+      description: "this is amarican file2.",
+      price: 250000,
+
+      isMain: false,
+    },
+  ];
+
+
 
   return (
     <>
@@ -42,8 +76,7 @@ console.log(98 , courseDetailData)
         <CardHeader h={"auto"} pb={"10px"}>
           <Text textAlign={"center"} fontSize={"25px"} fontFamily={"Lalezar"}>
             شما در حال ثبت نام برای دوره{" "}
-            {courseDetailData.c_obj && courseDetailData.c_obj[0].name}{" "}
-            هستید
+            {courseDetailData.c_obj && courseDetailData.c_obj[0].name} هستید
           </Text>
           <Text textAlign={"center"} fontSize={"sm"}>
             جهت ثبت نام برای این دوره روی دکمه سبز رنگ "ثبت نام " کلیک کنید. قبل
@@ -57,10 +90,11 @@ console.log(98 , courseDetailData)
           <SimpleGrid columns={{ sm: 1, md: 2, lg: 2 }}>
             <Box>
               <Text textAlign={"center"} fontSize={"30px"}>
-              {courseDetailData.c_obj && courseDetailData.c_obj[0].name}{" "}
+                {courseDetailData.c_obj && courseDetailData.c_obj[0].name}{" "}
               </Text>
               <Text py={"15px"} textAlign={"start"}>
-              {courseDetailData.c_obj && courseDetailData.c_obj[0].description}{" "}
+                {courseDetailData.c_obj &&
+                  courseDetailData.c_obj[0].description}{" "}
               </Text>
               <Divider />
               <Text>دبیر:</Text>
@@ -102,14 +136,16 @@ console.log(98 , courseDetailData)
               <Text>هزینه دوره:</Text>
 
               <Text textAlign={"center"}>
-              {courseDetailData.c_obj && courseDetailData.c_obj[0].price}{" "}
-                ریال
+                {courseDetailData.c_obj && courseDetailData.c_obj[0].price} ریال
               </Text>
 
               <Divider pt={"15px"} />
 
+              <ProductSubOrder books={books} cartItems={cartItems} />
+
               <Center pt={"40px"}>
                 <Button
+                  mb={"20px"}
                   onClick={onOpen}
                   size={"lg"}
                   fontSize={"30px"}
@@ -121,27 +157,54 @@ console.log(98 , courseDetailData)
                   ثبت نام
                 </Button>
 
-                <Modal isCentered  isOpen={isOpen} onClose={onClose}>
-                  <ModalOverlay       backdropFilter='blur(9px)' />
+                <Modal size={"xl"} isCentered isOpen={isOpen} onClose={onClose}>
+                  <ModalOverlay backdropFilter="blur(9px)" />
                   <ModalContent>
-                    <ModalHeader textAlign={'center'} >آیا مطمعن هستید؟</ModalHeader>
+                    <ModalHeader textAlign={"center"}>تایید نهایی</ModalHeader>
                     <ModalCloseButton />
 
- <ModalBody textAlign={'end'}>
- <Text>
-                      شما در حال ثبت نام برای  {courseDetailData.c_obj && courseDetailData.c_obj[0].name}{" "}هستید 
-                    </Text>
+                    <ModalBody textAlign={"end"}>
+                      <TableContainer dir="rtl">
+                        <Table variant="simple">
+                          <Thead>
+                            <Tr>
+                              <Th>عنوان</Th>
+                              <Th>قیمت</Th>
+                            </Tr>
+                          </Thead>
+                          <Tbody>
+                            <Tr>
+                              <Td>
+                                ثبت نام برای{" "}
+                                {courseDetailData.c_obj &&
+                                  courseDetailData.c_obj[0].name}{" "}
+                              </Td>
+                              <Td>
+                                {" "}
+                                {courseDetailData.c_obj &&
+                                  courseDetailData.c_obj[0].price}
+                              </Td>
+                            </Tr>
 
-                    <Text>
-                      هزینه دوره {courseDetailData.c_obj && courseDetailData.c_obj[0].price}{" "} ریال می باشد قبل از ادامه لطفا وی پی ان و پروکسی خود را خاموش کنید
-                    </Text>
- </ModalBody>
-        
+                            {cartItems.map((o, key) => (
+                              <Tr>
+                                <Td>کتاب{o.name} </Td>
+                                <Td>{o.price}ریال</Td>
+                              </Tr>
+                            ))}
+                          </Tbody>
+                        </Table>
+                      </TableContainer>
+                    </ModalBody>
+
                     <ModalFooter>
-                      <Button  variant="ghost"  mr={3} onClick={onClose}>
+                      <Button variant="ghost" mr={3} onClick={onClose}>
                         لغو
                       </Button>
-                      <Button onClick={registerCourse} colorScheme="blue"> ادامه</Button>
+                      <Button onClick={registerCourse} colorScheme="blue">
+                        {" "}
+                        تایید می کنم
+                      </Button>
                     </ModalFooter>
                   </ModalContent>
                 </Modal>

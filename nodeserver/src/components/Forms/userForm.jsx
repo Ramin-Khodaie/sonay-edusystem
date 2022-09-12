@@ -175,7 +175,6 @@ function UserForm(props) {
     var i;
     for (i = 0; i < list.length; i++) {
       if (list[i]["id"] === _id) {
-        console.log("trueeeee");
         return true;
       }
     }
@@ -183,7 +182,6 @@ function UserForm(props) {
     return false;
   }
 
-  console.log(formData.courses, 333);
 
   return (
     <>

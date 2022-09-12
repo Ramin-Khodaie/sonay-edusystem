@@ -17,7 +17,6 @@ const Karne = () => {
   const handleSelectCourse = (course) => {
     setSelectedCourse(course);
   };
-  console.log(66, selectedCourse);
   return (
     <Flex
       flexDirection="column"

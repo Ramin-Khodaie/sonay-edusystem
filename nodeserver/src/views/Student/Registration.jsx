@@ -32,6 +32,7 @@ const Registration = () => {
 
   
   const dispatch = useDispatch();
+
   
   
   const getUserInfo = async () => {
@@ -65,7 +66,6 @@ const Registration = () => {
   const getCourseDetail = async () => {
     if (selectedCourse.id !== "") {
       const cd = await courseDetail(selectedCourse.id , userInfo.username , selectedCourse.state);
-    // console.log(cd.response.status === 422 , cd.response.data.detail.result === 'PassMarkLimit',6565)
       if (cd.status === 200) {
 
         if (cd.data.data.length > 0) {
@@ -124,9 +124,9 @@ const Registration = () => {
   };
 
   const registerCourse = async()=>{
-    const res = await registrationSuccess( courseDetailData.c_obj && courseDetailData.c_obj[0].name , userInfo.username )
+    const res = await registrationSuccess( courseDetailData.c_obj && courseDetailData.c_obj[0]._id , userInfo.username )
+    await dispatch(userInfoAction());
   }
-console.log(state,87)
 
 
   return (
