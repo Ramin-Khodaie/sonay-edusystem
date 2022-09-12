@@ -34,7 +34,7 @@ function RegistrationCard(props) {
   const colorMode = useColorMode();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+console.log(98 , courseDetailData)
 
   return (
     <>
@@ -42,7 +42,7 @@ function RegistrationCard(props) {
         <CardHeader h={"auto"} pb={"10px"}>
           <Text textAlign={"center"} fontSize={"25px"} fontFamily={"Lalezar"}>
             شما در حال ثبت نام برای دوره{" "}
-            {courseDetailData.s_obj && courseDetailData.s_obj[0].c_obj[0].name}{" "}
+            {courseDetailData.c_obj && courseDetailData.c_obj[0].name}{" "}
             هستید
           </Text>
           <Text textAlign={"center"} fontSize={"sm"}>
@@ -57,12 +57,10 @@ function RegistrationCard(props) {
           <SimpleGrid columns={{ sm: 1, md: 2, lg: 2 }}>
             <Box>
               <Text textAlign={"center"} fontSize={"30px"}>
-                {courseDetailData.s_obj &&
-                  courseDetailData.s_obj[0].c_obj[0].name}
+              {courseDetailData.c_obj && courseDetailData.c_obj[0].name}{" "}
               </Text>
               <Text py={"15px"} textAlign={"start"}>
-                {courseDetailData.s_obj &&
-                  courseDetailData.s_obj[0].c_obj[0].description}
+              {courseDetailData.c_obj && courseDetailData.c_obj[0].description}{" "}
               </Text>
               <Divider />
               <Text>دبیر:</Text>
@@ -104,8 +102,7 @@ function RegistrationCard(props) {
               <Text>هزینه دوره:</Text>
 
               <Text textAlign={"center"}>
-                {courseDetailData.s_obj &&
-                  courseDetailData.s_obj[0].c_obj[0].price}{" "}
+              {courseDetailData.c_obj && courseDetailData.c_obj[0].price}{" "}
                 ریال
               </Text>
 
@@ -132,12 +129,11 @@ function RegistrationCard(props) {
 
  <ModalBody textAlign={'end'}>
  <Text>
-                      شما در حال ثبت نام برای {courseDetailData.s_obj && courseDetailData.s_obj[0].c_obj[0].name} هستید 
+                      شما در حال ثبت نام برای  {courseDetailData.c_obj && courseDetailData.c_obj[0].name}{" "}هستید 
                     </Text>
 
                     <Text>
-                      هزینه دوره {courseDetailData.s_obj &&
-                  courseDetailData.s_obj[0].c_obj[0].price}{" "} ریال می باشد قبل از ادامه لطفا وی پی ان و پروکسی خود را خاموش کنید
+                      هزینه دوره {courseDetailData.c_obj && courseDetailData.c_obj[0].price}{" "} ریال می باشد قبل از ادامه لطفا وی پی ان و پروکسی خود را خاموش کنید
                     </Text>
  </ModalBody>
         

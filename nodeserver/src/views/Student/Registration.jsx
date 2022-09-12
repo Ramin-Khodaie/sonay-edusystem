@@ -25,6 +25,9 @@ import { courseDetail } from "services/course";
 import { useSelector, useDispatch } from "react-redux";
 import { registrationSuccess } from "services/course";
 import { userInfoAction } from "redux/user/UserInfo/UserInfoAction";
+import NoMarkAlert from "components/Alert/noMarkAlert";
+import MarkLimitAlert from "components/Alert/markLimitAlert";
+import useNotify from "helpers/notify/useNotify";
 const Registration = () => {
 
   
@@ -32,7 +35,7 @@ const Registration = () => {
   
   
   const getUserInfo = async () => {
-    console.log("yayyy")
+    
     // await dispatch(userInfoAction());
 
   };
@@ -45,6 +48,9 @@ const Registration = () => {
     state: "",
   });
   const [courseDetailData, setCourseDetailData] = useState({});
+
+  const [state , setState] = useState(undefined)
+
   const getCourseHistoryData = async () => {
     const ch = await courseHistory(userInfo.courses[0].id);
     if (ch.status === 200) {
@@ -54,10 +60,12 @@ const Registration = () => {
     }
   };
 
+  const notify = useNotify()
+
   const getCourseDetail = async () => {
     if (selectedCourse.id !== "") {
       const cd = await courseDetail(selectedCourse.id , userInfo.username , selectedCourse.state);
-    
+    // console.log(cd.response.status === 422 , cd.response.data.detail.result === 'PassMarkLimit',6565)
       if (cd.status === 200) {
 
         if (cd.data.data.length > 0) {
@@ -65,6 +73,13 @@ const Registration = () => {
 
          setCourseDetailData(cd.data.data[0]);
         }
+      }
+      else if (cd.response.status === 422 && cd.response.data.detail.result === 'no_mark'){
+        setState('noMark')
+      }else if(cd.response.status === 422 && cd.response.data.detail.result === 'failed'){
+        setState('PassMarkLimit')
+      }else{
+        
       }
     }
   };
@@ -109,9 +124,9 @@ const Registration = () => {
   };
 
   const registerCourse = async()=>{
-    const res = await registrationSuccess(selectedCourse.id , userInfo.username )
+    const res = await registrationSuccess( courseDetailData.c_obj && courseDetailData.c_obj[0].name , userInfo.username )
   }
-
+console.log(state,87)
 
 
   return (
@@ -125,7 +140,14 @@ const Registration = () => {
         </SliderWrapper>
       </Flex>
 
-      <RegistrationCard courseDetailData={courseDetailData } registerCourse={registerCourse} />
+
+      {
+        state && state === 'noMark' ? <NoMarkAlert /> :
+        state === 'PassMarkLimit' ?  <MarkLimitAlert /> :
+        <RegistrationCard courseDetailData={courseDetailData } registerCourse={registerCourse} />
+
+      }
+
     </Box>
   );
 };

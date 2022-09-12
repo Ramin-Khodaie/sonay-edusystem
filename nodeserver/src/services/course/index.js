@@ -8,12 +8,11 @@ export const createCourse = (course) => {
         name: course.name,
         status: course.status,
         prev_course: course.prev_course,
-        image : course.image,
-        price:course.price,
-        description : course.description
-
+        image: course.image,
+        price: course.price,
+        description: course.description,
       });
-      
+
       if (res.status === 200) {
         resolve(res.data);
       }
@@ -24,104 +23,82 @@ export const createCourse = (course) => {
   });
 };
 
-
-
-
-
-
 export const courseList = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await bixios.get("/courses/getcourselist"
-      
-      
-      );
+      const res = await bixios.get("/courses/getcourselist");
 
-      
       if (res.status === 200) {
         resolve(res);
       }
     } catch (error) {
-       resolve(error.response.status);
+      resolve(error.response.status);
     }
   });
 };
 
-
-
-export const courseByTeacher = (teacherId="0") => {
+export const courseByTeacher = (teacherId = "0") => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await bixios.get("/courses/getcoursebyteacher" , {params:{teacher_id : teacherId}}
-
-      );
+      const res = await bixios.get("/courses/getcoursebyteacher", {
+        params: { teacher_id: teacherId },
+      });
 
       if (res.status === 200) {
         resolve(res);
       }
     } catch (error) {
-       resolve(error.response.status);
+      resolve(error.response.status);
     }
   });
 };
 
-
-
-export const courseHistory = (courseId="0") => {
+export const courseHistory = (courseId = "0") => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await bixios.get("/courses/getcoursehistory" , {params:{course_id : courseId}}
-
-      );
+      const res = await bixios.get("/courses/getcoursehistory", {
+        params: { course_id: courseId },
+      });
 
       if (res.status === 200) {
         resolve(res);
       }
     } catch (error) {
-       resolve(error.response.status);
+      resolve(error.response.status);
     }
   });
 };
 
-
-
-
-export const courseDetail = (courseId="0" , username="0" , State) => {
+export const courseDetail = (courseId = "0", username = "0", State) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await bixios.get("/courses/getcoursedetail" , {params:{course_id : courseId,
-        username : username,
-    state : State}}
-
-      );
+      const res = await bixios.get("/courses/getcoursedetail", {
+        params: { course_id: courseId, username: username, state: State },
+      });
 
       if (res.status === 200) {
         resolve(res);
       }
     } catch (error) {
-       resolve(error.response.status);
+      if (error.response.status === 422) {
+        resolve(error);
+      }
     }
   });
 };
 
-
-
-
-export const registrationSuccess = (courseId="0" , username="0" ) => {
+export const registrationSuccess = (courseId = "0", username = "0") => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await bixios.get("/courses/registrationsuccess" , {params:{course_id : courseId,
-        username : username,
-    }}
-
-      );
+      const res = await bixios.get("/courses/registrationsuccess", {
+        params: { course_id: courseId, username: username },
+      });
 
       if (res.status === 200) {
         resolve(res);
       }
     } catch (error) {
-       resolve(error.response.status);
+      resolve(error.response.status);
     }
   });
 };
-

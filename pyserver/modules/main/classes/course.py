@@ -268,6 +268,13 @@ class SCourse:
         col: Collection = db[self.user_collection]
         col2: Collection = db[self.course_collection]
         col3: Collection = db[self.registration_collection]
+        
+        cur = list(col2.find({"_id" : course_id}))
+        if len(cur) != 1 or 'prev_course' not in cur[0]:
+            return 422, "missing_prev_course", "prev course for user is not defined", []
+        else:
+            prev = cur[0]['prev_course']['id']
+        
         if state == 'current':
             res = list(col.aggregate([
                 {
@@ -284,37 +291,6 @@ class SCourse:
                                 }
                             }
                         ],
-                        's_obj': [
-                            {
-                                '$match': {
-                                    'username': username
-                                }
-                            }, {
-                                '$lookup': {
-                                    'from': 'course',
-                                    'localField': 'courses.0.id',
-                                    'foreignField': '_id',
-                                    'pipeline': [
-                                        {
-                                            '$project': {
-                                                '_id': 0,
-                                                'price': 1,
-                                                'name': 1,
-                                                'description' : 1
-                                            }
-                                        }
-                                    ],
-                                    'as': 'c_obj'
-                                }
-                            }, {
-                                '$project': {
-                                    'c_obj': 1,
-                                    'full_name': 1,
-                                    'courses': 1,
-                                    'status': 1
-                                }
-                            }
-                        ],
                         'm_obj': [
                             {
                                 '$match': {
@@ -328,7 +304,7 @@ class SCourse:
                                     'pipeline': [
                                         {
                                             '$match': {
-                                                'course.id': course_id
+                                                'course.id': prev
                                             }
                                         }, {
                                             '$project': {
@@ -352,14 +328,18 @@ class SCourse:
                 }
             ])
             )
+            
+            res[0]['c_obj'] = cur
+            
+            
             if res[0]['m_obj'][0] == {}:
-                return 404, 'no_mark', 'mark has not found', res
+                return 422, 'no_mark', 'mark has not found', res
             else:
                 sum = res[0]['m_obj'][0]['sum']
                 if sum < st.info['PassMarkLimit']:
-                    return 403, 'failed', 'student has failed and cant register', res
+                    return 422, 'failed', 'student has failed and cant register', res
 
-            if len(res[0]['s_obj'][0]['c_obj']) == 0:
+            if len(res[0]['c_obj']) == 0:
                 return 404, 'no_course', 'course has not found', []
             return 200, 'ok', 'ok', res
         elif state == 'attended':
