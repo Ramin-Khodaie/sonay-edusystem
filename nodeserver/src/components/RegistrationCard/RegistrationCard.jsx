@@ -42,13 +42,13 @@ import { useState } from "react";
 import { number } from "prop-types";
 
 function RegistrationCard(props) {
-  const { courseDetailData, registerCourse } = props;
+  const { courseDetailData, registerCourse , cartItems , getSum } = props;
 
   const colorMode = useColorMode();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { cartItems } = useSelector((state) => state.order);
+
   const books = [
     {
       id: 1,
@@ -67,13 +67,6 @@ function RegistrationCard(props) {
       isMain: false,
     },
   ];
-  const getSum = ()=> {
-    if(courseDetailData.c_obj){
-      const sum  = cartItems.reduce((acc , curr)=>acc+curr.price ,0)
-      return sum + Number(courseDetailData.c_obj[0].price)
-    }
-    
-  }
 
 
 

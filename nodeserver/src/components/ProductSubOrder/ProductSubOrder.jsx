@@ -72,7 +72,6 @@ function ProductSubOrder(props) {
     })
   } , [])
 
-  console.log(added , 8787  )
 
   return (
     <>

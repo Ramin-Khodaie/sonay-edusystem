@@ -28,6 +28,7 @@ import { userInfoAction } from "redux/user/UserInfo/UserInfoAction";
 import NoMarkAlert from "components/Alert/noMarkAlert";
 import MarkLimitAlert from "components/Alert/markLimitAlert";
 import useNotify from "helpers/notify/useNotify";
+import { registerForCourse } from "services/purchase";
 const Registration = () => {
 
   
@@ -41,6 +42,7 @@ const Registration = () => {
 
   };
   const { userInfo } = useSelector((state) => state.getUserInfo);
+  const { cartItems } = useSelector((state) => state.order);
 
   const [myCourseHistory, setMyCourseHistory] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState({
@@ -117,14 +119,20 @@ const Registration = () => {
   useEffect(() => {
     handleSetDefaultCourse();
   }, [myCourseHistory]);
-
+  const getSum = ()=> {
+    if(courseDetailData.c_obj){
+      const sum  = cartItems.reduce((acc , curr)=>acc+curr.price ,0)
+      return sum + Number(courseDetailData.c_obj[0].price)
+    }
+    
+  }
 
   const handleSelectCourseHistory = (courseId, courseName, state) => {
     setSelectedCourse({ id: courseId, name: courseName, state: state });
   };
 
   const registerCourse = async()=>{
-    const res = await registrationSuccess( courseDetailData.c_obj && courseDetailData.c_obj[0]._id , userInfo.username )
+    const res = await registerForCourse( courseDetailData.c_obj && courseDetailData.c_obj[0]._id , userInfo.username , getSum(),cartItems )
     await dispatch(userInfoAction());
   }
 
@@ -144,7 +152,7 @@ const Registration = () => {
       {
         state && state === 'noMark' ? <NoMarkAlert /> :
         state === 'PassMarkLimit' ?  <MarkLimitAlert /> :
-        <RegistrationCard courseDetailData={courseDetailData } registerCourse={registerCourse} />
+        <RegistrationCard getSum={getSum} cartItems={cartItems} courseDetailData={courseDetailData } registerCourse={registerCourse} />
 
       }
 
