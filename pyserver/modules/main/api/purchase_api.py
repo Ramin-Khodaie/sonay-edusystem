@@ -18,8 +18,8 @@ sn.add_router(router)
 purchase=SPurchase('sonay' , 'purchase')
 
 
-@router.post("/registerfornewcourse")
+@router.post("/getredirecturl")
 @sn(fast=True)
-def register_for_new_course(info : dict):
-    ret = purchase.register_for_new_course(info)
+def get_redirect_url(info : dict):
+    ret = purchase.get_redirect_url(info)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])

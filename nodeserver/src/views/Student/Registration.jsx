@@ -23,16 +23,19 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { courseDetail } from "services/course";
 import { useSelector, useDispatch } from "react-redux";
-import { registrationSuccess } from "services/course";
 import { userInfoAction } from "redux/user/UserInfo/UserInfoAction";
 import NoMarkAlert from "components/Alert/noMarkAlert";
 import MarkLimitAlert from "components/Alert/markLimitAlert";
 import useNotify from "helpers/notify/useNotify";
-import { registerForCourse } from "services/purchase";
+import { getRedirectUrl } from "services/purchase";
+import { Redirect, useHistory } from "react-router-dom";
 const Registration = () => {
 
   
   const dispatch = useDispatch();
+  let history = useHistory();
+
+
 
   
   
@@ -131,9 +134,22 @@ const Registration = () => {
     setSelectedCourse({ id: courseId, name: courseName, state: state });
   };
 
+
+  const[link , setLink] = useState("")
+
   const registerCourse = async()=>{
-    const res = await registerForCourse( courseDetailData.c_obj && courseDetailData.c_obj[0]._id , userInfo.username , getSum(),cartItems )
-    await dispatch(userInfoAction());
+    const res = await getRedirectUrl( courseDetailData.c_obj && courseDetailData.c_obj[0]._id , userInfo.username , getSum(),cartItems )
+
+    if(res.data.data !== ""){
+      // setRedirect(res.data.data)
+
+      console.log(res , 3535)
+      setLink(res.data.data)
+
+    }
+     
+    
+    // await dispatch(userInfoAction());
   }
 
 
@@ -155,6 +171,7 @@ const Registration = () => {
         <RegistrationCard getSum={getSum} cartItems={cartItems} courseDetailData={courseDetailData } registerCourse={registerCourse} />
 
       }
+
 
     </Box>
   );

@@ -9,10 +9,11 @@
   
   
   
-  export const registerForCourse = (courseId , userName , totalSum , products = []) => {
+  export const getRedirectUrl = (courseId , userName , totalSum , products = []) => {
+
     return new Promise(async (resolve, reject) => {
       try {
-        const res = await bixios.post("/purchase/registerfornewcourse" , {
+        const res = await bixios.post("/purchase/getredirecturl" , {
             course_id : courseId,
             username : userName,
             total_sum : totalSum ,
@@ -25,6 +26,7 @@
   
         
         if (res.status === 200) {
+
           resolve(res);
         }
       } catch (error) {
