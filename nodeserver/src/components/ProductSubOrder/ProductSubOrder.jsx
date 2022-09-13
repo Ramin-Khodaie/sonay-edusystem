@@ -64,6 +64,16 @@ function ProductSubOrder(props) {
     );
   };
 
+  useEffect(()=>{
+    cartItems.map((it , key)=>{
+      if (!added.includes(it.id)) {
+        setAdded((oldArray) => [...oldArray, it.id]);
+      }
+    })
+  } , [])
+
+  console.log(added , 8787  )
+
   return (
     <>
       <RadioGroup mt="15px" onChange={setValue} value={value}>

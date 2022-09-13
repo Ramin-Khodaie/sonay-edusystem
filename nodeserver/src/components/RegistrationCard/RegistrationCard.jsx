@@ -67,6 +67,13 @@ function RegistrationCard(props) {
       isMain: false,
     },
   ];
+  const getSum = ()=> {
+    if(courseDetailData.c_obj){
+      const sum  = cartItems.reduce((acc , curr)=>acc+curr.price ,0)
+      return sum + Number(courseDetailData.c_obj[0].price)
+    }
+    
+  }
 
 
 
@@ -192,6 +199,18 @@ function RegistrationCard(props) {
                                 <Td>{o.price}ریال</Td>
                               </Tr>
                             ))}
+
+
+
+<Tfoot>
+      <Tr >
+       
+        <Td>جمع کل</Td>
+        <Td isNumeric>  {getSum()} ریال</Td>
+      
+      </Tr>
+    </Tfoot>
+                               
                           </Tbody>
                         </Table>
                       </TableContainer>
