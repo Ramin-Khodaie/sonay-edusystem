@@ -144,7 +144,7 @@ const Registration = () => {
       // setRedirect(res.data.data)
 
       console.log(res , 3535)
-      setLink(res.data.data)
+      window.location.replace(res.data.data);
 
     }
      

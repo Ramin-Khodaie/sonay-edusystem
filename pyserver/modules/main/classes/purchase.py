@@ -18,8 +18,8 @@ mobile = '09337814796'  # Optional
 ZP_API_REQUEST = "https://api.zarinpal.com/pg/v4/payment/request.json"
 ZP_API_VERIFY = "https://api.zarinpal.com/pg/v4/payment/verify.json"
 ZP_API_STARTPAY = "https://www.zarinpal.com/pg/StartPay/{authority}"
-# CallbackURL = 'http://127.0.0.1:8000/verify'
-CallbackURL = 'http://sahand-esteglal.ir/verify'
+CallbackURL = 'http://127.0.0.1:8000/purchase/verify'
+# CallbackURL = 'http://sahand-esteglal.ir/verify'
 
 
 
@@ -34,8 +34,8 @@ class SPurchase:
     def get_redirect_url(self , info):
         req_data = {
             "merchant_id": MERCHANT,
-            "amount": info['total_sum'],
-            "callback_url": f"/",
+            "amount": 2000,
+            "callback_url": CallbackURL,
             "description": description,
             "metadata": {"mobile": mobile, "email": email}
         }
@@ -47,3 +47,8 @@ class SPurchase:
         if len(req.json()['errors']) == 0:
             return 200 , 'ok' , 'ok' ,ZP_API_STARTPAY.format(authority=authority)
         return 403 , 'forbidden' , 'authorize failed' , ''
+
+
+
+    def verify(self , data):
+        pass

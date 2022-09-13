@@ -23,3 +23,10 @@ purchase=SPurchase('sonay' , 'purchase')
 def get_redirect_url(info : dict):
     ret = purchase.get_redirect_url(info)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+@router.post("/verify")
+@sn(fast=True)
+def verify(data : dict):
+    ret = purchase.verify(data)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
