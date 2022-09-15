@@ -16,7 +16,7 @@ router = APIRouter(prefix='/purchase' , tags=["purchase"])
 
 sn.add_router(router)
 
-purchase=SPurchase('sonay' , 'purchase')
+purchase=SPurchase('sonay' , 'purchase' , 's_user' , 'course')
 
 
 @router.post("/getredirecturl")
@@ -28,6 +28,6 @@ def get_redirect_url(st : SSettings,info : dict):
 
 @router.get("/verifyregistration")
 @sn(fast=True)
-def verify_registration(st : SSettings, username , course_id , products,price , authority):
-    ret = purchase.verify_registration( st ,username , course_id , products ,price , authority)
+def verify_registration(st : SSettings, oid , authority):
+    ret = purchase.verify_registration( st ,oid , authority)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])

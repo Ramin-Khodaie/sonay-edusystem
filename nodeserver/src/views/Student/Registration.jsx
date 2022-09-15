@@ -45,6 +45,7 @@ const Registration = () => {
   };
   const { userInfo } = useSelector((state) => state.getUserInfo);
   const { cartItems } = useSelector((state) => state.order);
+  console.log(cartItems , 123)
 
   const [myCourseHistory, setMyCourseHistory] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState({

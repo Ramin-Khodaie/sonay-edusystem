@@ -7,14 +7,14 @@ import { verifyRegistration } from "services/purchase";
 function PaymentVerify(props) {
   let query = useQuery();
   // let q = useLocation()
-  const { userName, courseId , products , price } = useParams();
+  const { oid } = useParams();
 
   const  authority = query.get('Authority')
   const  paymentStatus = query.get('Status')
-  console.log(userName, courseId , products,price , query.get("Authority") , paymentStatus, 74);
+  console.log(oid , authority , paymentStatus, 74);
   const doVerify =  () => {
 
-      verifyRegistration(userName , courseId , products ,price , authority ).then((res)=>{
+      verifyRegistration(oid , authority ).then((res)=>{
         console.log(res , 74)
       })
     // console.log(res,9898)

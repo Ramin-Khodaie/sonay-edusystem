@@ -40,15 +40,12 @@
   
   
   
-  export const verifyRegistration = (userName , courseId , products ,price, authority ) => {
+  export const verifyRegistration = (oid, authority ) => {
 
     return new Promise(async (resolve, reject) => {
       try {
         const res = await bixios.get("/purchase/verifyregistration" , {
-            params : {course_id : courseId,
-              username : userName,
-              products : products ,
-              price : price,
+            params : {oid : oid,
               authority : authority}
 
         }

@@ -50,7 +50,7 @@ ReactDOM.render(
           <Route path={`/admin`} component={AdminLayout} />
           <Route path={`/student`} component={StudentLayout}/>
           <Route path={`/rtl`} component={RTLLayout} />
-          <Route path={`/paymentverify/:userName/:courseId/:products/:price`} component={PaymentVerify} />
+          <Route path={`/paymentverify/:oid`} component={PaymentVerify} />
           <Redirect from={`/`} to="/admin/dashboard" />
         </Switch>
       </HashRouter>
