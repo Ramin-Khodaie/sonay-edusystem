@@ -7,15 +7,17 @@ import { verifyRegistration } from "services/purchase";
 function PaymentVerify(props) {
   let query = useQuery();
   // let q = useLocation()
-  const { userName, courseId , products } = useParams();
+  const { userName, courseId , products , price } = useParams();
 
   const  authority = query.get('Authority')
   const  paymentStatus = query.get('Status')
-  console.log(userName, courseId , products, query.get("Authority") , paymentStatus, 74);
-  const doVerify = async () => {
+  console.log(userName, courseId , products,price , query.get("Authority") , paymentStatus, 74);
+  const doVerify =  () => {
 
-    const res = await verifyRegistration(userName , courseId , products , authority)
-    console.log(res,9898)
+      verifyRegistration(userName , courseId , products ,price , authority ).then((res)=>{
+        console.log(res , 74)
+      })
+    // console.log(res,9898)
 
   };
   useEffect(() => {

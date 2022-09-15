@@ -38,7 +38,7 @@ class SPurchase:
         req_data = {
             "merchant_id": MERCHANT,
             "amount": info['total_sum'],
-            "callback_url": f"{CallbackURL}/{info['username']}/{info['course_id']}/{products}",
+            "callback_url": f"{CallbackURL}/{info['username']}/{info['course_id']}/{products}/{info['total_sum']}",
             "description": description,
             "metadata": {"mobile": mobile, "email": email}
         }
@@ -53,5 +53,21 @@ class SPurchase:
 
 
 
-    def verify_registration(self , username , course_id , products , authority):
+    def verify_registration(self , st,  username , course_id , products ,price, authority):
         print(username , course_id , products , authority)
+        MERCHANT = st.extra['MERCHANT']
+        req_data = {
+            "merchant_id": MERCHANT,
+            "amount" : int(price),
+            "authority" : authority
+     
+        }
+        req_header = {"accept": "application/json",
+                      "content-type": "application/json'"}
+        req = requests.post(url=ZP_API_VERIFY, data=json.dumps(
+            req_data), headers=req_header)
+        x = 87
+        if req.json()['data']['code'] == 100:
+            ref_id = req.json()['data']['ref_id']
+            fee = req.json()['data']['fee']
+        

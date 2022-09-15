@@ -40,7 +40,7 @@
   
   
   
-  export const verifyRegistration = (userName , courseId , products , authority ) => {
+  export const verifyRegistration = (userName , courseId , products ,price, authority ) => {
 
     return new Promise(async (resolve, reject) => {
       try {
@@ -48,6 +48,7 @@
             params : {course_id : courseId,
               username : userName,
               products : products ,
+              price : price,
               authority : authority}
 
         }
@@ -61,7 +62,8 @@
           resolve(res);
         }
       } catch (error) {
-         resolve(error.response.status);
+        console.log(error ,2222)
+         reject(error.response.status);
       }
     });
   };

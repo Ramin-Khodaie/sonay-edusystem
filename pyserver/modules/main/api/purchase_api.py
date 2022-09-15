@@ -28,6 +28,6 @@ def get_redirect_url(st : SSettings,info : dict):
 
 @router.get("/verifyregistration")
 @sn(fast=True)
-def verify_registration(username , course_id , products , authority):
-    ret = purchase.verify_registration( username , course_id , products , authority)
+def verify_registration(st : SSettings, username , course_id , products,price , authority):
+    ret = purchase.verify_registration( st ,username , course_id , products ,price , authority)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
