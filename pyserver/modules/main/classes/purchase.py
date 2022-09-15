@@ -8,7 +8,7 @@ import requests
 
 
 
-MERCHANT = 'eef9f4c5-a94d-498c-a2d4-75e0bdadbad0'
+
 
 description = "توضیحات مربوط به تراکنش را در این قسمت وارد کنید"  # Required
 email = 'Ehraghi.aysan@gmail.com'  # Optional
@@ -18,7 +18,7 @@ mobile = '09337814796'  # Optional
 ZP_API_REQUEST = "https://api.zarinpal.com/pg/v4/payment/request.json"
 ZP_API_VERIFY = "https://api.zarinpal.com/pg/v4/payment/verify.json"
 ZP_API_STARTPAY = "https://www.zarinpal.com/pg/StartPay/{authority}"
-CallbackURL = 'http://127.0.0.1:8000/purchase/verify'
+CallbackURL = 'http://localhost:3000/#/paymentverify'
 # CallbackURL = 'http://sahand-esteglal.ir/verify'
 
 
@@ -31,11 +31,14 @@ class SPurchase:
     def __init__(self, database, purchase_collection):
         self.database = database
         self.purchase_collection = purchase_collection
-    def get_redirect_url(self , info):
+    def get_redirect_url(self , st ,info):
+        MERCHANT = st.extra['MERCHANT']
+        
+        products = "0" if info['products'] == [] else '-'.join(info['products'])
         req_data = {
             "merchant_id": MERCHANT,
-            "amount": 2000,
-            "callback_url": CallbackURL,
+            "amount": info['total_sum'],
+            "callback_url": f"{CallbackURL}/{info['username']}/{info['course_id']}/{products}",
             "description": description,
             "metadata": {"mobile": mobile, "email": email}
         }
@@ -50,5 +53,5 @@ class SPurchase:
 
 
 
-    def verify(self , data):
-        pass
+    def verify_registration(self , username , course_id , products , authority):
+        print(username , course_id , products , authority)

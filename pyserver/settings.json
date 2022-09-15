@@ -106,6 +106,7 @@
       ]
     },
     "extra": {
+      "MERCHANT" : "eef9f4c5-a94d-498c-a2d4-75e0bdadbad0" ,
       "server":{
           "ssr":{
               "url":"localhost",

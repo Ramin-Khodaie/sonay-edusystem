@@ -35,3 +35,34 @@
     });
   };
   
+
+
+  
+  
+  
+  export const verifyRegistration = (userName , courseId , products , authority ) => {
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await bixios.get("/purchase/verifyregistration" , {
+            params : {course_id : courseId,
+              username : userName,
+              products : products ,
+              authority : authority}
+
+        }
+        
+        
+        );
+  
+        
+        if (res.status === 200) {
+
+          resolve(res);
+        }
+      } catch (error) {
+         resolve(error.response.status);
+      }
+    });
+  };
+  

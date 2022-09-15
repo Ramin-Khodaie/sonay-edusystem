@@ -33,7 +33,6 @@ const Registration = () => {
 
   
   const dispatch = useDispatch();
-  let history = useHistory();
 
 
 

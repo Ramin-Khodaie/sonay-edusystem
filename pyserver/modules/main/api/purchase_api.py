@@ -7,6 +7,7 @@ from modules.main.api_return import api_return
 from modules.main.sonay_app import sn
 from modules.main.classes.product import SProduct
 from modules.main.classes.purchase import SPurchase
+from modules.main.s_settings import SSettings
 
 
 
@@ -20,13 +21,13 @@ purchase=SPurchase('sonay' , 'purchase')
 
 @router.post("/getredirecturl")
 @sn(fast=True)
-def get_redirect_url(info : dict):
-    ret = purchase.get_redirect_url(info)
+def get_redirect_url(st : SSettings,info : dict):
+    ret = purchase.get_redirect_url(st ,info)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 
-@router.post("/verify")
+@router.get("/verifyregistration")
 @sn(fast=True)
-def verify(data : dict):
-    ret = purchase.verify(data)
+def verify_registration(username , course_id , products , authority):
+    ret = purchase.verify_registration( username , course_id , products , authority)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])

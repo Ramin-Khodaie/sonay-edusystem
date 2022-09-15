@@ -31,6 +31,7 @@ import "./index.css";
 import StudentLayout from "layouts/Student.js";
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
+import PaymentVerify from "views/Pages/PaymentVerify.js";
 
 
 const persistore = persistStore(store)
@@ -49,6 +50,7 @@ ReactDOM.render(
           <Route path={`/admin`} component={AdminLayout} />
           <Route path={`/student`} component={StudentLayout}/>
           <Route path={`/rtl`} component={RTLLayout} />
+          <Route path={`/paymentverify/:userName/:courseId/:products`} component={PaymentVerify} />
           <Redirect from={`/`} to="/admin/dashboard" />
         </Switch>
       </HashRouter>
