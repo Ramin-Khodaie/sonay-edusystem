@@ -31,7 +31,7 @@ import "./index.css";
 import StudentLayout from "layouts/Student.js";
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
-import PaymentVerify from "views/Pages/PaymentVerify.js";
+import PaymentVerify from "views/Pages/payment/paymentVerify.jsx";
 
 
 const persistore = persistStore(store)

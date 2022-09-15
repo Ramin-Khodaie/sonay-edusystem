@@ -54,7 +54,7 @@ function RegistrationCard(props) {
       id: 1,
       name: "Americanfile1",
       description: "this is amarican file1.",
-      price: 250000,
+      price: 1,
 
       isMain: false,
     },
@@ -62,7 +62,7 @@ function RegistrationCard(props) {
       id: 2,
       name: "American dsfgdfg dfgdfg file2",
       description: "this is amarican file2.",
-      price: 250000,
+      price: 1,
 
       isMain: false,
     },
