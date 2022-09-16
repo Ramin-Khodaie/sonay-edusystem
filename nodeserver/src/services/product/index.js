@@ -46,3 +46,27 @@ export const productList = () => {
     }
   });
 };
+
+
+export const getProductListByCourse = (course_id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/products/getproductbycourse" , {
+        params : {
+          course_id : course_id
+        }
+      }
+      
+      
+      );
+
+      
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+       resolve(error.response.status);
+    }
+  });
+};
+

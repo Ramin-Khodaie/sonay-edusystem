@@ -40,12 +40,11 @@ const Registration = () => {
   
   const getUserInfo = async () => {
     
-    // await dispatch(userInfoAction());
+    await dispatch(userInfoAction());
 
   };
   const { userInfo } = useSelector((state) => state.getUserInfo);
   const { cartItems } = useSelector((state) => state.order);
-  console.log(cartItems , 123)
 
   const [myCourseHistory, setMyCourseHistory] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState({
@@ -53,7 +52,11 @@ const Registration = () => {
     name: "",
     state: "",
   });
-  const [courseDetailData, setCourseDetailData] = useState({});
+  const [courseDetailData, setCourseDetailData] = useState({
+    'c_obj' : [],
+    't_obj': [],
+    'm_obj' : []
+  });
 
   const [state , setState] = useState(undefined)
 
@@ -123,7 +126,7 @@ const Registration = () => {
     handleSetDefaultCourse();
   }, [myCourseHistory]);
   const getSum = ()=> {
-    if(courseDetailData.c_obj){
+    if(courseDetailData.c_obj.length > 0){
       const sum  = cartItems.reduce((acc , curr)=>acc+curr.price ,0)
       return sum + Number(courseDetailData.c_obj[0].price)
     }
@@ -138,12 +141,11 @@ const Registration = () => {
   const[link , setLink] = useState("")
 
   const registerCourse = async()=>{
-    const res = await getRedirectUrl( courseDetailData.c_obj && courseDetailData.c_obj[0]._id , userInfo.username , getSum(),cartItems )
+    const res = await getRedirectUrl( courseDetailData.c_obj.length > 0 && courseDetailData.c_obj[0]._id , userInfo.username , getSum(),cartItems )
 
     if(res.data.data !== ""){
       // setRedirect(res.data.data)
 
-      console.log(res , 3535)
       window.location.replace(res.data.data);
 
     }

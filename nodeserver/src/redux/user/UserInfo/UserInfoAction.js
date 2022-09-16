@@ -1,12 +1,9 @@
 import { SiBreaker } from "react-icons/si";
 import { getUserInfo } from "services/user";
-import { userInfoPending, userInfoSuccess , userInfoError } from "./UserInfoReducer";
+import {  userInfoSuccess , userInfoError } from "./UserInfoReducer";
 
 
 export const userInfoAction = () => async (dispatch) => {
-
-  
-  dispatch(userInfoPending());
 
   
   const res = await getUserInfo();

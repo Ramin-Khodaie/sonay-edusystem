@@ -17,7 +17,7 @@ import { RemoveAnItem } from "redux/product/orderReducer";
 import { DeleteCartItem } from "redux/product/orderReducer";
 
 const OrderListTableRow = (props) => {
-  const { imageUrl, title, desc, quantity, price } = props.cartitem;
+  const { imageUrl, name, description, quantity, price } = props.cartitem;
   const textColor = useColorModeValue("gray.700", "white");
   const titleColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -44,17 +44,11 @@ const OrderListTableRow = (props) => {
       <Td borderColor={borderColor} textAlign="center">
         <Flex direction="column">
           <Text fontSize="md" color={textColor} fontWeight="bold" >
-            {title}
+            {name}
           </Text>
         </Flex>
       </Td>
-      <Td borderColor={borderColor}>
-        <Flex direction="column">
-          <Text fontSize="md" color={textColor} fontWeight="bold">
-            {desc}
-          </Text>
-        </Flex>
-      </Td>
+      
       <Td borderColor={borderColor}>
         <Flex justifyContent="space-between" justifyItems="center">
           <Button colorScheme="whatsapp" color="blackAlpha.900" size="sm" justifyItems="center" onClick={handleRemoveOneItem}>

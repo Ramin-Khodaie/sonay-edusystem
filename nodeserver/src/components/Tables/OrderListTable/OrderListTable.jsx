@@ -26,9 +26,7 @@ const OrderListTable = (props) => {
           <Th borderColor={borderColor} color="gray.400" textAlign="center">
             عنوان کتاب
           </Th>
-          <Th borderColor={borderColor} color="gray.400" textAlign="center">
-            توضیحات
-          </Th>
+  
 
           <Th borderColor={borderColor} color="gray.400" textAlign="center">
             تعداد

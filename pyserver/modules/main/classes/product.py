@@ -13,10 +13,10 @@ class SProduct:
         self.product_collection = product_collection
 
     def validate_product(self, product, col):
-        required = {"name", "_id", "price", "is_main" , "is_active"}
+        required = {"name", "_id", "price", "is_main", "is_active"}
         if len(required.difference(set(product.keys()))) != 0:
             return 422, "missing_field", "some fields are missing", None
-        if not (product["name"] and product["price"] and type(product["is_main"] == Boolean) and type(product["is_active"] == Boolean) ):
+        if not (product["name"] and product["price"] and type(product["is_main"] == Boolean) and type(product["is_active"] == Boolean)):
             return 422, "empty_field", "can not accept empty fiels", None
         if "_id" in product and product["_id"] == "" and len(list(col.find({"name": product["name"]}))) != 0:
             return 422, "not_unique", "user already exists", None
@@ -61,3 +61,15 @@ class SProduct:
         #     filters["status"] = status
         cl = list(col.find({}))
         return 200, "ok", "ok", cl
+
+    def get_product_by_course(self, course_id):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.product_collection]
+        ret = list(col.find({'courses.id': course_id},
+                            {"id": "$_id",
+                            '_id' : 0,
+                             "name": 1,
+                             "description": 1,
+                             "price": 1,
+                             "isMain": 1}))
+        return 200, "ok", "ok", ret

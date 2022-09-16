@@ -38,11 +38,8 @@ function PaymentVerify(props) {
   const authority = query.get("Authority");
   const paymentStatus = query.get("Status");
   const [status, setStatus] = useState(paymentStatus);
-  console.log(oid, authority, paymentStatus, 74);
-  console.log(paymentStatus, 74);
   const doVerify = () => {
     verifyRegistration(oid, authority).then((res) => {
-      console.log(res, 6666);
       if (res.data.data === "ok") {
         dispatch(userInfoAction());
 
@@ -51,7 +48,6 @@ function PaymentVerify(props) {
         }, 4000);
       }
     });
-    // console.log(res,9898)
   };
   useEffect(() => {
     if (paymentStatus === "OK") {

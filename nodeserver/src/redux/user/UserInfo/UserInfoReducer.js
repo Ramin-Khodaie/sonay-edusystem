@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState= {
     userInfo:{},
     errorMessage : "" ,
-    isPending : false
+
   
 
 }
@@ -13,13 +13,6 @@ const userInfoSlice = createSlice({
     name:"userInfo",
     initialState:initialState,
     reducers:{
-        userInfoPending:(state)=>{
-            state.userInfo = {},
-            state.isPending = true,
-            state.errorMessage = "" 
-           
-   
-        } ,
 
        
         userInfoSuccess:(state, {payload})=>{
@@ -39,5 +32,5 @@ const userInfoSlice = createSlice({
 })
 
 
-export const {userInfoSuccess , userInfoError ,userInfoPending  } = userInfoSlice.actions
+export const {userInfoSuccess , userInfoError   } = userInfoSlice.actions
 export default userInfoSlice.reducer

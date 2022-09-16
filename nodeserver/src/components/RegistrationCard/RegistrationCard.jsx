@@ -40,34 +40,32 @@ import ProductSubOrder from "components/ProductSubOrder/ProductSubOrder";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { number } from "prop-types";
+import { getProductListByCourse } from "services/product";
 
 function RegistrationCard(props) {
   const { courseDetailData, registerCourse , cartItems , getSum } = props;
 
+
   const colorMode = useColorMode();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [books , setBooks] = useState([])
+  const getBooks = async () => {
+    
+    const products = await getProductListByCourse(courseDetailData.c_obj[0]['_id'])
+    console.log(products , 47)
+
+    setBooks(products.data.data)
+  }
 
 
-  const books = [
-    {
-      id: 1,
-      name: "Americanfile1",
-      description: "this is amarican file1.",
-      price: 1,
+  useEffect(()=>{
 
-      isMain: false,
-    },
-    {
-      id: 2,
-      name: "American dsfgdfg dfgdfg file2",
-      description: "this is amarican file2.",
-      price: 1,
+    if( courseDetailData.c_obj.length > 0){
+      getBooks()
+    }
 
-      isMain: false,
-    },
-  ];
-
+  },[courseDetailData])
 
 
   return (
@@ -76,7 +74,7 @@ function RegistrationCard(props) {
         <CardHeader h={"auto"} pb={"10px"}>
           <Text textAlign={"center"} fontSize={"25px"} fontFamily={"Lalezar"}>
             شما در حال ثبت نام برای دوره{" "}
-            {courseDetailData.c_obj && courseDetailData.c_obj[0].name} هستید
+            {courseDetailData.c_obj.length > 0 && courseDetailData.c_obj[0].name} هستید
           </Text>
           <Text textAlign={"center"} fontSize={"sm"}>
             جهت ثبت نام برای این دوره روی دکمه سبز رنگ "ثبت نام " کلیک کنید. قبل
@@ -90,10 +88,10 @@ function RegistrationCard(props) {
           <SimpleGrid columns={{ sm: 1, md: 2, lg: 2 }}>
             <Box>
               <Text textAlign={"center"} fontSize={"30px"}>
-                {courseDetailData.c_obj && courseDetailData.c_obj[0].name}{" "}
+                {courseDetailData.c_obj.length > 0 && courseDetailData.c_obj[0].name}{" "}
               </Text>
               <Text py={"15px"} textAlign={"start"}>
-                {courseDetailData.c_obj &&
+                {courseDetailData.c_obj.length > 0 &&
                   courseDetailData.c_obj[0].description}{" "}
               </Text>
               <Divider />
@@ -115,18 +113,18 @@ function RegistrationCard(props) {
                       fontSize={"25px"}
                     >
                       {" "}
-                      {courseDetailData.t_obj &&
-                        courseDetailData.t_obj[0].full_name}
+                      {courseDetailData.t_obj.length > 0  ?
+                        courseDetailData.t_obj[0].full_name :
+                        "هنوز تعریف نشده"}
                     </Text>
                   </Box>
 
                   <Center flex="1" borderRadius={"2rem"}>
                     <Avatar
                       size="lg"
-                      name={
-                        courseDetailData.t_obj &&
-                        courseDetailData.t_obj[0].full_name
-                      }
+                      name=   { courseDetailData.t_obj.length > 0 ?
+                        courseDetailData.t_obj[0].full_name :
+                        ""}
                     />
                   </Center>
                 </Flex>
@@ -136,7 +134,7 @@ function RegistrationCard(props) {
               <Text>هزینه دوره:</Text>
 
               <Text textAlign={"center"}>
-                {courseDetailData.c_obj && courseDetailData.c_obj[0].price} ریال
+                {courseDetailData.c_obj.length > 0 && courseDetailData.c_obj[0].price} ریال
               </Text>
 
               <Divider pt={"15px"} />
@@ -176,12 +174,12 @@ function RegistrationCard(props) {
                             <Tr>
                               <Td>
                                 ثبت نام برای{" "}
-                                {courseDetailData.c_obj &&
+                                {courseDetailData.c_obj.length > 0 &&
                                   courseDetailData.c_obj[0].name}{" "}
                               </Td>
                               <Td>
                                 {" "}
-                                {courseDetailData.c_obj &&
+                                {courseDetailData.c_obj.length > 0 &&
                                   courseDetailData.c_obj[0].price}
                               </Td>
                             </Tr>
@@ -233,6 +231,7 @@ function RegistrationCard(props) {
               />
             </Center>
           </SimpleGrid>
+
         </CardBody>
       </Card>
     </>

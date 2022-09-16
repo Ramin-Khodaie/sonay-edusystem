@@ -67,7 +67,7 @@ class SPurchase:
     def verify_registration(self, st, oid, authority):
         print(oid, authority)
         db: Database = sn.databases[self.database].db
-        col: Collection = db[self.product_collection]
+        col: Collection = db[self.purchase_collection]
         col1: Collection = db[self.user_collection]
         col2: Collection = db[self.course_collection]
         MERCHANT = st.extra['MERCHANT']
@@ -106,13 +106,16 @@ class SPurchase:
                 c_price = 0
             else:
                 registered_course = registered_course[0]
-                c_price = int(registered_course[0]['price'])
+                c_price = int(registered_course['price'])
+                del registered_course['price']
+                registered_course['id'] = registered_course["_id"]
+                del registered_course['_id']
 
 
             
 
             itm_ready = {
-                '_id': str(ObjectId),
+                
                 'type': "registration",
                 'ref_id': ref_id,
                 'fee': fee,
@@ -126,6 +129,7 @@ class SPurchase:
                 'c_price' : c_price,
                 'p_price' : int(order[0]['price']) - c_price
             }
+       
             col.update_one({'_id' : oid},{"$set":itm_ready})
             col1.update_one({"username": order[0]['username']}, {"$set": {'courses': [registered_course],
                                                               'status': {'id': 'reg', 'name': 'ثبت نام شده'}}})

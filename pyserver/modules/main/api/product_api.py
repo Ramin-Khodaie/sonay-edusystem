@@ -35,3 +35,11 @@ def get_product_list():
 def get_product(product_id):
     ret = product.get_product(product_id)
     return api_return(ret[0] , ret[1] , ret[2] , ret[3])
+
+
+
+@router.get("/getproductbycourse")
+@sn()
+def get_product_by_course(course_id):
+    ret = product.get_product_by_course(course_id)
+    return api_return(ret[0] , ret[1] , ret[2] , ret[3])
