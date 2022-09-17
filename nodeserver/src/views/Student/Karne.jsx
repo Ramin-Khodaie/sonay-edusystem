@@ -18,26 +18,38 @@ import TeacherMessage from "components/TeacherMessage/TeacherMessage";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getSelectedMark } from "services/mark";
+import { getCompareChartData } from "services/mark";
 const Karne = () => {
   const { userInfo } = useSelector((state) => state.getUserInfo);
   const [selectedCourse, setSelectedCourse] = useState(userInfo.courses[0].id);
   const [selectedMark, setSelectedMark] = useState(undefined);
+  const { seriesBarCart, setSeriesBarChart } = useEffect([]);
   const handleSelectCourse = (course) => {
     setSelectedCourse(course);
   };
 
-  const callSelectedMark =  () => {
-    getSelectedMark(selectedCourse, userInfo.username).then((res)=>{
-    setSelectedMark(res[0]);
-  
+  const callSelectedMark = () => {
+    getSelectedMark(selectedCourse, userInfo.username).then((res) => {
+      setSelectedMark(res[0]);
     });
-    
   };
+
+  const callChartData = () => {
+    getCompareChartData(selectedMark.course.id, userInfo.username).then(
+      (res) => {
+        // setSeriesBarChart(res)
+      }
+    );
+  };
+
+  //  console.log(seriesBarCart , 5151)
+
+
 
   useEffect(() => {
     callSelectedMark();
   }, []);
-  console.log(selectedMark , 87)
+  console.log(selectedMark, 87);
   return (
     <Flex
       flexDirection="column"
@@ -54,7 +66,6 @@ const Karne = () => {
       >
         <GridItem rowSpan={1} colSpan={{ sm: 1, md: 2, lg: 2 }}>
           <Card>
-            
             <Text fontSize={"18px"} textAlign={"center"}>
               کارنامه {selectedMark && selectedMark.student.name} دوره{" "}
               {selectedMark && selectedMark.course.name}
@@ -62,14 +73,14 @@ const Karne = () => {
           </Card>
         </GridItem>
         <GridItem rowSpan={1} colSpan={1}>
-          {selectedMark && <WorkbookTable selectedMark={selectedMark}  />}
+          {selectedMark && <WorkbookTable selectedMark={selectedMark} />}
         </GridItem>
 
         <GridItem rowSpan={1}>
-         { selectedMark && <PolarBasicChart selectedMark={selectedMark} />}
+          {selectedMark && <PolarBasicChart selectedMark={selectedMark} />}
         </GridItem>
         <GridItem rowSpan={1}>
-          <MultiBarchart />
+          {/* {selectedMark && <MultiBarchart userName={userInfo.username} courseId={selectedMark.course.id} />} */}
         </GridItem>
         <GridItem>
           <TeacherMessage />

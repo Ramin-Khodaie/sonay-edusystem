@@ -1,11 +1,17 @@
 import Card from "components/Card/Card";
 import React from "react";
+import { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
+import { getCompareChartData } from "services/mark";
 
 
 
 
 const MultiBarchart = (props) => {
+  const {courseId , userName} = props
+  
+  console.log(courseId , userName , 5151)
+
     const options = {
         chart: {
           type: 'bar',
@@ -56,10 +62,12 @@ const MultiBarchart = (props) => {
         name: 'Free Cash Flow',
         data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
       }]
+
+
     
     return (
         <Card height={'100%'}>
-            <ReactApexChart options={options} series={series} type="bar" height={350} />
+            {series.length === 2 && <ReactApexChart options={options} series={series} type="bar" height={350} />}
         </Card>
 
     )

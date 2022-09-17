@@ -145,7 +145,7 @@ class SMark:
         final_mean = (mean + int(mark['sum'])) / 2
         return final_mean
 
-    def get_compare_chart_data(self, student_id, course_id):
+    def get_compare_chart_data(self, username, course_id):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
         query_res = list(col.aggregate([
@@ -154,9 +154,9 @@ class SMark:
                     'avg': [
                         {
                             '$match': {
-                                'student.id': '631220cfc5808a9a505e5d8f',
+                                'username': username,
                                 'course.id': {
-                                    '$ne': '6304edc9a07b1216dc904522'
+                                    '$ne': course_id
                                 }
                             }
                         }, {
@@ -190,8 +190,8 @@ class SMark:
                     'actual': [
                         {
                             '$match': {
-                                'student.id': '631220cfc5808a9a505e5d8f',
-                                'course.id': '6304edc9a07b1216dc904522'
+                                'username': username,
+                                'course.id': course_id
                             }
                         }, {
                             '$project': {
@@ -210,6 +210,8 @@ class SMark:
         ])
 
         )
-        item_ready = [{'name': "میانگین ترم های قبل", "data": list(query_res[0]['avg'].values)},
-                      {'name' : "نمرات این ترم" , "data" :  list(query_res[0]['actual'].values) }]
+        avg_data = [] if len(list(query_res[0]['avg'])) == 0 else list(query_res[0]['avg'][0].values())
+        act_data = [] if len(list(query_res[0]['actual'])) == 0 else list(query_res[0]['actual'][0].values())
+        item_ready = [{'name': "میانگین ترم های قبل", "data": avg_data},
+                      {'name' : "نمرات این ترم" , "data" : act_data }]
         return 200, "ok", "", item_ready

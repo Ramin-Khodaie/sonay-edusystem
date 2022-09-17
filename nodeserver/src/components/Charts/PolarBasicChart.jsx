@@ -24,8 +24,6 @@ const PolarBasicChart = (props)=>{
 const keys = ['homework' , 'writing' , 'reading',  'speaking' , 'listening' , 'activity']
 
 
-    console.log(5454 ,colorMode)
-
 const options = {
   labels:['تکالیف', 'مهارت نوشتن', "مهارت خواندن", "مهارت مکالمه", "مهارت شنیدن", "فعالیت در کلاس"],
     chart: {
@@ -60,7 +58,7 @@ const options = {
     })
 
   },[])
-  console.log(series)
+
     return(
         <Card height={'100%'} >
 
