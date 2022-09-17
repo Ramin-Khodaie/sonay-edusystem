@@ -23,33 +23,38 @@ const Karne = () => {
   const { userInfo } = useSelector((state) => state.getUserInfo);
   const [selectedCourse, setSelectedCourse] = useState(userInfo.courses[0].id);
   const [selectedMark, setSelectedMark] = useState(undefined);
-  const { seriesBarCart, setSeriesBarChart } = useEffect([]);
+  const { seriesBarCart, setSeriesBarChart } = useState([]);
   const handleSelectCourse = (course) => {
     setSelectedCourse(course);
   };
 
   const callSelectedMark = () => {
     getSelectedMark(selectedCourse, userInfo.username).then((res) => {
-      setSelectedMark(res[0]);
+
+      setSelectedMark(res[0] );
     });
   };
 
-  const callChartData = () => {
-    getCompareChartData(selectedMark.course.id, userInfo.username).then(
-      (res) => {
-        // setSeriesBarChart(res)
-      }
-    );
-  };
 
-  //  console.log(seriesBarCart , 5151)
-
+  // const callBarChartData = () => {
+  //   getCompareChartData(selectedCourse, userInfo.username).then((res) => {
+      
+  //     setSeriesBarChart(res[0]);
+  //   });
+  // };
 
 
   useEffect(() => {
     callSelectedMark();
   }, []);
-  console.log(selectedMark, 87);
+
+  
+
+  // useEffect(() => {
+  //   callBarChartData();
+  // }, [selectedMark]);
+
+  console.log(seriesBarCart , 3232)
   return (
     <Flex
       flexDirection="column"
