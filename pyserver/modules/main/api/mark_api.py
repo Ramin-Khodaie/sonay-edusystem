@@ -54,8 +54,8 @@ def get_mark_by_search(filter : dict):
 
 @router.get("/getselectedmark")
 @sn(fast=True)
-def get_selected_mark(student_id : str , course_id : str):
-    ret = mark.get_selected_mark(student_id=student_id , course_id=course_id)
+def get_selected_mark(username : str , course_id : str):
+    ret = mark.get_selected_mark(username=username , course_id=course_id)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 

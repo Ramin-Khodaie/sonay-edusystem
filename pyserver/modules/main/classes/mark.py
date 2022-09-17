@@ -35,6 +35,9 @@ class SMark:
         valid = self.validate_mark(info, col)
         if valid[0] != 200:
             return valid
+        
+        student_obj = list(col2.find({"_id" : info['student']['id']}))[0]
+        info['username'] = student_obj['username']
 
         cc = JalaliDate.today()
         info['date'] = f"{cc.year}/{cc.month}/{cc.day}"
@@ -102,12 +105,17 @@ class SMark:
         data = list(col.find({"$and": and_li}))
         return 200, "ok", "ok", data
 
-    def get_selected_mark(self, student_id, course_id):
+    def get_selected_mark(self, username, course_id):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
         res = list(
-            col.find({"student.id": student_id, 'course.id': course_id}))
-        return 200, "ok", "", res
+            col.find({"username": username, 'course.id': course_id}))
+        if len(res) == 0:
+            return 404 , 'not_found' , "mark could not been found" , []
+        elif len(res) > 1:
+            return 422 , 'duplicated mark' , "more than one mark has found" , []
+        else:
+            return 200, "ok", "", res
 
     def get_final_status(self, student_id, course_id):
         db: Database = sn.databases[self.database].db

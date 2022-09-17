@@ -1,17 +1,19 @@
 import { Table, Tr, Td, TableCaption, Thead, Th, Text } from "@chakra-ui/react";
 import Card from "components/Card/Card";
 
-const WorkbookTable = () => {
-  const workbook = {
-    course: "IELTS",
-    studentName: "jafar azhdari",
-    totalWork: "out_standing",
-    classActivity: "20.1",
-    quizzes: "9.2",
-    midterm: "4.5",
-    final: "6.8",
-    totalMark: "80",
-  };
+const WorkbookTable = (props) => {
+  const {selectedMark} = props
+  // const workbook = {
+  //   course: "IELTS",
+  //   studentName: "jafar azhdari",
+  //   totalWork: "out_standing",
+  //   classActivity: "20.1",
+  //   quizzes: "9.2",
+  //   midterm: "4.5",
+  //   final: "6.8",
+  //   totalMark: "80",
+  // };
+  console.log(selectedMark , 1212)
   return (
     <Card
       alignSelf="flex-start"
@@ -23,45 +25,55 @@ const WorkbookTable = () => {
       overflowX={{ sm: "scroll", xl: "hidden" }}
 
     >
-      <Table mt={"15px"} >
+      <Table mt={"15px"} dir='rtl'>
+      <TableCaption>
+
+{
+  selectedMark.status === 'passed' ? 
+  'زبان آموز با موفقیت این دوره را گذرانده و نمره قبولی را کسب کرده است'
+  :
+  'متاسفانه زبان آموز نمره قبولی برای گذراندن این ترم را کسب نکره است'
+}
+
+      </TableCaption>
         <Thead >
           <Th colSpan="2"  textAlign="center">
             <Text pb="15px" fontWeight="800" fontSize="2xl">
-              Workbook
+              کارنامه
             </Text>
           </Th>
         </Thead>
         <Tr fontSize={'20px'}>
-          <Td>Course</Td>
-          <Td>{workbook.course}</Td>
+          <Td>دوره</Td>
+          <Td>{selectedMark.course.name}</Td>
         </Tr>
         <Tr fontSize={'20px'}>
-          <Td>Student Name</Td>
-          <Td>{workbook.studentName}</Td>
+          <Td>نام و نام خانوداگی</Td>
+          <Td>{selectedMark.student.name}</Td>
         </Tr>
         <Tr fontSize={'20px'}>
-          <Td>Total Work</Td>
-          <Td>{workbook.totalWork}</Td>
+          <Td>وضعیت کلی</Td>
+          <Td>{selectedMark.status}</Td>
         </Tr>
         <Tr fontSize={'20px'}>
-          <Td>Class Activity</Td>
-          <Td>{workbook.classActivity}</Td>
+          <Td>فعالیت کلاسی</Td>
+          <Td>{selectedMark.classActivity}</Td>
         </Tr>
         <Tr fontSize={'20px'}>
-          <Td>Quizzes</Td>
-          <Td>{workbook.quizzes}</Td>
+          <Td>کوییز</Td>
+          <Td>{selectedMark.quiz}</Td>
         </Tr>
         <Tr fontSize={'20px'}>
-          <Td>Midterm</Td>
-          <Td>{workbook.midterm}</Td>
+          <Td>میانترم</Td>
+          <Td>{selectedMark.midterm}</Td>
         </Tr>
         <Tr fontSize={'20px'}>
-          <Td>Final</Td>
-          <Td>{workbook.final}</Td>
+          <Td>فاینال</Td>
+          <Td>{selectedMark.final}</Td>
         </Tr>
         <Tr fontSize={'20px'}>
-          <Td>Total Mark</Td>
-          <Td>{workbook.totalMark}</Td>
+          <Td>نمره نهایی</Td>
+          <Td>{selectedMark.sum}</Td>
         </Tr>
       </Table>
     </Card>

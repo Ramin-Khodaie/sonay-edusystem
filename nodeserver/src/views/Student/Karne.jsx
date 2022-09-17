@@ -15,11 +15,29 @@ import StudentFinaleState from "./StudentFinalState";
 import PolarBasicChart from "components/Charts/PolarBasicChart";
 import MultiBarchart from "components/Charts/MultiBarChart";
 import TeacherMessage from "components/TeacherMessage/TeacherMessage";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getSelectedMark } from "services/mark";
 const Karne = () => {
-  const [selectedCourse, setSelectedCourse] = useState(undefined);
+  const { userInfo } = useSelector((state) => state.getUserInfo);
+  const [selectedCourse, setSelectedCourse] = useState(userInfo.courses[0].id);
+  const [selectedMark, setSelectedMark] = useState(undefined);
   const handleSelectCourse = (course) => {
     setSelectedCourse(course);
   };
+
+  const callSelectedMark =  () => {
+    getSelectedMark(selectedCourse, userInfo.username).then((res)=>{
+    setSelectedMark(res[0]);
+  
+    });
+    
+  };
+
+  useEffect(() => {
+    callSelectedMark();
+  }, []);
+  console.log(selectedMark , 87)
   return (
     <Flex
       flexDirection="column"
@@ -29,32 +47,33 @@ const Karne = () => {
       alignItems="center"
     >
       <Grid
-        templateColumns={{ sm: "1fr", md: "1fr 1fr " , lg: "1fr 1fr " }}
+        templateColumns={{ sm: "1fr", md: "1fr 1fr ", lg: "1fr 1fr " }}
         templateRows={{ lg: "repeat(3, auto)" }}
         gap="20px"
         width="100%"
       >
-        <GridItem rowSpan={1} colSpan={{ sm: 1, md:2, lg: 2 }} >
+        <GridItem rowSpan={1} colSpan={{ sm: 1, md: 2, lg: 2 }}>
           <Card>
-            <Text fontSize={'18px'} textAlign={'center'}>کارنامه اژدر رسولی کلاس هفتم</Text>
+            
+            <Text fontSize={"18px"} textAlign={"center"}>
+              کارنامه {selectedMark && selectedMark.student.name} دوره{" "}
+              {selectedMark && selectedMark.course.name}
+            </Text>
           </Card>
         </GridItem>
-        <GridItem rowSpan={1} colSpan={1} >
-          <WorkbookTable />
+        <GridItem rowSpan={1} colSpan={1}>
+          {selectedMark && <WorkbookTable selectedMark={selectedMark}  />}
         </GridItem>
 
         <GridItem rowSpan={1}>
-          <PolarBasicChart />
+         { selectedMark && <PolarBasicChart selectedMark={selectedMark} />}
         </GridItem>
-        <GridItem rowSpan={1} >
-        <MultiBarchart />
-
+        <GridItem rowSpan={1}>
+          <MultiBarchart />
         </GridItem>
-        <GridItem >
-        <TeacherMessage />
+        <GridItem>
+          <TeacherMessage />
         </GridItem>
-     
-       
       </Grid>
 
       {/* <Flex justifyContent="space-between" alignSelf="flex-start" w="100%" flexWrap="wrap">

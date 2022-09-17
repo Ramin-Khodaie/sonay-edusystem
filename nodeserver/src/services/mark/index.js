@@ -72,3 +72,23 @@ export const markBySearch = (filter) => {
 };
 
 
+
+
+export const getSelectedMark = (courseId , userName) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/marks/getselectedmark", {
+        params:{
+          username : userName,
+          course_id : courseId
+        }
+      });
+
+      if (res.status === 200) {
+        resolve(res.data.data);
+      }
+    } catch (error) {
+      return([])
+    }
+  });
+};
