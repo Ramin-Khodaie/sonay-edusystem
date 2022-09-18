@@ -64,6 +64,10 @@ const WorkbookTable = (props) => {
           <Td>{selectedMark.quiz}</Td>
         </Tr>
         <Tr fontSize={'20px'}>
+          <Td>نمره اضافی</Td>
+          <Td>{selectedMark.extra}</Td>
+        </Tr>
+        <Tr fontSize={'20px'}>
           <Td>میانترم</Td>
           <Td>{selectedMark.midterm}</Td>
         </Tr>

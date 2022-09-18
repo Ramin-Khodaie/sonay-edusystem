@@ -23,7 +23,7 @@ const Karne = () => {
   const { userInfo } = useSelector((state) => state.getUserInfo);
   const [selectedCourse, setSelectedCourse] = useState(userInfo.courses[0].id);
   const [selectedMark, setSelectedMark] = useState(undefined);
-  const { seriesBarCart, setSeriesBarChart } = useState([]);
+  const [ seriesBarCart, setSeriesBarChart ] = useState([]);
   const handleSelectCourse = (course) => {
     setSelectedCourse(course);
   };
@@ -33,28 +33,29 @@ const Karne = () => {
 
       setSelectedMark(res[0] );
     });
+
+
+
+    
   };
 
 
-  // const callBarChartData = () => {
-  //   getCompareChartData(selectedCourse, userInfo.username).then((res) => {
-      
-  //     setSeriesBarChart(res[0]);
-  //   });
-  // };
+  const callBarChartData = () => {
+    console.log("blaaaaaaah")
+    getCompareChartData(selectedCourse, userInfo.username).then((res) => {
+
+      setSeriesBarChart(res);
+    });
+  };
 
 
   useEffect(() => {
     callSelectedMark();
+      callBarChartData();
   }, []);
 
   
-
-  // useEffect(() => {
-  //   callBarChartData();
-  // }, [selectedMark]);
-
-  console.log(seriesBarCart , 3232)
+console.log(seriesBarCart , 54)
   return (
     <Flex
       flexDirection="column"
@@ -85,15 +86,14 @@ const Karne = () => {
           {selectedMark && <PolarBasicChart selectedMark={selectedMark} />}
         </GridItem>
         <GridItem rowSpan={1}>
-          {/* {selectedMark && <MultiBarchart userName={userInfo.username} courseId={selectedMark.course.id} />} */}
+          {seriesBarCart.length === 2 && <MultiBarchart series={seriesBarCart} />}
         </GridItem>
         <GridItem>
-          <TeacherMessage />
+         {selectedMark &&  <TeacherMessage description={selectedMark.message} />}
         </GridItem>
       </Grid>
 
-      {/* <Flex justifyContent="space-between" alignSelf="flex-start" w="100%" flexWrap="wrap">
-      </Flex> */}
+
     </Flex>
   );
 };
