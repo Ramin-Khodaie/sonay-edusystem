@@ -1,7 +1,6 @@
-from ast import Return
+
 from fastapi import APIRouter 
 
-from modules.main.say.say import SAY
 from modules.main.api_return import api_return
 
 from modules.main.sonay_app import sn

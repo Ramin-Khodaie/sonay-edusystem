@@ -115,3 +115,20 @@ export const getCompareChartData = (courseId , userName) => {
     }
   });
 };
+
+
+
+
+export const getMarkHistory = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/marks/getmarkhistory");
+
+      if (res.status === 200) {
+        resolve(res.data.data);
+      }
+    } catch (error) {
+      return([])
+    }
+  });
+};

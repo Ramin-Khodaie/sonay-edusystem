@@ -7,6 +7,7 @@ from modules.main.api_return import api_return
 from modules.main.sonay_app import sn
 from modules.main.classes.mark import SMark
 from modules.main.s_settings import SSettings
+from modules.main.classes.user import SUser
 
 
 
@@ -45,8 +46,8 @@ def get_mark(mark_id : str):
 
 @router.put("/getmarkbysearch")
 @sn(fast=True)
-def get_mark_by_search(filter : dict):
-    ret = mark.get_mark_by_search(filter['filter'])
+def get_mark_by_search(user : SUser ,filter : dict):
+    ret = mark.get_mark_by_search(user ,filter['filter'])
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 
@@ -77,6 +78,15 @@ def get_final_status(student_id : str , course_id : str):
 def get_compare_chart_data(username : str , course_id : str):
     ret = mark.get_compare_chart_data(username=username , course_id=course_id)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+@router.get("/getmarkhistory")
+@sn(fast=True)
+def get_mark_history(user : SUser):
+    ret = mark.get_mark_history(user['username'] , user['courses'][0]['id'])
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
 
 
 

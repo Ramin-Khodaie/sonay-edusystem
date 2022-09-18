@@ -43,7 +43,9 @@ const MultiBarchart = (props) => {
         fill: {
           opacity: 1
         },
+        dataLables : {style : {fontSize : "30px"}},
         tooltip: {
+          style : {fontSize : "25px"},
           y: {
             formatter: function (val) {
               return val 

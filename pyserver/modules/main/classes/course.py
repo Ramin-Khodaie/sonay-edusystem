@@ -1,4 +1,3 @@
-from cmath import inf
 from pymongo.database import Database, Collection
 from modules.main.sonay_app import sn
 from bson import ObjectId
