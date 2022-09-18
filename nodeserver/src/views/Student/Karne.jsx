@@ -2,7 +2,16 @@ import SliderWrapper from "components/SliderWrapper/SliderWrapper";
 import CourseRecords from "components/CourseRecord/CourseRecords";
 import { useState } from "react";
 import WorkbookTable from "./WorkbookTable";
-import { Box, Center, Flex, Grid, GridItem, SimpleGrid, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Flex,
+  Grid,
+  GridItem,
+  SimpleGrid,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { lineChartData } from "variables/charts";
 import { lineChartOptions } from "variables/charts";
 import LineChart from "components/Charts/LineChart";
@@ -29,23 +38,18 @@ const Karne = () => {
   const [selectedCourse, setSelectedCourse] = useState(userInfo.courses[0].id);
   const [selectedMark, setSelectedMark] = useState(undefined);
   const [seriesBarCart, setSeriesBarChart] = useState([]);
-  const [tableData , setTableData] = useState([])
+  const [tableData, setTableData] = useState([]);
 
-  
   const [filter, setFilter] = useState({
     course: "",
     isFailed: false,
-    isPassed:false,
-    startDate : "",
-    endDate:"",
-    startMark:"",
-    endMark:""
-    
-
+    isPassed: false,
+    startDate: "",
+    endDate: "",
+    startMark: "",
+    endMark: "",
   });
 
-
-  
   const handleCheckBoxChange = (event) => {
     const field = event.target.id;
     const value = event.target.checked;
@@ -57,15 +61,10 @@ const Karne = () => {
     setFilter({ ...filter, [field]: value });
   };
 
-
-
-  
-  
-  const doSearch = async() => {
-    const tmp = await markBySearch(filter)
-    setTableData(tmp)
+  const doSearch = async () => {
+    const tmp = await markBySearch(filter);
+    setTableData(tmp);
   };
-
 
   useEffect(() => {
     setTableData(tableData);
@@ -83,30 +82,24 @@ const Karne = () => {
     }
   }, [filter]);
 
-  const [slider , setSlider] = useState([0,100])
+  const [slider, setSlider] = useState([0, 100]);
 
-    const handleSliderChange = (v)=>{
-      setSlider(v)
-      setFilter({...filter , startMark : v[0] , endMark : v[1]})
-  
-    }
+  const handleSliderChange = (v) => {
+    setSlider(v);
+    setFilter({ ...filter, startMark: v[0], endMark: v[1] });
+  };
 
-    const handleStartDateChange = (v)=>{
-      setFilter({...filter , startDate : `${v.year}/${v.month}/${v.day}` })
-  
-    }
+  const handleStartDateChange = (v) => {
+    setFilter({ ...filter, startDate: `${v.year}/${v.month}/${v.day}` });
+  };
 
-    const handleEndDateChange = (v)=>{
-      setFilter({...filter , endDate : `${v.year}/${v.month}/${v.day}` })
-  
-    }
-
+  const handleEndDateChange = (v) => {
+    setFilter({ ...filter, endDate: `${v.year}/${v.month}/${v.day}` });
+  };
 
   const handleMarkChange = (course) => {
-
-    console.log(course , "yaaaaaaaaaaaay")
-     setSelectedCourse(course);
-
+    console.log(course, "yaaaaaaaaaaaay");
+    setSelectedCourse(course);
   };
 
   const callSelectedMark = () => {
@@ -121,126 +114,111 @@ const Karne = () => {
     });
   };
 
-
-
   const callMarkHistory = () => {
     getMarkHistory().then((res) => {
-    
       setTableData(res);
     });
   };
 
-
-  const callPageData = ()=>{
+  const callPageData = () => {
     callMarkHistory();
     callSelectedMark();
     callBarChartData();
-  }
-
-
-
+  };
 
   useEffect(() => {
-    callPageData()
-
+    callPageData();
   }, [selectedCourse]);
 
-
-
   return (
-    <Flex
-      flexDirection="column"
-      mt="60px"
-      w="100%"
-      h="100%"
-      alignItems="center"
-    >
-      <Grid
-        templateColumns={{ sm: "1fr", md: "1fr 1fr ", lg: "1fr 1fr " }}
-        templateRows={{ lg: "repeat(3, auto)" }}
-        gap="20px"
-        width="100%"
+    <>
+      <Flex
+        flexDirection="column"
+        mt="60px"
+        w="100%"
+        h="100%"
+        alignItems="center"
       >
-        <GridItem  rowSpan={1} colSpan={{ sm: 1, md: 2, lg: 2 }}>
-         <Center>
-         <Card   width={"50%"}>
-            <Center >
+        <Grid
+          templateColumns={{ sm: "1fr", md: "1fr 1fr ", lg: "1fr 1fr " }}
+          templateRows={{ lg: "repeat(3, auto)" }}
+          gap="20px"
+          width="100%"
+        >
+          <GridItem overflowX={{ sm: "scroll", xl: "hidden" }} rowSpan={1} colSpan={{ sm: 1, md: 2, lg: 2 }}>
+            <Center>
+              <Card >
+                <Center>
+
+<Text textAlign={'center'} fontSize={{sm : "18px" , md:"22px" , lg:"25px"}} fontWeight={"bold"}>
+
+                کارنامه زبان آموز {" "}
+                    {selectedMark && selectedMark.student.name} {" "}
+                برای دوره {" "}
+                    {selectedMark && selectedMark.course.name} {" "}
+                در تاریخ   {" "}
+
+                    {selectedMark && selectedMark.date} {" "}
+       
+
+                 
               
-<Text  px={'5px'} fontWeight={'bold'} fontSize={"25px"}>{selectedMark && selectedMark.date}</Text>
-<Text fontSize={"20px"}>در تاریخ </Text>
-
-<Text  px={'5px'} fontWeight={'bold'} fontSize={"25px"}>{selectedMark && selectedMark.course.name}</Text>
 
 
-<Text fontSize={"20px"}>  برای دوره</Text>
+               
+          
 
-<Text px={'5px'} fontWeight={'bold'} fontSize={"25px"}>{selectedMark && selectedMark.student.name}</Text>
+                
 
-<Text fontSize={"20px"} >کارنامه زبان آموز</Text>
-
-
-            </Center>
+</Text>
 
 
+                  </Center>
 
-            {/* <Text fontSize={"18px"} textAlign={"center"}>
+                {/* <Text fontSize={"18px"} textAlign={"center"}>
               کارنامه {selectedMark && selectedMark.student.name} دوره{" "}
               {selectedMark && selectedMark.course.name}
             </Text> */}
-          </Card>
-         </Center>
-        </GridItem>
-        <GridItem rowSpan={1} colSpan={1}>
-          {selectedMark && <WorkbookTable selectedMark={selectedMark} />}
-        </GridItem>
+              </Card>
+            </Center>
+          </GridItem>
+          <GridItem rowSpan={1} colSpan={1}>
+            {selectedMark && <WorkbookTable selectedMark={selectedMark} />}
+          </GridItem>
 
-        <GridItem rowSpan={1}>
-          {selectedMark && <PolarBasicChart selectedMark={selectedMark} />}
-        </GridItem>
-        <GridItem rowSpan={1}>
-          {seriesBarCart.length === 2 && (
-            <MultiBarchart series={seriesBarCart} />
-          )}
-        </GridItem>
-        <GridItem>
-          {selectedMark && (
-            <TeacherMessage description={selectedMark.message} />
-          )}
-        </GridItem>
+          <GridItem rowSpan={1}>
+            {selectedMark && <PolarBasicChart selectedMark={selectedMark} />}
+          </GridItem>
+          <GridItem rowSpan={1}>
+            {seriesBarCart.length === 2 && (
+              <MultiBarchart series={seriesBarCart} />
+            )}
+          </GridItem>
+          <GridItem pb={"30px"}>
+            {selectedMark && (
+              <TeacherMessage description={selectedMark.message} />
+            )}
+          </GridItem>
+        </Grid>
+      </Flex>
 
-
-
-
-
-
-
-      </Grid>
-
-
-      <Card>
-
-<CardHeader>
-
-
-
-  <MarkReportFilter 
-  filter={filter}
-  onChange={handleFilterChange}
-  selectChange={setFilter}
-  handleCheckBoxChange={handleCheckBoxChange}
-  handleSliderChange={handleSliderChange}
-  slider={slider}
-  handleStartDateChange={handleStartDateChange}
-  handleEndDateChange={handleEndDateChange} />
-</CardHeader>
-
+      <Card  my="22px"  pb="0px">
+        <CardHeader  p="6px 0px 22px 0px">
+          <MarkReportFilter
+            filter={filter}
+            onChange={handleFilterChange}
+            selectChange={setFilter}
+            handleCheckBoxChange={handleCheckBoxChange}
+            handleSliderChange={handleSliderChange}
+            slider={slider}
+            handleStartDateChange={handleStartDateChange}
+            handleEndDateChange={handleEndDateChange}
+          />
+        </CardHeader>
 
         <ReportMarkTable handleMarkChange={handleMarkChange} data={tableData} />
-        </Card>
-
-
-
-    </Flex>
+      </Card>
+    </>
   );
 };
 
