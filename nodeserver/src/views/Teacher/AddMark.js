@@ -145,12 +145,20 @@ function AddMark() {
     }
 
     const handleStartDateChange = (v)=>{
-      setFilter({...filter , startDate : `${v.year}/${v.month}/${v.day}` })
+      if(v){
+        setFilter({...filter , startDate : `${v.year}/${v.month}/${v.day}` })
+    }else{
+        setFilter({...filter , startDate : "" })
+    }
   
     }
 
     const handleEndDateChange = (v)=>{
-      setFilter({...filter , endDate : `${v.year}/${v.month}/${v.day}` })
+      if(v){
+        setFilter({...filter , endDate : `${v.year}/${v.month}/${v.day}` })
+    }else{
+        setFilter({...filter , endDate : "" })
+    }
   
     }
 

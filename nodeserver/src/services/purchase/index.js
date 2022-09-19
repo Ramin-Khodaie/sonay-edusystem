@@ -9,12 +9,13 @@
   
   
   
-  export const getRedirectUrl = (courseId , userName , totalSum , products = []) => {
+  export const getRedirectUrl = (courseId , courseName, userName , totalSum , products = []) => {
 
     return new Promise(async (resolve, reject) => {
       try {
         const res = await bixios.post("/purchase/getredirecturl" , {
             course_id : courseId,
+            course_name : courseName,
             username : userName,
             total_sum : totalSum ,
             products : products

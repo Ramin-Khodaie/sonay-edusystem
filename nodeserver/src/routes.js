@@ -25,6 +25,8 @@ import {
 import {FaUserAlt, FaRegistered, FaBook, FaPaperclip} from "react-icons/fa"
 import Product from 'views/Admin/Products.js';
 import AddMark from 'views/Teacher/AddMark.js';
+import RecentOrder from 'views/Admin/AdminReport/RecentOrder.jsx';
+import RecentRegistration from 'views/Admin/AdminReport/RecentRegistration.jsx';
 var dashRoutes = [
   {
     path: "/dashboard",
@@ -106,6 +108,24 @@ var dashRoutes = [
     icon: <FaBook color='inherit' />,
     component: Checkout,
     layout: "/student",
+  },
+  {
+    path: "/recentorder",
+    name: "سفارشات اخیر",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color='inherit' />,
+    secondaryNavbar: true,
+    component: RecentOrder,
+    layout: "/admin",
+  },
+  {
+    path: "/recentregistration",
+    name: "ثبت نام های اخیر",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color='inherit' />,
+    secondaryNavbar: true,
+    component: RecentRegistration,
+    layout: "/admin",
   },
   {
     path: "/rtl-support-page",

@@ -48,6 +48,7 @@ ReactDOM.render(
         <Switch>
           <Route path={`/auth`} component={AuthLayout} />
           <Route path={`/admin`} component={AdminLayout} />
+
           <Route path={`/student`} component={StudentLayout}/>
           <Route path={`/rtl`} component={RTLLayout} />
           <Route path={`/paymentverify/:oid`} component={PaymentVerify} />
