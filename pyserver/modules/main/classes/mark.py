@@ -84,7 +84,7 @@ class SMark:
             and_li.append({'course.id' : {"$ne" : user['courses'][0]['id']}})
             
         if 'name' in filter and filter['name'] != "":
-            and_li.append({'student.name':{'$regex': filter['course']}})
+            and_li.append({'student.name':{'$regex': filter['name']}})
         if 'courses' in filter and filter['courses']['id'] != "":
             and_li.append({'course.id': filter['courses']['id']})
         if 'course' in filter and filter['course'] != "":

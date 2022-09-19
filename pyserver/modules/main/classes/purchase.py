@@ -32,7 +32,7 @@ class SPurchase:
         self.user_collection = user_collection
         self.course_collection = course_collection
 
-    def get_redirect_url(self, st,user, info):
+    def get_redirect_url(self, st, user, info):
         MERCHANT = st.extra['MERCHANT']
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.purchase_collection]
@@ -60,10 +60,10 @@ class SPurchase:
                 'authority': authority,
                 'type': 'pending',
                 'date': datetime.today(),
-                'student' : {
-                    'username' : user['username'],
-                    'phone' : user['phone'],
-                    'full_name' : user['full_name'] 
+                'student': {
+                    'username': user['username'],
+                    'phone': user['phone'],
+                    'full_name': user['full_name']
                 }
 
             }
@@ -151,17 +151,17 @@ class SPurchase:
         past_date = current_date - relativedelta(months=n)
         data = list(col.find(
             {
-                
+
                     'type': 'registration',
                     'g_date': {'$gte': past_date},
                     'products': {"$ne": []}
 
-                
-            }
+
+                    }
         ))
         return 200, 'ok', 'ok', data
 
-    def  get_recent_order_filter(self, st, filter):
+    def get_recent_order_filter(self, st, filter):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.purchase_collection]
 
@@ -187,9 +187,10 @@ class SPurchase:
             sg = datetime(sd.year, sd.month, sd.day)
             and_li.append({'g_date': {"$lte": sg}})
 
-        data = list(col.find({"$and" : and_li}))
+        data = list(col.find({"$and": and_li}))
         return 200, 'ok', 'ok', data
-    def get_recent_registration(self , st) :
+
+    def get_recent_registration(self, st):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.purchase_collection]
         current_date = datetime.today()
@@ -199,16 +200,17 @@ class SPurchase:
         past_date = current_date - relativedelta(months=n)
         data = list(col.find(
             {
-                
+
                     'type': 'registration',
                     'g_date': {'$gte': past_date},
-                   
 
-                
-            }
+
+
+                    }
         ))
         return 200, 'ok', 'ok', data
-    def get_recent_registration_filter(self , st , filter):
+
+    def get_recent_registration_filter(self, st, filter):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.purchase_collection]
 
@@ -234,7 +236,146 @@ class SPurchase:
             sg = datetime(sd.year, sd.month, sd.day)
             and_li.append({'g_date': {"$lte": sg}})
 
-        data = list(col.find({"$and" : and_li}))
+        data = list(col.find({"$and": and_li}))
         return 200, 'ok', 'ok', data
-        
-        
+
+    def get_course_detail(self):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.course_collection]
+        res = list(col.aggregate(
+            [
+                {
+                    '$match': {
+                        'status.id': 'active'
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 's_user',
+                        'localField': '_id',
+                        'foreignField': 'courses.id',
+                        'pipeline': [
+                            {
+                                '$match': {
+                                    'roles.id': 'student'
+                                }
+                            }, {
+                                '$project': {
+                                    '_id': 1,
+                                    'username': 1,
+                                    'full_name': 1
+                                }
+                            }
+                        ],
+                        'as': 'student'
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 's_user',
+                        'localField': '_id',
+                        'foreignField': 'courses.id',
+                        'pipeline': [
+                            {
+                                '$match': {
+                                    'roles.id': 'teacher'
+                                }
+                            }, {
+                                '$project': {
+                                    '_id': 1,
+                                    'username': 1,
+                                    'full_name': 1
+                                }
+                            }
+                        ],
+                        'as': 'teacher'
+                    }
+                }, {
+                    '$set': {
+                        's_length': {
+                            '$size': '$student'
+                        }
+                    }
+                }
+            ]
+        ))
+
+        return 200, 'ok', 'ok', res
+
+    def get_course_detail_filter(self, filter):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.course_collection]
+
+        and_li = []
+        teacher_and_li = []
+
+        if 'name' in filter and filter['name'] != "":
+            and_li.append({'name': {'$regex': filter['name']}})
+        if 'deActive' in filter and filter['deActive'] :
+            and_li.append({'status.id': 'deactive'})
+        else:
+            and_li.append({'status.id': 'active'})
+        if 'teacher' in filter and filter['teacher']['id'] != "":
+            teacher_and_li.append({'teacher.full_name': {'$regex': filter['teacher']['name']}})
+
+
+
+        data = list(col.aggregate(
+            [
+                {
+                    '$match': {
+                        '$and': and_li
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 's_user',
+                        'localField': '_id',
+                        'foreignField': 'courses.id',
+                        'pipeline': [
+                            {
+                                '$match': {
+                                    'roles.id': 'student'
+                                }
+                            }, {
+                                '$project': {
+                                    '_id': 1,
+                                    'username': 1,
+                                    'full_name': 1
+                                }
+                            }
+                        ],
+                        'as': 'student'
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 's_user',
+                        'localField': '_id',
+                        'foreignField': 'courses.id',
+                        'pipeline': [
+                            {
+                                '$match': 
+                                    {'roles.id': 'teacher'}
+                                
+                            }, {
+                                '$project': {
+                                    '_id': 1,
+                                    'username': 1,
+                                    'full_name': 1
+                                }
+                            }
+                        ],
+                        'as': 'teacher'
+                    }
+                }, {
+                    '$set': {
+                        's_length': {
+                            '$size': '$student'
+                        }
+                    }
+                },
+                {
+                    '$match' : {
+                        '$and' : teacher_and_li
+                    }
+                }
+            ]
+        ))
+        return 200, 'ok', 'ok', data

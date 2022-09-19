@@ -74,3 +74,40 @@ export const getRecentRegistrationFilter = (filter) => {
     }
   });
 };
+
+
+
+
+export const getCourseDetailReport = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/purchase/getcoursedetail");
+
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+      resolve(error.response.status);
+    }
+  });
+};
+
+
+
+export const getCourseDetailFilter = (filter) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.put("/purchase/getcoursedetailfilter" , 
+      {
+        filter
+      }
+      );
+
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+      resolve(error.response.status);
+    }
+  });
+};

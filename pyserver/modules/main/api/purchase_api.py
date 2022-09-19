@@ -66,3 +66,19 @@ def get_recent_registration_filter(st:SSettings , filter : dict):
     ret = purchase.get_recent_registration_filter(st , filter['filter'])
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
+
+
+@router.get("/getcoursedetail")
+@sn(fast=True)
+def get_course_detail(st:SSettings):
+    ret = purchase.get_course_detail()
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+
+@router.put("/getcoursedetailfilter")
+@sn(fast=True)
+def get_course_detail_filter( filter : dict):
+    ret = purchase.get_course_detail_filter( filter['filter'])
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])

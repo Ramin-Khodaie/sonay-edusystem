@@ -128,7 +128,7 @@ class SAY():
         if len(x) == 0:
             return None
         else :
-            return x[0]
+            return x
         
 
     def authorize(self, roles: list, headers) -> int:

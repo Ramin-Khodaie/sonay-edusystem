@@ -27,6 +27,7 @@ import Product from 'views/Admin/Products.js';
 import AddMark from 'views/Teacher/AddMark.js';
 import RecentOrder from 'views/Admin/AdminReport/RecentOrder.jsx';
 import RecentRegistration from 'views/Admin/AdminReport/RecentRegistration.jsx';
+import CourseDetail from 'views/Admin/AdminReport/CourseDetail.jsx';
 var dashRoutes = [
   {
     path: "/dashboard",
@@ -125,6 +126,15 @@ var dashRoutes = [
     icon: <PersonIcon color='inherit' />,
     secondaryNavbar: true,
     component: RecentRegistration,
+    layout: "/admin",
+  },
+  {
+    path: "/coursedetail",
+    name: "گزارش کلاسی",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color='inherit' />,
+    secondaryNavbar: true,
+    component: CourseDetail,
     layout: "/admin",
   },
   {

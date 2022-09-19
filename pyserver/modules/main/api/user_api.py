@@ -71,7 +71,7 @@ def get_user_list(say : SAY , full_name = "" , course = "" , status = ""):
 def get_user(say : SAY , user_id ):
     try:
         ret = say.get_user_by_query({'_id' : user_id} , {})
-        return api_return(200 , 'ok' , 'ok',data=[ret])
+        return api_return(200 , 'ok' , 'ok',data=[ret[0]])
 
     except:
         return 500 , "server_error" , 'cant connect to DataBAse' , []
@@ -83,6 +83,17 @@ def get_user(say : SAY , user_id ):
 def get_user(say : SAY , course_id , role ):
     ret = say.get_user_by_course(course_id , role)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+@router.get("/getteacherlist")
+@sn()
+def get_teacher_list(say : SAY  ):
+    try:
+        ret = say.get_user_by_query({"roles.id" : "teacher"} , {'id' : '$_id' , 'name' : "$full_name"})
+        return api_return(200 , 'ok' , 'ok',data=[ret])
+    except:
+        return 500 , "server_error" , 'cant connect to DataBAse' , []
+
 
 
 

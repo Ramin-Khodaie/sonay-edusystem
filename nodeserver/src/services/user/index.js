@@ -118,3 +118,23 @@ export const studentByCourse= (courseId) => {
 return([])
  }
 };
+
+
+
+
+export const getTeacherList = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/users/getteacherlist"
+      
+      );
+
+      
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+       resolve(error.response.status);
+    }
+  });
+};
