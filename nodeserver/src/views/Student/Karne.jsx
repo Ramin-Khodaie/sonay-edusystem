@@ -98,7 +98,6 @@ const Karne = () => {
   };
 
   const handleMarkChange = (course) => {
-    console.log(course, "yaaaaaaaaaaaay");
     setSelectedCourse(course);
   };
 

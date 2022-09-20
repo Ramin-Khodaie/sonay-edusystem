@@ -60,7 +60,6 @@
           resolve(res);
         }
       } catch (error) {
-        console.log(error ,2222)
          reject(error.response.status);
       }
     });

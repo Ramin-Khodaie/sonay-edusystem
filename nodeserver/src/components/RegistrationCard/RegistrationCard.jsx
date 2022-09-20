@@ -53,7 +53,6 @@ function RegistrationCard(props) {
   const getBooks = async () => {
     
     const products = await getProductListByCourse(courseDetailData.c_obj[0]['_id'])
-    console.log(products , 47)
 
     setBooks(products.data.data)
   }
