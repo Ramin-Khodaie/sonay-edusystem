@@ -111,6 +111,8 @@ async def userinfo(user: SUser):
     # pweekday = weekdays_j[UTC.weekday()]
     # today = {'year': year, 'month': month, 'day': day, 'datastr': datestr, 'weekday': weekday, 'pweekday': pweekday,
     #          'utc': UTC}
+    if user is None:
+        return api_return(403 , 'forbidden' , 'not authorized' , {})
     u = {**user, "refreshToken": "", "password": "",
         #  "today": today
          }

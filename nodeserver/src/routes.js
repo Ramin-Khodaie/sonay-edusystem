@@ -28,6 +28,8 @@ import AddMark from 'views/Teacher/AddMark.js';
 import RecentOrder from 'views/Admin/AdminReport/RecentOrder.jsx';
 import RecentRegistration from 'views/Admin/AdminReport/RecentRegistration.jsx';
 import CourseDetail from 'views/Admin/AdminReport/CourseDetail.jsx';
+import MyRecentOrder from 'views/Student/StudentReport/MyRecentOrder.jsx';
+import MyRecentRegistration from 'views/Student/StudentReport/MyRecentRegistration.jsx';
 var dashRoutes = [
   {
     path: "/dashboard",
@@ -127,6 +129,24 @@ var dashRoutes = [
     secondaryNavbar: true,
     component: RecentRegistration,
     layout: "/admin",
+  },
+  {
+    path: "/myrecentorder",
+    name: "سفارشات اخیر من",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color='inherit' />,
+    secondaryNavbar: true,
+    component: MyRecentOrder,
+    layout: "/student",
+  },
+  {
+    path: "/myrecentregistration",
+    name: "ثبت نام های اخیر من",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color='inherit' />,
+    secondaryNavbar: true,
+    component: MyRecentRegistration,
+    layout: "/student",
   },
   {
     path: "/coursedetail",
