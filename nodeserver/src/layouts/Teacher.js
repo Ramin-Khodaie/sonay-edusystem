@@ -29,9 +29,9 @@ import {
   import bgAdmin from "assets/img/admin-background.png";
   
   import {getActiveNavbar, getActiveRoute} from '../routes'
-import StudentNavbar from "components/Navbars/StudentNavbar";
+import TeacherNavbar from "components/Navbars/TeacherNavbar";
 
-  export default function StudentLayout(props) {
+  export default function TeacherLayout(props) {
     
     const { ...rest } = props;
 
@@ -41,7 +41,7 @@ import StudentNavbar from "components/Navbars/StudentNavbar";
     // functions for changing the states from components
     const 
     getRoute = () => {
-      return window.location.pathname !== "/student/full-screen-maps";
+      return window.location.pathname !== "/teacher/full-screen-maps";
     };
    
     // This changes navbar state(fixed or not)
@@ -54,8 +54,7 @@ import StudentNavbar from "components/Navbars/StudentNavbar";
         if (prop.category === "account") {
           return getRoutes(prop.views);
         }
-        if (prop.layout === "/student") {
-          console.log(prop)
+        if (prop.layout === "/teacher") {
           return (
             <Route
               path={prop.layout + prop.path}
@@ -112,7 +111,7 @@ import StudentNavbar from "components/Navbars/StudentNavbar";
             xl: "calc(100% - 275px)",
           }}>
           <Portal>
-            <StudentNavbar
+            <TeacherNavbar
               onOpen={onOpen}
               brandText={getActiveRoute(routes)}
               secondary={getActiveNavbar(routes)}
@@ -125,7 +124,7 @@ import StudentNavbar from "components/Navbars/StudentNavbar";
               <PanelContainer>
                 <Switch>
                   {getRoutes(routes)}
-                  {/* <Redirect from='/student' to='/student/karne' /> */}
+                  {/* <Redirect from='/teacher' to='/teacher/karne' /> */}
                 </Switch>
               </PanelContainer>
             </PanelContent>

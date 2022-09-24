@@ -31,6 +31,7 @@ import {
   GlobeIcon,
   WalletIcon,
 } from "components/Icons/Icons.js";
+import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch , useSelector } from "react-redux";
@@ -75,7 +76,8 @@ export default function Dashboard() {
   
 
   return (
-    <Flex flexDirection='column' pt={{ base: "120px", md: "75px" }}>
+    <AuthorizeProvider roles={['student' , 'admin' ]} >
+        <Flex flexDirection='column' pt={{ base: "120px", md: "75px" }}>
       <SimpleGrid columns={{ sm: 1, md: 2, xl: 4 }} spacing='24px' mb='20px'>
         <Card minH='125px'>
           <Flex direction='column'>
@@ -416,6 +418,8 @@ export default function Dashboard() {
           </Box>
         </Card>
       </Grid>
-    </Flex>
+    </Flex> 
+    </AuthorizeProvider>
+ 
   );
 }

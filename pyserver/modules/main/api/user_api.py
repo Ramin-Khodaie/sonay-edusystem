@@ -118,5 +118,5 @@ async def userinfo(user: SUser):
          }
     if '_id' in u:
         del u["_id"]
-    ret = {**u, "info": sn.Settings.info}
+    ret = {**u, "info": sn.Settings.info , "full_roles" : [r['id'] for r in u['roles']]}
     return ret

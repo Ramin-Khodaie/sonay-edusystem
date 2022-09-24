@@ -69,7 +69,7 @@ var dashRoutes = [
     rtlName: " نمرات",
     icon: <FaRegistered color='inherit' />,
     component: AddMark,
-    layout: "/student",
+    layout: "/teacher",
   },
   
   {
@@ -157,14 +157,7 @@ var dashRoutes = [
     component: CourseDetail,
     layout: "/admin",
   },
-  {
-    path: "/rtl-support-page",
-    name: "RTL",
-    rtlName: "آرتيإل",
-    icon: <SupportIcon color='inherit' />,
-    component: RTLPage,
-    layout: "/rtl",
-  },
+  
   {
     name: "ACCOUNT PAGES",
     category: "account",

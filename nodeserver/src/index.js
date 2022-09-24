@@ -28,10 +28,13 @@ import { Provider } from "react-redux";
 // Custom Chakra theme
 import theme from "./theme/theme.js";
 import "./index.css";
-import StudentLayout from "layouts/Student.js";
+import StudentLayout from "./layouts/Student.js";
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
 import PaymentVerify from "views/Pages/payment/paymentVerify.jsx";
+import AuthorizeProvider from "helpers/authorize/AuthorizeProvider.jsx";
+import Forbiden from "views/Pages/Forbiden.js";
+import TeacherLayout from "./layouts/Teacher.js";
 
 
 const persistore = persistStore(store)
@@ -43,19 +46,25 @@ ReactDOM.render(
 
     <PersistGate persistor={persistore} loading={null}>
 
-  <NotifyProvider>
+
+
+
+<NotifyProvider>
       <HashRouter>
         <Switch>
           <Route path={`/auth`} component={AuthLayout} />
           <Route path={`/admin`} component={AdminLayout} />
-
+          <Route path={`/teacher`} component={TeacherLayout} />
           <Route path={`/student`} component={StudentLayout}/>
           <Route path={`/rtl`} component={RTLLayout} />
           <Route path={`/paymentverify/:oid`} component={PaymentVerify} />
+          <Route path={`/forbiden`} component={Forbiden} />
           <Redirect from={`/`} to="/admin/dashboard" />
         </Switch>
       </HashRouter>
     </NotifyProvider>
+
+
 
     </PersistGate>
   
