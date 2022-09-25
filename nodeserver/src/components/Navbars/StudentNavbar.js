@@ -111,8 +111,8 @@ export default function StudentNavbar(props) {
                 xl: "12px",
             }}
             pt="8px"
-            top="18px"
-            w={{ sm: "calc(100vw - 30px)", xl: "calc(100vw - 75px - 275px)" }}
+            top="10px"
+            w={{ sm: "calc(100vw - 30px)", xl: "calc(100vw - 75px )" }}
         >
             <Flex
                 w="100%"
@@ -120,9 +120,9 @@ export default function StudentNavbar(props) {
                     sm: "row",
                     md: "row",
                 }}
-                alignItems={{ xl: "center" }}
+                alignItems={{ xl: "start" }}
             >
-                <Box w={{ sm: "60%", md: "unset" }}  mb={{ sm: "8px", md: "0px" }} ml={{ sm: "15px", md: "10px" }}>
+                <Box w={{ sm: "100%", md: "unset" }}  mb={{ sm: "8px", md: "0px" }} ml={{ sm: "15px", md: "10px" }}>
                     <Breadcrumb>
                         <BreadcrumbItem color={mainText}>
                             <BreadcrumbLink href="#" color={secondaryText}>
@@ -137,24 +137,7 @@ export default function StudentNavbar(props) {
                         </BreadcrumbItem>
                     </Breadcrumb>
                     {/* Here we create navbar brand, based on route name */}
-                    <Link
-                        color={mainText}
-                        href="#"
-                        bg="inherit"
-                        borderRadius="inherit"
-                        fontWeight="bold"
-                        _hover={{ color: { mainText } }}
-                        _active={{
-                            bg: "inherit",
-                            transform: "none",
-                            borderColor: "transparent",
-                        }}
-                        _focus={{
-                            boxShadow: "none",
-                        }}
-                    >
-                        {brandText}
-                    </Link>
+                  
                 </Box>
                 <Spacer />
        
