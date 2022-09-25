@@ -109,9 +109,9 @@ class SAY():
         else:
             at = self.encode_auth_token(user, 'access_token')
             rt = self.encode_auth_token(user, 'refresh_token')
-            self._user_cache[usr["username"]] = usr
+            # self._user_cache[usr[0]["username"]] = usr
 
-            self._user_cache[user] = usr
+            self._user_cache[user] = usr[0]
 
             return 200, "ok", "ok", {"at": at, "rt": rt, "usr": usr}
 

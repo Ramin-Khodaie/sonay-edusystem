@@ -30,8 +30,11 @@ import {
   
   import {getActiveNavbar, getActiveRoute} from '../routes'
 import StudentNavbar from "components/Navbars/StudentNavbar";
+import { useSelector } from "react-redux";
 
-  export default function StudentLayout(props) {
+  export default function SonayLayOut(props) {
+
+    const { userInfo } = useSelector((state) => state.getUserInfo);
     
     const { ...rest } = props;
 
@@ -82,30 +85,32 @@ import StudentNavbar from "components/Navbars/StudentNavbar";
           bgSize='cover'
           top='0'
         />
-        <Sidebar
-          routes={routes.filter((route)=>(route.roles.includes('student')))}
-          logo={
-            <Stack direction='row' spacing='12px' align='center' justify='center'>
-              {colorMode === "dark" ? (
-                <ArgonLogoLight w='74px' h='27px' />
-              ) : (
-                <ArgonLogoDark w='74px' h='27px' />
-              )}
-              <Box
-                w='1px'
-                h='20px'
-                bg={colorMode === "dark" ? "white" : "gray.700"}
-              />
-              {colorMode === "dark" ? (
-                <ChakraLogoLight w='82px' h='21px' />
-              ) : (
-                <ChakraLogoDark w='82px' h='21px' />
-              )}
-            </Stack>
-          }
-          display='none'
-          {...rest}
-        />
+        {
+            userInfo && <Sidebar
+            routes={routes}
+            logo={
+              <Stack direction='row' spacing='12px' align='center' justify='center'>
+                {colorMode === "dark" ? (
+                  <ArgonLogoLight w='74px' h='27px' />
+                ) : (
+                  <ArgonLogoDark w='74px' h='27px' />
+                )}
+                <Box
+                  w='1px'
+                  h='20px'
+                  bg={colorMode === "dark" ? "white" : "gray.700"}
+                />
+                {colorMode === "dark" ? (
+                  <ChakraLogoLight w='82px' h='21px' />
+                ) : (
+                  <ChakraLogoDark w='82px' h='21px' />
+                )}
+              </Stack>
+            }
+            display='none'
+            {...rest}
+          />
+        }
         <MainPanel
           w={{
             base: "100%",

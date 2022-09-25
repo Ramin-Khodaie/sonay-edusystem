@@ -82,3 +82,36 @@ def get_course_detail(st:SSettings):
 def get_course_detail_filter( filter : dict):
     ret = purchase.get_course_detail_filter( filter['filter'])
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+
+@router.get("/getmyrecentorder")
+@sn(fast=True)
+def get_my_recent_order(st:SSettings , user : SUser):
+    ret = purchase.get_my_recent_order(st , user)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+@router.put("/getmyrecentorderfilter")
+@sn(fast=True)
+def get_my_recent_order_filter(user:SUser,st : SSettings , filter : dict):
+    ret = purchase.get_my_recent_order_filter(user,st,filter['filter'])
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+@router.get("/getmyrecentregistration")
+@sn(fast=True)
+def get_my_recent_registration(st:SSettings ,  user :SUser):
+    ret = purchase.get_my_recent_registration(st , user)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+@router.put("/getmyrecentregistrationfilter")
+@sn(fast=True)
+def get_my_recent_registration_filter(st:SSettings , user :SUser , filter : dict):
+    ret = purchase.get_my_recent_registration_filter(st , user , filter['filter'])
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])

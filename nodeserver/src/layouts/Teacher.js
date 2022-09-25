@@ -29,9 +29,9 @@ import {
   import bgAdmin from "assets/img/admin-background.png";
   
   import {getActiveNavbar, getActiveRoute} from '../routes'
-import StudentNavbar from "components/Navbars/StudentNavbar";
+import TeacherNavbar from "components/Navbars/TeacherNavbar";
 
-  export default function StudentLayout(props) {
+  export default function TeacherLayout(props) {
     
     const { ...rest } = props;
 
@@ -53,7 +53,7 @@ import StudentNavbar from "components/Navbars/StudentNavbar";
         if (prop.category === "account") {
           return getRoutes(prop.views);
         }
-        if (prop.layout === "/student") {
+        if (prop.layout === "/teacher") {
           return (
             <Route
               path={prop.layout + prop.path}
@@ -69,8 +69,6 @@ import StudentNavbar from "components/Navbars/StudentNavbar";
     const { isOpen, onOpen, onClose } = useDisclosure();
     document.documentElement.dir = "ltr";
     // Chakra Color Mode
-
-
     return (
       <Box>
         <Box
@@ -83,7 +81,7 @@ import StudentNavbar from "components/Navbars/StudentNavbar";
           top='0'
         />
         <Sidebar
-          routes={routes.filter((route)=>(route.roles.includes('student')))}
+          routes={routes}
           logo={
             <Stack direction='row' spacing='12px' align='center' justify='center'>
               {colorMode === "dark" ? (
@@ -112,7 +110,7 @@ import StudentNavbar from "components/Navbars/StudentNavbar";
             xl: "calc(100% - 275px)",
           }}>
           <Portal>
-            <StudentNavbar
+            <TeacherNavbar
               onOpen={onOpen}
               brandText={getActiveRoute(routes)}
               secondary={getActiveNavbar(routes)}
@@ -125,7 +123,7 @@ import StudentNavbar from "components/Navbars/StudentNavbar";
               <PanelContainer>
                 <Switch>
                   {getRoutes(routes)}
-                  <Redirect from='/student' to='/student/karne' />
+                  {/* <Redirect from='/student' to='/student/karne' /> */}
                 </Switch>
               </PanelContainer>
             </PanelContent>

@@ -379,3 +379,106 @@ class SPurchase:
             ]
         ))
         return 200, 'ok', 'ok', data
+
+    def get_my_recent_order(self,st , user):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.purchase_collection]
+        current_date = datetime.today()
+        n = st.info['ReportDefaultUpToDate']
+        past_date = current_date - relativedelta(months=n)
+        data = list(col.find(
+            {
+
+                    'type': 'registration',
+                    'g_date': {'$gte': past_date},
+                    'products': {"$ne": []},
+                    'username' : user['username']
+
+
+                    }
+        ))
+        return 200, 'ok', 'ok', data
+
+    def get_my_recent_order_filter(self, user , st,filter):
+
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.purchase_collection]
+
+        and_li = [{'username' : user['username']},{'type': 'registration'},  {'products': {"$ne": []}}]
+
+        if 'name' in filter and filter['name'] != "":
+            and_li.append({'products.name': {'$regex': filter['name']}})
+
+        if 'startDate' in filter and filter['startDate'] != '':
+            cc = filter['startDate'].split('/')
+            sd = JalaliDate(int(cc[0]), int(cc[1]), int(cc[2])).to_gregorian()
+            sg = datetime(sd.year, sd.month, sd.day)
+            and_li.append({'g_date': {"$gte": sg}})
+        else:
+            current_date = datetime.today()
+            n = st.info['ReportDefaultUpToDate']
+            past_date = current_date - relativedelta(months=n)
+            and_li.append({'g_date': {'$gte': past_date}})
+
+        if 'endDate' in filter and filter['endDate'] != '':
+            cc = filter['endDate'].split('/')
+            sd = JalaliDate(int(cc[0]), int(cc[1]), int(cc[2])).to_gregorian()
+            sg = datetime(sd.year, sd.month, sd.day)
+            and_li.append({'g_date': {"$lte": sg}})
+
+        data = list(col.find({"$and": and_li}))
+        return 200, 'ok', 'ok', data
+
+
+
+
+    def get_my_recent_registration(self , st , user):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.purchase_collection]
+        current_date = datetime.today()
+
+        # Subtract 20 months from current date
+        n = st.info['ReportDefaultUpToDate']
+        past_date = current_date - relativedelta(months=n)
+        data = list(col.find(
+            {
+
+                    'type': 'registration',
+                    'g_date': {'$gte': past_date},
+                    'username' : user['username']
+
+
+
+                    }
+        ))
+        return 200, 'ok', 'ok', data
+
+
+    def get_my_recent_registration_filter(self , st , user , filter):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.purchase_collection]
+
+        and_li = [{'type': 'registration'}, {'username' : user['username']}]
+
+        if 'name' in filter and filter['name'] != "":
+            and_li.append({'course_name': {'$regex': filter['name']}})
+
+        if 'startDate' in filter and filter['startDate'] != '':
+            cc = filter['startDate'].split('/')
+            sd = JalaliDate(int(cc[0]), int(cc[1]), int(cc[2])).to_gregorian()
+            sg = datetime(sd.year, sd.month, sd.day)
+            and_li.append({'g_date': {"$gte": sg}})
+        else:
+            current_date = datetime.today()
+            n = st.info['ReportDefaultUpToDate']
+            past_date = current_date - relativedelta(months=n)
+            and_li.append({'g_date': {'$gte': past_date}})
+
+        if 'endDate' in filter and filter['endDate'] != '':
+            cc = filter['endDate'].split('/')
+            sd = JalaliDate(int(cc[0]), int(cc[1]), int(cc[2])).to_gregorian()
+            sg = datetime(sd.year, sd.month, sd.day)
+            and_li.append({'g_date': {"$lte": sg}})
+
+        data = list(col.find({"$and": and_li}))
+        return 200, 'ok', 'ok', data    
