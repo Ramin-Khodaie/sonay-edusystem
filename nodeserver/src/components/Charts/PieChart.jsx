@@ -3,7 +3,6 @@ import { PieChartOprtions, PieChartData } from "variables/charts";
 import Chart from "react-apexcharts";
 
 const PieChart = () => {
-  console.log(9911, PieChartData.series);
   const [state, setState] = useState({ chartData: [], chartOptions: {} });
 
   useEffect(() => {

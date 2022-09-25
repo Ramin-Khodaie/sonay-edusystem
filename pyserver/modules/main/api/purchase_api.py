@@ -85,7 +85,6 @@ def get_course_detail_filter( filter : dict):
 
 
 
-
 @router.get("/getmyrecentorder")
 @sn(fast=True)
 def get_my_recent_order(st:SSettings , user : SUser):
@@ -115,3 +114,4 @@ def get_my_recent_registration(st:SSettings ,  user :SUser):
 def get_my_recent_registration_filter(st:SSettings , user :SUser , filter : dict):
     ret = purchase.get_my_recent_registration_filter(st , user , filter['filter'])
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
+

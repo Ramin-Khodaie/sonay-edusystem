@@ -6,8 +6,8 @@ export const getMyRecentOrder = () => {
 
       try {
         const res = await bixios.get("/purchase/getmyrecentorder");
-
-
+        
+  
         if (res.status === 200) {
           resolve(res);
         }
@@ -16,12 +16,12 @@ export const getMyRecentOrder = () => {
       }
     });
   };
-
-
-
-
-
-
+  
+  
+  
+  
+  
+  
   export const getMyRecentOrderFilter = (filter) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -30,7 +30,7 @@ export const getMyRecentOrder = () => {
           filter
         }
         );
-
+  
         if (res.status === 200) {
           resolve(res);
         }
@@ -39,16 +39,16 @@ export const getMyRecentOrder = () => {
       }
     });
   };
-
-
-
+  
+  
+  
 export const getMyRecentRegistration = () => {
   return new Promise(async (resolve, reject) => {
 
 
     try {
       const res = await bixios.get("/purchase/getmyrecentregistration");
-
+      
 
       if (res.status === 200) {
         resolve(res);
@@ -81,3 +81,5 @@ export const getMyRecentRegistrationFilter = (filter) => {
     }
   });
 };
+
+

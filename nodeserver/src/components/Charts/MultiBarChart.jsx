@@ -10,7 +10,6 @@ import { getCompareChartData } from "services/mark";
 const MultiBarchart = (props) => {
   const {series} = props
   
-  // console.log(courseId , userName , 5151)
 
     const options = {
         chart: {

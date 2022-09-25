@@ -154,6 +154,24 @@ var dashRoutes = [
 
   },
   {
+    path: "/myrecentorder",
+    name: "سفارشات اخیر من",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color='inherit' />,
+    secondaryNavbar: true,
+    component: MyRecentOrder,
+    layout: "/student",
+  },
+  {
+    path: "/myrecentregistration",
+    name: "ثبت نام های اخیر من",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color='inherit' />,
+    secondaryNavbar: true,
+    component: MyRecentRegistration,
+    layout: "/student",
+  },
+  {
     path: "/coursedetail",
     name: "گزارش کلاسی",
     rtlName: "لوحة القيادة",

@@ -379,7 +379,7 @@ class SPurchase:
             ]
         ))
         return 200, 'ok', 'ok', data
-
+    
     def get_my_recent_order(self,st , user):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.purchase_collection]
@@ -398,9 +398,9 @@ class SPurchase:
                     }
         ))
         return 200, 'ok', 'ok', data
-
+    
     def get_my_recent_order_filter(self, user , st,filter):
-
+        
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.purchase_collection]
 
@@ -428,10 +428,10 @@ class SPurchase:
 
         data = list(col.find({"$and": and_li}))
         return 200, 'ok', 'ok', data
-
-
-
-
+    
+    
+    
+    
     def get_my_recent_registration(self , st , user):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.purchase_collection]
@@ -452,8 +452,8 @@ class SPurchase:
                     }
         ))
         return 200, 'ok', 'ok', data
-
-
+    
+    
     def get_my_recent_registration_filter(self , st , user , filter):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.purchase_collection]
@@ -481,4 +481,5 @@ class SPurchase:
             and_li.append({'g_date': {"$lte": sg}})
 
         data = list(col.find({"$and": and_li}))
-        return 200, 'ok', 'ok', data    
+        return 200, 'ok', 'ok', data
+        

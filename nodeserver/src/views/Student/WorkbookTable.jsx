@@ -13,7 +13,7 @@ const WorkbookTable = (props) => {
   //   final: "6.8",
   //   totalMark: "80",
   // };
-  console.log(selectedMark , 1212)
+
   return (
     <Card
       alignSelf="flex-start"

@@ -270,6 +270,7 @@ class SAY():
         return list(q)
 
 
+
     def check_password_policy(self, password: str) -> bool:
         length_error = len(password) < 8
 
@@ -290,7 +291,6 @@ class SAY():
         password_ok = not (
             length_error or digit_error or uppercase_error or lowercase_error or symbol_error)
         return password_ok
-
 
     def get_online_users(self):
         return self._session_manager.get_online_users()

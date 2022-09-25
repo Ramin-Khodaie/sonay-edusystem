@@ -47,13 +47,11 @@ const CourseDetail = () => {
 
   const callData = () => {
     getCourseDetailReport().then((res) => {
-      console.log(res, 555);
       setData(res.data.data);
     });
 
 
     getTeacherList().then((teacher)=>{
-        console.log(teacher,8585)
         setTeacher(teacher.data.data[0])
     })
   };
@@ -92,7 +90,6 @@ const CourseDetail = () => {
     const value = e.target.value;
     setFilter({ ...filter, [field]: value });
   };
-  console.log(filter, 3131);
 
   return (
     <>

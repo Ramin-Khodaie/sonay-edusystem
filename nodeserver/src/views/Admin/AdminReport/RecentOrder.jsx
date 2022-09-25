@@ -55,7 +55,7 @@ const RecentOrder = () => {
   
   const doSearch = async() => {
     const tmp = await getRecentOrderFilter(filter)
-    console.log(tmp,3131)
+
     setData(tmp.data.data)
   };
 
@@ -96,7 +96,6 @@ const RecentOrder = () => {
     const value = e.target.value;
     setFilter({ ...filter, [field]: value });
   };
-  console.log(filter , 3131)
 
   return (
     <>
