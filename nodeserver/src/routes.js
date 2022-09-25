@@ -153,24 +153,8 @@ var dashRoutes = [
     roles:['admin']
 
   },
-  {
-    path: "/myrecentorder",
-    name: "سفارشات اخیر من",
-    rtlName: "لوحة القيادة",
-    icon: <PersonIcon color='inherit' />,
-    secondaryNavbar: true,
-    component: MyRecentOrder,
-    layout: "/student",
-  },
-  {
-    path: "/myrecentregistration",
-    name: "ثبت نام های اخیر من",
-    rtlName: "لوحة القيادة",
-    icon: <PersonIcon color='inherit' />,
-    secondaryNavbar: true,
-    component: MyRecentRegistration,
-    layout: "/student",
-  },
+  
+ 
   {
     path: "/coursedetail",
     name: "گزارش کلاسی",
@@ -202,14 +186,15 @@ var dashRoutes = [
     layout: "/student",
     roles:['student' ]
   },
-  // {
-  //   path: "/rtl-support-page",
-  //   name: "RTL",
-  //   rtlName: "آرتيإل",
-  //   icon: <SupportIcon color='inherit' />,
-  //   component: RTLPage,
-  //   layout: "/rtl",
-  // },
+  {
+    path: "/rtl-support-page",
+    name: "RTL",
+    rtlName: "آرتيإل",
+    icon: <SupportIcon color='inherit' />,
+    component: RTLPage,
+    layout: "/rtl",
+    roles:['student' ]
+  },
   {
     name: "کاربری من",
     category: "account",

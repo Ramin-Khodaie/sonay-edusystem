@@ -214,8 +214,8 @@ function Sidebar(props) {
 
   // SIDEBAR
   return (
-    <Box ref={mainPanel}>
-      <Box display={{ sm: "none", xl: "block" }} position="fixed">
+    <Box dir="rtl" ref={mainPanel}>
+      <Box  display={{ sm: "none", xl: "block" }} position="fixed">
         <Box
           bg={sidebarBg}
           transition={variantChange}

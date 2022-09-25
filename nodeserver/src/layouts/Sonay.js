@@ -31,6 +31,7 @@ import {
   import {getActiveNavbar, getActiveRoute} from '../routes'
 import StudentNavbar from "components/Navbars/StudentNavbar";
 import { useSelector } from "react-redux";
+import { RtlProvider } from "components/RTLProvider/RTLProvider";
 
   export default function SonayLayOut(props) {
 
@@ -74,8 +75,22 @@ import { useSelector } from "react-redux";
     // Chakra Color Mode
 
 
+    const sidebarFilter = (route)=>{
+      const intersection = route.roles.filter((role, id) => (userInfo.full_roles.includes(role)));
+      if (intersection.length === 0){
+        return false
+      }else{
+        return true
+      }
+
+    }
+
+    console.log(userInfo , 2121)
+
+
     return (
-      <Box>
+    
+       <Box>
         <Box
           minH='40vh'
           w='100%'
@@ -87,7 +102,7 @@ import { useSelector } from "react-redux";
         />
         {
             userInfo && <Sidebar
-            routes={routes}
+            routes={routes.filter(sidebarFilter)}
             logo={
               <Stack direction='row' spacing='12px' align='center' justify='center'>
                 {colorMode === "dark" ? (
@@ -112,6 +127,9 @@ import { useSelector } from "react-redux";
           />
         }
         <MainPanel
+        variant='rtl'
+      
+        
           w={{
             base: "100%",
             xl: "calc(100% - 275px)",
@@ -154,6 +172,7 @@ import { useSelector } from "react-redux";
           />
         </MainPanel>
       </Box>
+ 
     );
   }
   
