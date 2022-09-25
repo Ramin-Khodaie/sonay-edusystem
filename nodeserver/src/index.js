@@ -56,7 +56,7 @@ ReactDOM.render(
           <Route path={`/sonay`} component={SonayLayOut}/>
           <Route path={`/rtl`} component={RTLLayout} />
           <Route path={`/paymentverify/:oid`} component={PaymentVerify} />
-          <Redirect from={`/`} to="/admin/dashboard" />
+          <Redirect from={`/`} to="/sonay/dashboard" />
         </Switch>
       </HashRouter>
     </NotifyProvider>

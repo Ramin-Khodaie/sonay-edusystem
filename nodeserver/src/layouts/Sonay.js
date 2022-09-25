@@ -56,7 +56,7 @@ import { useSelector } from "react-redux";
         if (prop.category === "account") {
           return getRoutes(prop.views);
         }
-        if (prop.layout === "/student") {
+        if (prop.layout === "/sonay") {
           return (
             <Route
               path={prop.layout + prop.path}
@@ -130,7 +130,7 @@ import { useSelector } from "react-redux";
               <PanelContainer>
                 <Switch>
                   {getRoutes(routes)}
-                  <Redirect from='/student' to='/student/karne' />
+                  {/* <Redirect from='/student' to='/student/karne' /> */}
                 </Switch>
               </PanelContainer>
             </PanelContent>
