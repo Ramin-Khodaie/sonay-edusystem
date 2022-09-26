@@ -12,7 +12,6 @@ const AuthorizeHelper = (props) => {
     history.push("/forbiden");
   };
 
-  console.log(userInfo,8787)
 
   useEffect(() => {
       console.log(roles,4545)

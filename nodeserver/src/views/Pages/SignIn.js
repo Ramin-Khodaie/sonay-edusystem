@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // Chakra imports
 import {
   Box,
@@ -20,6 +20,8 @@ import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 import { bixios } from "services/main";
 import { useNavigate, useHistory } from "react-router-dom";
 import { withRouter } from "helpers/components/withRouter/withRouter";
+import { useDispatch, useSelector } from "react-redux";
+import { userInfoAction } from "redux/user/UserInfo/UserInfoAction";
 
 function SignIn(props) {
   // Chakra color mode
@@ -30,6 +32,9 @@ function SignIn(props) {
   const bgIcons = useColorModeValue("trasnparent", "navy.700");
   const bgIconsHover = useColorModeValue("gray.50", "whiteAlpha.100");
 
+  const { userInfo } = useSelector((state) => state.getUserInfo);
+
+  const dispatch = useDispatch()
   const [formData , setFormData] = React.useState({
     username : "",
     password : ""
@@ -53,6 +58,7 @@ function SignIn(props) {
   let history = useHistory();
 
 
+
 function createPost(){
 
   // const fData = new FormData();
@@ -64,11 +70,12 @@ function createPost(){
     password: formData.password,
  
   }
-  ).then((response) => {
+  ).then(async (response) => {
     localStorage.setItem("at", response.data.data.at);
     localStorage.setItem("rt", response.data.data.rt);
     setStatus({...status , user : true})
-    history.push("/dashboard")
+    await getUserInfo()
+    history.push("/sonay/dashboard")
     
     
 
@@ -78,6 +85,30 @@ function createPost(){
   })
 }
 
+const getUserInfo = async () => {
+
+   await dispatch(userInfoAction());
+
+};
+
+
+const checkUserState = ()=>{
+//      if (userInfo.username !== 'anonymous'){
+//       history.push("/sonay/dashboard")
+
+
+// }
+console.log(userInfo,3131)
+}
+
+
+useEffect(()=>{
+
+  getUserInfo()
+  checkUserState()
+  
+
+},[])
 
 
   return (

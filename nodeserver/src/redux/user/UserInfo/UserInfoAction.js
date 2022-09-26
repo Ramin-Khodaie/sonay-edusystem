@@ -11,6 +11,7 @@ export const userInfoAction = () => async (dispatch) => {
 
   if (res.status === 200) {
 
+
       dispatch(userInfoSuccess(res.data));
    
   } else {

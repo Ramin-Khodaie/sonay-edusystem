@@ -18,6 +18,9 @@ const userInfoSlice = createSlice({
         userInfoSuccess:(state, {payload})=>{
             state.userInfo = payload,
             state.errorMessage = ""    
+
+
+           
        
  
         },
