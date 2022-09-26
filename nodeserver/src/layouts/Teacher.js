@@ -39,9 +39,8 @@ import TeacherNavbar from "components/Navbars/TeacherNavbar";
     const [fixed, setFixed] = useState(false);
     const { colorMode } = useColorMode();
     // functions for changing the states from components
-    const 
-    getRoute = () => {
-      return window.location.pathname !== "/teacher/full-screen-maps";
+    const getRoute = () => {
+      return window.location.pathname !== "/student/full-screen-maps";
     };
    
     // This changes navbar state(fixed or not)
@@ -124,7 +123,7 @@ import TeacherNavbar from "components/Navbars/TeacherNavbar";
               <PanelContainer>
                 <Switch>
                   {getRoutes(routes)}
-                  {/* <Redirect from='/teacher' to='/teacher/karne' /> */}
+                  {/* <Redirect from='/student' to='/student/karne' /> */}
                 </Switch>
               </PanelContainer>
             </PanelContent>

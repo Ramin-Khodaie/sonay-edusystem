@@ -76,8 +76,8 @@ export default function Dashboard() {
   
 
   return (
-    <AuthorizeProvider roles={['student' , 'admin' ]} >
-        <Flex flexDirection='column' pt={{ base: "120px", md: "75px" }}>
+   <AuthorizeProvider roles={[]}>
+     <Flex flexDirection='column' pt={{ base: "120px", md: "75px" }}>
       <SimpleGrid columns={{ sm: 1, md: 2, xl: 4 }} spacing='24px' mb='20px'>
         <Card minH='125px'>
           <Flex direction='column'>
@@ -418,8 +418,7 @@ export default function Dashboard() {
           </Box>
         </Card>
       </Grid>
-    </Flex> 
-    </AuthorizeProvider>
- 
+    </Flex>
+   </AuthorizeProvider>
   );
 }

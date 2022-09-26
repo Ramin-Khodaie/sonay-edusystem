@@ -37,7 +37,8 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <HomeIcon/>,
     component: Dashboard,
-    layout: "/admin",
+    layout: "/sonay",
+    roles:['admin' , 'teacher' , 'student']
   },
   {
     path: "/courses",
@@ -45,7 +46,9 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <FaUserAlt></FaUserAlt> ,
     component: Courses,
-    layout: "/admin",
+    layout: "/sonay",
+    roles:['admin' ]
+
   },
   {
     path: "/users",
@@ -53,7 +56,9 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <FaUserAlt></FaUserAlt> ,
     component: Users,
-    layout: "/admin",
+    layout: "/sonay",
+    roles:['admin' ]
+
   },
   {
     path: "/products",
@@ -61,7 +66,9 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <FaBook /> ,
     component: Product,
-    layout: "/admin",
+    layout: "/sonay",
+    roles:['admin' ]
+
   },
   {
     path: "/managemark",
@@ -69,7 +76,9 @@ var dashRoutes = [
     rtlName: " نمرات",
     icon: <FaRegistered color='inherit' />,
     component: AddMark,
-    layout: "/teacher",
+    layout: "/sonay",
+    roles:[ 'teacher']
+
   },
   
   {
@@ -78,39 +87,49 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <CreditIcon color='inherit' />,
     component: Billing,
-    layout: "/admin",
+    layout: "/sonay",
+    roles:['admin' ]
+
   },
   {
     path: "/karne",
-    name: "karne",
+    name: "کارنامه",
     rtlName: "کارنامه",
     icon: <FaPaperclip color='inherit' />,
     component: Karne,
-    layout: "/student",
+    layout: "/sonay",
+    roles:['student']
+
   },
-  {
-    path: "/books",
-    name: "book",
-    rtlName: "کتاب",
-    icon: <FaBook color='inherit' />,
-    component: Products,
-    layout: "/student",
-  },
+  // {
+  //   path: "/books",
+  //   name: "book",
+  //   rtlName: "کتاب",
+  //   icon: <FaBook color='inherit' />,
+  //   component: Products,
+  //   layout: "/student",
+  //   roles:['student']
+
+  // },
   {
     path: "/register",
     name: "ثبت نام",
     rtlName: "ثبت نام",
     icon: <FaRegistered color='inherit' />,
     component: Registration,
-    layout: "/student",
+    layout: "/sonay",
+    roles:[ 'student']
+
   },
   {
     path: "/checkout",
-    name: "checkout",
-    rtlName: "کتاب",
+    name: "سبد خرید",
+    rtlName: "سبد خرید",
     icon: <FaBook color='inherit' />,
     component: Checkout,
-    layout: "/student",
+    layout: "/sonay",
+    roles:[ 'student']
+
   },
   {
     path: "/recentorder",
@@ -119,7 +138,9 @@ var dashRoutes = [
     icon: <PersonIcon color='inherit' />,
     secondaryNavbar: true,
     component: RecentOrder,
-    layout: "/admin",
+    layout: "/sonay",
+    roles:['admin' ]
+
   },
   {
     path: "/recentregistration",
@@ -128,7 +149,22 @@ var dashRoutes = [
     icon: <PersonIcon color='inherit' />,
     secondaryNavbar: true,
     component: RecentRegistration,
-    layout: "/admin",
+    layout: "/sonay",
+    roles:['admin']
+
+  },
+  
+ 
+  {
+    path: "/coursedetail",
+    name: "گزارش کلاسی",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color='inherit' />,
+    secondaryNavbar: true,
+    component: CourseDetail,
+    layout: "/sonay",
+    roles:['admin' ]
+
   },
   {
     path: "/myrecentorder",
@@ -137,7 +173,8 @@ var dashRoutes = [
     icon: <PersonIcon color='inherit' />,
     secondaryNavbar: true,
     component: MyRecentOrder,
-    layout: "/student",
+    layout: "/sonay",
+    roles:['student' ]
   },
   {
     path: "/myrecentregistration",
@@ -147,47 +184,56 @@ var dashRoutes = [
     secondaryNavbar: true,
     component: MyRecentRegistration,
     layout: "/student",
+    roles:['student' ]
   },
   {
-    path: "/coursedetail",
-    name: "گزارش کلاسی",
-    rtlName: "لوحة القيادة",
-    icon: <PersonIcon color='inherit' />,
-    secondaryNavbar: true,
-    component: CourseDetail,
-    layout: "/admin",
+    path: "/rtl-support-page",
+    name: "RTL",
+    rtlName: "آرتيإل",
+    icon: <SupportIcon color='inherit' />,
+    component: RTLPage,
+    layout: "/rtl",
+    roles:['student' ]
   },
-  
   {
-    name: "ACCOUNT PAGES",
+    name: "کاربری من",
     category: "account",
     rtlName: "صفحات",
     state: "pageCollapse",
+    roles:['admin' , 'teacher' , 'student'],  
+    
+
     views: [
       {
         path: "/profile",
-        name: "Profile",
+        name: "پروفایل من",
         rtlName: "لوحة القيادة",
         icon: <PersonIcon color='inherit' />,
         secondaryNavbar: true,
         component: Profile,
-        layout: "/admin",
+        layout: "/sonay",
+        roles:['admin' , 'teacher' , 'student']
+
       },
       {
         path: "/signin",
-        name: "Sign In",
+        name: "ورود",
         rtlName: "لوحة القيادة",
         icon: <DocumentIcon color='inherit' />,
         component: SignIn,
         layout: "/auth",
+        roles:['admin' , 'teacher' , 'student']
+
       },
       {
         path: "/signup",
-        name: "Sign Up",
+        name: "ثبت کاربری",
         rtlName: "لوحة القيادة",
         icon: <RocketIcon color='inherit' />,
         component: SignUp,
         layout: "/auth",
+        roles:['admin' , 'teacher' , 'student']
+
       },
     ],
   },

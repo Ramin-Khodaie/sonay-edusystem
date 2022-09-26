@@ -32,9 +32,8 @@ import StudentLayout from "./layouts/Student.js";
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
 import PaymentVerify from "views/Pages/payment/paymentVerify.jsx";
-import AuthorizeProvider from "helpers/authorize/AuthorizeProvider.jsx";
 import Forbiden from "views/Pages/Forbiden.js";
-import TeacherLayout from "./layouts/Teacher.js";
+import SonayLayOut from "layouts/Sonay.js";
 
 
 const persistore = persistStore(store)
@@ -53,13 +52,14 @@ ReactDOM.render(
       <HashRouter>
         <Switch>
           <Route path={`/auth`} component={AuthLayout} />
-          <Route path={`/admin`} component={AdminLayout} />
-          <Route path={`/teacher`} component={TeacherLayout} />
-          <Route path={`/student`} component={StudentLayout}/>
+          {/* <Route path={`/admin`} component={AdminLayout} /> */}
+          {/* <Route path={`/teacher`} component={AdminLayout} /> */}
+          <Route path={`/forbiden`} component={Forbiden} />
+
+          <Route path={`/sonay`} component={SonayLayOut}/>
           <Route path={`/rtl`} component={RTLLayout} />
           <Route path={`/paymentverify/:oid`} component={PaymentVerify} />
-          <Route path={`/forbiden`} component={Forbiden} />
-          <Redirect from={`/`} to="/admin/dashboard" />
+          <Redirect from={`/`} to="/sonay/dashboard" />
         </Switch>
       </HashRouter>
     </NotifyProvider>
