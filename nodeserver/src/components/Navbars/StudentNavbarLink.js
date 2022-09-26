@@ -41,6 +41,17 @@ export default function StudentNavbarLink(props) {
     } = props;
 
     const { colorMode } = useColorMode();
+    const { userInfo } = useSelector((state) => state.getUserInfo);
+    const sidebarFilter = (route)=>{
+        const intersection = route.roles.filter((role, id) => (userInfo.full_roles.includes(role)));
+        if (intersection.length === 0){
+          return false
+        }else{
+          return true
+        }
+  
+      }
+  
 
 
 
@@ -57,11 +68,11 @@ export default function StudentNavbarLink(props) {
     }
     return (
         <Flex
-            pe={{ sm: "0px", md: "16px" }}
-            w={{ sm: "100%", md: "auto" }}
+            
             alignItems='center'
             flexDirection='row'>
             {/* <SearchBar me='18px' /> */}
+          
 
             <DropDown />
 
@@ -89,33 +100,7 @@ export default function StudentNavbarLink(props) {
                     <Text display={{ sm: "none", md: "flex" }}>Sign In</Text>
                 </Button>
             </NavLink>
-            <SidebarResponsive
-                hamburgerColor={"white"}
-                logo={
-                    <Stack direction='row' spacing='12px' align='center' justify='center'>
-                        {colorMode === "dark" ? (
-                            <ArgonLogoLight w='74px' h='27px' />
-                        ) : (
-                            <ArgonLogoDark w='74px' h='27px' />
-                        )}
-                        <Box
-                            w='1px'
-                            h='20px'
-                            bg={colorMode === "dark" ? "white" : "gray.700"}
-                        />
-                        {colorMode === "dark" ? (
-                            <ChakraLogoLight w='82px' h='21px' />
-                        ) : (
-                            <ChakraLogoDark w='82px' h='21px' />
-                        )}
-                    </Stack>
-                }
-                colorMode={colorMode}
-                secondary={props.secondary}
-                routes={routes}
-                {...rest}
-            />
-
+            
             <Menu>
                 <MenuButton>
                     <BellIcon color={navbarIcon} w='18px' h='18px' />
@@ -152,6 +137,33 @@ export default function StudentNavbarLink(props) {
                     </Flex>
                 </MenuList>
             </Menu>
+            
+
+            {userInfo && <SidebarResponsive hamburgerColor={"white"}
+                logo={
+                    <Stack direction='row' spacing='12px' align='center' justify='center'>
+                        {colorMode === "dark" ? (
+                            <ArgonLogoLight w='74px' h='27px' />
+                        ) : (
+                            <ArgonLogoDark w='74px' h='27px' />
+                        )}
+                        <Box
+                            w='1px'
+                            h='20px'
+                            bg={colorMode === "dark" ? "white" : "gray.700"}
+                        />
+                        {colorMode === "dark" ? (
+                            <ChakraLogoLight w='82px' h='21px' />
+                        ) : (
+                            <ChakraLogoDark w='82px' h='21px' />
+                        )}
+                    </Stack>
+                }
+                colorMode={colorMode}
+                secondary={props.secondary}
+                routes={routes.filter(sidebarFilter)}
+                {...rest}
+            />}
         </Flex>
     );
 }

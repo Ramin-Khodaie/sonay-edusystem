@@ -49,6 +49,8 @@ function Sidebar(props) {
   const { colorMode } = useColorMode;
   // this function creates the links and collapses that appear in the sidebar (left menu)
   const { sidebarVariant } = props;
+
+
   const createLinks = (routes) => {
     // Chakra Color Mode
     let activeBg = useColorModeValue("white", "navy.700");
@@ -74,7 +76,7 @@ function Sidebar(props) {
               mx="auto"
               ps={{
                 sm: "10px",
-                xl: "16px",
+                xl: "30px",
               }}
               py="12px"
             >
@@ -104,7 +106,7 @@ function Sidebar(props) {
               }}
               ps={{
                 sm: "10px",
-                xl: "16px",
+                xl: "35px",
               }}
               py="12px"
               borderRadius="15px"
@@ -156,7 +158,7 @@ function Sidebar(props) {
               py="12px"
               ps={{
                 sm: "10px",
-                xl: "16px",
+                xl: "25px",
               }}
               borderRadius="15px"
               _hover="none"
@@ -208,13 +210,13 @@ function Sidebar(props) {
   var brand = (
     <Box pt={"25px"} mb="12px">
     <BrandText />    
-<HSeparator my="26px" />
+<HSeparator my="15px" />
     </Box>
   );
 
   // SIDEBAR
   return (
-    <Box ref={mainPanel}>
+    <Box dir="rtl" ref={mainPanel}>
       <Box display={{ sm: "none", xl: "block" }} position="fixed">
         <Box
           bg={sidebarBg}
@@ -228,8 +230,8 @@ function Sidebar(props) {
             sm: "16px",
           }}
           h="calc(100vh - 32px)"
-          ps="20px"
-          pe="20px"
+          ps="10px"
+          pe="10px"
           m={sidebarMargins}
           filter="drop-shadow(0px 5px 14px rgba(0, 0, 0, 0.05))"
           borderRadius={sidebarRadius}
@@ -255,7 +257,7 @@ function Sidebar(props) {
             <Stack direction="column" mb="40px">
               <Box>{links}</Box>
             </Stack>
-            <SidebarHelp sidebarVariant={sidebarVariant} />
+            {/* <SidebarHelp sidebarVariant={sidebarVariant} /> */}
           </Scrollbars>
         </Box>
       </Box>
@@ -288,6 +290,8 @@ export function SidebarResponsive(props) {
   );
   let sidebarBackgroundColor = useColorModeValue("white", "navy.800");
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = React.useRef();
   // this function creates the links and collapses that appear in the sidebar (left menu)
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
@@ -351,6 +355,8 @@ export function SidebarResponsive(props) {
               _focus={{
                 boxShadow: "none",
               }}
+
+            onClick={onClose}
             >
               <Flex>
                 {typeof prop.icon === "string" ? (
@@ -434,15 +440,14 @@ export function SidebarResponsive(props) {
   //  BRAND
 
   var brand = (
-    <Box pt={"35px"} mb="8px" >
-      {BrandText}
-      <HSeparator my="26px" />
+    <Box pt={"25px"} mb="12px">
+    <BrandText />    
+<HSeparator my="15px" />
     </Box>
   );
-
   // SIDEBAR
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
+  
+  
   // Color variables
   return (
     <Flex
@@ -465,8 +470,8 @@ export function SidebarResponsive(props) {
       >
         <DrawerOverlay />
         <DrawerContent
-          w="250px"
-          maxW="250px"
+          w="300px"
+          maxW="300px"
           ms={{
             sm: "16px",
           }}
@@ -480,13 +485,13 @@ export function SidebarResponsive(props) {
             _focus={{ boxShadow: "none" }}
             _hover={{ boxShadow: "none" }}
           />
-          <DrawerBody maxW="250px" px="1rem">
-            <Box maxW="100%" h="100vh">
+          <DrawerBody maxW="300px" px="1rem">
+            <Box maxW="100%" h="95vh">
               <Box>{brand}</Box>
               <Stack direction="column" mb="40px">
                 <Box>{links}</Box>
               </Stack>
-              <SidebarHelp />
+          
             </Box>
           </DrawerBody>
         </DrawerContent>

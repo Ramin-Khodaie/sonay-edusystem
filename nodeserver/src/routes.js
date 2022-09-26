@@ -183,7 +183,7 @@ var dashRoutes = [
     icon: <PersonIcon color='inherit' />,
     secondaryNavbar: true,
     component: MyRecentRegistration,
-    layout: "/student",
+    layout: "/sonay",
     roles:['student' ]
   },
   {

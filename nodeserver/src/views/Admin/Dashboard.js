@@ -77,7 +77,7 @@ export default function Dashboard() {
 
   return (
    <AuthorizeProvider roles={[]}>
-     <Flex flexDirection='column' pt={{ base: "120px", md: "75px" }}>
+     <Flex flexDirection='column' pt="75px">
       <SimpleGrid columns={{ sm: 1, md: 2, xl: 4 }} spacing='24px' mb='20px'>
         <Card minH='125px'>
           <Flex direction='column'>
@@ -247,7 +247,7 @@ export default function Dashboard() {
               : "linear-gradient(81.62deg, #313860 2.25%, #151928 79.87%)"
           }
           p='0px'
-          maxW={{ sm: "320px", md: "100%" }}>
+          maxW='100%'>
           <Flex direction='column' mb='40px' p='28px 0px 0px 22px'>
             <Text color='#fff' fontSize='lg' fontWeight='bold' mb='6px'>
               Sales Overview
@@ -266,7 +266,7 @@ export default function Dashboard() {
             />
           </Box>
         </Card>
-        <Card p='0px' maxW={{ sm: "320px", md: "100%" }}>
+        <Card p='0px' maxW='100%'>
           <Flex direction='column' mb='40px' p='28px 0px 0px 22px'>
             <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
               PERFORMANCE
@@ -279,7 +279,7 @@ export default function Dashboard() {
             <BarChart chartData={barChartData} chartOptions={barChartOptions} />
           </Box>
         </Card>
-        <Card p='0px' maxW={{ sm: "320px", md: "100%" }}>
+        <Card p='0px' maxW='100%'>
           <Flex direction='column'>
             <Flex align='center' justify='space-between' p='22px'>
               <Text fontSize='lg' color={textColor} fontWeight='bold'>
@@ -348,7 +348,7 @@ export default function Dashboard() {
             </Box>
           </Flex>
         </Card>
-        <Card p='0px' maxW={{ sm: "320px", md: "100%" }}>
+        <Card p='0px' maxW='100%'>
           <Flex direction='column'>
             <Flex align='center' justify='space-between' p='22px'>
               <Text fontSize='lg' color={textColor} fontWeight='bold'>

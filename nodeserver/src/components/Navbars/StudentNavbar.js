@@ -7,6 +7,7 @@ import {
     Flex,
     Link,
     Spacer,
+    Text,
     useColorModeValue
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
@@ -14,6 +15,7 @@ import AdminNavbarLinks from "./AdminNavbarLinks";
 import StudentNavbarLink from "./StudentNavbarLink";
 
 export default function StudentNavbar(props) {
+    
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
@@ -112,7 +114,7 @@ export default function StudentNavbar(props) {
             }}
             pt="8px"
             top="18px"
-            w={{ sm: "calc(100vw - 30px)", xl: "calc(100vw - 75px - 275px)" }}
+            w={{ sm: "calc(100vw - 30px)", xl: "calc(100vw - 75px )" }}
         >
             <Flex
                 w="100%"
@@ -120,9 +122,9 @@ export default function StudentNavbar(props) {
                     sm: "row",
                     md: "row",
                 }}
-                alignItems={{ xl: "center" }}
+                
             >
-                <Box w={{ sm: "60%", md: "unset" }}  mb={{ sm: "8px", md: "0px" }} ml={{ sm: "15px", md: "10px" }}>
+                <Box   ml={{ sm: "35px", base: "10px" }}>
                     <Breadcrumb>
                         <BreadcrumbItem color={mainText}>
                             <BreadcrumbLink href="#" color={secondaryText}>
@@ -137,7 +139,7 @@ export default function StudentNavbar(props) {
                         </BreadcrumbItem>
                     </Breadcrumb>
                     {/* Here we create navbar brand, based on route name */}
-                    <Link
+                    {/* <Link
                         color={mainText}
                         href="#"
                         bg="inherit"
@@ -154,11 +156,15 @@ export default function StudentNavbar(props) {
                         }}
                     >
                         {brandText}
-                    </Link>
+                    </Link> */}
                 </Box>
                 <Spacer />
-       
-                <Box dir='rtl' ms="auto" w={{ sm: "40%", md: "unset" }}>
+                <Box >
+                    <Text color={'white'} fontSize={{'sm':'20px' , 'md':'24px' , 'lg':'26px'}} fontFamily={'Lalezar'} >آموزشگاه استقلال</Text>
+
+                </Box>
+                <Spacer />      
+                <Box  mr={{xl : "275px" , base:"0px" }}>
                     <StudentNavbarLink
                         onOpen={props.onOpen}
                         logoText={props.logoText}
