@@ -26,7 +26,7 @@ import {
   ChakraLogoDark,
   ChakraLogoLight,
 } from "../components/Icons/Icons";
-import bgAdmin from "../assets/img/admin-background.png";
+import bgAdmin from "../assets/img/admin-background.jpg";
 export default function Dashboard(props) {
   const { ...rest } = props;
   // states and functions

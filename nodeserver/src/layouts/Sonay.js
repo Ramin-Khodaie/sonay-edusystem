@@ -26,7 +26,8 @@ import {
   import MainPanel from "../components/Layout/MainPanel";
   import PanelContainer from "../components/Layout/PanelContainer";
   import PanelContent from "../components/Layout/PanelContent";
-  import bgAdmin from "assets/img/admin-background.png";
+  import bgAdmin from "assets/img/admin-background.jpg";
+  import bgAdminDark from "assets/img/admin-background-dark.jpg";
   
   import {getActiveNavbar, getActiveRoute} from '../routes'
 import StudentNavbar from "components/Navbars/StudentNavbar";
@@ -92,11 +93,11 @@ import { RtlProvider } from "components/RTLProvider/RTLProvider";
     
        <Box>
         <Box
-          minH='40vh'
+          minH='100vh'
           w='100%'
           position='absolute'
-          bgImage={colorMode === "light" ? bgAdmin : "none"}
-          bg={colorMode === "light" ? bgAdmin : "navy.900"}
+          bgImage={colorMode === "light" ? bgAdmin : bgAdminDark}
+          bg={colorMode === "light" ? bgAdmin : bgAdminDark}
           bgSize='cover'
           top='0'
         />
