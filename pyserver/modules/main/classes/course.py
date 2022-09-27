@@ -39,6 +39,9 @@ class SCourse:
             res = self.edit_course(info, col)
             return res
         idd = str(ObjectId())
+        cc = JalaliDate.today()
+        info['date'] = f"{cc.year}/{cc.month}/{cc.day}"
+        info['g_date'] = datetime.today()
 
         col.insert_one({**info, "_id": idd})
         if info['prev_course']['id'] != '' and info['prev_course']['name'] != '':

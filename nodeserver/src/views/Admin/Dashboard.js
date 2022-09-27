@@ -2,6 +2,7 @@
 import {
   Box,
   Button,
+  Center,
   Flex,
   Grid,
   Progress,
@@ -36,6 +37,8 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch , useSelector } from "react-redux";
 import { userInfoAction } from "redux/user/UserInfo/UserInfoAction";
+import { getYearCompare } from "services/dashboard";
+import { getCounts } from "services/dashboard";
 import { getUserInfo } from "services/user";
 // Variables
 import {
@@ -58,6 +61,9 @@ export default function Dashboard() {
   const { colorMode } = useColorMode();
 
 
+  const [countData , setCountData] = useState([])
+  const [compareyearData , setCompareyearData] = useState([])
+
 
   const dispatch = useDispatch();
   
@@ -66,39 +72,57 @@ export default function Dashboard() {
 
   };
 
+
+  const getCountData = async() => {
+    await getCounts().then((res)=>{
+      setCountData(res.data.data)
+      
+    })
+  }
+
+
+  const getYearCompareData = async() => {
+    await getYearCompare().then((res)=>{
+      setCompareyearData(res.data.data)
+
+    })
+  }
+
   const { userInfo } = useSelector((state) => state.getUserInfo);
   useEffect(() => {
     getUserInfo();
+    getCountData();
+    getYearCompareData();
   }, []);
-
-
-
+  console.log(compareyearData,9898)
+ 
 
   return (
    <AuthorizeProvider roles={[]}>
      <Flex flexDirection='column' pt="75px">
-      <SimpleGrid columns={{ sm: 1, md: 2, xl: 4 }} spacing='24px' mb='20px'>
-        <Card minH='125px'>
+      <SimpleGrid columns={{ sm: 1, md: 4, xl: 4 }} spacing='24px' mb='20px'>
+        <Card maxH='115px'>
           <Flex direction='column'>
             <Flex
               flexDirection='row'
               align='center'
               justify='center'
               w='100%'
-              mb='25px'>
-              <Stat me='auto'>
+              mb='5px'>
+              <Stat  me='auto'>
                 <StatLabel
-                  fontSize='xs'
+                textAlign={'center'}
+                  fontSize='s'
                   color='gray.400'
                   fontWeight='bold'
                   textTransform='uppercase'>
-                  Today's Money
+                  تعداد  کل دبیران
                 </StatLabel>
-                <Flex>
-                  <StatNumber fontSize='lg' color={textColor} fontWeight='bold'>
-                    $53,897
-                  </StatNumber>
-                </Flex>
+              
+                  <Text textAlign={'center'} fontSize='lg' color={textColor} fontWeight='bold'>
+                    {countData.length !== 0 && countData[0].teachers.count}
+                  </Text>
+             
               </Stat>
               <IconBox
                 borderRadius='50%'
@@ -109,35 +133,60 @@ export default function Dashboard() {
                 <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
               </IconBox>
             </Flex>
-            <Text color='gray.400' fontSize='sm'>
-              <Text as='span' color='green.400' fontWeight='bold'>
-                +3.48%{" "}
-              </Text>
-              Since last month
+            {
+              countData.length !== 0 && countData[0].teachers.perc > 0 ?
+              <Flex>
+            <Text textAlign={'center'} color='gray.400' fontSize='sm'>
+              
+              
+              افزایش از ماه قبل
+              
             </Text>
+            <Text textAlign={'center'} as='span' color='green.400' fontWeight='bold'>
+              %{countData.length !== 0 && countData[0].teachers.perc}{" "}
+              </Text>
+            </Flex> 
+            
+            
+            :
+
+
+            <Flex>
+            <Text color='gray.400' fontSize='sm'>
+              
+              
+              کاهش از ماه قبل
+              
+            </Text>
+            <Text  as='span' color='red.400' fontWeight='bold'>
+              %{countData.length !== 0 && countData[0].teachers.perc}{" "}
+              </Text>
+            </Flex>
+            }
           </Flex>
         </Card>
-        <Card minH='125px'>
+        <Card maxH='115px'>
           <Flex direction='column'>
             <Flex
               flexDirection='row'
               align='center'
               justify='center'
               w='100%'
-              mb='25px'>
-              <Stat me='auto'>
+              mb='5px'>
+              <Stat  me='auto'>
                 <StatLabel
-                  fontSize='xs'
+                textAlign={'center'}
+                  fontSize='s'
                   color='gray.400'
                   fontWeight='bold'
                   textTransform='uppercase'>
-                  Today's Users
+                  تعداد کل دوره ها
                 </StatLabel>
-                <Flex>
-                  <StatNumber fontSize='lg' color={textColor} fontWeight='bold'>
-                    $3,200
-                  </StatNumber>
-                </Flex>
+              
+                  <Text textAlign={'center'} fontSize='lg' color={textColor} fontWeight='bold'>
+                    {countData.length !== 0 && countData[0].courses.count}
+                  </Text>
+             
               </Stat>
               <IconBox
                 borderRadius='50%'
@@ -145,38 +194,76 @@ export default function Dashboard() {
                 h={"45px"}
                 w={"45px"}
                 bg={iconBlue}>
-                <GlobeIcon h={"24px"} w={"24px"} color={iconBoxInside} />
+                <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
               </IconBox>
             </Flex>
-            <Text color='gray.400' fontSize='sm'>
-              <Text as='span' color='green.400' fontWeight='bold'>
-                +5.2%{" "}
-              </Text>
-              Since last month
+            {
+              countData.length !== 0 && countData[0].courses.perc > 0 ?
+              <Flex>
+            <Text textAlign={'center'} color='gray.400' fontSize='sm'>
+              
+              
+              افزایش از ماه قبل
+              
             </Text>
+            <Text textAlign={'center'} as='span' color='green.400' fontWeight='bold'>
+              %{countData.length !== 0 && countData[0].courses.perc}{" "}
+              </Text>
+            </Flex> 
+            
+            
+            :
+
+
+            <Flex>
+            <Text color='gray.400' fontSize='sm'>
+              
+              
+              کاهش از ماه قبل
+              
+            </Text>
+            <Text  as='span' color='red.400' fontWeight='bold'>
+              %{countData.length !== 0 && countData[0].courses.perc}{" "}
+              </Text>
+            </Flex>
+            }
           </Flex>
         </Card>
-        <Card minH='125px'>
+
+        <Card maxH='115px'>
           <Flex direction='column'>
             <Flex
               flexDirection='row'
               align='center'
               justify='center'
               w='100%'
-              mb='25px'>
-              <Stat me='auto'>
+              mb='5px'>
+              <Stat  me='auto'>
                 <StatLabel
-                  fontSize='xs'
+                textAlign={'center'}
+                  fontSize='s'
                   color='gray.400'
                   fontWeight='bold'
                   textTransform='uppercase'>
-                  New Clients
+                  مجموع پرداختی ماه جاری
                 </StatLabel>
-                <Flex>
-                  <StatNumber fontSize='lg' color={textColor} fontWeight='bold'>
-                    +2,503
-                  </StatNumber>
-                </Flex>
+                <Center>
+            <Text textAlign={'center'} color='gray.400' fontSize='sm'>
+              
+              
+           ریال
+              
+            </Text>
+     
+            <Text textAlign={'center'} fontSize='lg' color={textColor} fontWeight='bold'>
+                  
+                  {countData.length !== 0 && countData[0].purchases.count}
+                 
+                  </Text>
+            </Center> 
+               
+          
+             
               </Stat>
               <IconBox
                 borderRadius='50%'
@@ -184,38 +271,64 @@ export default function Dashboard() {
                 h={"45px"}
                 w={"45px"}
                 bg={iconBlue}>
-                <DocumentIcon h={"24px"} w={"24px"} color={iconBoxInside} />
+                <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
               </IconBox>
             </Flex>
-            <Text color='gray.400' fontSize='sm'>
-              <Text as='span' color='red.500' fontWeight='bold'>
-                -2.82%{" "}
-              </Text>
-              Since last month
+            {
+              countData.length !== 0 && countData[0].purchases.perc > 0 ?
+              <Flex>
+            <Text textAlign={'center'} color='gray.400' fontSize='sm'>
+              
+              
+              افزایش از ماه قبل
+              
             </Text>
+            <Text textAlign={'center'} as='span' color='green.400' fontWeight='bold'>
+              %{countData.length !== 0 && countData[0].purchases.perc}{" "}
+              </Text>
+            </Flex> 
+            
+            
+            :
+
+
+            <Flex>
+            <Text color='gray.400' fontSize='sm'>
+              
+              
+              کاهش از ماه قبل
+              
+            </Text>
+            <Text  as='span' color='red.400' fontWeight='bold'>
+              %{countData.length !== 0 && countData[0].purchases.perc}{" "}
+              </Text>
+            </Flex>
+            }
           </Flex>
         </Card>
-        <Card minH='125px'>
+
+        <Card maxH='115px'>
           <Flex direction='column'>
             <Flex
               flexDirection='row'
               align='center'
               justify='center'
               w='100%'
-              mb='25px'>
-              <Stat me='auto'>
+              mb='5px'>
+              <Stat  me='auto'>
                 <StatLabel
-                  fontSize='xs'
+                textAlign={'center'}
+                  fontSize='s'
                   color='gray.400'
                   fontWeight='bold'
                   textTransform='uppercase'>
-                  Total Sales
+                  تعداد  کل زبان آموزان
                 </StatLabel>
-                <Flex>
-                  <StatNumber fontSize='lg' color={textColor} fontWeight='bold'>
-                    $173,000
-                  </StatNumber>
-                </Flex>
+              
+                  <Text textAlign={'center'} fontSize='lg' color={textColor} fontWeight='bold'>
+                    {countData.length !== 0 && countData[0].students.count}
+                  </Text>
+             
               </Stat>
               <IconBox
                 borderRadius='50%'
@@ -223,15 +336,39 @@ export default function Dashboard() {
                 h={"45px"}
                 w={"45px"}
                 bg={iconBlue}>
-                <CartIcon h={"24px"} w={"24px"} color={iconBoxInside} />
+                <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
               </IconBox>
             </Flex>
-            <Text color='gray.400' fontSize='sm'>
-              <Text as='span' color='green.400' fontWeight='bold'>
-                +8.12%{" "}
-              </Text>
-              Since last month
+            {
+              countData.length !== 0 && countData[0].students.perc > 0 ?
+              <Flex>
+            <Text textAlign={'center'} color='gray.400' fontSize='sm'>
+              
+              
+              افزایش از ماه قبل
+              
             </Text>
+            <Text textAlign={'center'} as='span' color='green.400' fontWeight='bold'>
+              %{countData.length !== 0 && countData[0].students.perc}{" "}
+              </Text>
+            </Flex> 
+            
+            
+            :
+
+
+            <Flex>
+            <Text color='gray.400' fontSize='sm'>
+              
+              
+              کاهش از ماه قبل
+              
+            </Text>
+            <Text  as='span' color='red.400' fontWeight='bold'>
+              %{countData.length !== 0 && countData[0].students.perc}{" "}
+              </Text>
+            </Flex>
+            }
           </Flex>
         </Card>
       </SimpleGrid>
@@ -249,20 +386,23 @@ export default function Dashboard() {
           maxW='100%'>
           <Flex direction='column' mb='40px' p='28px 0px 0px 22px'>
             <Text color='#fff' fontSize='lg' fontWeight='bold' mb='6px'>
-              Sales Overview
+              خلاصه درآمد سالیانه به تفکیک ماه
             </Text>
-            <Text color='#fff' fontSize='sm'>
+            {/* <Text color='#fff' fontSize='sm'>
               <Text as='span' color='green.400' fontWeight='bold'>
                 (+5) more{" "}
               </Text>
               in 2022
-            </Text>
+            </Text> */}
           </Flex>
           <Box minH='300px'>
-            <LineChart
-              chartData={lineChartData}
-              chartOptions={lineChartOptions}
+            {
+              compareyearData.length !==0 && <LineChart    
+              data={compareyearData}
+              options={lineChartOptions}
+         
             />
+            }
           </Box>
         </Card>
         <Card p='0px' maxW='100%'>

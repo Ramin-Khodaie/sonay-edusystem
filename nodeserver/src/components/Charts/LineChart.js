@@ -4,6 +4,9 @@ import { lineChartData, lineChartOptions } from "variables/charts";
 
 class LineChart extends React.Component {
   constructor(props) {
+
+    console.log(props.data,4141)
+    console.log(lineChartData,3131)
     super(props);
 
     this.state = {
@@ -14,10 +17,12 @@ class LineChart extends React.Component {
 
   componentDidMount() {
     this.setState({
-      chartData: lineChartData,
+      chartData: this.props.data,
       chartOptions: lineChartOptions,
     });
   }
+
+  
 
   render() {
     return (

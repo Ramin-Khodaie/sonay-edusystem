@@ -129,7 +129,10 @@ class SPurchase:
                 'authority': authority,
                 'price': int(order[0]['price']),
                 'c_price': c_price,
-                'p_price': int(order[0]['price']) - c_price
+                'p_price': int(order[0]['price']) - c_pric,
+                'y' : int(cc.year),
+                'm' : int(cc.month),
+                'd' : int(cc.day)
             }
 
             col.update_one({'_id': oid}, {"$set": itm_ready})

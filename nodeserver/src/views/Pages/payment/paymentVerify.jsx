@@ -44,7 +44,7 @@ function PaymentVerify(props) {
         dispatch(userInfoAction());
 
         setTimeout(() => {
-          history.push("/dashboard");
+          history.push("/sonay/dashboard");
         }, 4000);
       }
     });
