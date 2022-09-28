@@ -37,6 +37,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch , useSelector } from "react-redux";
 import { userInfoAction } from "redux/user/UserInfo/UserInfoAction";
+import { getTeacherOverAll } from "services/dashboard";
 import { getYearCompare } from "services/dashboard";
 import { getCounts } from "services/dashboard";
 import { getUserInfo } from "services/user";
@@ -63,6 +64,7 @@ export default function Dashboard() {
 
   const [countData , setCountData] = useState([])
   const [compareyearData , setCompareyearData] = useState([])
+  const [teacherOverall , setTeacherOverall] = useState([])
 
 
   const dispatch = useDispatch();
@@ -88,11 +90,21 @@ export default function Dashboard() {
     })
   }
 
+
+  const getTeachersData = async()=>{
+
+    await getTeacherOverAll().then((res)=>{
+    setTeacherOverall(res.data.data)
+    })
+
+  }
+
   const { userInfo } = useSelector((state) => state.getUserInfo);
   useEffect(() => {
     getUserInfo();
     getCountData();
     getYearCompareData();
+    getTeachersData()
   }, []);
   console.log(compareyearData,9898)
  
@@ -408,14 +420,14 @@ export default function Dashboard() {
         <Card p='0px' maxW='100%'>
           <Flex direction='column' mb='40px' p='28px 0px 0px 22px'>
             <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
-              PERFORMANCE
+              عملکرد دبیران
             </Text>
             <Text color={textColor} fontSize='lg' fontWeight='bold'>
-              Total orders
+              میانگین نمرات
             </Text>
           </Flex>
           <Box minH='300px'>
-            <BarChart chartData={barChartData} chartOptions={barChartOptions} />
+            {teacherOverall.length !== 0 && <BarChart data={barChartData} options={barChartOptions} />}
           </Box>
         </Card>
         <Card p='0px' maxW='100%'>

@@ -8,12 +8,15 @@ class BarChart extends Component {
       chartData: [],
       chartOptions: {},
     };
+
+
+    console.log(this.props.data,322)
   }
 
   componentDidMount() {
     this.setState({
-      chartData: this.props.chartData,
-      chartOptions: this.props.chartOptions,
+      chartData: this.props.data,
+      chartOptions: this.props.options,
     });
   }
 

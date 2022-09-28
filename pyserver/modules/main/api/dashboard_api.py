@@ -29,3 +29,12 @@ def get_counts():
 def get_year_compare_data():
     ret = dashboard.get_year_compare_data()
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+
+@router.get("/getteacheroverall")
+@sn(fast=True)
+def get_teacher_overall():
+    ret = dashboard.get_teacher_overall()
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])

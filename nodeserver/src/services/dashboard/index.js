@@ -30,3 +30,19 @@ export const getYearCompare = () => {
   };
   
   
+
+  export const getTeacherOverAll = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await bixios.get("/dashboard/getteacheroverall");
+  
+        if (res.status === 200) {
+          resolve(res);
+        }
+      } catch (error) {
+        resolve(error.response.status);
+      }
+    });
+  };
+  
+  

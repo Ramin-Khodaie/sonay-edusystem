@@ -363,7 +363,7 @@ class SDashboard:
             {
                 '$facet': {
                     'this_year': [
-                       {
+                        {
                             '$match': {
                                 'y': {
                                     '$eq': 1401
@@ -379,7 +379,7 @@ class SDashboard:
                         }
                     ],
                     'last_year': [
-                         {
+                        {
                             '$match': {
                                 'y': {
                                     '$eq': 1400
@@ -400,11 +400,13 @@ class SDashboard:
         )
         res = self.prepare_year_compare_data(data)
         return 200, "ok", "course is inserted", res
-    
-    def prepare_year_compare_data(self , data):
 
-        itm_ready_this_year = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0}
-        itm_ready_last_year = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0}
+    def prepare_year_compare_data(self, data):
+
+        itm_ready_this_year = {1: 0, 2: 0, 3: 0, 4: 0,
+                               5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0}
+        itm_ready_last_year = {1: 0, 2: 0, 3: 0, 4: 0,
+                               5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0}
 
         for itm in data[0]['this_year']:
             itm_ready_this_year[itm['_id']] = itm['sum']
@@ -413,8 +415,35 @@ class SDashboard:
             itm_ready_last_year[itm['_id']] = itm['sum']
 
         return [
-            {'name' : 'امسال',
-            'data' : list(itm_ready_this_year.values())},
-            {'name' : 'سال قبل',
-            'data' : list(itm_ready_last_year.values())}
+            {'name': 'امسال',
+             'data': list(itm_ready_this_year.values())},
+            {'name': 'سال قبل',
+             'data': list(itm_ready_last_year.values())}
         ]
+
+    def get_teacher_overall(self):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.mark_collection]
+        data = list(col.aggregate([
+            {
+                '$group': {
+                    '_id': '$teacher',
+                    'avg': {
+                        '$avg': '$sum'
+                    }
+                }
+            }, {
+                '$project': {
+                    'avg': {
+                        '$round': [
+                            '$avg', 2
+                        ]
+                    },
+                    'name': '$_id.name',
+                    '_id' : 0
+                }
+            }
+        ]))
+        
+        return 200, "ok", "course is inserted", data
+        
