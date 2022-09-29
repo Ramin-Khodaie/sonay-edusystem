@@ -8,6 +8,11 @@ class BarChart extends Component {
       chartData: [],
       chartOptions: {},
     };
+
+
+
+
+    // console.log(props.chartData , props.chartOptions , 8585)
   }
 
   componentDidMount() {

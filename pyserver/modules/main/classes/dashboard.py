@@ -1,3 +1,4 @@
+import pymongo
 from pymongo.database import Database, Collection
 from modules.main.sonay_app import sn
 from bson import ObjectId
@@ -363,7 +364,7 @@ class SDashboard:
             {
                 '$facet': {
                     'this_year': [
-                       {
+                        {
                             '$match': {
                                 'y': {
                                     '$eq': 1401
@@ -379,7 +380,7 @@ class SDashboard:
                         }
                     ],
                     'last_year': [
-                         {
+                        {
                             '$match': {
                                 'y': {
                                     '$eq': 1400
@@ -400,11 +401,13 @@ class SDashboard:
         )
         res = self.prepare_year_compare_data(data)
         return 200, "ok", "course is inserted", res
-    
-    def prepare_year_compare_data(self , data):
 
-        itm_ready_this_year = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0}
-        itm_ready_last_year = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0}
+    def prepare_year_compare_data(self, data):
+
+        itm_ready_this_year = {1: 0, 2: 0, 3: 0, 4: 0,
+                               5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0}
+        itm_ready_last_year = {1: 0, 2: 0, 3: 0, 4: 0,
+                               5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0}
 
         for itm in data[0]['this_year']:
             itm_ready_this_year[itm['_id']] = itm['sum']
@@ -413,8 +416,59 @@ class SDashboard:
             itm_ready_last_year[itm['_id']] = itm['sum']
 
         return [
-            {'name' : 'امسال',
-            'data' : list(itm_ready_this_year.values())},
-            {'name' : 'سال قبل',
-            'data' : list(itm_ready_last_year.values())}
+            {'name': 'امسال',
+             'data': list(itm_ready_this_year.values())},
+            {'name': 'سال قبل',
+             'data': list(itm_ready_last_year.values())}
         ]
+
+    def get_teacher_avg(self):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.mark_collection]
+
+        raw = list(col.aggregate([
+            {
+                '$group': {
+                    '_id': '$teacher._id',
+                    'name': {
+                        '$first': '$teacher.name'
+                    },
+                    'avrg': {
+                        '$avg': '$sum'
+                    }
+                }
+            }, {
+                '$project': {
+                    'avrg': {
+                        '$round': '$avrg'
+                    },
+                    'name': 1,
+                    '_id': 0
+                }
+            }
+        ]))
+        itm_ready = {
+            "axis" : [it['name'] for it in raw],
+            "data" : [it['avrg'] for it in raw]
+        }
+        return 200, "ok", "course is inserted", itm_ready
+
+    def get_recent_registration(self , num):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.purchase_collection]
+        data = list(col.find({"type" : "registration"}).sort(key_or_list='g_date' , direction=1).limit(num))
+        return 200, "ok", "course is inserted", data
+
+
+    def get_recent_mark(self , num):
+            db: Database = sn.databases[self.database].db
+            col: Collection = db[self.mark_collection]
+            data = list(col.find({}).sort(key_or_list='g_date' , direction=1).limit(num))
+            return 200, "ok", "course is inserted", data
+    def get_top_student(self , num):
+            db: Database = sn.databases[self.database].db
+            col: Collection = db[self.mark_collection]
+            data = list(col.find({}).sort([
+                    ('g_date', pymongo.ASCENDING),
+                    ('sum', pymongo.ASCENDING)]).limit(num))
+            return 200, "ok", "course is inserted", data

@@ -93,7 +93,7 @@ export const barChartOptions = {
     theme: "dark",
   },
   xaxis: {
-    categories: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    categories: [],
     labels: {
       style: {
         colors: "#A0AEC0",

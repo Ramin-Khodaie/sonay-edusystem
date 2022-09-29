@@ -35,8 +35,13 @@ import {
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useDispatch , useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userInfoAction } from "redux/user/UserInfo/UserInfoAction";
+
+import { getTeacherAvg } from "services/dashboard";
+import { getRecentRegistration } from "services/dashboard";
+import { getRecentMark } from "services/dashboard";
+import { getTopStudent } from "services/dashboard";
 import { getYearCompare } from "services/dashboard";
 import { getCounts } from "services/dashboard";
 import { getUserInfo } from "services/user";
@@ -60,504 +65,599 @@ export default function Dashboard() {
 
   const { colorMode } = useColorMode();
 
-
-  const [countData , setCountData] = useState([])
-  const [compareyearData , setCompareyearData] = useState([])
-
+  const [countData, setCountData] = useState([]);
+  const [compareyearData, setCompareyearData] = useState([]);
+  const [teacherAvg, setTeacherAvg] = useState([]);
+  const [teacherAvgOpt, setTeacherAvgOpt] = useState(undefined);
+  const [recentReg, setRecentReg] = useState([]);
+  const [recentMark, setRecentMark] = useState([]);
+  const [topStudent, setTopStudent] = useState([]);
 
   const dispatch = useDispatch();
-  
+
   const getUserInfo = async () => {
     await dispatch(userInfoAction());
+  };
 
+  const getCountData = async () => {
+    await getCounts().then((res) => {
+      setCountData(res.data.data);
+    });
+  };
+
+  const getYearCompareData = async () => {
+    await getYearCompare().then((res) => {
+      setCompareyearData(res.data.data);
+    });
+  };
+
+  const getTeacherAvgData = async () => {
+    await getTeacherAvg().then((res) => {
+      setTeacherAvg([{ name: "", data: res.data.data.data }]);
+      setTeacherAvgOpt({
+        ...barChartOptions,
+        xaxis: {
+          categories: res.data.data.axis,
+          labels: {
+            style: {
+              colors: "#A0AEC0",
+              fontSize: "12px",
+            },
+          },
+          show: true,
+          axisBorder: {
+            show: false,
+          },
+        },
+      });
+    });
   };
 
 
-  const getCountData = async() => {
-    await getCounts().then((res)=>{
-      setCountData(res.data.data)
-      
-    })
+  const getRecentReg = async()=>{
+await getRecentRegistration().then((res)=>{
+  setRecentReg(res.data.data)
+})
   }
 
 
-  const getYearCompareData = async() => {
-    await getYearCompare().then((res)=>{
-      setCompareyearData(res.data.data)
 
+  const getRecentMarkData = async()=>{
+    await getRecentMark().then((res)=>{
+      setRecentMark(res.data.data)
     })
-  }
+      }
+
+
+      const getTopStudentData = async()=>{
+        await getTopStudent().then((res)=>{
+          setTopStudent(res.data.data)
+        })
+          }
 
   const { userInfo } = useSelector((state) => state.getUserInfo);
   useEffect(() => {
     getUserInfo();
     getCountData();
     getYearCompareData();
+    getTeacherAvgData();
+    getRecentReg();
+    getRecentMarkData();
+    getTopStudentData();
   }, []);
-  console.log(compareyearData,9898)
- 
+  // console.log(teacherAvgOpt, 9898);
+  // console.log(barChartOptions, 9797);
 
+
+  console.log(teacherAvgOpt , 9898);
   return (
-   <AuthorizeProvider roles={[]}>
-     <Flex flexDirection='column' pt="75px">
-      <SimpleGrid columns={{ sm: 1, md: 4, xl: 4 }} spacing='24px' mb='20px'>
-        <Card maxH='115px'>
-          <Flex direction='column'>
-            <Flex
-              flexDirection='row'
-              align='center'
-              justify='center'
-              w='100%'
-              mb='5px'>
-              <Stat  me='auto'>
-                <StatLabel
-                textAlign={'center'}
-                  fontSize='s'
-                  color='gray.400'
-                  fontWeight='bold'
-                  textTransform='uppercase'>
-                  تعداد  کل دبیران
-                </StatLabel>
-              
-                  <Text textAlign={'center'} fontSize='lg' color={textColor} fontWeight='bold'>
+    <AuthorizeProvider roles={[]}>
+      <Flex flexDirection="column" pt="75px">
+        <SimpleGrid columns={{ sm: 1, md: 4, xl: 4 }} spacing="24px" mb="20px">
+          <Card maxH="115px">
+            <Flex direction="column">
+              <Flex
+                flexDirection="row"
+                align="center"
+                justify="center"
+                w="100%"
+                mb="5px"
+              >
+                <Stat me="auto">
+                  <StatLabel
+                    textAlign={"center"}
+                    fontSize="s"
+                    color="gray.400"
+                    fontWeight="bold"
+                    textTransform="uppercase"
+                  >
+                    تعداد کل دبیران
+                  </StatLabel>
+
+                  <Text
+                    textAlign={"center"}
+                    fontSize="lg"
+                    color={textColor}
+                    fontWeight="bold"
+                  >
                     {countData.length !== 0 && countData[0].teachers.count}
                   </Text>
-             
-              </Stat>
-              <IconBox
-                borderRadius='50%'
-                as='box'
-                h={"45px"}
-                w={"45px"}
-                bg={iconBlue}>
-                <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
-              </IconBox>
+                </Stat>
+                <IconBox
+                  borderRadius="50%"
+                  as="box"
+                  h={"45px"}
+                  w={"45px"}
+                  bg={iconBlue}
+                >
+                  <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
+                </IconBox>
+              </Flex>
+              {countData.length !== 0 && countData[0].teachers.perc > 0 ? (
+                <Flex>
+                  <Text textAlign={"center"} color="gray.400" fontSize="sm">
+                    افزایش از ماه قبل
+                  </Text>
+                  <Text
+                    textAlign={"center"}
+                    as="span"
+                    color="green.400"
+                    fontWeight="bold"
+                  >
+                    %{countData.length !== 0 && countData[0].teachers.perc}{" "}
+                  </Text>
+                </Flex>
+              ) : (
+                <Flex>
+                  <Text color="gray.400" fontSize="sm">
+                    کاهش از ماه قبل
+                  </Text>
+                  <Text as="span" color="red.400" fontWeight="bold">
+                    %{countData.length !== 0 && countData[0].teachers.perc}{" "}
+                  </Text>
+                </Flex>
+              )}
             </Flex>
-            {
-              countData.length !== 0 && countData[0].teachers.perc > 0 ?
-              <Flex>
-            <Text textAlign={'center'} color='gray.400' fontSize='sm'>
-              
-              
-              افزایش از ماه قبل
-              
-            </Text>
-            <Text textAlign={'center'} as='span' color='green.400' fontWeight='bold'>
-              %{countData.length !== 0 && countData[0].teachers.perc}{" "}
-              </Text>
-            </Flex> 
-            
-            
-            :
+          </Card>
+          <Card maxH="115px">
+            <Flex direction="column">
+              <Flex
+                flexDirection="row"
+                align="center"
+                justify="center"
+                w="100%"
+                mb="5px"
+              >
+                <Stat me="auto">
+                  <StatLabel
+                    textAlign={"center"}
+                    fontSize="s"
+                    color="gray.400"
+                    fontWeight="bold"
+                    textTransform="uppercase"
+                  >
+                    تعداد کل دوره ها
+                  </StatLabel>
 
-
-            <Flex>
-            <Text color='gray.400' fontSize='sm'>
-              
-              
-              کاهش از ماه قبل
-              
-            </Text>
-            <Text  as='span' color='red.400' fontWeight='bold'>
-              %{countData.length !== 0 && countData[0].teachers.perc}{" "}
-              </Text>
-            </Flex>
-            }
-          </Flex>
-        </Card>
-        <Card maxH='115px'>
-          <Flex direction='column'>
-            <Flex
-              flexDirection='row'
-              align='center'
-              justify='center'
-              w='100%'
-              mb='5px'>
-              <Stat  me='auto'>
-                <StatLabel
-                textAlign={'center'}
-                  fontSize='s'
-                  color='gray.400'
-                  fontWeight='bold'
-                  textTransform='uppercase'>
-                  تعداد کل دوره ها
-                </StatLabel>
-              
-                  <Text textAlign={'center'} fontSize='lg' color={textColor} fontWeight='bold'>
+                  <Text
+                    textAlign={"center"}
+                    fontSize="lg"
+                    color={textColor}
+                    fontWeight="bold"
+                  >
                     {countData.length !== 0 && countData[0].courses.count}
                   </Text>
-             
-              </Stat>
-              <IconBox
-                borderRadius='50%'
-                as='box'
-                h={"45px"}
-                w={"45px"}
-                bg={iconBlue}>
-                <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
-              </IconBox>
-            </Flex>
-            {
-              countData.length !== 0 && countData[0].courses.perc > 0 ?
-              <Flex>
-            <Text textAlign={'center'} color='gray.400' fontSize='sm'>
-              
-              
-              افزایش از ماه قبل
-              
-            </Text>
-            <Text textAlign={'center'} as='span' color='green.400' fontWeight='bold'>
-              %{countData.length !== 0 && countData[0].courses.perc}{" "}
-              </Text>
-            </Flex> 
-            
-            
-            :
-
-
-            <Flex>
-            <Text color='gray.400' fontSize='sm'>
-              
-              
-              کاهش از ماه قبل
-              
-            </Text>
-            <Text  as='span' color='red.400' fontWeight='bold'>
-              %{countData.length !== 0 && countData[0].courses.perc}{" "}
-              </Text>
-            </Flex>
-            }
-          </Flex>
-        </Card>
-
-        <Card maxH='115px'>
-          <Flex direction='column'>
-            <Flex
-              flexDirection='row'
-              align='center'
-              justify='center'
-              w='100%'
-              mb='5px'>
-              <Stat  me='auto'>
-                <StatLabel
-                textAlign={'center'}
-                  fontSize='s'
-                  color='gray.400'
-                  fontWeight='bold'
-                  textTransform='uppercase'>
-                  مجموع پرداختی ماه جاری
-                </StatLabel>
-                <Center>
-            <Text textAlign={'center'} color='gray.400' fontSize='sm'>
-              
-              
-           ریال
-              
-            </Text>
-     
-            <Text textAlign={'center'} fontSize='lg' color={textColor} fontWeight='bold'>
-                  
-                  {countData.length !== 0 && countData[0].purchases.count}
-                 
+                </Stat>
+                <IconBox
+                  borderRadius="50%"
+                  as="box"
+                  h={"45px"}
+                  w={"45px"}
+                  bg={iconBlue}
+                >
+                  <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
+                </IconBox>
+              </Flex>
+              {countData.length !== 0 && countData[0].courses.perc > 0 ? (
+                <Flex>
+                  <Text textAlign={"center"} color="gray.400" fontSize="sm">
+                    افزایش از ماه قبل
                   </Text>
-            </Center> 
-               
-          
-             
-              </Stat>
-              <IconBox
-                borderRadius='50%'
-                as='box'
-                h={"45px"}
-                w={"45px"}
-                bg={iconBlue}>
-                <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
-              </IconBox>
+                  <Text
+                    textAlign={"center"}
+                    as="span"
+                    color="green.400"
+                    fontWeight="bold"
+                  >
+                    %{countData.length !== 0 && countData[0].courses.perc}{" "}
+                  </Text>
+                </Flex>
+              ) : (
+                <Flex>
+                  <Text color="gray.400" fontSize="sm">
+                    کاهش از ماه قبل
+                  </Text>
+                  <Text as="span" color="red.400" fontWeight="bold">
+                    %{countData.length !== 0 && countData[0].courses.perc}{" "}
+                  </Text>
+                </Flex>
+              )}
             </Flex>
-            {
-              countData.length !== 0 && countData[0].purchases.perc > 0 ?
-              <Flex>
-            <Text textAlign={'center'} color='gray.400' fontSize='sm'>
-              
-              
-              افزایش از ماه قبل
-              
-            </Text>
-            <Text textAlign={'center'} as='span' color='green.400' fontWeight='bold'>
-              %{countData.length !== 0 && countData[0].purchases.perc}{" "}
-              </Text>
-            </Flex> 
-            
-            
-            :
+          </Card>
 
+          <Card maxH="115px">
+            <Flex direction="column">
+              <Flex
+                flexDirection="row"
+                align="center"
+                justify="center"
+                w="100%"
+                mb="5px"
+              >
+                <Stat me="auto">
+                  <StatLabel
+                    textAlign={"center"}
+                    fontSize="s"
+                    color="gray.400"
+                    fontWeight="bold"
+                    textTransform="uppercase"
+                  >
+                    مجموع پرداختی ماه جاری
+                  </StatLabel>
+                  <Center>
+                    <Text textAlign={"center"} color="gray.400" fontSize="sm">
+                      ریال
+                    </Text>
 
-            <Flex>
-            <Text color='gray.400' fontSize='sm'>
-              
-              
-              کاهش از ماه قبل
-              
-            </Text>
-            <Text  as='span' color='red.400' fontWeight='bold'>
-              %{countData.length !== 0 && countData[0].purchases.perc}{" "}
-              </Text>
+                    <Text
+                      textAlign={"center"}
+                      fontSize="lg"
+                      color={textColor}
+                      fontWeight="bold"
+                    >
+                      {countData.length !== 0 && countData[0].purchases.count}
+                    </Text>
+                  </Center>
+                </Stat>
+                <IconBox
+                  borderRadius="50%"
+                  as="box"
+                  h={"45px"}
+                  w={"45px"}
+                  bg={iconBlue}
+                >
+                  <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
+                </IconBox>
+              </Flex>
+              {countData.length !== 0 && countData[0].purchases.perc > 0 ? (
+                <Flex>
+                  <Text textAlign={"center"} color="gray.400" fontSize="sm">
+                    افزایش از ماه قبل
+                  </Text>
+                  <Text
+                    textAlign={"center"}
+                    as="span"
+                    color="green.400"
+                    fontWeight="bold"
+                  >
+                    %{countData.length !== 0 && countData[0].purchases.perc}{" "}
+                  </Text>
+                </Flex>
+              ) : (
+                <Flex>
+                  <Text color="gray.400" fontSize="sm">
+                    کاهش از ماه قبل
+                  </Text>
+                  <Text as="span" color="red.400" fontWeight="bold">
+                    %{countData.length !== 0 && countData[0].purchases.perc}{" "}
+                  </Text>
+                </Flex>
+              )}
             </Flex>
-            }
-          </Flex>
-        </Card>
+          </Card>
 
-        <Card maxH='115px'>
-          <Flex direction='column'>
-            <Flex
-              flexDirection='row'
-              align='center'
-              justify='center'
-              w='100%'
-              mb='5px'>
-              <Stat  me='auto'>
-                <StatLabel
-                textAlign={'center'}
-                  fontSize='s'
-                  color='gray.400'
-                  fontWeight='bold'
-                  textTransform='uppercase'>
-                  تعداد  کل زبان آموزان
-                </StatLabel>
-              
-                  <Text textAlign={'center'} fontSize='lg' color={textColor} fontWeight='bold'>
+          <Card maxH="115px">
+            <Flex direction="column">
+              <Flex
+                flexDirection="row"
+                align="center"
+                justify="center"
+                w="100%"
+                mb="5px"
+              >
+                <Stat me="auto">
+                  <StatLabel
+                    textAlign={"center"}
+                    fontSize="s"
+                    color="gray.400"
+                    fontWeight="bold"
+                    textTransform="uppercase"
+                  >
+                    تعداد کل زبان آموزان
+                  </StatLabel>
+
+                  <Text
+                    textAlign={"center"}
+                    fontSize="lg"
+                    color={textColor}
+                    fontWeight="bold"
+                  >
                     {countData.length !== 0 && countData[0].students.count}
                   </Text>
-             
-              </Stat>
-              <IconBox
-                borderRadius='50%'
-                as='box'
-                h={"45px"}
-                w={"45px"}
-                bg={iconBlue}>
-                <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
-              </IconBox>
+                </Stat>
+                <IconBox
+                  borderRadius="50%"
+                  as="box"
+                  h={"45px"}
+                  w={"45px"}
+                  bg={iconBlue}
+                >
+                  <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
+                </IconBox>
+              </Flex>
+              {countData.length !== 0 && countData[0].students.perc > 0 ? (
+                <Flex>
+                  <Text textAlign={"center"} color="gray.400" fontSize="sm">
+                    افزایش از ماه قبل
+                  </Text>
+                  <Text
+                    textAlign={"center"}
+                    as="span"
+                    color="green.400"
+                    fontWeight="bold"
+                  >
+                    %{countData.length !== 0 && countData[0].students.perc}{" "}
+                  </Text>
+                </Flex>
+              ) : (
+                <Flex>
+                  <Text color="gray.400" fontSize="sm">
+                    کاهش از ماه قبل
+                  </Text>
+                  <Text as="span" color="red.400" fontWeight="bold">
+                    %{countData.length !== 0 && countData[0].students.perc}{" "}
+                  </Text>
+                </Flex>
+              )}
             </Flex>
-            {
-              countData.length !== 0 && countData[0].students.perc > 0 ?
-              <Flex>
-            <Text textAlign={'center'} color='gray.400' fontSize='sm'>
-              
-              
-              افزایش از ماه قبل
-              
-            </Text>
-            <Text textAlign={'center'} as='span' color='green.400' fontWeight='bold'>
-              %{countData.length !== 0 && countData[0].students.perc}{" "}
-              </Text>
-            </Flex> 
-            
-            
-            :
-
-
-            <Flex>
-            <Text color='gray.400' fontSize='sm'>
-              
-              
-              کاهش از ماه قبل
-              
-            </Text>
-            <Text  as='span' color='red.400' fontWeight='bold'>
-              %{countData.length !== 0 && countData[0].students.perc}{" "}
-              </Text>
-            </Flex>
+          </Card>
+        </SimpleGrid>
+        <Grid
+          templateColumns={{ sm: "1fr", lg: "2fr 1fr" }}
+          templateRows={{ lg: "repeat(2, auto)" }}
+          gap="20px"
+        >
+          <Card
+            bg={
+              colorMode === "dark"
+                ? "navy.800"
+                : "linear-gradient(81.62deg, #313860 2.25%, #151928 79.87%)"
             }
-          </Flex>
-        </Card>
-      </SimpleGrid>
-      <Grid
-        templateColumns={{ sm: "1fr", lg: "2fr 1fr" }}
-        templateRows={{ lg: "repeat(2, auto)" }}
-        gap='20px'>
-        <Card
-          bg={
-            colorMode === "dark"
-              ? "navy.800"
-              : "linear-gradient(81.62deg, #313860 2.25%, #151928 79.87%)"
-          }
-          p='0px'
-          maxW='100%'>
-          <Flex direction='column' mb='40px' p='28px 0px 0px 22px'>
-            <Text color='#fff' fontSize='lg' fontWeight='bold' mb='6px'>
-              خلاصه درآمد سالیانه به تفکیک ماه
-            </Text>
-            {/* <Text color='#fff' fontSize='sm'>
+            p="0px"
+            maxW="100%"
+          >
+            <Flex direction="column" mb="40px" p="28px 0px 0px 22px">
+              <Text color="#fff" fontSize="lg" fontWeight="bold" mb="6px">
+                خلاصه درآمد سالیانه به تفکیک ماه
+              </Text>
+              {/* <Text color='#fff' fontSize='sm'>
               <Text as='span' color='green.400' fontWeight='bold'>
                 (+5) more{" "}
               </Text>
               in 2022
             </Text> */}
-          </Flex>
-          <Box minH='300px'>
-            {
-              compareyearData.length !==0 && <LineChart    
-              data={compareyearData}
-              options={lineChartOptions}
-         
-            />
-            }
-          </Box>
-        </Card>
-        <Card p='0px' maxW='100%'>
-          <Flex direction='column' mb='40px' p='28px 0px 0px 22px'>
-            <Text color='gray.400' fontSize='sm' fontWeight='bold' mb='6px'>
-              PERFORMANCE
-            </Text>
-            <Text color={textColor} fontSize='lg' fontWeight='bold'>
-              Total orders
-            </Text>
-          </Flex>
-          <Box minH='300px'>
-            <BarChart chartData={barChartData} chartOptions={barChartOptions} />
-          </Box>
-        </Card>
-        <Card p='0px' maxW='100%'>
-          <Flex direction='column'>
-            <Flex align='center' justify='space-between' p='22px'>
-              <Text fontSize='lg' color={textColor} fontWeight='bold'>
-                Page visits
-              </Text>
-              <Button variant='primary' maxH='30px'>
-                SEE ALL
-              </Button>
             </Flex>
-            <Box overflow={{ sm: "scroll", lg: "hidden" }}>
-              <Table>
+            <Box minH="300px">
+              {compareyearData.length !== 0 && (
+                <LineChart data={compareyearData} options={lineChartOptions} />
+              )}
+            </Box>
+          </Card>
+          <Card p="0px" maxW="100%">
+            <Flex direction="column" mb="40px" p="28px 0px 0px 22px">
+              <Text color="gray.400" fontSize="sm" fontWeight="bold" mb="6px">
+                عملکرد دبیران
+              </Text>
+              <Text color={textColor} fontSize="lg" fontWeight="bold">
+                میانگین نمرات
+              </Text>
+            </Flex>
+            <Box minH="300px">
+              {
+                teacherAvg.length !== 0  && teacherAvgOpt && <BarChart
+                chartData={teacherAvg}
+                chartOptions={teacherAvgOpt}
+              />
+              }
+            </Box>
+          </Card>
+          
+        </Grid>
+        <SimpleGrid columns={{ sm: 1, md:3, xl: 3 }} spacing="24px" mb="20px" >
+        <Card p="0px" maxW="100%">
+
+                <Text p="22px" textAlign={'right'} fontSize="lg" color={textColor} fontWeight="bold">
+                  آخرین پرداختی ها
+                </Text>
+               
+              <Box overflow={{ sm: "scroll", lg: "hidden" }}>
+               {
+                recentReg.length !== 0 &&
+                <Table dir='rtl'>
                 <Thead>
                   <Tr bg={tableRowColor}>
-                    <Th color='gray.400' borderColor={borderColor}>
-                      Page name
+                    <Th color="gray.400" borderColor={borderColor}>
+                   نام
                     </Th>
-                    <Th color='gray.400' borderColor={borderColor}>
-                      Visitors
-                    </Th>
-                    <Th color='gray.400' borderColor={borderColor}>
-                      Unique users
-                    </Th>
-                    <Th color='gray.400' borderColor={borderColor}>
-                      Bounce rate
+                    <Th color="gray.400" borderColor={borderColor}>
+                      جمع پرداختی
                     </Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {pageVisits.map((el, index, arr) => {
+                  {recentReg.map((el, index, arr) => {
                     return (
                       <Tr key={index}>
                         <Td
                           color={textTableColor}
-                          fontSize='sm'
-                          fontWeight='bold'
+                          fontSize="sm"
+                          fontWeight="bold"
                           borderColor={borderColor}
-                          border={index === arr.length - 1 ? "none" : null}>
-                          {el.pageName}
+                          border={index === arr.length - 1 ? "none" : null}
+                        >
+                          {el.student.full_name}
                         </Td>
                         <Td
                           color={textTableColor}
-                          fontSize='sm'
+                          fontSize="sm"
                           border={index === arr.length - 1 ? "none" : null}
-                          borderColor={borderColor}>
-                          {el.visitors}
+                          borderColor={borderColor}
+                        >
+                          {el.price}
                         </Td>
-                        <Td
-                          color={textTableColor}
-                          fontSize='sm'
-                          border={index === arr.length - 1 ? "none" : null}
-                          borderColor={borderColor}>
-                          {el.uniqueUsers}
-                        </Td>
-                        <Td
-                          color={textTableColor}
-                          fontSize='sm'
-                          border={index === arr.length - 1 ? "none" : null}
-                          borderColor={borderColor}>
-                          {el.bounceRate}
-                        </Td>
+                        
                       </Tr>
                     );
                   })}
                 </Tbody>
               </Table>
-            </Box>
-          </Flex>
-        </Card>
-        <Card p='0px' maxW='100%'>
-          <Flex direction='column'>
-            <Flex align='center' justify='space-between' p='22px'>
-              <Text fontSize='lg' color={textColor} fontWeight='bold'>
-                Social traffic
-              </Text>
-              <Button variant='primary' maxH='30px'>
-                SEE ALL
-              </Button>
-            </Flex>
-          </Flex>
-          <Box overflow={{ sm: "scroll", lg: "hidden" }}>
-            <Table>
+               }
+              </Box>
+
+          </Card>
+          <Card p="0px" maxW="100%">
+       
+                <Text p="22px" textAlign={'right'} fontSize="lg" color={textColor} fontWeight="bold">
+                  آخرین نمرات
+                </Text>
+                {/* <Button variant="primary" maxH="30px">
+                  
+                </Button> */}
+     
+            <Box overflow={{ sm: "scroll", lg: "hidden" }}>
+             {
+              recentMark.length !== 0 && 
+              <Table dir='rtl'>
               <Thead>
                 <Tr bg={tableRowColor}>
-                  <Th color='gray.400' borderColor={borderColor}>
-                    Referral
+                  <Th color="gray.400" borderColor={borderColor}>
+                    نام
                   </Th>
-                  <Th color='gray.400' borderColor={borderColor}>
-                    Visitors
+                  <Th color="gray.400" borderColor={borderColor}>
+                    کلاس
                   </Th>
-                  <Th color='gray.400' borderColor={borderColor}></Th>
+                  <Th color="gray.400" borderColor={borderColor}>
+                    جمع نمره
+                  </Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {socialTraffic.map((el, index, arr) => {
+                {recentMark.map((el, index, arr) => {
                   return (
                     <Tr key={index}>
                       <Td
                         color={textTableColor}
-                        fontSize='sm'
-                        fontWeight='bold'
+                        fontSize="sm"
+                        fontWeight="bold"
                         borderColor={borderColor}
-                        border={index === arr.length - 1 ? "none" : null}>
-                        {el.referral}
+                        border={index === arr.length - 1 ? "none" : null}
+                      >
+                        {el.student.name}
                       </Td>
                       <Td
                         color={textTableColor}
-                        fontSize='sm'
+                        fontSize="sm"
                         borderColor={borderColor}
-                        border={index === arr.length - 1 ? "none" : null}>
-                        {el.visitors}
+                        border={index === arr.length - 1 ? "none" : null}
+                      >
+                        {el.course.name}
                       </Td>
                       <Td
                         color={textTableColor}
-                        fontSize='sm'
+                        fontSize="sm"
                         borderColor={borderColor}
-                        border={index === arr.length - 1 ? "none" : null}>
-                        <Flex align='center'>
-                          <Text
-                            color={textTableColor}
-                            fontWeight='bold'
-                            fontSize='sm'
-                            me='12px'>{`${el.percentage}%`}</Text>
-                          <Progress
-                            size='xs'
-                            colorScheme={el.color}
-                            value={el.percentage}
-                            minW='120px'
-                          />
-                        </Flex>
+                        border={index === arr.length - 1 ? "none" : null}
+                      >
+                        {el.sum}
                       </Td>
+                      
                     </Tr>
                   );
                 })}
               </Tbody>
             </Table>
-          </Box>
-        </Card>
-      </Grid>
-    </Flex>
-   </AuthorizeProvider>
+             }
+            </Box>
+          </Card>
+          <Card p="0px" maxW="100%">
+           
+                <Text p="22px" textAlign={'right'} fontSize="lg" color={textColor} fontWeight="bold">
+                  زبان آموزان برتر
+                </Text>
+                {/* <Button variant="primary" maxH="30px">
+                  SEE ALL
+                </Button> */}
+             
+            <Box overflow={{ sm: "scroll", lg: "hidden" }}>
+             {
+              topStudent.length !== 0 && 
+              <Table dir='rtl'>
+              <Thead>
+                <Tr bg={tableRowColor}>
+                  <Th color="gray.400" borderColor={borderColor}>
+                    نام
+                  </Th>
+                  
+                  <Th color="gray.400" borderColor={borderColor}>
+                    کلاس
+                  </Th>
+                  <Th color="gray.400" borderColor={borderColor}>
+                    نمره
+                  </Th>
+
+                </Tr>
+              </Thead>
+              <Tbody>
+                {topStudent.map((el, index, arr) => {
+                  return (
+                    <Tr key={index}>
+                      <Td
+                        color={textTableColor}
+                        fontSize="sm"
+                        fontWeight="bold"
+                        borderColor={borderColor}
+                        border={index === arr.length - 1 ? "none" : null}
+                      >
+                        {el.student.name}
+                      </Td>
+                     
+                      <Td
+                        color={textTableColor}
+                        fontSize="sm"
+                        borderColor={borderColor}
+                        border={index === arr.length - 1 ? "none" : null}
+                      >
+                        {el.course.name}
+                      </Td>
+                      <Td
+                        color={textTableColor}
+                        fontSize="sm"
+                        borderColor={borderColor}
+                        border={index === arr.length - 1 ? "none" : null}
+                      >
+                        {el.sum}
+                      </Td>
+                     
+                    </Tr>
+                  );
+                })}
+              </Tbody>
+            </Table>
+             }
+            </Box>
+          </Card>
+        </SimpleGrid>
+      </Flex>
+    </AuthorizeProvider>
   );
 }
