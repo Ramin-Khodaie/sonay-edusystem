@@ -90,7 +90,7 @@ export const userList = () => {
 
 
 
-export const studentByCourse= (courseId) => {
+export const studentByCourse= (courseId , role) => {
  if(courseId !== ""){
   return new Promise(async (resolve, reject) => {
     try {
@@ -98,7 +98,7 @@ export const studentByCourse= (courseId) => {
        {
         params:{
           course_id : courseId,
-          role : 'student',
+          role : role,
       
         }
       }

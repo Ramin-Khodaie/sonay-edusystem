@@ -23,6 +23,26 @@ export const createCourse = (course) => {
   });
 };
 
+
+export const getCourse = (_id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/courses/getcourse" , {
+        params:{
+          '_id' : _id
+        }
+      });
+
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+      resolve(error.response.status);
+    }
+  });
+};
+
+
 export const courseList = () => {
   return new Promise(async (resolve, reject) => {
     try {

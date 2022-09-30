@@ -52,6 +52,21 @@ class SCourse:
 
         return 200, "ok", "course is inserted", None
 
+    def get_course(self , _id):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.course_collection]
+        data = list(col.find({'_id' : _id}))
+        if len(data) == 1:
+
+            return 200, "ok", "is valid", data
+        else:
+            return 404, "not_found" , "not found", []
+
+
+
+
+
+        return
     def edit_course(self, info, col: Collection):
         idd = info["_id"]
         del info["_id"]

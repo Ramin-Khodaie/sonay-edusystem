@@ -84,7 +84,7 @@ function AddMark() {
   };
 
   const getStudentList = async () => {
-    const studentsList = await studentByCourse(selectedItems.course.id);
+    const studentsList = await studentByCourse(selectedItems.course.id , 'student');
     if (studentsList.length > 0) {
       setmyStudents(studentsList);
     }

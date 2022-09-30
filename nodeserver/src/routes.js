@@ -1,6 +1,6 @@
 // import
 import React, { Component }  from 'react';
-import Dashboard from "./views/Admin/Dashboard.js";
+import Dashboard from "./views/Pages/Dashboard.js";
 import Users from "./views/Admin/Users.js";
 import Courses from "./views/Admin/Courses.js";
 import Billing from "./views/Admin/Billing.js";
