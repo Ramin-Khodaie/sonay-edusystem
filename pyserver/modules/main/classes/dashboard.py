@@ -530,7 +530,6 @@ class SDashboard:
         res = self.prepare_compare_student_data(data)
         return 200, "ok", "ok", res
 
-
     def prepare_compare_student_data(self, data):
         mine = []
         theirs = []
@@ -540,13 +539,26 @@ class SDashboard:
             theirs.append(item['avg'])
             axis.append(item['name'])
 
-        itm_ready = {'data':[{
-                         'name': 'نمره شما',
-                         'data': mine} , {
-                         'name': 'میانگین کلاسی',
-                         'data': theirs}],
-                    'axis': axis
-                     }
+        itm_ready = {'data': [{
+            'name': 'نمره شما',
+            'data': mine}, {
+            'name': 'میانگین کلاسی',
+            'data': theirs}],
+            'axis': axis
+        }
         return itm_ready
 
-                     
+    def get_classmate(self, user):
+
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.user_collection]
+        data = list(col.find({'enable' : True ,
+         'courses.id' : user['courses'][0]['id'] ,
+          'roles.id' : 'student',
+          'status.id' : 'mark'
+          } , {
+            'full_name' : 1 , 
+            'image' : 1
+          }))
+
+        return 200, "ok", "ok", data

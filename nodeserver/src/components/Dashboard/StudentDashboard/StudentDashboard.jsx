@@ -1,4 +1,5 @@
 import { Grid } from "@chakra-ui/react";
+import Classmate from "./Classmate";
 import InfoCard from "./InfoCard";
 import StudentlineChart from "./StudentLineChart";
 
@@ -14,6 +15,7 @@ const StudentDashoard = (props) => {
           gap="20px"
         >
     <StudentlineChart />
+    <Classmate />
 
         </Grid>
 

@@ -72,3 +72,10 @@ def get_top_student(num = 5):
 def get_compare_student_mark( user : SUser ):
     ret = dashboard.get_compare_student_mark( user )
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+@router.get("/getclassmate")
+@sn(fast=True)
+def get_classmate( user : SUser ):
+    ret = dashboard.get_classmate( user )
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])

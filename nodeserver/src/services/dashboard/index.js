@@ -104,3 +104,19 @@ export const getYearCompare = () => {
       }
     });
   };
+
+
+  
+  export const getClassmate = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await bixios.get("/dashboard/getclassmate");
+  
+        if (res.status === 200) {
+          resolve(res);
+        }
+      } catch (error) {
+        resolve(error.response.status);
+      }
+    });
+  };
