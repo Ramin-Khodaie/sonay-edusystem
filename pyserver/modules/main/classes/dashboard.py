@@ -448,27 +448,105 @@ class SDashboard:
             }
         ]))
         itm_ready = {
-            "axis" : [it['name'] for it in raw],
-            "data" : [it['avrg'] for it in raw]
+            "axis": [it['name'] for it in raw],
+            "data": [it['avrg'] for it in raw]
         }
         return 200, "ok", "course is inserted", itm_ready
 
-    def get_recent_registration(self , num):
+    def get_recent_registration(self, num):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.purchase_collection]
-        data = list(col.find({"type" : "registration"}).sort(key_or_list='g_date' , direction=1).limit(num))
+        data = list(col.find({"type": "registration"}).sort(
+            key_or_list='g_date', direction=1).limit(num))
         return 200, "ok", "course is inserted", data
 
+    def get_recent_mark(self, num):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.mark_collection]
+        data = list(col.find({}).sort(
+            key_or_list='g_date', direction=1).limit(num))
+        return 200, "ok", "course is inserted", data
 
-    def get_recent_mark(self , num):
-            db: Database = sn.databases[self.database].db
-            col: Collection = db[self.mark_collection]
-            data = list(col.find({}).sort(key_or_list='g_date' , direction=1).limit(num))
-            return 200, "ok", "course is inserted", data
-    def get_top_student(self , num):
-            db: Database = sn.databases[self.database].db
-            col: Collection = db[self.mark_collection]
-            data = list(col.find({}).sort([
-                    ('g_date', pymongo.ASCENDING),
-                    ('sum', pymongo.ASCENDING)]).limit(num))
-            return 200, "ok", "course is inserted", data
+    def get_top_student(self, num):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.mark_collection]
+        data = list(col.find({}).sort([
+            ('g_date', pymongo.ASCENDING),
+            ('sum', pymongo.ASCENDING)]).limit(num))
+        return 200, "ok", "course is inserted", data
+
+    def get_compare_student_mark(self, username):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.mark_collection]
+        data = list(col.aggregate([
+            {
+                '$match': {
+                    'username': username['username']
+                }
+            }, {
+                '$group': {
+                    '_id': '$course.id',
+                    'sum': {
+                        '$first': '$sum'
+                    },
+                    'name': {
+                        '$first': '$course.name'
+                    }
+                }
+            }, {
+                '$lookup': {
+                    'from': 'mark',
+                    'localField': '_id',
+                    'foreignField': 'course.id',
+                    'pipeline': [
+                        {
+                            '$match': {
+                                'username': {
+                                    '$ne': username
+                                }
+                            }
+                        }, {
+                            '$group': {
+                                '_id': '$course.id',
+                                'avg': {
+                                    '$avg': '$sum'
+                                }
+                            }
+                        }
+                    ],
+                    'as': 'result'
+                }
+            }, {
+                '$project': {
+                    'avg': {
+                        '$first': '$result.avg'
+                    },
+                    'sum': 1,
+                    'name': 1,
+                    '_id': 0
+                }
+            }
+        ]))
+        res = self.prepare_compare_student_data(data)
+        return 200, "ok", "ok", res
+
+
+    def prepare_compare_student_data(self, data):
+        mine = []
+        theirs = []
+        axis = []
+        for item in data:
+            mine.append(item['sum'])
+            theirs.append(item['avg'])
+            axis.append(item['name'])
+
+        itm_ready = {'data':[{
+                         'name': 'نمره شما',
+                         'data': mine} , {
+                         'name': 'میانگین کلاسی',
+                         'data': theirs}],
+                    'axis': axis
+                     }
+        return itm_ready
+
+                     

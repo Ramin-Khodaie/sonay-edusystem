@@ -57,7 +57,7 @@ var dashRoutes = [
     icon: <FaUserAlt></FaUserAlt> ,
     component: Users,
     layout: "/sonay",
-    roles:['admin' ]
+    roles:['admin' ,'student']
 
   },
   {
@@ -77,7 +77,7 @@ var dashRoutes = [
     icon: <FaRegistered color='inherit' />,
     component: AddMark,
     layout: "/sonay",
-    roles:[ 'teacher']
+    roles:[ 'teacher' , 'student']
 
   },
   

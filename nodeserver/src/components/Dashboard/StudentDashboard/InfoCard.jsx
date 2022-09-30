@@ -32,7 +32,7 @@ const InfoCard = (props) => {
   }, []);
 
   return (
-    <Card mt="75px">
+    <Card mb={'20px'} mt="75px">
       <Grid
         templateRows="repeat(2, 1fr)"
         templateColumns="repeat(5, 1fr)"

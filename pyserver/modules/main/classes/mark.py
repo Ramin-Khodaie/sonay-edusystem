@@ -11,7 +11,7 @@ class SMark:
     database: str = "database"
     product_collection: str = ""
 
-    def __init__(self, database, mark_collection , user_collection):
+    def __init__(self, database, mark_collection, user_collection):
         self.database = database
         self.mark_collection = mark_collection
         self.user_collection = user_collection
@@ -35,8 +35,8 @@ class SMark:
         valid = self.validate_mark(info, col)
         if valid[0] != 200:
             return valid
-        
-        student_obj = list(col2.find({"_id" : info['student']['id']}))[0]
+
+        student_obj = list(col2.find({"_id": info['student']['id']}))[0]
         info['username'] = student_obj['username']
 
         cc = JalaliDate.today()
@@ -47,8 +47,11 @@ class SMark:
             return res
         info['g_date'] = datetime.today()
         idd = str(ObjectId())
-        col.insert_one({**info, "_id": idd})
-        col2.update_one({'_id' : info['student']['id']} , {"$set" : {'status' : {'id' : "mark" , "name" : "مشاهده نمره"}}})
+        col.insert_one({**info, "_id": idd, 'y': int(cc.year),
+                        'm': int(cc.month),
+                        'd': int(cc.day)})
+        col2.update_one({'_id': info['student']['id']}, {
+                        "$set": {'status': {'id': "mark", "name": "مشاهده نمره"}}})
         return 200, "ok", "mark is inserted", None
 
     def get_mark(self, mark_id):
@@ -73,22 +76,22 @@ class SMark:
         col.update_one({"_id": idd}, {"$set": info})
         return 200, "ok", "ok", []
 
-    def get_mark_by_search(self, user ,filter):
+    def get_mark_by_search(self, user, filter):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
         roles = [c['id'] for c in user['roles']]
         and_li = []
 
         if 'student' in roles:
-            and_li.append({'username' : user['username']})
-            and_li.append({'course.id' : {"$ne" : user['courses'][0]['id']}})
-            
+            and_li.append({'username': user['username']})
+            and_li.append({'course.id': {"$ne": user['courses'][0]['id']}})
+
         if 'name' in filter and filter['name'] != "":
-            and_li.append({'student.name':{'$regex': filter['name']}})
+            and_li.append({'student.name': {'$regex': filter['name']}})
         if 'courses' in filter and filter['courses']['id'] != "":
             and_li.append({'course.id': filter['courses']['id']})
         if 'course' in filter and filter['course'] != "":
-            and_li.append({'course.name':{'$regex': filter['course']} })
+            and_li.append({'course.name': {'$regex': filter['course']}})
         if 'isFailed' in filter and filter['isFailed']:
             and_li.append({'status': 'failed'})
         if 'isPassed' in filter and filter['isPassed']:
@@ -119,9 +122,9 @@ class SMark:
         res = list(
             col.find({"username": username, 'course.id': course_id}))
         if len(res) == 0:
-            return 404 , 'not_found' , "mark could not been found" , []
+            return 404, 'not_found', "mark could not been found", []
         elif len(res) > 1:
-            return 422 , 'duplicated mark' , "more than one mark has found" , []
+            return 422, 'duplicated mark', "more than one mark has found", []
         else:
             return 200, "ok", "", res
 
@@ -218,15 +221,17 @@ class SMark:
         ])
 
         )
-        avg_data = [] if len(list(query_res[0]['avg'])) == 0 else list(query_res[0]['avg'][0].values())
-        act_data = [] if len(list(query_res[0]['actual'])) == 0 else list(query_res[0]['actual'][0].values())
+        avg_data = [] if len(list(query_res[0]['avg'])) == 0 else list(
+            query_res[0]['avg'][0].values())
+        act_data = [] if len(list(query_res[0]['actual'])) == 0 else list(
+            query_res[0]['actual'][0].values())
         item_ready = [{'name': "میانگین ترم های قبل", "data": avg_data},
-                      {'name' : "نمرات این ترم" , "data" : act_data }]
+                      {'name': "نمرات این ترم", "data": act_data}]
         return 200, "ok", "", item_ready
-    
-    
-    def get_mark_history(self , username , course_id):
+
+    def get_mark_history(self, username, course_id):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
-        res = list(col.find({'username' : username , 'course.id' : {"$ne" : course_id}}))
-        return 200 , 'ok' , 'ok' , res
+        res = list(
+            col.find({'username': username, 'course.id': {"$ne": course_id}}))
+        return 200, 'ok', 'ok', res

@@ -6,6 +6,7 @@ from modules.main.api_return import api_return
 from modules.main.sonay_app import sn
 from modules.main.s_settings import SSettings
 from modules.main.classes.dashboard import SDashboard
+from modules.main.classes.user import SUser
 from ..classes.course import SCourse
 
 
@@ -61,4 +62,13 @@ def get_recent_mark(num = 5):
 @sn(fast=True)
 def get_top_student(num = 5):
     ret = dashboard.get_top_student(num)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+##############################################################
+
+
+@router.get("/getcomparestudentmark")
+@sn(fast=True)
+def get_compare_student_mark( user : SUser ):
+    ret = dashboard.get_compare_student_mark( user )
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
