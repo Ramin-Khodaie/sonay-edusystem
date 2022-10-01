@@ -98,7 +98,6 @@ const checkUserState = ()=>{
 
 
 // }
-console.log(userInfo,3131)
 }
 
 

@@ -525,8 +525,8 @@ class SDashboard:
                     'name': 1,
                     '_id': 0
                 }
-            },{
-                '$set' : {'avg' : {"$round" : ['$avg',2]}}
+            }, {
+                '$set': {'avg': {"$round": ['$avg', 2]}}
             }
         ]))
         res = self.prepare_compare_student_data(data)
@@ -554,13 +554,55 @@ class SDashboard:
 
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.user_collection]
-        data = list(col.find({'enable' : True ,
-         'courses.id' : user['courses'][0]['id'] ,
-          'roles.id' : 'student',
-          'status.id' : 'mark'
-          } , {
-            'full_name' : 1 , 
-            'image' : 1
-          }))
+        data = list(col.find({'enable': True,
+                              'courses.id': user['courses'][0]['id'],
+                              'roles.id': 'student',
+                              'status.id': 'mark'
+                              }, {
+            'full_name': 1,
+            'image': 1
+        }))
 
         return 200, "ok", "ok", data
+
+    def get_teacher_counts(self, user):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.user_collection]
+        data = list(col.aggregate([
+            {
+                '$match': {
+                    'username': 'dabir'
+                }
+            }, {
+                '$unwind': '$courses'
+            }, {
+                '$lookup': {
+                    'from': 's_user',
+                    'localField': 'courses.id',
+                    'foreignField': 'courses.id',
+                    'pipeline': [
+                        {
+                            '$match': {
+                                'roles.id': 'student'
+                            }
+                        }, {
+                            '$project': {
+                                'full_name': 1,
+                                'image': 1
+                            }
+                        }
+                    ],
+                    'as': 'students'
+                }
+            }
+        ]))
+        student_count = 0
+        for item in data:
+            student_count += len(item['students'])
+        itm_ready = {
+            'data' : data , 
+            'st' : student_count,
+            'cr' : len(data)
+        }
+        
+        return 200, "ok", "ok", itm_ready

@@ -14,7 +14,6 @@ const StudentlineChart = (props) => {
   const { colorMode } = useColorMode();
   const getData = async () => {
     await getCompareStudentMark().then((res) => {
-      console.log(res, 8787);
       setStudentCompareData(res.data.data.data);
       setStudentCompareOpt({
         
@@ -42,7 +41,6 @@ const StudentlineChart = (props) => {
     getData();
   }, []);
 
-  console.log(studentCompareOpt , '5454')
 
 
 

@@ -55,7 +55,6 @@ import StudentNavbar from "components/Navbars/StudentNavbar";
           return getRoutes(prop.views);
         }
         if (prop.layout === "/student") {
-          console.log(prop)
           return (
             <Route
               path={prop.layout + prop.path}

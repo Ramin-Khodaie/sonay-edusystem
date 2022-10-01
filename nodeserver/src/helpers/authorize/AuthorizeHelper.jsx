@@ -14,11 +14,9 @@ const AuthorizeHelper = (props) => {
 
 
   useEffect(() => {
-      console.log(roles,4545)
 
     if(roles && roles.length !== 0){
       const intersection = roles.filter((role, id) => (userInfo.full_roles.includes(role)));
-      console.log(intersection,6464)
       if(intersection.length === 0){
         RedirectToForbidden()
       }

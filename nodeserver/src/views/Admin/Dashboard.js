@@ -106,7 +106,6 @@ export default function Dashboard() {
     getYearCompareData();
     getTeachersData()
   }, []);
-  console.log(compareyearData,9898)
  
 
   return (

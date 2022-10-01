@@ -79,3 +79,18 @@ def get_compare_student_mark( user : SUser ):
 def get_classmate( user : SUser ):
     ret = dashboard.get_classmate( user )
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+###################################################################
+
+@router.get("/getteachercounts")
+@sn(fast=True)
+def get_teacher_counts( user : SUser ):
+    ret = dashboard.get_teacher_counts( user )
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+
+

@@ -104,7 +104,6 @@ import { getMyRecentRegistrationFilter } from "services/StudentReport";
       const value = e.target.value;
       setFilter({ ...filter, [field]: value });
     };
-    console.log(data,8585)
   
     return (
       <>

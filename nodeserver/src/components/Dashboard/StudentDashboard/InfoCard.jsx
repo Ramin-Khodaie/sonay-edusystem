@@ -21,7 +21,6 @@ const InfoCard = (props) => {
 
   const callCourse = async () => {
     await studentByCourse(user.courses[0].id, "teacher").then((res) => {
-      console.log(res, 3131);
 
       setTeaher(res);
     });

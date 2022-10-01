@@ -47,7 +47,6 @@ const Classmate = ()=>{
 
 
 
-    console.log(classmate,4545)
     return(
         <Card p="0px" maxW="100%">
         <Text

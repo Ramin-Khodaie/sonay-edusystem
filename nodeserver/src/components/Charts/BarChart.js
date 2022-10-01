@@ -12,7 +12,6 @@ class BarChart extends Component {
 
 
 
-    // console.log(props.chartData , props.chartOptions , 8585)
   }
 
   componentDidMount() {

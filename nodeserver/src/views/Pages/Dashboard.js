@@ -1,6 +1,7 @@
 
 import AdminDashboard from "components/Dashboard/AdminDashboard/AdminDashboard";
 import StudentDashoard from "components/Dashboard/StudentDashboard/StudentDashboard";
+import TeacherDashboard from "components/Dashboard/TeacherDashboard/TeacherDashboard";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import React, { useState } from "react";
 import { useEffect } from "react";
@@ -20,13 +21,13 @@ export default function Dashboard() {
   useEffect(() => {
     getUserInfo();
   }, []);
-  // console.log(teacherAvgOpt, 9898);
-  // console.log(barChartOptions, 9797);
+
 
   return (
     <AuthorizeProvider roles={[]}>
      {/* <AdminDashboard /> */}
-     <StudentDashoard user={userInfo}/>
+     {/* <StudentDashoard user={userInfo}/> */}
+     <TeacherDashboard />
     </AuthorizeProvider>
   );
 }

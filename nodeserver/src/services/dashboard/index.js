@@ -120,3 +120,20 @@ export const getYearCompare = () => {
       }
     });
   };
+  
+  //////////////////////////////////////////////////////////////////////////////////
+  
+  export const getTeacherCounts = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await bixios.get("/dashboard/getteachercounts");
+  
+        if (res.status === 200) {
+          resolve(res);
+        }
+      } catch (error) {
+        resolve(error.response.status);
+      }
+    });
+  };
+  
