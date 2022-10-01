@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { getTeacherCounts } from "services/dashboard";
 import TecherCounts from "./TeacherCounts";
-
+import TeacherCourse from './TeacherCourse'
 const TeacherDashboard = () => {
 
   const [st,setSt] = useState(0)
@@ -28,12 +28,13 @@ callData()
   },[])
 
 
-console.log(st,cr,courseDetail , 6565)
   
 
   return (
     <>
-    <TecherCounts />
+    
+    <TecherCounts st={st} cr={cr} />
+    <TeacherCourse data={courseDetail} />
 
     </>
   );

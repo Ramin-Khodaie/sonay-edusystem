@@ -23,18 +23,19 @@ import CounterCard from "../CounterCard";
 
 
 const TecherCounts = (props)=>{
+  const {st , cr} = props
 return(
-    <SimpleGrid pt={'75px'} columns={{ sm: 1, md: 3, xl: 3 }} spacing="24px" mb="20px">
+    <SimpleGrid dir='rtl' pt={'75px'} columns={{ sm: 1, md: 3, xl: 3 }} spacing="24px" mb="20px">
       
         <>
           <CounterCard
             name={"تعداد کل زبان آموزان"}
-            data={2}
+            data={st}
             
           />
           <CounterCard
             name={"تعداد کل دوره ها"}
-            data={3}
+            data={cr}
           />
           <CounterCard
             name={"تعداد اعتراضات فعال"}
