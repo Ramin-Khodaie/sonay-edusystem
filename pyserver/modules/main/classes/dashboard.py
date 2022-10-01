@@ -525,6 +525,8 @@ class SDashboard:
                     'name': 1,
                     '_id': 0
                 }
+            },{
+                '$set' : {'avg' : {"$round" : ['$avg',2]}}
             }
         ]))
         res = self.prepare_compare_student_data(data)

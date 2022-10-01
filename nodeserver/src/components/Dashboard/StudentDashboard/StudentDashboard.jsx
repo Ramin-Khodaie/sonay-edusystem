@@ -1,6 +1,7 @@
-import { Grid } from "@chakra-ui/react";
+import { Grid, SimpleGrid } from "@chakra-ui/react";
 import Classmate from "./Classmate";
 import InfoCard from "./InfoCard";
+import MessageBox from "./MessageBox";
 import StudentlineChart from "./StudentLineChart";
 
 const StudentDashoard = (props) => {
@@ -18,6 +19,13 @@ const StudentDashoard = (props) => {
     <Classmate />
 
         </Grid>
+
+        <SimpleGrid  columns={{ sm: 1, md: 2, xl: 2 }} spacing="24px" mb="20px"
+        >
+          <MessageBox temp={'هنوز هیچ پیامی نیست'} />
+          <MessageBox temp={"تاکنون هیچ اعتراضی ثبت نشده است"} />
+          
+        </SimpleGrid>
 
       
     </>
