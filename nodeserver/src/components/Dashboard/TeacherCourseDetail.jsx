@@ -33,8 +33,7 @@ const TeacherCourseDetail = (props)=>{
     
     <Card p="0px" maxW="100%">
         <Flex>
-  <Button disabled ml={'15px'} mt={'15px'}>اعلام مغایرت</Button>
-  <Spacer />
+
 
         <Text
           p="22px"
@@ -43,8 +42,12 @@ const TeacherCourseDetail = (props)=>{
           color={textColor}
           fontWeight="bold"
         >
+     
 {name}
   </Text>
+  <Spacer />
+    
+    <Button disabled ml={'15px'} mt={'15px'}>اعلام مغایرت</Button>
  
         </Flex>
 
