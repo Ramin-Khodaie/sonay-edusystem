@@ -33,6 +33,7 @@ import { getMarkHistory } from "services/mark";
 import CardHeader from "components/Card/CardHeader";
 import MarkReportFilter from "components/Filter/MarkReportFilter";
 import { markBySearch } from "services/mark";
+import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 const Karne = () => {
   const { userInfo } = useSelector((state) => state.getUserInfo);
   const [selectedCourse, setSelectedCourse] = useState(userInfo.courses[0].id);
@@ -130,7 +131,7 @@ const Karne = () => {
   }, [selectedCourse]);
 
   return (
-    <>
+    <AuthorizeProvider roles={["student"]}>
       <Flex
         flexDirection="column"
         mt="60px"
@@ -144,35 +145,25 @@ const Karne = () => {
           gap="20px"
           width="100%"
         >
-          <GridItem overflowX={{ sm: "scroll", xl: "hidden" }} rowSpan={1} colSpan={{ sm: 1, md: 2, lg: 2 }}>
+          <GridItem
+            overflowX={{ sm: "scroll", xl: "hidden" }}
+            rowSpan={1}
+            colSpan={{ sm: 1, md: 2, lg: 2 }}
+          >
             <Center>
-              <Card >
+              <Card>
                 <Center>
-
-<Text textAlign={'center'} fontSize={{sm : "18px" , md:"22px" , lg:"25px"}} fontWeight={"bold"}>
-
-                کارنامه زبان آموز {" "}
-                    {selectedMark && selectedMark.student.name} {" "}
-                برای دوره {" "}
-                    {selectedMark && selectedMark.course.name} {" "}
-                در تاریخ   {" "}
-
-                    {selectedMark && selectedMark.date} {" "}
-       
-
-                 
-              
-
-
-               
-          
-
-                
-
-</Text>
-
-
-                  </Center>
+                  <Text
+                    textAlign={"center"}
+                    fontSize={{ sm: "18px", md: "22px", lg: "25px" }}
+                    fontWeight={"bold"}
+                  >
+                    کارنامه زبان آموز{" "}
+                    {selectedMark && selectedMark.student.name} برای دوره{" "}
+                    {selectedMark && selectedMark.course.name} در تاریخ{" "}
+                    {selectedMark && selectedMark.date}{" "}
+                  </Text>
+                </Center>
 
                 {/* <Text fontSize={"18px"} textAlign={"center"}>
               کارنامه {selectedMark && selectedMark.student.name} دوره{" "}
@@ -201,8 +192,8 @@ const Karne = () => {
         </Grid>
       </Flex>
 
-      <Card  my="22px"  pb="0px">
-        <CardHeader  p="6px 0px 22px 0px">
+      <Card my="22px" pb="0px">
+        <CardHeader p="6px 0px 22px 0px">
           <MarkReportFilter
             filter={filter}
             onChange={handleFilterChange}
@@ -217,7 +208,7 @@ const Karne = () => {
 
         <ReportMarkTable handleMarkChange={handleMarkChange} data={tableData} />
       </Card>
-    </>
+    </AuthorizeProvider>
   );
 };
 

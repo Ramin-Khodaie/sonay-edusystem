@@ -5,7 +5,6 @@ import {
   Text,
   Accordion,
   AccordionItem,
-
 } from "@chakra-ui/react";
 
 // Custom components
@@ -20,6 +19,7 @@ import ProductForm from "components/Forms/productForm";
 import ProductListFilter from "components/Filter/ProductListFilter";
 import ProductListTable from "components/Tables/ProductListTable/ProductListTable";
 import { productListAction } from "redux/product/productList/ProductListAction";
+import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 const Product = () => {
   const { productList, errorMessage, isPending } = useSelector(
     (state) => state.productList
@@ -66,11 +66,9 @@ const Product = () => {
     let tmp = productList;
 
     if (filter.name !== "") {
-
       tmp = tmp.filter((f) => f.name === filter.name);
     }
     if (filter.courses.id !== "") {
-
       // here we filterr incoming data based on object inside an elemen in incoming data
       // so we map through array element and if any  element matches our condition we ruturn true
 
@@ -78,7 +76,6 @@ const Product = () => {
         const arry = f.courses;
         let res = false;
         arry.map((itm, key) => {
-
           if (itm.id === filter.courses.id) {
             res = true;
           }
@@ -91,7 +88,6 @@ const Product = () => {
     }
 
     if (filter.isMain) {
-
       tmp = tmp.filter((f) => f.is_main === filter.isMain);
     }
     setState(tmp);
@@ -110,52 +106,53 @@ const Product = () => {
     setState(productList);
   }, [isPending]);
 
-
   return (
-    <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
-      <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
-        <CardHeader p="6px 0px 22px 0px">
-          <Text
-            fontSize="xl"
-            color={textColor}
-            fontWeight="bold"
-            textAlign={"right"}
-          >
-            ثبت محصول جدید
-          </Text>
-        </CardHeader>
+    <AuthorizeProvider roles={["admin"]}>
+      <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
+        <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
+          <CardHeader p="6px 0px 22px 0px">
+            <Text
+              fontSize="xl"
+              color={textColor}
+              fontWeight="bold"
+              textAlign={"right"}
+            >
+              ثبت محصول جدید
+            </Text>
+          </CardHeader>
 
-        <CardBody>
-          <ProductForm courses={courseList} />
-        </CardBody>
-      </Card>
+          <CardBody>
+            <ProductForm courses={courseList} />
+          </CardBody>
+        </Card>
 
-      <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
-        <CardHeader p="6px 0px 22px 0px">
-          <Flex direction="column">
-            <Accordion allowToggle>
-              <AccordionItem>
-                <ProductListFilter
-                  filter={filter}
-                  onChange={handleChange}
-                  courses={courseList}
-                  selectChange={setFilter}
-                  handleCheckBoxChange={handleCheckBoxChange}
-                />
-              </AccordionItem>
-            </Accordion>
-          </Flex>
-        </CardHeader>
+        <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
+          <CardHeader p="6px 0px 22px 0px">
+            <Flex direction="column">
+              <Accordion allowToggle>
+                <AccordionItem>
+                  <ProductListFilter
+                    filter={filter}
+                    onChange={handleChange}
+                    courses={courseList}
+                    selectChange={setFilter}
+                    handleCheckBoxChange={handleCheckBoxChange}
+                  />
+                </AccordionItem>
+              </Accordion>
+            </Flex>
+          </CardHeader>
 
-        <ProductListTable data={state} courses={courseList} />
+          <ProductListTable data={state} courses={courseList} />
 
-        {/* {isPending ? (
+          {/* {isPending ? (
             <UserListSkleton />
           ) : (
             <ProductListTable data={productList} courses={courseList} />
           )} */}
-      </Card>
-    </Flex>
+        </Card>
+      </Flex>
+    </AuthorizeProvider>
   );
 };
 

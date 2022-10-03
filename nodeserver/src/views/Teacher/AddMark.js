@@ -3,7 +3,9 @@ import {
   Flex,
   Box,
   Avatar,
-  Skeleton, SkeletonCircle, SkeletonText,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
   Accordion,
   AccordionItem,
   Select,
@@ -31,6 +33,7 @@ import MarkListFilter from "components/Filter/MarkFilter";
 import { markByTeacher } from "services/mark";
 import MarkListTable from "components/Tables/MarkListTable/MarkListTable";
 import { markBySearch } from "services/mark";
+import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 function AddMark() {
   const notify = useNotify();
   const { colorMode } = useColorMode();
@@ -44,13 +47,11 @@ function AddMark() {
     name: "",
     courses: { id: "", name: "" },
     isFailed: false,
-    isPassed:false,
-    startDate : "",
-    endDate:"",
-    startMark:"",
-    endMark:""
-    
-
+    isPassed: false,
+    startDate: "",
+    endDate: "",
+    startMark: "",
+    endMark: "",
   });
 
   const [myCourses, setMyCourses] = useState([]);
@@ -84,7 +85,10 @@ function AddMark() {
   };
 
   const getStudentList = async () => {
-    const studentsList = await studentByCourse(selectedItems.course.id , 'student');
+    const studentsList = await studentByCourse(
+      selectedItems.course.id,
+      "student"
+    );
     if (studentsList.length > 0) {
       setmyStudents(studentsList);
     }
@@ -111,13 +115,10 @@ function AddMark() {
     setSelectedItems({ ...selectedItems, student: { id: _id, name: name } });
   };
 
-
-  
-  const doSearch = async() => {
-    const tmp = await markBySearch(filter)
-    setMarkList(tmp)
+  const doSearch = async () => {
+    const tmp = await markBySearch(filter);
+    setMarkList(tmp);
   };
-
 
   useEffect(() => {
     setMarkList(markList);
@@ -136,34 +137,31 @@ function AddMark() {
     }
   }, [filter]);
 
-  const [slider , setSlider] = useState([0,100])
+  const [slider, setSlider] = useState([0, 100]);
 
-    const handleSliderChange = (v)=>{
-      setSlider(v)
-      setFilter({...filter , startMark : v[0] , endMark : v[1]})
-  
-    }
+  const handleSliderChange = (v) => {
+    setSlider(v);
+    setFilter({ ...filter, startMark: v[0], endMark: v[1] });
+  };
 
-    const handleStartDateChange = (v)=>{
-      if(v){
-        setFilter({...filter , startDate : `${v.year}/${v.month}/${v.day}` })
-    }else{
-        setFilter({...filter , startDate : "" })
+  const handleStartDateChange = (v) => {
+    if (v) {
+      setFilter({ ...filter, startDate: `${v.year}/${v.month}/${v.day}` });
+    } else {
+      setFilter({ ...filter, startDate: "" });
     }
-  
-    }
+  };
 
-    const handleEndDateChange = (v)=>{
-      if(v){
-        setFilter({...filter , endDate : `${v.year}/${v.month}/${v.day}` })
-    }else{
-        setFilter({...filter , endDate : "" })
+  const handleEndDateChange = (v) => {
+    if (v) {
+      setFilter({ ...filter, endDate: `${v.year}/${v.month}/${v.day}` });
+    } else {
+      setFilter({ ...filter, endDate: "" });
     }
-  
-    }
+  };
 
   return (
-    <>
+    <AuthorizeProvider roles={["teacher"]}>
       <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">
         <SimpleGrid columns={2}>
           <CustomSelector
@@ -187,30 +185,29 @@ function AddMark() {
       </Box>
 
       {selectedItems.course.id == "" ? (
+        <Flex
+          borderRadius={"3rem"}
+          bg="white"
+          mt={"25px"}
+          mx={{ sm: "25px", md: "60px", lg: "80px" }}
+          mb={"55px"}
+          py={"20px"}
+        >
+          <Center w={{ sm: "150px", md: "200px", lg: "250px" }}>
+            <SkeletonCircle
+              mx={{ sm: "25px", md: "60px", lg: "80px" }}
+              size="81"
+            />
+          </Center>
 
-
-
-
-
-
-<Flex borderRadius={'3rem'} bg='white'  mt={"25px"} mx={{sm:"25px" , md:"60px" , lg:"80px"}} mb={'55px'}  py={'20px'}>
-  <Center w={{sm:"150px" , md:"200px" , lg:"250px"}} >
-  <SkeletonCircle mx={{sm:"25px" , md:"60px" , lg:"80px"}}  size='81' />
-
-   
-  </Center>
-  
-  <Box flex='1' >
-   
-  <Stack mr={{sm:"25px" , md:"60px" , lg:"80px"}}>
-  <Skeleton height='20px' />
-  <Skeleton height='20px' />
-  <Skeleton height='20px' />
-</Stack>
-  </Box>
-</Flex>
-
-
+          <Box flex="1">
+            <Stack mr={{ sm: "25px", md: "60px", lg: "80px" }}>
+              <Skeleton height="20px" />
+              <Skeleton height="20px" />
+              <Skeleton height="20px" />
+            </Stack>
+          </Box>
+        </Flex>
       ) : (
         <Flex flexDirection="column" mb="30 px" h="100%" align={"center"}>
           <SliderWrapper>
@@ -252,7 +249,7 @@ function AddMark() {
             <ProductListTable data={productList} courses={courseList} />
           )} */}
       </Card>
-    </>
+    </AuthorizeProvider>
   );
 }
 

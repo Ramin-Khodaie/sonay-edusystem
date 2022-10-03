@@ -1,12 +1,10 @@
 // Chakra imports
 import {
-
   useColorModeValue,
   Flex,
   Text,
   Accordion,
   AccordionItem,
-
 } from "@chakra-ui/react";
 
 // Custom components
@@ -21,6 +19,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { courseListAction } from "redux/course/courseList/courseListAction";
 import { userListAction } from "redux/user/UserList/UserListAction";
+import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 const Users = () => {
   const textColor = useColorModeValue("gray.700", "white");
   const dispatch = useDispatch();
@@ -31,9 +30,8 @@ const Users = () => {
   };
   useEffect(() => {
     getList();
-    
   }, []);
-const studentStatus = require('../../status.json');
+  const studentStatus = require("../../status.json");
   const { userList, errorMessage, isPending } = useSelector(
     (state) => state.userList
   );
@@ -64,19 +62,15 @@ const studentStatus = require('../../status.json');
 
   const doSearch = () => {
     let tmp = userList;
- 
 
     if (filter.fFullName !== "") {
-
       tmp = tmp.filter((f) => f.full_name === filter.fFullName);
     }
     if (filter.fCourse.id !== "") {
-
       tmp = tmp.filter((f) => {
         const arry = f.courses;
         let res = false;
         arry.map((itm, key) => {
-
           if (itm.id === filter.fCourse.id) {
             res = true;
           }
@@ -85,7 +79,6 @@ const studentStatus = require('../../status.json');
       });
     }
     if (filter.fStatus.id !== "") {
-
       tmp = tmp.filter((f) => f.status.id === filter.fStatus.id);
     }
     setState(tmp);
@@ -95,48 +88,50 @@ const studentStatus = require('../../status.json');
   };
 
   return (
-    <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
-      <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
-        <CardHeader p="6px 0px 22px 0px">
-          <Text
-            fontSize="xl"
-            color={textColor}
-            fontWeight="bold"
-            textAlign={"right"}
-          >
-            ثبت کاربر جدید
-          </Text>
-        </CardHeader>
+    <AuthorizeProvider roles={["admin"]}>
+      <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
+        <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
+          <CardHeader p="6px 0px 22px 0px">
+            <Text
+              fontSize="xl"
+              color={textColor}
+              fontWeight="bold"
+              textAlign={"right"}
+            >
+              ثبت کاربر جدید
+            </Text>
+          </CardHeader>
 
-        <CardBody>
-          <UserForm courses={courseList} />
-        </CardBody>
-      </Card>
+          <CardBody>
+            <UserForm courses={courseList} />
+          </CardBody>
+        </Card>
 
-      <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
-        <CardHeader p="6px 0px 22px 0px">
-          <Flex direction="column">
-            <Accordion allowToggle>
-              <AccordionItem>
-                <UserListFilter
-                  courses={courseList}
-                  filter={filter}
-                  onChange={handleChange}
-                  selectChange={setFilter}
-                  studentStatus={studentStatus}
-                />
-              </AccordionItem>
-            </Accordion>
-          </Flex>
-        </CardHeader>
+        <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
+          <CardHeader p="6px 0px 22px 0px">
+            <Flex direction="column">
+              <Accordion allowToggle>
+                <AccordionItem>
+                  <UserListFilter
+                    courses={courseList}
+                    filter={filter}
+                    onChange={handleChange}
+                    selectChange={setFilter}
+                    studentStatus={studentStatus}
+                  />
+                </AccordionItem>
+              </Accordion>
+            </Flex>
+          </CardHeader>
 
-        {isPending ? (
-          <UserListSkleton />
-        ) : (
-          <UserListTable data={state} courses={courseList} />
-        )}
-      </Card>
-    </Flex>
+          {isPending ? (
+            <UserListSkleton />
+          ) : (
+            <UserListTable data={state} courses={courseList} />
+          )}
+        </Card>
+      </Flex>
+    </AuthorizeProvider>
   );
 };
 

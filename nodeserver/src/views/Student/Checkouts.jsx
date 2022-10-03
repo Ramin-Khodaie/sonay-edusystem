@@ -3,6 +3,7 @@ import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
 import { CartIcon } from "components/Icons/Icons";
 import OrderListTable from "components/Tables/OrderListTable/OrderListTable";
+import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import React from "react";
 import { useSelector } from "react-redux";
 const Checkout = () => {
@@ -11,7 +12,7 @@ const Checkout = () => {
     return cartItems.reduce((acc, curr) => acc + curr.quantity * curr.price, 0);
   };
   return (
-    <React.Fragment>
+    <AuthorizeProvider roles={["student"]}>
       <Card my="100px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
         <CardBody>
           <OrderListTable />
@@ -37,7 +38,7 @@ const Checkout = () => {
           </Flex>
         </Flex>
       </Card>
-    </React.Fragment>
+    </AuthorizeProvider>
   );
 };
 

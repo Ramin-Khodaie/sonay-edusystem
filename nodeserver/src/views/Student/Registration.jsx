@@ -29,6 +29,7 @@ import MarkLimitAlert from "components/Alert/markLimitAlert";
 import useNotify from "helpers/notify/useNotify";
 import { getRedirectUrl } from "services/purchase";
 import { Redirect, useHistory } from "react-router-dom";
+import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 const Registration = () => {
   const dispatch = useDispatch();
 
@@ -149,29 +150,31 @@ const Registration = () => {
   };
 
   return (
-    <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">
-      <Flex flexDirection="column" mb="30px" h="100%" align={"center"}>
-        <SliderWrapper>
-          <CourseRegisterRecords
-            handleSelectCourseHistory={handleSelectCourseHistory}
-            data={myCourseHistory}
-          />
-        </SliderWrapper>
-      </Flex>
+    <AuthorizeProvider roles={["student"]}>
+      <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">
+        <Flex flexDirection="column" mb="30px" h="100%" align={"center"}>
+          <SliderWrapper>
+            <CourseRegisterRecords
+              handleSelectCourseHistory={handleSelectCourseHistory}
+              data={myCourseHistory}
+            />
+          </SliderWrapper>
+        </Flex>
 
-      {state && state === "noMark" ? (
-        <NoMarkAlert />
-      ) : state === "PassMarkLimit" ? (
-        <MarkLimitAlert />
-      ) : (
-        <RegistrationCard
-          getSum={getSum}
-          cartItems={cartItems}
-          courseDetailData={courseDetailData}
-          registerCourse={registerCourse}
-        />
-      )}
-    </Box>
+        {state && state === "noMark" ? (
+          <NoMarkAlert />
+        ) : state === "PassMarkLimit" ? (
+          <MarkLimitAlert />
+        ) : (
+          <RegistrationCard
+            getSum={getSum}
+            cartItems={cartItems}
+            courseDetailData={courseDetailData}
+            registerCourse={registerCourse}
+          />
+        )}
+      </Box>
+    </AuthorizeProvider>
   );
 };
 

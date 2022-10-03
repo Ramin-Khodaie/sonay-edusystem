@@ -8,7 +8,6 @@ import {
   TableCaption,
   TableContainer,
   Text,
-  Divider,
   Accordion,
   AccordionButton,
   AccordionIcon,
@@ -22,46 +21,40 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import Card from "components/Card/Card";
-import CardHeader from "components/Card/CardHeader";
 import { useEffect } from "react";
 import { useState } from "react";
-import DatePicker from "react-multi-date-picker";
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
-import { getRecentOrder } from "services/AdminReport";
-import { getRecentRegistration } from "services/AdminReport";
-import { getRecentRegistrationFilter } from "services/AdminReport";
 import { getCourseDetailReport } from "services/AdminReport";
 import CustomSelector from "components/Selectors/CustomSelector";
 import { getTeacherList } from "services/user";
 import { getCourseDetailFilter } from "services/AdminReport";
+import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 
 const CourseDetail = () => {
   const [data, setData] = useState([]);
   const [teacher, setTeacher] = useState([]);
   const [filter, setFilter] = useState({
     name: "",
-    teacher : {"id" : "" , "name" : ""},
-    deActive : false
+    teacher: { id: "", name: "" },
+    deActive: false,
   });
 
   const callData = () => {
     getCourseDetailReport().then((res) => {
       setData(res.data.data);
     });
+    6;
 
-
-    getTeacherList().then((teacher)=>{
-        setTeacher(teacher.data.data[0])
-    })
+    getTeacherList().then((teacher) => {
+      setTeacher(teacher.data.data[0]);
+    });
   };
   useEffect(() => {
     callData();
   }, []);
 
   const doSearch = async () => {
-      const tmp = await getCourseDetailFilter(filter)
-      setData(tmp.data.data)
+    const tmp = await getCourseDetailFilter(filter);
+    setData(tmp.data.data);
   };
 
   const handleCheckBoxChange = (event) => {
@@ -73,18 +66,13 @@ const CourseDetail = () => {
   useEffect(() => {
     setData(data);
 
-    if (
-      filter.name !== "" ||
-      filter.teacher.id !== "" ||
-      filter.deActive 
-    ) {
+    if (filter.name !== "" || filter.teacher.id !== "" || filter.deActive) {
       doSearch();
-    }else{
-      callData()
+    } else {
+      callData();
     }
   }, [filter]);
 
-  
   const handleFilterChange = (e) => {
     const field = e.target.id;
     const value = e.target.value;
@@ -92,7 +80,7 @@ const CourseDetail = () => {
   };
 
   return (
-    <>
+    <AuthorizeProvider roles={["admin"]}>
       <Card mt={"100px"}>
         <Flex direction="column">
           <Accordion allowToggle>
@@ -146,30 +134,24 @@ const CourseDetail = () => {
                   </Box>
 
                   <Box>
-                  <Text>
-                 دبیر دوره:
-                </Text>
-                <CustomSelector
-                  onChange={setFilter}
-                  data={teacher}
-                  state={filter}
-                  placeHolder={"دبیر دوره را انتخاب کنید"}
-                  fieldId={"teacher"}
-                />
+                    <Text>دبیر دوره:</Text>
+                    <CustomSelector
+                      onChange={setFilter}
+                      data={teacher}
+                      state={filter}
+                      placeHolder={"دبیر دوره را انتخاب کنید"}
+                      fieldId={"teacher"}
+                    />
                   </Box>
 
                   <Box>
-                   
-                  <Checkbox
-                    onChange={handleCheckBoxChange}
-                    id="deActive"
-                    size={"lg"}
-                  >
-                فقط دوره های غیر فعال{" "}
-                  </Checkbox>
-
-
-
+                    <Checkbox
+                      onChange={handleCheckBoxChange}
+                      id="deActive"
+                      size={"lg"}
+                    >
+                      فقط دوره های غیر فعال{" "}
+                    </Checkbox>
                   </Box>
 
                   {/* <Checkbox onChange={handleCheckBoxChange} id="isMain" size={"lg"} >
@@ -220,7 +202,7 @@ const CourseDetail = () => {
           </Table>
         </TableContainer>
       </Card>
-    </>
+    </AuthorizeProvider>
   );
 };
 export default CourseDetail;

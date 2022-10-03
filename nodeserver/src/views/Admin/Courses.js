@@ -1,10 +1,5 @@
 // Chakra imports
-import {
-  useColorModeValue,
-  Flex,
-  Text,
-
-} from "@chakra-ui/react";
+import { useColorModeValue, Flex, Text } from "@chakra-ui/react";
 
 // Custom components
 import Card from "components/Card/Card.js";
@@ -16,6 +11,7 @@ import CourseListFilter from "components/Filter/CourseListFilter";
 import { useDispatch, useSelector } from "react-redux";
 import { courseListAction } from "redux/course/courseList/courseListAction";
 import CourseListTable from "components/Tables/CourseListTable/CourseListTable";
+import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 
 function Courses() {
   const statusData = [
@@ -32,7 +28,6 @@ function Courses() {
     setState(courseList);
   }, [isPending]);
 
-
   const [sent, setSent] = React.useState({
     status: false,
     sending: false,
@@ -41,12 +36,12 @@ function Courses() {
   const [filter, setFilter] = React.useState({
     fFullName: "",
     fTeacher: {
-      "id" : "",
-      "name" : ""
+      id: "",
+      name: "",
     },
     fStatus: {
-      "id" : "",
-      "name" : ""
+      id: "",
+      name: "",
     },
   });
 
@@ -66,11 +61,9 @@ function Courses() {
     await dispatch(courseListAction());
   };
 
-
   useEffect(() => {
     getCourseList();
   }, []);
-
 
   useEffect(() => {
     setState(courseList);
@@ -85,10 +78,8 @@ function Courses() {
 
   const doSearch = () => {
     let tmp = courseList;
- 
 
     if (filter.fFullName !== "") {
-
       tmp = tmp.filter((f) => f.name === filter.fFullName);
     }
     // if (filter.fTeacher.id !== "") {
@@ -96,7 +87,6 @@ function Courses() {
     //   tmp = tmp.filter((f) => f.teacher.id === filter.fTeacher.id);
     // }
     if (filter.fStatus.id !== "") {
-
       tmp = tmp.filter((f) => f.status.id === filter.fStatus.id);
     }
     setState(tmp);
@@ -111,72 +101,54 @@ function Courses() {
   // }, filter);
 
   return (
-    <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
-      <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
-        <CardHeader p="6px 0px 22px 0px">
-          <Text
-            fontSize="xl"
-            color={textColor}
-            fontWeight="bold"
-            textAlign={"right"}
-          >
-            ثبت دوره جدید
-          </Text>
-        </CardHeader>
+    <AuthorizeProvider roles={["admin"]}>
+      <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
+        <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
+          <CardHeader p="6px 0px 22px 0px">
+            <Text
+              fontSize="xl"
+              color={textColor}
+              fontWeight="bold"
+              textAlign={"right"}
+            >
+              ثبت دوره جدید
+            </Text>
+          </CardHeader>
 
-        <CardBody>
-          <CourseForm
-            changeSent={handleSent}
-            sent={sent}
-            courses={courseList}
-            statusData={statusData}
-          />
-        </CardBody>
-      </Card>
+          <CardBody>
+            <CourseForm
+              changeSent={handleSent}
+              sent={sent}
+              courses={courseList}
+              statusData={statusData}
+            />
+          </CardBody>
+        </Card>
 
-      <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
-        <CardHeader p="6px 0px 22px 0px">
-          
-
-
-
-
-
-
-
-          <CourseListFilter
-          filter={filter}
-          onChange={handleChange}
-          courses={courseList}
-          selectChange={setFilter}
-          courseStatus={statusData}
-          teacher={[{"_id" : "5",
-        "name" : "aysan eshraghi"},
-        {"_id" : "6",
-        "name" : "jafar jafari"}]}
-        
-
-
-           />
-
-
-
-
-
-
-
-
-
-
-
-
-
-        </CardHeader>
-        <CardBody>
-         <CourseListTable statusData={statusData} data={state} courses={courseList}  />
-        </CardBody>
-      </Card>
-    </Flex>
+        <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
+          <CardHeader p="6px 0px 22px 0px">
+            <CourseListFilter
+              filter={filter}
+              onChange={handleChange}
+              courses={courseList}
+              selectChange={setFilter}
+              courseStatus={statusData}
+              teacher={[
+                { _id: "5", name: "aysan eshraghi" },
+                { _id: "6", name: "jafar jafari" },
+              ]}
+            />
+          </CardHeader>
+          <CardBody>
+            <CourseListTable
+              statusData={statusData}
+              data={state}
+              courses={courseList}
+            />
+          </CardBody>
+        </Card>
+      </Flex>
+    </AuthorizeProvider>
   );
 }
 
