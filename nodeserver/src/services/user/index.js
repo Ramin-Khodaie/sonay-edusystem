@@ -26,7 +26,7 @@ export const getUserInfo = () => {
         resolve(res);
       }
     } catch (error) {
-       resolve(error.response.status);
+       console.log(error);
     }
   });
 };

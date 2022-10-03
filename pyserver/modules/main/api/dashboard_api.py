@@ -19,28 +19,28 @@ dashboard=SDashboard('sonay' , 'course' , 's_user' , 'mark' , 'purchase')
 
 
 @router.get("/getcounts")
-@sn(fast=True)
-def get_counts():
+@sn(fast=True,roles=['admin'])
+def get_admin_counts():
     ret = dashboard.get_counts()
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 
 @router.get("/getyearcomparedata")
-@sn(fast=True)
+@sn(fast=True,roles=['admin'])
 def get_year_compare_data():
     ret = dashboard.get_year_compare_data()
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 
 @router.get("/getteacheravg")
-@sn(fast=True)
+@sn(fast=True,roles=['admin'])
 def get_teacher_avg():
     ret = dashboard.get_teacher_avg()
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 
 @router.get("/getrecentregistration")
-@sn(fast=True)
+@sn(fast=True,roles=['admin'])
 def get_recent_registration(num = 5):
     ret = dashboard.get_recent_registration(num)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
@@ -48,7 +48,7 @@ def get_recent_registration(num = 5):
 
 
 @router.get("/getrecentmark")
-@sn(fast=True)
+@sn(fast=True,roles=['admin'])
 def get_recent_mark(num = 5):
     ret = dashboard.get_recent_mark(num)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
@@ -59,7 +59,7 @@ def get_recent_mark(num = 5):
 
 
 @router.get("/gettopstudent")
-@sn(fast=True)
+@sn(fast=True,roles=['admin'])
 def get_top_student(num = 5):
     ret = dashboard.get_top_student(num)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
@@ -68,14 +68,14 @@ def get_top_student(num = 5):
 
 
 @router.get("/getcomparestudentmark")
-@sn(fast=True)
+@sn(fast=True,roles=['student'])
 def get_compare_student_mark( user : SUser ):
     ret = dashboard.get_compare_student_mark( user )
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 
 @router.get("/getclassmate")
-@sn(fast=True)
+@sn(fast=True,roles=['student'])
 def get_classmate( user : SUser ):
     ret = dashboard.get_classmate( user )
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
@@ -85,7 +85,7 @@ def get_classmate( user : SUser ):
 ###################################################################
 
 @router.get("/getteachercounts")
-@sn(fast=True)
+@sn(fast=True,roles=['teacher'])
 def get_teacher_counts( user : SUser ):
     ret = dashboard.get_teacher_counts( user )
     return api_return(ret[0],ret[1],ret[2],data=ret[3])

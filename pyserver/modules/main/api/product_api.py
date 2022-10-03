@@ -18,20 +18,20 @@ product=SProduct('sonay' , 'product')
 
 
 @router.post("/createproduct")
-@sn(fast=True)
+@sn(fast=True,roles=['admin'])
 def create_product(info : dict):
     ret = product.insert_product(info)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 @router.get("/getproductlist")
-@sn(fast=True)
+@sn(fast=True,roles=['admin'])
 def get_product_list():
     ret = product.get_product_list()
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 
 @router.get("/getproduct")
-@sn()
+@sn(roles=['admin' , 'student'])
 def get_product(product_id):
     ret = product.get_product(product_id)
     return api_return(ret[0] , ret[1] , ret[2] , ret[3])
@@ -39,7 +39,7 @@ def get_product(product_id):
 
 
 @router.get("/getproductbycourse")
-@sn()
+@sn(roles=['admin', 'student'])
 def get_product_by_course(course_id):
     ret = product.get_product_by_course(course_id)
     return api_return(ret[0] , ret[1] , ret[2] , ret[3])

@@ -38,7 +38,7 @@ def register_user(say: SAY, user_info: dict):
 
 
 @router.post("/createuser")
-@sn()
+@sn(roles=['admin'])
 def insert_new_user(say: SAY, user: dict):
     ret = say.insert_new_user(user)
     return api_return(ret[0], ret[1], ret[2], data=ret[3])
@@ -52,14 +52,14 @@ def check_register_form(say: SAY, user_name: str = "", email: str = "", phone: s
 
 
 @router.get("/getuserlist")
-@sn()
+@sn(roles=['admin'])
 def get_user_list(say: SAY, full_name="", course="", status=""):
     ret = say.get_user_list(full_name, course, status)
     return api_return(ret[0], ret[1], ret[2], data=ret[3])
 
 
 @router.get("/getuser")
-@sn()
+@sn(roles=['admin' , 'teacher' , 'student'])
 def get_user(say: SAY, user_id):
     try:
         ret = say.get_user_by_query({'_id': user_id}, {})
@@ -70,14 +70,14 @@ def get_user(say: SAY, user_id):
 
 
 @router.get("/getuserbycourse")
-@sn()
+@sn(roles=['admin' , 'teacher' , 'student'])
 def get_user(say: SAY, course_id, role):
     ret = say.get_user_by_course(course_id, role)
     return api_return(ret[0], ret[1], ret[2], data=ret[3])
 
 
 @router.get("/getteacherlist")
-@sn()
+@sn(roles=['admin'])
 def get_teacher_list(say: SAY):
     try:
         ret = say.get_user_by_query({"roles.id": "teacher"}, {

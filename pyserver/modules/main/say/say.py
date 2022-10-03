@@ -152,15 +152,15 @@ class SAY():
             decode_result, data = self.decode_token(token=token)
             if decode_result == 200:
                 usr = data['sub']
-                user = self.get_user(userid=usr)
+                user = self.get_user(user_id=usr)
                 if user is not None:
 
-                    n = user["roles"]
-                    user_roles = self.get_all_roles_of_roles(user["roles"])
+                    n = user[3][0]["roles"]
+                    user_roles = [it['id'] for it in n]
                     # api_roles = self.get_all_roles_of_roles(roles)
 
                     # final_roles = user_roles & api_roles
-                    final_roles = user_roles & set(roles)
+                    final_roles = set(user_roles) & set(roles)
                     role_permit = len(final_roles) > 0
 
                     if not role_permit:
