@@ -8,23 +8,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { userInfoAction } from "redux/user/UserInfo/UserInfoAction";
 
 export default function Dashboard() {
-  const dispatch = useDispatch();
 
-  const getUserInfo = async () => {
-    await dispatch(userInfoAction());
-  };
 
   const { userInfo } = useSelector((state) => state.getUserInfo);
 
-  useEffect(() => {
-    getUserInfo();
-  }, []);
+
 
   return (
     <AuthorizeProvider roles={["admin", "student", "teacher"]}>
-      {/* <AdminDashboard /> */}
-      {/* <StudentDashoard user={userInfo}/> */}
-      <TeacherDashboard />
+      {userInfo.roles[0].id === "admin" ? (
+        <AdminDashboard />
+      ) : userInfo.roles[0].id === "teacher" ? (
+        <TeacherDashboard />
+      ) : userInfo.roles[0].id === "student" ? (
+        <StudentDashoard user={userInfo} />
+      ) : (
+        <></>
+      )}
     </AuthorizeProvider>
   );
 }

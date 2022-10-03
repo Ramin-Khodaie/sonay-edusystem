@@ -86,9 +86,6 @@ import { RtlProvider } from "components/RTLProvider/RTLProvider";
 
     }
 
-
-
-
     return (
     
        <Box>
