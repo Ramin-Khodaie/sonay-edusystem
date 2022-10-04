@@ -16,6 +16,7 @@ import IconBox from "components/Icons/IconBox";
 import { WalletIcon } from "components/Icons/Icons.js";
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { FaChalkboardTeacher, FaDollarSign, FaUser, FaUsers } from "react-icons/fa";
 
 import { getCounts } from "services/dashboard";
 import CounterCard from "../CounterCard";
@@ -45,22 +46,26 @@ const Count = () => {
             name={"تعداد کل دبیران"}
             data={data[0].teachers.count}
             perc={data[0].teachers.perc}
+            icon={ <FaChalkboardTeacher size={'30px'} color={iconBoxInside} />}
           />
           <CounterCard
             name={"تعداد کل دوره ها"}
             data={data[0].courses.count}
             perc={data[0].courses.perc}
+            icon={ <FaUsers size={'30px'} color={iconBoxInside} />}
           />
           <CounterCard
             name={"مجموع پرداختی ماه جاری"}
             data={data[0].purchases.count}
             perc={data[0].purchases.perc}
+            icon={ <FaDollarSign size={'30px'} color={iconBoxInside} />}
             unit={'ریال'}
           />
           <CounterCard
             name={" تعداد کل زبان آموزان"}
             data={data[0].students.count}
             perc={data[0].students.perc}
+            icon={ <FaUser size={'30px'} color={iconBoxInside} />}
           />
         </>
       )}

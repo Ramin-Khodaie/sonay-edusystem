@@ -78,9 +78,10 @@ import { RtlProvider } from "components/RTLProvider/RTLProvider";
 
     const sidebarFilter = (route)=>{
       const intersection = route.roles.filter((role, id) => (userInfo.full_roles.includes(role)));
-      if (intersection.length === 0){
+      if (intersection.length === 0 ){
         return false
       }else{
+        
         return true
       }
 

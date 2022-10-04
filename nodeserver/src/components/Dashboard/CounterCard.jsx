@@ -13,7 +13,7 @@ import IconBox from "components/Icons/IconBox";
 import { WalletIcon } from "components/Icons/Icons";
 
 const CounterCard = (props) => {
-  const { name, data, perc, unit } = props;
+  const { name, data, perc, unit , icon } = props;
 
   const iconBlue = useColorModeValue("blue.500", "blue.500");
   const iconBoxInside = useColorModeValue("white", "white");
@@ -63,7 +63,7 @@ const CounterCard = (props) => {
             w={"45px"}
             bg={iconBlue}
           >
-            <WalletIcon h={"24px"} w={"24px"} color={iconBoxInside} />
+           {icon}
           </IconBox>
         </Flex>
         {perc && perc > 0 && 

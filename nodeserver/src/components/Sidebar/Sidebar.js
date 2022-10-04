@@ -62,7 +62,11 @@ function Sidebar(props) {
       if (prop.redirect) {
         return null;
       }
-      if (prop.category) {
+      if (!prop.show) {
+        return null;
+      }
+
+      if (prop.category ) {
         var st = {};
         st[prop["state"]] = !state[prop.state];
         return (
@@ -128,15 +132,15 @@ function Sidebar(props) {
                   <IconBox
                     bg="blue.500"
                     color="white"
-                    h="30px"
-                    w="30px"
+                    h="40px"
+                    w="40px"
                     me="12px"
                     transition={variantChange}
                   >
                     {prop.icon}
                   </IconBox>
                 )}
-                <Text color={activeColor} my="auto" fontSize="sm">
+                <Text color={activeColor} my="auto" fontSize="md">
                   {document.documentElement.dir === "rtl"
                     ? prop.rtlName
                     : prop.name}
@@ -179,8 +183,8 @@ function Sidebar(props) {
                   <IconBox
                     bg={inactiveBg}
                     color="blue.500"
-                    h="30px"
-                    w="30px"
+                    h="35px"
+                    w="35px"
                     me="12px"
                     transition={variantChange}
                   >

@@ -35,6 +35,7 @@ callData()
     
     <TecherCounts st={st} cr={cr} />
     <TeacherCourse data={courseDetail} />
+    
 
     </>
   );

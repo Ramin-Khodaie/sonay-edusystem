@@ -41,12 +41,7 @@ function SignIn(props) {
   })
 
 
-  const [status, setStatus] = React.useState({
-    user : false,
-    error : false
-  })
-  
-  
+
   const handleChange = (event) => {
     const field = event.target.id
     const value = event.target.value
@@ -73,7 +68,7 @@ function createPost(){
   ).then(async (response) => {
     localStorage.setItem("at", response.data.data.at);
     localStorage.setItem("rt", response.data.data.rt);
-    setStatus({...status , user : true})
+   
     await getUserInfo()
     history.push("/sonay/dashboard")
     
@@ -92,19 +87,26 @@ const getUserInfo = async () => {
 };
 
 
-const checkUserState = ()=>{
-//      if (userInfo.username !== 'anonymous'){
-//       history.push("/sonay/dashboard")
+// const checkUserState = ()=>{
+// //      if (userInfo.username !== 'anonymous'){
+// //       history.push("/sonay/dashboard")
 
 
+// // }
 // }
+
+
+const logOutUser = ()=>{
+  localStorage.setItem("at", "");
+  localStorage.setItem("rt", "");
+  
 }
 
-
 useEffect(()=>{
+  logOutUser()
 
   getUserInfo()
-  checkUserState()
+  // checkUserState()
   
 
 },[])
