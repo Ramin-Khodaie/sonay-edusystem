@@ -20,7 +20,7 @@ import CardBody from "components/Card/CardBody.js";
 import React from "react";
 import UserListTableRow from "components/Tables/UserListTable/UserListTableRow";
 function UserListTable(props) {
-  const { data, courses } = props;
+  const { data, courses , userList , setUserList } = props;
 
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -63,6 +63,8 @@ function UserListTable(props) {
                 key={row._id}
                 userId={row._id}
                 courses={courses}
+                userList={userList}
+                 setUserList={setUserList}
               />
             ))}
         </Tbody>

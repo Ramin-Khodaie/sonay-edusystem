@@ -12,7 +12,7 @@ import UserForm from "components/Forms/userForm";
 import React, { useEffect } from "react";
 
 function UserEditModal(props) {
-  const { changeSent, sent , userId , courses } = props;
+  const { userList,setUserList, changeSent, sent , userId , courses } = props;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -36,7 +36,7 @@ function UserEditModal(props) {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody pt={"50px"}>
-            <UserForm changeSent={changeSent} sent={sent} courses={courses} modalClose={onClose} mode="edit" userId={userId} />
+            <UserForm onClose={onClose} userList={userList} setUserList={setUserList} changeSent={changeSent} sent={sent} courses={courses} modalClose={onClose} mode="edit" userId={userId} />
           </ModalBody>
         </ModalContent>
       </Modal>

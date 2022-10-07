@@ -27,7 +27,7 @@ import { createUser } from "services/user";
 import { useState } from "react";
 
 function UserForm(props) {
-  const { courses, userList, setUserList, userId = "-1" } = props;
+  const { courses, userList, setUserList, onClose, userId = "-1" } = props;
 
   const currentUser = useUser(userId);
   const [isLoading, setIsLoading] = useState(false);
@@ -92,12 +92,26 @@ function UserForm(props) {
     await createUser(newUser).then((res) => {
       switch (res.result) {
         case "ok":
-          setIsLoading(false);
+          if(userId === '-1'){
+            // insert mode
+            setIsLoading(false);
 
           setUserList([...userList, res.data]);
           notify("کابر با موفقیت ثبت شد", true, "solid", "success");
 
           break;
+          }else{
+            // edit mode
+
+            // var foundIndx=userList.findIndex(x=> x.username === res.data.username)
+            // console.log(foundIndx)
+            setUserList(userList.map((item , key)=>{
+              return item.username === res.data.username ? res.data : item
+            }))
+            onClose()
+
+            break
+          }
         case "empty_field":
           setIsLoading(false);
 

@@ -9,7 +9,6 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import React from "react";
-import UserEditModal from "components/Modal/userEdit";
 import { CheckIcon, CloseIcon, SmallCloseIcon } from "@chakra-ui/icons";
 import ProductEditModal from "components/Modal/productEdit";
 

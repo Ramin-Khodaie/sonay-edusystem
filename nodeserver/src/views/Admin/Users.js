@@ -111,7 +111,7 @@ const Users = () => {
 
            </Box>
           ) : (
-            <UserListTable data={userList} courses={courseList} />
+            <UserListTable userList={userList} setUserList={setUserList} data={userList} courses={courseList} />
           )}
         </Card>
       </Flex>
