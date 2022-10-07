@@ -19,6 +19,7 @@ import {
   import React, { useEffect } from "react";
   import { userListAction } from "redux/user/UserList/UserListAction";
   import { connect, useDispatch, useSelector } from "react-redux";
+import { UserPop4 } from "components/PopOvers/CoursePopOver";
   
   const CourseListFilter = (props) => {
     const { filter, onChange, courses ,selectChange , courseStatus , teacher } = props;
@@ -42,7 +43,8 @@ import {
                 </h2>{" "}
               </Box>
               <Spacer />
-              <Box>
+              <Flex>
+              <UserPop4 />
                 <Text
                   fontSize="xl"
                   color={textColor}
@@ -52,7 +54,8 @@ import {
                 >
                   لیست دوره ها{" "}
                 </Text>
-              </Box>
+     
+              </Flex>
             </Flex>
   
             <AccordionPanel pb={4}>

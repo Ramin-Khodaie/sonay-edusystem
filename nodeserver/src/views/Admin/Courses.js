@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { courseListAction } from "redux/course/courseList/courseListAction";
 import CourseListTable from "components/Tables/CourseListTable/CourseListTable";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
+import { UserPop3 } from "components/PopOvers/CoursePopOver";
 
 function Courses() {
   const statusData = [
@@ -105,7 +106,9 @@ function Courses() {
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
         <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
           <CardHeader p="6px 0px 22px 0px">
-            <Text
+            <Flex dir='rtl' >
+             
+              <Text
               fontSize="xl"
               color={textColor}
               fontWeight="bold"
@@ -113,6 +116,9 @@ function Courses() {
             >
               ثبت دوره جدید
             </Text>
+            <UserPop3 />
+            </Flex>
+            
           </CardHeader>
 
           <CardBody>

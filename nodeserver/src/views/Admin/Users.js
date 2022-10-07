@@ -6,6 +6,19 @@ import {
   Accordion,
   AccordionItem,
   Box,
+  Tooltip,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+  Button,
+  Tag,
+  Stack
 } from "@chakra-ui/react";
 
 // Custom components
@@ -22,6 +35,8 @@ import { courseListAction } from "redux/course/courseList/courseListAction";
 import { userListAction } from "redux/user/UserList/UserListAction";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import { getUserList } from "services/user";
+import { PhoneIcon, QuestionIcon, QuestionOutlineIcon } from "@chakra-ui/icons";
+import { UserPop1 } from "components/PopOvers/UserPopOver";
 const Users = () => {
   const textColor = useColorModeValue("gray.700", "white");
 
@@ -58,19 +73,28 @@ const Users = () => {
     setFilter(f);
   };
 
+
+ 
   return (
     <AuthorizeProvider roles={["admin"]}>
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
         <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
           <CardHeader p="6px 0px 22px 0px">
+            <Flex dir='rtl' >
             <Text
               fontSize="xl"
               color={textColor}
               fontWeight="bold"
-              textAlign={"right"}
+             
             >
               ثبت کاربر جدید
             </Text>
+
+            <UserPop1 />
+
+
+            </Flex>
+            
           </CardHeader>
 
           <CardBody>

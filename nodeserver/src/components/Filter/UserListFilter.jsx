@@ -19,6 +19,7 @@ import UserNameInput from "components/Selectors/UserNameInput";
 import React, { useEffect } from "react";
 import { userListAction } from "redux/user/UserList/UserListAction";
 import { connect, useDispatch, useSelector } from "react-redux";
+import { UserPop2 } from "components/PopOvers/UserPopOver";
 
 const UserListFilter = (props) => {
   const { filter, onChange, courses ,selectChange , studentStatus } = props;
@@ -43,13 +44,17 @@ const UserListFilter = (props) => {
                   <Box flex="1" textAlign="left">
                     {" "}
                     نمایش فیلتر ها{" "}
+                
                   </Box>
+
+                 
                   <AccordionIcon />
                 </AccordionButton>
               </h2>{" "}
             </Box>
             <Spacer />
-            <Box>
+            <Flex >
+            <UserPop2 />
               <Text
                 fontSize="xl"
                 color={textColor}
@@ -59,7 +64,8 @@ const UserListFilter = (props) => {
               >
                 لیست کاربران{" "}
               </Text>
-            </Box>
+           
+            </Flex>
           </Flex>
 
           <AccordionPanel pb={4}>

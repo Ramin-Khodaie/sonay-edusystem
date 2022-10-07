@@ -11,7 +11,7 @@ if(courseId != "-1"){
   bixios
   .get("/courses/getcourse" , {
       params: {
-        course_id: courseId,
+        _id: courseId,
       },
     })
   .then((response) => {
