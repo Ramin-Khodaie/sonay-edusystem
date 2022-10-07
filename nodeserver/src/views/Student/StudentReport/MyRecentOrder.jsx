@@ -202,7 +202,7 @@ const MyRecentOrder = () => {
                 <Tr>
                   <Td>{itm.date}</Td>
                   <Td>{itm.course_name}</Td>
-                  <Td>
+                  
                     <Td>
                       {itm.products.map((pr, index, arr) => (
                         <>
@@ -210,13 +210,13 @@ const MyRecentOrder = () => {
                             {pr.name} / {pr.quantity} عدد / {pr.price} ریال
                           </Text>
 
-                          {index !== arr.length - 1 && (
+                          {index !== itm.products.length - 1 && (
                             <hr style={{ color: "gray" }}></hr>
                           )}
                         </>
                       ))}
                     </Td>
-                  </Td>
+              
                   <Td>{itm.p_price}ریال </Td>
                   <Td>{itm.ref_id}</Td>
                 </Tr>

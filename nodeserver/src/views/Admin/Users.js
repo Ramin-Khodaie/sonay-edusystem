@@ -5,6 +5,7 @@ import {
   Text,
   Accordion,
   AccordionItem,
+  Box,
 } from "@chakra-ui/react";
 
 // Custom components
@@ -20,28 +21,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { courseListAction } from "redux/course/courseList/courseListAction";
 import { userListAction } from "redux/user/UserList/UserListAction";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
+import { getUserList } from "services/user";
 const Users = () => {
   const textColor = useColorModeValue("gray.700", "white");
   const dispatch = useDispatch();
 
   const getList = async () => {
-    await dispatch(userListAction());
     await dispatch(courseListAction());
   };
   useEffect(() => {
     getList();
   }, []);
   const studentStatus = require("../../status.json");
-  const { userList, errorMessage, isPending } = useSelector(
-    (state) => state.userList
-  );
 
+ const boxBg=useColorModeValue('gray.100' , 'navy.600')
   const { courseList } = useSelector((state) => state.courseList);
 
-  const [state, setState] = useState([]);
-  useEffect(() => {
-    setState(userList);
-  }, [isPending]);
+  const [userList, setUserList] = useState([]);
+
 
   const [filter, setFilter] = React.useState({
     fFullName: "",
@@ -50,7 +47,7 @@ const Users = () => {
   });
 
   useEffect(() => {
-    setState(userList);
+    setUserList(userList);
     if (
       filter.fCourse !== "" ||
       filter.fFullName !== "" ||
@@ -60,32 +57,15 @@ const Users = () => {
     }
   }, [filter.fCourse, filter.fFullName, filter.fStatus]);
 
-  const doSearch = () => {
-    let tmp = userList;
-
-    if (filter.fFullName !== "") {
-      tmp = tmp.filter((f) => f.full_name === filter.fFullName);
-    }
-    if (filter.fCourse.id !== "") {
-      tmp = tmp.filter((f) => {
-        const arry = f.courses;
-        let res = false;
-        arry.map((itm, key) => {
-          if (itm.id === filter.fCourse.id) {
-            res = true;
-          }
-        });
-        return res;
-      });
-    }
-    if (filter.fStatus.id !== "") {
-      tmp = tmp.filter((f) => f.status.id === filter.fStatus.id);
-    }
-    setState(tmp);
+  const doSearch = async() => {
+   await getUserList(filter).then((res)=>{
+    setUserList(res.data.data)
+   })
   };
   const handleChange = (f) => {
     setFilter(f);
   };
+
 
   return (
     <AuthorizeProvider roles={["admin"]}>
@@ -103,7 +83,7 @@ const Users = () => {
           </CardHeader>
 
           <CardBody>
-            <UserForm courses={courseList} />
+            <UserForm userList={userList} setUserList={setUserList} courses={courseList} />
           </CardBody>
         </Card>
 
@@ -124,10 +104,14 @@ const Users = () => {
             </Flex>
           </CardHeader>
 
-          {isPending ? (
-            <UserListSkleton />
+          {userList.length===0 ? (
+            // <UserListSkleton />
+           <Box mb={'30px'} borderRadius={'3rem'} alignSelf={'center'} width={'500px'} bg={boxBg}>
+             <Text textAlign={'center'} my={'10px'}>کاربری یافت نشد</Text>
+
+           </Box>
           ) : (
-            <UserListTable data={state} courses={courseList} />
+            <UserListTable data={userList} courses={courseList} />
           )}
         </Card>
       </Flex>

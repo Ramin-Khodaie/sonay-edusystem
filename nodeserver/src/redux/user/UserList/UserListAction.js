@@ -1,5 +1,5 @@
 import { SiBreaker } from "react-icons/si";
-import { userList } from "services/user";
+import { getUserList } from "services/user";
 import { userListPending, userListSuccess , userListError } from "./UserListReducer";
 
 

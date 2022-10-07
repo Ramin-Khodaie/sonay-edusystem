@@ -20,20 +20,17 @@ import MultiSelect from "components/MultiSelect/MultiSelect";
 import useNotify from "helpers/notify/useNotify";
 import { useUser } from "hooks/users/useUser";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { createUserAction } from "redux/user/userCreate/userCreateAction";
-import { userListAction } from "redux/user/UserList/UserListAction";
+import { useSelector } from "react-redux";
+
 import { useConfirmPassword } from "hooks/formValidation/useConfirmPassword";
-import CustomSelector from "components/Selectors/CustomSelector";
+import { createUser } from "services/user";
+import { useState } from "react";
 
 function UserForm(props) {
-  const { courses, userId = "-1" } = props;
+  const { courses, userList, setUserList, userId = "-1" } = props;
 
   const currentUser = useUser(userId);
-  const dispatch = useDispatch();
-  const { isLoading, message, error } = useSelector(
-    (state) => state.createuser
-  );
+  const [isLoading, setIsLoading] = useState(false);
 
   const notify = useNotify();
   const data = [
@@ -80,6 +77,7 @@ function UserForm(props) {
   };
 
   const doSubmit = async () => {
+    setIsLoading(true);
     const newUser = {
       _id: formData._id,
       username: formData.username,
@@ -90,8 +88,27 @@ function UserForm(props) {
       courses: formData.courses,
       roles: formData.roles,
     };
-    await dispatch(createUserAction(newUser));
-    await dispatch(userListAction());
+
+    await createUser(newUser).then((res) => {
+      switch (res.result) {
+        case "ok":
+          setIsLoading(false);
+
+          setUserList([...userList, res.data]);
+          notify("کابر با موفقیت ثبت شد", true, "solid", "success");
+
+          break;
+        case "empty_field":
+          setIsLoading(false);
+
+          notify("تمامی فیلدها تکمیل شوند", true, "solid", "error");
+          break;
+        case "not_unique":
+          setIsLoading(false);
+          notify("کاربر از قبل ثبت شده است", true, "solid", "error");
+          break;
+      }
+    });
   };
 
   function handleSubmitform() {
@@ -129,19 +146,6 @@ function UserForm(props) {
     setFormData({ ...formData, courses: cc });
   };
 
-  // const handleCourseOptionChange = (e) => {
-  //   const newOpt = courses.find((f) => f.id === e.target.value);
-  //   setFormData({ ...formData, course: newOpt });
-  // };
-
-  useEffect(() => {
-    if (message != "") {
-      notify("کابر با موفقیت ثبت شد", true, "solid", "success");
-    }
-    if (error) {
-      notify(error, true, "solid", "error");
-    }
-  }, [message, error]);
   useEffect(() => {
     if (currentUser.length != 0) {
       setFormData({
@@ -181,7 +185,6 @@ function UserForm(props) {
 
     return false;
   }
-
 
   return (
     <>

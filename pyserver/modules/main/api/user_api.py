@@ -51,10 +51,10 @@ def check_register_form(say: SAY, user_name: str = "", email: str = "", phone: s
     return api_return(ret[0], ret[1], ret[2], data=ret[3])
 
 
-@router.get("/getuserlist")
+@router.put("/getuserlist")
 @sn(roles=['admin'])
-def get_user_list(say: SAY, full_name="", course="", status=""):
-    ret = say.get_user_list(full_name, course, status)
+def get_user_list(say: SAY, filter:dict):
+    ret = say.get_user_list(filter['filter'])
     return api_return(ret[0], ret[1], ret[2], data=ret[3])
 
 

@@ -397,7 +397,7 @@ class SAY():
               "image" : ""}
 
         col.insert_one(nu)
-        return 200, "ok", "user inserted", None
+        return 200, "ok", "user inserted", nu
 
     def edit_user(self,user,col):
         res = self.validate_edit_user(user, col)
@@ -409,7 +409,7 @@ class SAY():
         idd=user["_id"]
         del user["_id"]
         col.update_one({"_id" : idd}, {"$set" : user})
-        return 200, "ok", "user updated", None
+        return 200, "ok", "user updated", {**user , '_id' : idd}
 
     def delete_user(self, userid: str):
 
@@ -455,17 +455,17 @@ class SAY():
         return 200, "ok", "user is registered", None
     
     
-    def get_user_list(self , full_name , course , status):
+    def get_user_list(self ,filter):
         
-        filters = {}
-        if full_name != "" : 
-            filters["full_name"] =  {'$regex': full_name} #this will be text search
-        if course != "":
-            filters["course.id"] =course
-        if status != "":
-            filters["status"] = status
+        and_li = [{}]
+        if "full_name" in filter and filter['full_name'] != "" : 
+            and_li.append({'full_name': {'$regex': filter['full_name']}})  
+        if "course" in filter and filter['course']['id'] != "":
+            and_li.append({"courses.id" : filter['course']['id']})
+        if "status" in filter and filter['status']['id'] != "":
+            and_li.append({"status.id" : filter["status"]['id']})
         col : Collection = self.db.mongo_db["s_user"]
-        data = list(col.find(filters,{"_id" : 1,"image" : 1,"full_name" : 1 ,"email" : 1,"courses" : 1,"enable" : 1,"phone" : 1 , "status" : 1}))
+        data = list(col.find({"$and" : and_li},{"_id" : 1,"image" : 1,"full_name" : 1 ,"email" : 1,"courses" : 1,"enable" : 1,"phone" : 1 , "status" : 1}))
         return 200, "ok", "user is registered", data
     def get_user(self,user_id):
         col: Collection = self.db.mongo_db["s_user"]
