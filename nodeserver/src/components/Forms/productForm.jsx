@@ -63,8 +63,9 @@ import { createProduct } from "services/product";
     };
   
     const handleDelete = (id) => (e) => {
+      console.log(id,formData.courses,4747)
       const cc = formData.courses.filter((element) => {
-        return element._id !== id;
+        return element.id !== id;
       });
       setFormData({ ...formData, courses: cc });
     };
@@ -154,7 +155,6 @@ import { createProduct } from "services/product";
   }, [currentProduct]);
 
 
-  console.log(productList,7474)
     return (
       <>
         <SimpleGrid
