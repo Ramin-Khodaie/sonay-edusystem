@@ -31,17 +31,16 @@ import { createProductAction } from "redux/product/productCreate/productCreateAc
 import { productListAction } from "redux/product/productList/ProductListAction";
 import { useProduct } from "hooks/products/useProduct";
 import { isConstTypeReference } from "typescript";
+import { createProduct } from "services/product";
 
   function ProductForm(props) {
-    const { courses,productId="-1"  } = props;
+    const { courses,productList, setProductList,onClose,productId="-1"  } = props;
     const notify = useNotify();
-    const { isLoading, message, error } = useSelector(
-      (state) => state.createProduct
-    );
+
   
     const currentProduct = useProduct(productId)
 
-    const dispatch = useDispatch();
+
     const [formData, setFormData] = React.useState({
       _id: "",
       name: "",
@@ -51,6 +50,9 @@ import { isConstTypeReference } from "typescript";
       description: "",
       courses: [],
     });
+
+    const [isLoading, setIsLoading] = React.useState(false);
+
   
     const handleOptionChange = (e) => {
       const newOpt = courses.find((f) => f._id === e.target.value);
@@ -66,7 +68,7 @@ import { isConstTypeReference } from "typescript";
       });
       setFormData({ ...formData, courses: cc });
     };
-  
+ 
     const doSubmit = async () => {
       const newProduct = {
         _id: formData._id,
@@ -77,8 +79,44 @@ import { isConstTypeReference } from "typescript";
         description: formData.description,
         courses: formData.courses,
       };
-      await dispatch(createProductAction(newProduct));
-      await dispatch(productListAction());
+      setIsLoading(true);
+
+
+
+      await createProduct(newProduct).then((res) => {
+        switch (res.result) {
+          case "ok":
+            if(productId === '-1'){
+              // insert mode
+              setIsLoading(false);
+  
+            setProductList([...productList, res.data]);
+            notify("محصول با موفقیت ثبت شد", true, "solid", "success");
+  
+            break;
+            }else{
+              // edit mode
+              
+              setProductList(productList.map((item , key)=>{
+                return item._id === res.data._id ? res.data : item
+              }))
+              notify("محصول با موفقیت ویرایش شد", true, "solid", "success");
+              setIsLoading(false);
+              onClose()
+  
+              break
+            }
+          case "empty_field":
+            setIsLoading(false);
+  
+            notify("تمامی فیلدها تکمیل شوند", true, "solid", "error");
+            break;
+          case "not_unique":
+            setIsLoading(false);
+            notify("محصول از قبل ثبت شده است", true, "solid", "error");
+            break;
+        }
+      });
     };
   
     function handleSubmitform() {
@@ -98,15 +136,7 @@ import { isConstTypeReference } from "typescript";
     }
 
 
-    
-  useEffect(() => {
-    if (message != "") {
-      notify("دوره با موفقیت ثبت شد", true, "solid", "success");
-    }
-    if (error) {
-      notify(error, true, "solid", "error");
-    }
-  }, [message, error]);
+
 
   useEffect(() => {
     if (currentProduct.length != 0) {
@@ -122,6 +152,9 @@ import { isConstTypeReference } from "typescript";
       });
     }
   }, [currentProduct]);
+
+
+  console.log(productList,7474)
     return (
       <>
         <SimpleGrid
@@ -259,8 +292,8 @@ import { isConstTypeReference } from "typescript";
           mb={"20px"}
           type={"submit"}
         >
-          ثبت
-          {/* {isLoading ? "در حال ثبت " : "ثبت "} */}
+  
+          {isLoading ? "در حال ثبت " : "ثبت "}
           {/* {true ? "در حال ثبت " : "ثبت "} */}
         </Button>
       </>

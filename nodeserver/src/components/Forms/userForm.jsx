@@ -103,11 +103,10 @@ function UserForm(props) {
           }else{
             // edit mode
 
-            // var foundIndx=userList.findIndex(x=> x.username === res.data.username)
-            // console.log(foundIndx)
             setUserList(userList.map((item , key)=>{
               return item.username === res.data.username ? res.data : item
             }))
+            notify("کابر با موفقیت ویرایش شد", true, "solid", "success");
             onClose()
 
             break

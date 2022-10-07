@@ -24,21 +24,13 @@ import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import { getUserList } from "services/user";
 const Users = () => {
   const textColor = useColorModeValue("gray.700", "white");
-  const dispatch = useDispatch();
 
-  const getList = async () => {
-    await dispatch(courseListAction());
-  };
-  useEffect(() => {
-    getList();
-  }, []);
   const studentStatus = require("../../status.json");
 
- const boxBg=useColorModeValue('gray.100' , 'navy.600')
+  const boxBg = useColorModeValue("gray.100", "navy.600");
   const { courseList } = useSelector((state) => state.courseList);
 
   const [userList, setUserList] = useState([]);
-
 
   const [filter, setFilter] = React.useState({
     fFullName: "",
@@ -57,15 +49,14 @@ const Users = () => {
     }
   }, [filter.fCourse, filter.fFullName, filter.fStatus]);
 
-  const doSearch = async() => {
-   await getUserList(filter).then((res)=>{
-    setUserList(res.data.data)
-   })
+  const doSearch = async () => {
+    await getUserList(filter).then((res) => {
+      setUserList(res.data.data);
+    });
   };
   const handleChange = (f) => {
     setFilter(f);
   };
-
 
   return (
     <AuthorizeProvider roles={["admin"]}>
@@ -83,7 +74,11 @@ const Users = () => {
           </CardHeader>
 
           <CardBody>
-            <UserForm userList={userList} setUserList={setUserList} courses={courseList} />
+            <UserForm
+              userList={userList}
+              setUserList={setUserList}
+              courses={courseList}
+            />
           </CardBody>
         </Card>
 
@@ -104,14 +99,26 @@ const Users = () => {
             </Flex>
           </CardHeader>
 
-          {userList.length===0 ? (
+          {userList.length === 0 ? (
             // <UserListSkleton />
-           <Box mb={'30px'} borderRadius={'3rem'} alignSelf={'center'} width={'500px'} bg={boxBg}>
-             <Text textAlign={'center'} my={'10px'}>کاربری یافت نشد</Text>
-
-           </Box>
+            <Box
+              mb={"30px"}
+              borderRadius={"3rem"}
+              alignSelf={"center"}
+              width={"500px"}
+              bg={boxBg}
+            >
+              <Text textAlign={"center"} my={"10px"}>
+                کاربری یافت نشد
+              </Text>
+            </Box>
           ) : (
-            <UserListTable userList={userList} setUserList={setUserList} data={userList} courses={courseList} />
+            <UserListTable
+              userList={userList}
+              setUserList={setUserList}
+              data={userList}
+              courses={courseList}
+            />
           )}
         </Card>
       </Flex>

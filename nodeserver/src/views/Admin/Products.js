@@ -20,12 +20,11 @@ import ProductListFilter from "components/Filter/ProductListFilter";
 import ProductListTable from "components/Tables/ProductListTable/ProductListTable";
 import { productListAction } from "redux/product/productList/ProductListAction";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
+import { getProductList } from "services/product";
 const Product = () => {
-  const { productList, errorMessage, isPending } = useSelector(
-    (state) => state.productList
-  );
+
   const { courseList } = useSelector((state) => state.courseList);
-  const dispatch = useDispatch();
+  
 
   const textColor = useColorModeValue("gray.700", "white");
   const [filter, setFilter] = React.useState({
@@ -47,10 +46,10 @@ const Product = () => {
     setFilter({ ...filter, [field]: value });
   };
 
-  const [state, setState] = useState([]);
+  const [productList, setProductList] = useState([]);
 
   useEffect(() => {
-    setState(productList);
+    setProductList(productList);
 
     if (
       filter.name !== "" ||
@@ -58,53 +57,23 @@ const Product = () => {
       filter.isMain ||
       filter.courses.id !== ""
     ) {
-      doSearch();
+      callData();
     }
   }, [filter]);
 
-  const doSearch = () => {
-    let tmp = productList;
 
-    if (filter.name !== "") {
-      tmp = tmp.filter((f) => f.name === filter.name);
-    }
-    if (filter.courses.id !== "") {
-      // here we filterr incoming data based on object inside an elemen in incoming data
-      // so we map through array element and if any  element matches our condition we ruturn true
+const callData = async()=>{
+  await getProductList(filter).then((res)=>{
+    setProductList(res.data.data)
+  })
 
-      tmp = tmp.filter((f) => {
-        const arry = f.courses;
-        let res = false;
-        arry.map((itm, key) => {
-          if (itm.id === filter.courses.id) {
-            res = true;
-          }
-        });
-        return res;
-      });
-    }
-    if (filter.isActive) {
-      tmp = tmp.filter((f) => f.is_active === filter.isActive);
-    }
 
-    if (filter.isMain) {
-      tmp = tmp.filter((f) => f.is_main === filter.isMain);
-    }
-    setState(tmp);
-  };
 
-  const getList = async () => {
-    await dispatch(productListAction());
-    await dispatch(courseListAction());
-  };
+}
+
   useEffect(() => {
-    getList();
-    setState(productList);
+    callData()
   }, []);
-
-  useEffect(() => {
-    setState(productList);
-  }, [isPending]);
 
   return (
     <AuthorizeProvider roles={["admin"]}>
@@ -122,7 +91,7 @@ const Product = () => {
           </CardHeader>
 
           <CardBody>
-            <ProductForm courses={courseList} />
+            <ProductForm productList={productList} setProductList={setProductList} courses={courseList} />
           </CardBody>
         </Card>
 
@@ -143,7 +112,7 @@ const Product = () => {
             </Flex>
           </CardHeader>
 
-          <ProductListTable data={state} courses={courseList} />
+          <ProductListTable productList={productList} setProductList={setProductList}  courses={courseList} />
 
           {/* {isPending ? (
             <UserListSkleton />

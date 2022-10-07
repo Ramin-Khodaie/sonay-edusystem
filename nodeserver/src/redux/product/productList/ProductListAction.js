@@ -1,5 +1,5 @@
 import { SiBreaker } from "react-icons/si";
-import { productList } from "services/product";
+import { getProductList } from "services/product";
 import { productListPending, productListSuccess , productListError } from "./ProductListReducer";
 
 

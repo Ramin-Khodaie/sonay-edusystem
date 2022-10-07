@@ -23,10 +23,10 @@ def create_product(info : dict):
     ret = product.insert_product(info)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
-@router.get("/getproductlist")
+@router.put("/getproductlist")
 @sn(fast=True,roles=['admin'])
-def get_product_list():
-    ret = product.get_product_list()
+def get_product_list(filter:dict):
+    ret = product.get_product_list(filter['filter'])
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 

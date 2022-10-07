@@ -29,10 +29,16 @@ export const createProduct = (product) => {
 
 
 
-export const productList = () => {
+export const getProductList = (filter) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await bixios.get("/products/getproductlist"
+      const res = await bixios.put("/products/getproductlist",
+      {filter:{
+        name: filter.name,
+        is_main: filter.isMain,
+        is_active: filter.isActive,
+        course: filter.courses.id,
+      }}
       
       
       );

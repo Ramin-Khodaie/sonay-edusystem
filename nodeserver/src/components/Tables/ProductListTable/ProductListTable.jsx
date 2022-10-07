@@ -26,7 +26,7 @@ import {
   import React, { useEffect, useState } from "react";
   import ProductListTableRow from "components/Tables/ProductListTable/ProductListTableRow";
   function ProductListTable(props) {
-    const { data, courses } = props;
+    const {  courses , productList, setProductList } = props;
   
     const textColor = useColorModeValue("gray.700", "white");
     const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -55,7 +55,7 @@ import {
           </Thead>
   
           <Tbody>
-            {data
+            {productList
               // filter((filtered) => (filter.fFullName !== "" ? filtered.full_name === filter.fFullName ||
               //   filtered.course.id === filter.fCourse : filtered
               //   )).
@@ -72,6 +72,8 @@ import {
                   key={row._id}
                   productId={row._id}
                   courses={courses}
+                  productList={productList}
+                   setProductList={setProductList}
                 />
               ))}
           </Tbody>

@@ -33,14 +33,16 @@ class SProduct:
         if "_id" in info and info["_id"] != "":
             res = self.edit_product(info, col)
             return res
-        col.insert_one({**info, "_id": str(ObjectId())})
-        return 200, "ok", "product is inserted", None
+
+        itm_ready = {**info, "_id": str(ObjectId())}
+        col.insert_one(itm_ready)
+        return 200, "ok", "product is inserted", itm_ready
 
     def edit_product(self, info, col: Collection):
         idd = info["_id"]
         del info["_id"]
         col.update_one({"_id": idd}, {"$set": info})
-        return 200, "ok", "ok", []
+        return 200, "ok", "ok",{**info, "_id": idd}
 
     def get_product(self, product_id):
         db: Database = sn.databases[self.database].db
@@ -51,15 +53,20 @@ class SProduct:
         else:
             return 200, "ok", "ok", product
 
-    def get_product_list(self):
+    def get_product_list(self, filter):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.product_collection]
-        # filters = {}
-        # if full_name != "" :
-        #     filters["full_name"] =  {'$regex': full_name} #this will be text search
-        # if status != "":
-        #     filters["status"] = status
-        cl = list(col.find({}))
+        filters = {}
+        if 'name' in filter and filter['name'] != "":
+            # this will be text search
+            filters["name"] = {'$regex': filter['name']}
+        if 'course' in filter and filter['course'] != "":
+            filters["courses.id"] = filter['course']
+        if 'is_active' in filter and filter['is_active']:
+            filters["is_active"] = filter['is_active']
+        if 'is_main' in filter and filter['is_main']:
+            filters["is_main"] = filter['is_main']
+        cl = list(col.find(filters))
         return 200, "ok", "ok", cl
 
     def get_product_by_course(self, course_id):
@@ -67,7 +74,7 @@ class SProduct:
         col: Collection = db[self.product_collection]
         ret = list(col.find({'courses.id': course_id},
                             {"id": "$_id",
-                            '_id' : 0,
+                            '_id': 0,
                              "name": 1,
                              "description": 1,
                              "price": 1,

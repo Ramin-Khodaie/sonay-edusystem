@@ -24,6 +24,8 @@ function UserListTableRow(props) {
     key,
     productId,
     courses,
+    productList,
+     setProductList
   } = props;
   const textColor = useColorModeValue("gray.500", "white");
   const titleColor = useColorModeValue("gray.700", "white");
@@ -95,7 +97,7 @@ function UserListTableRow(props) {
         ))}
       </Td>
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-        <ProductEditModal productId={productId} courses={courses} />
+        <ProductEditModal productList={productList} setProductList={setProductList} productId={productId} courses={courses} />
       </Td>
     </Tr>
   );
