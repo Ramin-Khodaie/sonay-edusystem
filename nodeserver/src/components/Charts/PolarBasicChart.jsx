@@ -1,14 +1,13 @@
-import { Center, useColorMode } from "@chakra-ui/react";
+import {  Flex, Spacer, Text, useColorMode } from "@chakra-ui/react";
 import Card from "components/Card/Card";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import ReactApexChart from "react-apexcharts";
-import { lineChartData, lineChartOptions } from "variables/charts";
 
 const PolarBasicChart = (props) => {
   const colorMode = useColorMode().colorMode;
-  const { selectedMark } = props;
+  const { selectedMark , title , toolTip } = props;
   const [series, setSeries] = useState([]);
   let textColor = ["#fff"];
   if (colorMode === "light") {
@@ -79,6 +78,13 @@ const PolarBasicChart = (props) => {
 
   return (
     <Card height={"100%"}>
+      <Flex>
+        {toolTip}
+        <Spacer />
+      <Text  pb="45px" fontWeight="800" fontSize="xl">{title}</Text>
+
+      </Flex>
+
       {series.length === 6 && (
         <ReactApexChart options={options} series={series} type="polarArea" />
       )}

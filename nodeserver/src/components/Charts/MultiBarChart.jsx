@@ -1,14 +1,13 @@
+import { Flex, Spacer, Text } from "@chakra-ui/react";
 import Card from "components/Card/Card";
 import React from "react";
-import { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
-import { getCompareChartData } from "services/mark";
 
 
 
 
 const MultiBarchart = (props) => {
-  const {series} = props
+  const {series , title , toolTip} = props
   
 
     const options = {
@@ -68,6 +67,12 @@ const MultiBarchart = (props) => {
     
     return (
         <Card height={'100%'}>
+           <Flex>
+       {toolTip}
+        <Spacer />
+      <Text  pb="45px" fontWeight="800" fontSize="xl">{title}</Text>
+
+      </Flex>
             {series.length === 2 && <ReactApexChart options={options} series={series} type="bar" height={350} />}
         </Card>
 

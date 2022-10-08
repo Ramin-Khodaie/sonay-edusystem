@@ -1,5 +1,8 @@
-import { Table, Tr, Td, TableCaption, Thead, Th, Text } from "@chakra-ui/react";
+import { Table, Tr, Td, TableCaption, Thead, Th, Text, Flex, Spacer } from "@chakra-ui/react";
 import Card from "components/Card/Card";
+import { ProductPop1 } from "components/PopOvers/ProductPopOver";
+import { ReportPop3 } from "components/PopOvers/ReportPopOver";
+import { ReportPop2 } from "components/PopOvers/ReportPopOver";
 
 const WorkbookTable = (props) => {
   const {selectedMark} = props
@@ -38,9 +41,14 @@ const WorkbookTable = (props) => {
       </TableCaption>
         <Thead >
           <Th colSpan="2"  textAlign="center">
-            <Text pb="15px" fontWeight="800" fontSize="2xl">
+           <Flex >
+
+           <Text pb="15px" fontWeight="800" fontSize="2xl">
               کارنامه
             </Text>
+            <Spacer />
+            <ReportPop3 />
+           </Flex>
           </Th>
         </Thead>
         <Tr fontSize={'20px'}>

@@ -94,8 +94,7 @@ class SMark:
             and_li.append({'course.name': {'$regex': filter['course']}})
         if 'isFailed' in filter and filter['isFailed']:
             and_li.append({'status': 'failed'})
-        if 'isPassed' in filter and filter['isPassed']:
-            and_li.append({'status': 'passed'})
+        
         if 'startMark' in filter and filter['startMark'] != '':
             and_li.append({'sum': {"$gte": int(filter['startMark'])}})
         if 'endMark' in filter and filter['endMark'] != '':
@@ -192,7 +191,32 @@ class SMark:
                                     '$avg': '$sum'
                                 }
                             }
-                        }, {
+                        },{
+                            
+                            '$set':{
+                                'avg_classActivity': {
+                                    '$round': ['$classActivity',2]
+                                },
+                                'avg_quiz': {
+                                    '$round': ['$avg_quiz',2]
+                                },
+                                'avg_extra': {
+                                    '$round': ['$avg_extra',2]
+                                },
+                                'avg_midterm': {
+                                    '$round': ['$avg_midterm',2]
+                                },
+                                'avg_final': {
+                                    '$round': ['$avg_final',2]
+                                },
+                                'avg_sum': {
+                                    '$round': ['$avg_sum',2]
+                                }
+                            }
+                            
+                            
+                            
+                            }, {
                             '$project': {
                                 '_id': 0
                             }
