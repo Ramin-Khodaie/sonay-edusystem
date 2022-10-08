@@ -17,7 +17,7 @@ import {
 import { MdCheckCircle } from "react-icons/md";
 
 
-export const UserPop3 = () => {
+export const CoursePop1 = () => {
   return (
     <Popover size={'xl'}    offset={[-20,20]} arrowSize={'12'} >
       <PopoverTrigger>
@@ -59,7 +59,7 @@ export const UserPop3 = () => {
 
 
 
-export const UserPop4 = () => {
+export const CoursePop2 = () => {
     return (
       <Popover     offset={[-20,20]} arrowSize={'12'} >
         <PopoverTrigger>

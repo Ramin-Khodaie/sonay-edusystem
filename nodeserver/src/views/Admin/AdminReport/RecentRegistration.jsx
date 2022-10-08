@@ -28,6 +28,7 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import { getRecentRegistration } from "services/AdminReport";
 import { getRecentRegistrationFilter } from "services/AdminReport";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
+import { ReportPop2 } from "components/PopOvers/ReportPopOver";
 
 const RecentRegistration = () => {
   const [data, setData] = useState([]);
@@ -106,7 +107,8 @@ const RecentRegistration = () => {
                   </h2>{" "}
                 </Box>
                 <Spacer />
-                <Box>
+                <Flex>
+                  <ReportPop2 />
                   <Text
                     fontSize="xl"
                     fontWeight="bold"
@@ -115,7 +117,7 @@ const RecentRegistration = () => {
                   >
                     لیست ثبت نام های اخیر ثبت شده در سامانه{" "}
                   </Text>
-                </Box>
+                </Flex>
               </Flex>
 
               <AccordionPanel pb={4}>

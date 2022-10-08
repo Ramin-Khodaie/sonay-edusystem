@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { courseListAction } from "redux/course/courseList/courseListAction";
 import CourseListTable from "components/Tables/CourseListTable/CourseListTable";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
-import { UserPop3 } from "components/PopOvers/CoursePopOver";
+import { CoursePop1 } from "components/PopOvers/CoursePopOver";
 
 function Courses() {
   const statusData = [
@@ -116,7 +116,7 @@ function Courses() {
             >
               ثبت دوره جدید
             </Text>
-            <UserPop3 />
+            <CoursePop1 />
             </Flex>
             
           </CardHeader>

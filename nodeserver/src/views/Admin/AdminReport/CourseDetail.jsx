@@ -105,7 +105,7 @@ const CourseDetail = () => {
                     textAlign={"right"}
                     my={"10px"}
                   >
-                    لیست ثبت نام های اخیر ثبت شده در سامانه{" "}
+                  گزارش کلاسی{" "}
                   </Text>
                 </Box>
               </Flex>

@@ -28,6 +28,7 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import { getRecentOrder } from "services/AdminReport";
 import { getRecentOrderFilter } from "services/AdminReport";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
+import { ReportPop1 } from "components/PopOvers/ReportPopOver";
 
 const RecentOrder = () => {
   const [data, setData] = useState([]);
@@ -104,7 +105,9 @@ const RecentOrder = () => {
                   </h2>{" "}
                 </Box>
                 <Spacer />
-                <Box>
+                <Flex>
+                <ReportPop1 />
+
                   <Text
                     fontSize="xl"
                     fontWeight="bold"
@@ -113,7 +116,7 @@ const RecentOrder = () => {
                   >
                     لیست سفارشات اخیر ثبت شده در سامانه{" "}
                   </Text>
-                </Box>
+                </Flex>
               </Flex>
 
               <AccordionPanel pb={4}>
