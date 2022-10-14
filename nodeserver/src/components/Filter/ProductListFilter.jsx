@@ -20,6 +20,7 @@ import {
   import React, { useEffect } from "react";
   import { userListAction } from "redux/user/UserList/UserListAction";
   import { connect, useDispatch, useSelector } from "react-redux";
+import { ProductPop2 } from "components/PopOvers/ProductPopOver";
   
   const ProductListFilter = (props) => {
     const { filter, onChange, courses ,selectChange , handleCheckBoxChange   } = props;
@@ -44,7 +45,9 @@ import {
                 </h2>{" "}
               </Box>
               <Spacer />
-              <Box>
+              <Flex>
+              <ProductPop2 />
+              
                 <Text
                   fontSize="xl"
                   color={textColor}
@@ -54,7 +57,8 @@ import {
                 >
                   لیست دوره ها{" "}
                 </Text>
-              </Box>
+               
+              </Flex>
             </Flex>
   
             <AccordionPanel pb={4}>

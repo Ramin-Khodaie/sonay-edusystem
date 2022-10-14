@@ -82,7 +82,7 @@ def get_teacher_list(say: SAY):
     try:
         ret = say.get_user_by_query({"roles.id": "teacher"}, {
                                     'id': '$_id', 'name': "$full_name"})
-        return api_return(200, 'ok', 'ok', data=[ret])
+        return api_return(200, 'ok', 'ok', data=ret if ret != None else [])
     except:
         return 500, "server_error", 'cant connect to DataBAse', []
 

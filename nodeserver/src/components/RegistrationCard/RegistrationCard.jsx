@@ -16,7 +16,6 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  IconButton,
   useColorMode,
   Table,
   Thead,
@@ -25,22 +24,20 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
+  Spacer,
 } from "@chakra-ui/react";
 import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
 import avatar6 from "assets/img/avatars/avatar6.png";
-import { CheckIcon } from "@chakra-ui/icons";
 import { FaRegCheckCircle } from "react-icons/fa";
 
 import React, { useEffect } from "react";
 import ProductSubOrder from "components/ProductSubOrder/ProductSubOrder";
-import { useSelector } from "react-redux";
 import { useState } from "react";
-import { number } from "prop-types";
 import { getProductListByCourse } from "services/product";
+import { CoursePop3 } from "components/PopOvers/CoursePopOver";
 
 function RegistrationCard(props) {
   const { courseDetailData, registerCourse , cartItems , getSum } = props;
@@ -71,10 +68,14 @@ function RegistrationCard(props) {
     <>
       <Card mb={"20px"}>
         <CardHeader h={"auto"} pb={"10px"}>
+         
           <Text textAlign={"center"} fontSize={"25px"} fontFamily={"Lalezar"}>
             شما در حال ثبت نام برای دوره{" "}
             {courseDetailData.c_obj.length > 0 && courseDetailData.c_obj[0].name} هستید
           </Text>
+          
+
+        
           <Text textAlign={"center"} fontSize={"sm"}>
             جهت ثبت نام برای این دوره روی دکمه سبز رنگ "ثبت نام " کلیک کنید. قبل
             از ورود به درگاه پرداخت از خاموش بودن وی پی ان اطمینان حاصل کنید
@@ -85,10 +86,20 @@ function RegistrationCard(props) {
       <Card>
         <CardBody>
           <SimpleGrid columns={{ sm: 1, md: 2, lg: 2 }}>
-            <Box>
-              <Text textAlign={"center"} fontSize={"30px"}>
-                {courseDetailData.c_obj.length > 0 && courseDetailData.c_obj[0].name}{" "}
-              </Text>
+            <Box >
+              <Flex>
+                
+            <Spacer />
+
+<Text textAlign={"center"} fontSize={"30px"}>
+  {courseDetailData.c_obj.length > 0 && courseDetailData.c_obj[0].name}{" "}
+</Text>
+<Spacer />
+<CoursePop3 />
+
+
+
+              </Flex>
               <Text py={"15px"} textAlign={"start"}>
                 {courseDetailData.c_obj.length > 0 &&
                   courseDetailData.c_obj[0].description}{" "}

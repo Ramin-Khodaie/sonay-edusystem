@@ -45,7 +45,7 @@ def get_mark(mark_id : str):
 
 
 @router.put("/getmarkbysearch")
-@sn(fast=True,roles=['admin','teacher' ])
+@sn(fast=True,roles=['admin','student' ])
 def get_mark_by_search(user : SUser ,filter : dict):
     ret = mark.get_mark_by_search(user ,filter['filter'])
     return api_return(ret[0],ret[1],ret[2],data=ret[3])

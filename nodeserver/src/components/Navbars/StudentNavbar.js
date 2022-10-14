@@ -124,7 +124,7 @@ export default function StudentNavbar(props) {
                 }}
                 
             >
-                <Box   ml={{ sm: "35px", base: "10px" }}>
+                {/* <Box   ml={{ sm: "35px", base: "10px" }}>
                     <Breadcrumb>
                         <BreadcrumbItem color={mainText}>
                             <BreadcrumbLink href="#" color={secondaryText}>
@@ -138,8 +138,7 @@ export default function StudentNavbar(props) {
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                     </Breadcrumb>
-                    {/* Here we create navbar brand, based on route name */}
-                    {/* <Link
+                   <Link
                         color={mainText}
                         href="#"
                         bg="inherit"
@@ -156,11 +155,11 @@ export default function StudentNavbar(props) {
                         }}
                     >
                         {brandText}
-                    </Link> */}
-                </Box>
-                <Spacer />
+                    </Link>
+                </Box>*/}
+                <Spacer /> 
                 <Box >
-                    <Text color={'white'} fontSize={{'sm':'20px' , 'md':'24px' , 'lg':'26px'}} fontFamily={'Lalezar'} >آموزشگاه استقلال</Text>
+                    <Text pl={'80px'} color={'white'} fontSize={{'sm':'24px' , 'md':'24px' , 'lg':'26px'}} fontFamily={'Lalezar'} >آموزشگاه استقلال</Text>
 
                 </Box>
                 <Spacer />      

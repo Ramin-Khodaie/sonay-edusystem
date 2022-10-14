@@ -14,7 +14,7 @@ import {
   Text,
   useColorMode,
   useColorModeValue,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import IconBox from "components/Icons/IconBox";
 import {
@@ -23,15 +23,14 @@ import {
   renderTrack,
   renderTrackRTL,
   renderView,
-  renderViewRTL
+  renderViewRTL,
 } from "components/Scrollbar/Scrollbar";
 import { HSeparator } from "components/Separator/Separator";
 import { SidebarHelp } from "components/Sidebar/SidebarHelp";
 import React from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { NavLink, useLocation } from "react-router-dom";
-import BrandText from "../../helpers/components/BrandComponent"
-
+import BrandText from "../../helpers/components/BrandComponent";
 
 // FUNCTIONS
 
@@ -50,7 +49,6 @@ function Sidebar(props) {
   // this function creates the links and collapses that appear in the sidebar (left menu)
   const { sidebarVariant } = props;
 
-
   const createLinks = (routes) => {
     // Chakra Color Mode
     let activeBg = useColorModeValue("white", "navy.700");
@@ -66,7 +64,7 @@ function Sidebar(props) {
         return null;
       }
 
-      if (prop.category ) {
+      if (prop.category) {
         var st = {};
         st[prop["state"]] = !state[prop.state];
         return (
@@ -213,8 +211,8 @@ function Sidebar(props) {
   let sidebarMargins = "0px";
   var brand = (
     <Box pt={"25px"} mb="12px">
-    <BrandText />    
-<HSeparator my="15px" />
+      <BrandText />
+      <HSeparator my="15px" />
     </Box>
   );
 
@@ -359,8 +357,7 @@ export function SidebarResponsive(props) {
               _focus={{
                 boxShadow: "none",
               }}
-
-            onClick={onClose}
+              onClick={onClose}
             >
               <Flex>
                 {typeof prop.icon === "string" ? (
@@ -445,13 +442,12 @@ export function SidebarResponsive(props) {
 
   var brand = (
     <Box pt={"25px"} mb="12px">
-    <BrandText />    
-<HSeparator my="15px" />
+      <BrandText />
+      <HSeparator my="15px" />
     </Box>
   );
   // SIDEBAR
-  
-  
+
   // Color variables
   return (
     <Flex
@@ -461,19 +457,20 @@ export function SidebarResponsive(props) {
     >
       <HamburgerIcon
         color={hamburgerColor}
-        w="18px"
-        h="18px"
+        w="35px"
+        h="35px"
         ref={btnRef}
         onClick={onOpen}
       />
       <Drawer
+     
         isOpen={isOpen}
         onClose={onClose}
-        placement={document.documentElement.dir === "rtl" ? "right" : "left"}
+        placement={"right"}
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent
+        <DrawerContent dir="rtl"
           w="300px"
           maxW="300px"
           ms={{
@@ -495,7 +492,6 @@ export function SidebarResponsive(props) {
               <Stack direction="column" mb="40px">
                 <Box>{links}</Box>
               </Stack>
-          
             </Box>
           </DrawerBody>
         </DrawerContent>

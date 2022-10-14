@@ -24,6 +24,7 @@ import React from "react";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
+import { ReportPop6 } from "components/PopOvers/ReportPopOver";
 const MarkReportFilter = (props) => {
   const {
     filter,
@@ -54,7 +55,8 @@ const MarkReportFilter = (props) => {
               </h2>{" "}
             </Box>
             <Spacer />
-            <Box>
+            <Flex>
+              <ReportPop6 />
               <Text
                 fontSize="xl"
                 color={textColor}
@@ -64,7 +66,7 @@ const MarkReportFilter = (props) => {
               >
                 سوابق تحصیلی{" "}
               </Text>
-            </Box>
+            </Flex>
           </Flex>
 
           <AccordionPanel pb={4}>

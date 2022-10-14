@@ -45,7 +45,7 @@ const CourseDetail = () => {
     6;
 
     getTeacherList().then((teacher) => {
-      setTeacher(teacher.data.data[0]);
+      setTeacher(teacher.data.data);
     });
   };
   useEffect(() => {
@@ -54,7 +54,9 @@ const CourseDetail = () => {
 
   const doSearch = async () => {
     const tmp = await getCourseDetailFilter(filter);
-    setData(tmp.data.data);
+    if(tmp.data.data !== 0){
+      setData(tmp.data.data);
+    }
   };
 
   const handleCheckBoxChange = (event) => {
@@ -105,7 +107,7 @@ const CourseDetail = () => {
                     textAlign={"right"}
                     my={"10px"}
                   >
-                    لیست ثبت نام های اخیر ثبت شده در سامانه{" "}
+                  گزارش کلاسی{" "}
                   </Text>
                 </Box>
               </Flex>

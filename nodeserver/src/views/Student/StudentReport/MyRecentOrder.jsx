@@ -33,6 +33,7 @@ import { getRecentRegistrationFilter } from "services/AdminReport";
 import { getMyRecentOrder } from "services/StudentReport";
 import { getMyRecentOrderFilter } from "services/StudentReport";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
+import { ReportPop8 } from "components/PopOvers/ReportPopOver";
 
 const MyRecentOrder = () => {
   const [data, setData] = useState([]);
@@ -111,7 +112,8 @@ const MyRecentOrder = () => {
                   </h2>{" "}
                 </Box>
                 <Spacer />
-                <Box>
+                <Flex>
+                <ReportPop8 />
                   <Text
                     fontSize="xl"
                     fontWeight="bold"
@@ -120,7 +122,9 @@ const MyRecentOrder = () => {
                   >
                     لیست سفارشات اخیر ثبت شده در سامانه{" "}
                   </Text>
-                </Box>
+
+                  
+                </Flex>
               </Flex>
 
               <AccordionPanel pb={4}>

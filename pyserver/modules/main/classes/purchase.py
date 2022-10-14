@@ -307,8 +307,8 @@ class SPurchase:
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
 
-        and_li = []
-        teacher_and_li = []
+        and_li = [{}]
+        teacher_and_li = [{}]
 
         if 'name' in filter and filter['name'] != "":
             and_li.append({'name': {'$regex': filter['name']}})

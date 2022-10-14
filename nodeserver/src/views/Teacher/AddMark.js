@@ -13,6 +13,8 @@ import {
   useColorMode,
   SimpleGrid,
   Center,
+  Spacer,
+  Text,
 } from "@chakra-ui/react";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -34,6 +36,7 @@ import { markByTeacher } from "services/mark";
 import MarkListTable from "components/Tables/MarkListTable/MarkListTable";
 import { markBySearch } from "services/mark";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
+import { TeacherPop1 } from "components/PopOvers/TeacherPopOver";
 function AddMark() {
   const notify = useNotify();
   const { colorMode } = useColorMode();
@@ -89,9 +92,9 @@ function AddMark() {
       selectedItems.course.id,
       "student"
     );
-    if (studentsList.length > 0) {
+    
       setmyStudents(studentsList);
-    }
+    
   };
 
   const getMarkList = async () => {
@@ -163,16 +166,20 @@ function AddMark() {
   return (
     <AuthorizeProvider roles={["teacher"]}>
       <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">
-        <SimpleGrid columns={2}>
-          <CustomSelector
-            onChange={setSelectedItems}
-            data={myCourses}
-            state={selectedItems}
-            placeHolder={"انتخاب کنید"}
-            fieldId={"course"}
-            bg={colorMode === "light" ? "white" : "navy.700"}
-          />
-        </SimpleGrid>
+        <Flex>
+          <Box w={{ sm: "200px", md: "500px", lg: "500px" }}>
+            <CustomSelector
+              onChange={setSelectedItems}
+              data={myCourses}
+              state={selectedItems}
+              placeHolder={"انتخاب کنید"}
+              fieldId={"course"}
+              bg={colorMode === "light" ? "white" : "navy.700"}
+            />
+          </Box>
+          <Spacer />
+          <TeacherPop1 />
+        </Flex>
 
         {/* <Select
    
@@ -185,29 +192,38 @@ function AddMark() {
       </Box>
 
       {selectedItems.course.id == "" ? (
-        <Flex
-          borderRadius={"3rem"}
-          bg="white"
-          mt={"25px"}
-          mx={{ sm: "25px", md: "60px", lg: "80px" }}
-          mb={"55px"}
-          py={"20px"}
-        >
-          <Center w={{ sm: "150px", md: "200px", lg: "250px" }}>
-            <SkeletonCircle
-              mx={{ sm: "25px", md: "60px", lg: "80px" }}
-              size="81"
-            />
-          </Center>
+        // <Flex
+        //   borderRadius={"3rem"}
+        //   bg="white"
+        //   mt={"25px"}
+        //   mx={{ sm: "25px", md: "60px", lg: "80px" }}
+        //   mb={"55px"}
+        //   py={"20px"}
+        // >
+        //   <Center w={{ sm: "150px", md: "200px", lg: "250px" }}>
+        //     <SkeletonCircle
+        //       mx={{ sm: "25px", md: "60px", lg: "80px" }}
+        //       size="81"
+        //     />
+        //   </Center>
 
-          <Box flex="1">
-            <Stack mr={{ sm: "25px", md: "60px", lg: "80px" }}>
-              <Skeleton height="20px" />
-              <Skeleton height="20px" />
-              <Skeleton height="20px" />
-            </Stack>
-          </Box>
-        </Flex>
+        //   <Box flex="1">
+        //     <Stack mr={{ sm: "25px", md: "60px", lg: "80px" }}>
+        //       <Skeleton height="20px" />
+        //       <Skeleton height="20px" />
+        //       <Skeleton height="20px" />
+        //     </Stack>
+        //   </Box>
+        // </Flex>
+        <Card>
+          <Text  fontWeight={'bold'} fontSize={'20px'} textAlign={"center"}>دوره را انتخاب کنید</Text>
+        </Card>
+      ) : myStudents.length == 0 ? (
+        <Card>
+          <Text fontWeight={'bold'} fontSize={'20px'} textAlign={"center"}>
+            هیچ زبان آموزی برای این کلاس یافت نشد
+          </Text>
+        </Card>
       ) : (
         <Flex flexDirection="column" mb="30 px" h="100%" align={"center"}>
           <SliderWrapper>

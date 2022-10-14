@@ -30,6 +30,7 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
+import { TeacherPop2 } from "components/PopOvers/TeacherPopOver";
 const MarkListFilter = (props) => {
   const {
     filter,
@@ -65,7 +66,8 @@ const MarkListFilter = (props) => {
               </h2>{" "}
             </Box>
             <Spacer />
-            <Box>
+            <Flex>
+              <TeacherPop2 />
               <Text
                 fontSize="xl"
                 color={textColor}
@@ -75,7 +77,7 @@ const MarkListFilter = (props) => {
               >
                 لیست نمرات وارد شده  {" "}
               </Text>
-            </Box>
+            </Flex>
           </Flex>
 
           <AccordionPanel pb={4}>

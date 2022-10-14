@@ -21,10 +21,9 @@ import ProductListTable from "components/Tables/ProductListTable/ProductListTabl
 import { productListAction } from "redux/product/productList/ProductListAction";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import { getProductList } from "services/product";
+import { ProductPop1 } from "components/PopOvers/ProductPopOver";
 const Product = () => {
-
   const { courseList } = useSelector((state) => state.courseList);
-  
 
   const textColor = useColorModeValue("gray.700", "white");
   const [filter, setFilter] = React.useState({
@@ -61,18 +60,14 @@ const Product = () => {
     }
   }, [filter]);
 
-
-const callData = async()=>{
-  await getProductList(filter).then((res)=>{
-    setProductList(res.data.data)
-  })
-
-
-
-}
+  const callData = async () => {
+    await getProductList(filter).then((res) => {
+      setProductList(res.data.data);
+    });
+  };
 
   useEffect(() => {
-    callData()
+    callData();
   }, []);
 
   return (
@@ -80,18 +75,25 @@ const callData = async()=>{
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
         <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
           <CardHeader p="6px 0px 22px 0px">
-            <Text
-              fontSize="xl"
-              color={textColor}
-              fontWeight="bold"
-              textAlign={"right"}
-            >
-              ثبت محصول جدید
-            </Text>
+            <Flex dir="rtl">
+              <Text
+                fontSize="xl"
+                color={textColor}
+                fontWeight="bold"
+                textAlign={"right"}
+              >
+                ثبت محصول جدید
+              </Text>
+              <ProductPop1 />
+            </Flex>
           </CardHeader>
 
           <CardBody>
-            <ProductForm productList={productList} setProductList={setProductList} courses={courseList} />
+            <ProductForm
+              productList={productList}
+              setProductList={setProductList}
+              courses={courseList}
+            />
           </CardBody>
         </Card>
 
@@ -112,7 +114,11 @@ const callData = async()=>{
             </Flex>
           </CardHeader>
 
-          <ProductListTable productList={productList} setProductList={setProductList}  courses={courseList} />
+          <ProductListTable
+            productList={productList}
+            setProductList={setProductList}
+            courses={courseList}
+          />
 
           {/* {isPending ? (
             <UserListSkleton />

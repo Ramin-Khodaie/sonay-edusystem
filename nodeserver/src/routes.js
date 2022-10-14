@@ -63,7 +63,7 @@ var dashRoutes = [
     icon: <FaUserAlt /> ,
     component: Users,
     layout: "/sonay",
-    roles:['admin' ,'student'],
+    roles:['admin' ],
     show : true
 
   },
@@ -85,7 +85,7 @@ var dashRoutes = [
     icon:<SiGoogleanalytics /> ,
     component: AddMark,
     layout: "/sonay",
-    roles:[ 'teacher' , 'student'],
+    roles:[ 'teacher' ],
     show : true
 
   },
@@ -222,18 +222,18 @@ var dashRoutes = [
     
 
     views: [
-      {
-        path: "/profile",
-        name: "پروفایل من",
-        rtlName: "لوحة القيادة",
-        icon: <PersonIcon color='inherit' />,
-        secondaryNavbar: true,
-        component: Profile,
-        layout: "/sonay",
-        roles:['admin' , 'teacher' , 'student'],
-        show : true
+      // {
+      //   path: "/profile",
+      //   name: "پروفایل من",
+      //   rtlName: "لوحة القيادة",
+      //   icon: <PersonIcon color='inherit' />,
+      //   secondaryNavbar: true,
+      //   component: Profile,
+      //   layout: "/sonay",
+      //   roles:['admin' , 'teacher' , 'student'],
+      //   show : true
 
-      },
+      // },
       {
         path: "/signin",
         name: "ورود",

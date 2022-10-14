@@ -34,6 +34,8 @@ import CardHeader from "components/Card/CardHeader";
 import MarkReportFilter from "components/Filter/MarkReportFilter";
 import { markBySearch } from "services/mark";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
+import { ReportPop4 } from "components/PopOvers/ReportPopOver";
+import { ReportPop5 } from "components/PopOvers/ReportPopOver";
 const Karne = () => {
   const { userInfo } = useSelector((state) => state.getUserInfo);
   const [selectedCourse, setSelectedCourse] = useState(userInfo.courses[0].id);
@@ -44,7 +46,6 @@ const Karne = () => {
   const [filter, setFilter] = useState({
     course: "",
     isFailed: false,
-    isPassed: false,
     startDate: "",
     endDate: "",
     startMark: "",
@@ -72,8 +73,6 @@ const Karne = () => {
 
     if (
       filter.course !== "" ||
-      filter.isFailed ||
-      filter.isPassed ||
       filter.startDate !== "" ||
       filter.endDate !== "" ||
       filter.startMark !== "" ||
@@ -82,6 +81,7 @@ const Karne = () => {
       doSearch();
     }
   }, [filter]);
+  console.log(filter,4545)
 
   const [slider, setSlider] = useState([0, 100]);
 
@@ -146,7 +146,7 @@ const Karne = () => {
           width="100%"
         >
           <GridItem
-            overflowX={{ sm: "scroll", xl: "hidden" }}
+            overflowX="hidden"
             rowSpan={1}
             colSpan={{ sm: 1, md: 2, lg: 2 }}
           >
@@ -177,11 +177,21 @@ const Karne = () => {
           </GridItem>
 
           <GridItem rowSpan={1}>
-            {selectedMark && <PolarBasicChart selectedMark={selectedMark} />}
+            {selectedMark && (
+              <PolarBasicChart
+                title={"نمودار مهارت"}
+                toolTip={<ReportPop4 />}
+                selectedMark={selectedMark}
+              />
+            )}
           </GridItem>
           <GridItem rowSpan={1}>
             {seriesBarCart.length === 2 && (
-              <MultiBarchart series={seriesBarCart} />
+              <MultiBarchart
+                title={"نمودار مقایسه عملکرد نسبت به ترم های پیشین"}
+                toolTip={<ReportPop5 />}
+                series={seriesBarCart}
+              />
             )}
           </GridItem>
           <GridItem pb={"30px"}>

@@ -75,7 +75,7 @@ export default function StudentNavbarLink(props) {
           
 
             <DropDown />
-
+{/* 
             <NavLink to='/auth/signin'>
                 <Button
                     ms='0px'
@@ -99,9 +99,9 @@ export default function StudentNavbarLink(props) {
                     }>
                     <Text display={{ sm: "none", md: "flex" }}>Sign In</Text>
                 </Button>
-            </NavLink>
+            </NavLink> */}
             
-            <Menu>
+            {/* <Menu>
                 <MenuButton>
                     <BellIcon color={navbarIcon} w='18px' h='18px' />
                 </MenuButton>
@@ -136,10 +136,10 @@ export default function StudentNavbarLink(props) {
                         </MenuItem>
                     </Flex>
                 </MenuList>
-            </Menu>
+            </Menu> */}
             
 
-            {userInfo && <SidebarResponsive hamburgerColor={"white"}
+            {userInfo && <SidebarResponsive  hamburgerColor={"white"}
                 logo={
                     <Stack direction='row' spacing='12px' align='center' justify='center'>
                         {colorMode === "dark" ? (
