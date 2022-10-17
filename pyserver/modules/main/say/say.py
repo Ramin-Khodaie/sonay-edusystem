@@ -325,17 +325,22 @@ class SAY():
                 return 422, "not_unique", "user already exists", None
             if user['password'] != user['confirm_password'] or user['password'] == '':
                 return 422, "wrong_pass", "user already exists", None
+        else:
+            # edit validation
+            if user['password'] != '' and user['password'] != user['confirm_password'] :
+                return 422, "wrong_pass", "user already exists", None
+
 
 
         if len(required.difference(set(user.keys()))) != 0 :
             return 422, "missing_field", "some fields are missing", None
-        if not (user["username"] and user["full_name"] and user["email"] and user["phone"] and user["password"] and user["courses"] and user["roles"]):
+        if user["username"] == '' and user["full_name"] == ''  and user["phone"]=='' and  user["courses"]==[] and user["roles"]==[]:
             return 422, "empty_field", "can not accept empty fiels", None
         
         roles = [itm['id'] for itm in user['roles']]
         courses = [itm['id'] for itm in user['courses']]
         if 'teacher'  in roles and len(courses) != 0:
-            cnt = len(list(col.find({'courses.id' : {"$in" : courses} , 'roles.id' : 'teacher'})))
+            cnt = len(list(col.find({'courses.id' : {"$in" : courses} , 'username' : {"$ne" : user['username']} , 'roles.id' : 'teacher'})))
             if cnt != 0:
                 return 422, "wrong_course", "selected course has another teacher", None
         
@@ -390,15 +395,9 @@ class SAY():
             return res
         if user["_id"] != "":
             #edit mode
-            res = self.validate_edit_user(user, col )
-            if res[0] != 200:
-                return res
             res = self.edit_user(user,col)
             return res
 
-        res = self.validate_save_user(user, col )
-        if res[0] != 200:
-            return res
         hash_pass = self.encode_pass(user["password"])
         nu = {**user, '_id': str(ObjectId()), "password": hash_pass,
               "created": datetime.datetime.now(),
@@ -412,9 +411,7 @@ class SAY():
         return 200, "ok", "user inserted", nu
 
     def edit_user(self,user,col):
-        res = self.validate_edit_user(user, col)
-        if res[0] != 200:
-            return res
+        
         if "password" in user and user["password"] != "":
             hash_pass = self.encode_pass(user["password"])
             user = {**user,"password" : hash_pass}
