@@ -35,6 +35,7 @@ export const getUserInfo = () => {
 export const createUser = (user) => {
   return new Promise(async (resolve, reject) => {
     try {
+      console.log(user,4747)
       const res = await bixios.post("/users/createuser", {
         _id: user._id,
         username: user.username,
@@ -42,6 +43,7 @@ export const createUser = (user) => {
         phone: user.phone,
         email: user.email,
         password: user.password,
+        confirm_password : user.confirmPassword,
         courses: user.courses,
         roles: user.roles,
       });

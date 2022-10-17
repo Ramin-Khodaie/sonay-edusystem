@@ -85,6 +85,7 @@ function UserForm(props) {
       phone: formData.phone,
       email: formData.email,
       password: formData.password,
+      confirmPassword : formData.confirm_password,
       courses: formData.courses,
       roles: formData.roles,
     };
@@ -94,8 +95,7 @@ function UserForm(props) {
         case "ok":
           if(userId === '-1'){
             // insert mode
-            setIsLoading(false);
-
+          setIsLoading(false);
           setUserList([...userList, res.data]);
           notify("کابر با موفقیت ثبت شد", true, "solid", "success");
 
@@ -120,6 +120,13 @@ function UserForm(props) {
           setIsLoading(false);
           notify("کاربر از قبل ثبت شده است", true, "solid", "error");
           break;
+        case "wrong_course":
+          setIsLoading(false);
+          notify("دوره ای که انتخاب کردید برای دبیر دیگری تعریف شده است", true, "solid", "error");
+          break;
+        case "wrong_pass":
+          notify("رمز وارد شده با تکرار آن مطابقت ندارد", true, "solid", "error");
+
       }
     });
   };

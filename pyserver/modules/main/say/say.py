@@ -316,25 +316,32 @@ class SAY():
         return ret
 
     def validate_save_user(self, user: dict, col: Collection ):
-        required = {"username","email", "full_name", "phone", "password", "courses", "roles"}
+
+        required = {"username", "full_name", "phone", "courses", "roles"}
+        if user["_id"] == "":
+            #save validation
+            required.add('password')
+            if len(list(col.find({"username": user["username"]}))) != 0:
+                return 422, "not_unique", "user already exists", None
+            if user['password'] != user['confirm_password'] or user['password'] == '':
+                return 422, "wrong_pass", "user already exists", None
+
+
         if len(required.difference(set(user.keys()))) != 0 :
             return 422, "missing_field", "some fields are missing", None
         if not (user["username"] and user["full_name"] and user["email"] and user["phone"] and user["password"] and user["courses"] and user["roles"]):
             return 422, "empty_field", "can not accept empty fiels", None
-        if len(list(col.find({"username": user["username"]}))) != 0:
-            return 422, "not_unique", "user already exists", None
+        
+        roles = [itm['id'] for itm in user['roles']]
+        courses = [itm['id'] for itm in user['courses']]
+        if 'teacher'  in roles and len(courses) != 0:
+            cnt = len(list(col.find({'courses.id' : {"$in" : courses} , 'roles.id' : 'teacher'})))
+            if cnt != 0:
+                return 422, "wrong_course", "selected course has another teacher", None
+        
 
         return 200, "ok", "is valid", None
 
-    def validate_edit_user(self, user: dict, col: Collection ):
-        required = {"username","email", "full_name", "phone", "courses", "roles"}
-        if len(required.difference(set(user.keys()))) != 0 :
-            return 422, "missing_field", "some fields are missing", None
-        if not (user["username"] and user["full_name"] and user["email"] and user["phone"] and  user["courses"] and user["roles"]):
-            return 422, "empty_field", "can not accept empty fiels", None
-
-
-        return 200, "ok", "is valid", None
 
     def check_register_form(self,user_name : str,email : str , phone) -> dict:
         
@@ -378,9 +385,14 @@ class SAY():
 
     def insert_new_user(self, user: dict):
         col: Collection = self.db.mongo_db["s_user"]
-
+        res = self.validate_save_user(user, col )
+        if res[0] != 200:
+            return res
         if user["_id"] != "":
             #edit mode
+            res = self.validate_edit_user(user, col )
+            if res[0] != 200:
+                return res
             res = self.edit_user(user,col)
             return res
 
