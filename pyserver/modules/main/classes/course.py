@@ -105,16 +105,14 @@ class SCourse:
                 '$lookup': {
                     'from': 's_user',
                     'localField': '_id',
-                    'foreignField': 'course.id',
+                    'foreignField': 'courses.id',
                     'as': 'teacher',
                     'pipeline': [
                         {
                             '$match': {
-                                'roles': {
-                                    '$elemMatch': {
-                                        '_id': 'teacher'
-                                    }
-                                }
+                                'roles.id': 'teacher'
+                                    
+                                
                             }
                         }, {
                             '$project': {
@@ -127,6 +125,57 @@ class SCourse:
             }
         ]))
         return 200, "ok", "ok", cl
+    def get_course_by_search(self, filter):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.course_collection]
+        
+  
+        and_li = [{}]
+
+
+        if 'name' in filter and filter['name'] != "":
+            and_li.append({'name': {'$regex': filter['name']}})
+        if 'teacher' in filter and filter['teacher'] != "":
+            col2: Collection = db[self.user_collection]
+            courses = list(col2.find({'username' : filter['teacher']},{'courses' : 1}))
+            if len(courses) == 1:
+                ids = [cid['id'] for cid in courses[0]['courses']]
+                and_li.append({'_id': {"$in" : ids}})
+            else:
+                return 200, "ok", "ok", []
+
+        if 'status' in filter and filter['status'] != '':
+            and_li.append({'status.id': filter['status']})
+        
+
+        data = list(col.aggregate([
+            {
+            "$match" : {"$and" : and_li}
+        },
+            {
+                '$lookup': {
+                    'from': 's_user',
+                    'localField': '_id',
+                    'foreignField': 'courses.id',
+                    'as': 'teacher',
+                    'pipeline': [
+                        {
+                            '$match': {
+                                'roles.id': 'teacher'
+                                    
+                                
+                            }
+                        }, {
+                            '$project': {
+                                'full_name': 1,
+                                'username': 1
+                            }
+                        }
+                    ]
+                }
+            }
+        ]))
+        return 200, "ok", "ok", data
 
     def get_course_by_teacher(self, teacher_id):
         db: Database = sn.databases[self.database].db

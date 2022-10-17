@@ -38,7 +38,7 @@ import { useCourse } from "hooks/courses/useCourse";
 import { CheckIcon } from "@chakra-ui/icons";
 
 function CourseForm(props) {
-  const { courses, statusData, courseId = "-1" } = props;
+  const { courses, statusData,callData, courseId = "-1" } = props;
 
   const notify = useNotify();
 
@@ -50,7 +50,7 @@ function CourseForm(props) {
     courseStatus: {},
     prevCourse: {id : '' , name : ''},
     description: "",
-    price: "",
+    price: 0,
     image: "",
   });
 
@@ -77,6 +77,7 @@ function CourseForm(props) {
     };
     await dispatch(createCourseAction(newCourse));
     await dispatch(courseListAction());
+    callData()
   };
 
   // const handleCourseOptionChange = (e) => {
@@ -85,14 +86,7 @@ function CourseForm(props) {
   //   setFormData({ ...formData, prevCourse: newOpt });
   // };
 
-  useEffect(() => {
-    if (message != "") {
-      notify("دوره با موفقیت ثبت شد", true, "solid", "success");
-    }
-    if (error) {
-      notify(error, true, "solid", "error");
-    }
-  }, [message, error]);
+
 
   useEffect(() => {
     if (currentCourse.length != 0) {
@@ -196,6 +190,7 @@ function CourseForm(props) {
                 size={"lg"}
                 dir="ltr"
                 defaultValue={0}
+                value={formData.price}
               >
                 <InputLeftElement
                   pointerEvents="none"
@@ -205,7 +200,7 @@ function CourseForm(props) {
                 />
                 <NumberInputField onChange={handleChange}
                 id="price"
-                value={formData.price} textAlign={"center"} />
+                 textAlign={"center"} />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
                   <NumberDecrementStepper />

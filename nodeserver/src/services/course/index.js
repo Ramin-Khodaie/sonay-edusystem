@@ -43,7 +43,7 @@ export const getCourse = (_id) => {
 };
 
 
-export const courseList = () => {
+export const getCourseList = () => {
   return new Promise(async (resolve, reject) => {
     try {
       const res = await bixios.get("/courses/getcourselist");
@@ -56,6 +56,29 @@ export const courseList = () => {
     }
   });
 };
+
+
+export const getCourseBySearch = (filter) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.put("/courses/getcoursebysearch", {
+        filter : {
+          name:filter.fFullName,
+          teacher : filter.fTeacher.id,
+          status : filter.fStatus.id
+        }
+      });
+
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+      console.log(error)
+      return([])
+    }
+  });
+};
+
 
 export const courseByTeacher = (teacherId = "0") => {
   return new Promise(async (resolve, reject) => {

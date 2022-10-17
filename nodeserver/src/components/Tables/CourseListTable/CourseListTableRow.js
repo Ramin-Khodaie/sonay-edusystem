@@ -12,7 +12,7 @@ import {
 import CourseEditModal from "components/Modal/courseEdit";
   
   function CourseListTableRow(props) {
-    const { name , logo , prevCourse , status , teacher , teacherImage , teacherUserName, price , isLast , key ,courseId , courses , statusData} = props;
+    const { name , logo , prevCourse , status , teacher , teacherImage , callData,teacherUserName, price , isLast , key ,courseId , courses , statusData} = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -84,7 +84,7 @@ import CourseEditModal from "components/Modal/courseEdit";
   
           <CourseEditModal 
           
-          courseId={courseId} courses={courses} statusData={statusData} />
+          courseId={courseId} courses={courses} statusData={statusData} callData={callData} />
           
         </Td>
       </Tr>

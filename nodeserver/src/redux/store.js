@@ -14,7 +14,7 @@ import { persistReducer } from 'redux-persist';
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ['getUserInfo' , 'order']
+  whitelist: ['getUserInfo' , 'order' , 'courseList']
 };
 
 const rootReducer = combineReducers({

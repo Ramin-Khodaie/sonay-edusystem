@@ -13,7 +13,7 @@ import CourseForm from "components/Forms/courseForm";
   import React, { useEffect } from "react";
   
   function CourseEditModal(props) {
-    const { courseId , courses , statusData } = props;
+    const { courseId , courses , statusData , callData } = props;
   
     const { isOpen, onOpen, onClose } = useDisclosure();
   
@@ -39,7 +39,8 @@ import CourseForm from "components/Forms/courseForm";
             <ModalBody pt={"50px"}>
               <CourseForm courses={courses}
                modalClose={onClose} mode="edit" courseId={courseId}
-               statusData={statusData} />
+               statusData={statusData}
+               callData={callData} />
             </ModalBody>
           </ModalContent>
         </Modal>

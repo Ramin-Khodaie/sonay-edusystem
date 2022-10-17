@@ -7,8 +7,80 @@ import LineChart from "components/Charts/LineChart";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { getYearCompare } from "services/dashboard";
-import { lineChartOptions } from "variables/charts";
 const DashboardLineChart = () => {
+  const lineChartOptions = {
+    chart: {
+      toolbar: {
+        show: false,
+      },
+    },
+    tooltip: {
+      theme: "dark",
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      curve: "smooth",
+    },
+    xaxis: {
+      type: "datetime",
+      categories: [
+        "فروردین",
+        "اردیبهشت",
+        "خرداد",
+        "تیر",
+        "مرداد",
+        "شهریور",
+        "مهر",
+        "آبان",
+        "آذر",
+        "دی",
+        "بهمن",
+        "اسفند",
+      ],
+      axisTicks: {
+        show: false
+      },
+      axisBorder: {
+        show: false,
+      },
+      labels: {
+        style: {
+          colors: "#fff",
+          fontSize: "12px",
+        },
+      },
+    },
+    yaxis: {
+      labels: {
+        style: {
+          colors: "#fff",
+          fontSize: "12px",
+        },
+      },
+    },
+    legend: {
+      show: false,
+    },
+    grid: {
+      strokeDashArray: 5,
+    },
+    fill: {
+      type: "gradient",
+      gradient: {
+        shade: "light",
+        type: "vertical",
+        shadeIntensity: 0.5,
+        inverseColors: true,
+        opacityFrom: 0.8,
+        opacityTo: 0,
+        stops: [],
+      },
+      colors: ["#fff", "#3182CE"],
+    },
+    colors: ["#fff", "#3182CE"],
+  };
   const { colorMode } = useColorMode();
 
   const [compareyearData, setCompareyearData] = useState([]);

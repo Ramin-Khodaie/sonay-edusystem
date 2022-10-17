@@ -5,6 +5,8 @@ from modules.main.api_return import api_return
 
 from modules.main.sonay_app import sn
 from modules.main.s_settings import SSettings
+from modules.main.classes.user import SUser
+from modules.main.say.say import SAY
 from ..classes.course import SCourse
 
 
@@ -38,6 +40,12 @@ def get_course_list(full_name = "" , status = ""):
     ret = course.get_course_list(full_name , status)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
+
+@router.put("/getcoursebysearch")
+@sn(fast=True,roles=['admin' ])
+def get_mark_by_search(filter : dict):
+    ret = course.get_course_by_search(filter['filter'])
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 # @router.get("/getcourse")
 # @sn()

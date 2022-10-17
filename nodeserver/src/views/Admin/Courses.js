@@ -13,26 +13,38 @@ import { courseListAction } from "redux/course/courseList/courseListAction";
 import CourseListTable from "components/Tables/CourseListTable/CourseListTable";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import { CoursePop1 } from "components/PopOvers/CoursePopOver";
+import { getCourseList } from "services/course";
+import { getCourseBySearch } from "services/course";
 
 function Courses() {
+  const textColor = useColorModeValue("gray.700", "white");
+
   const statusData = [
     { _id: "active", name: "فعال" },
     { _id: "deactive", name: "غیرفعال" },
   ];
 
-  const { courseList, errorMessage, isPending } = useSelector(
+
+  const { courseList } = useSelector(
     (state) => state.courseList
   );
 
-  const [state, setState] = useState([]);
-  useEffect(() => {
-    setState(courseList);
-  }, [isPending]);
 
-  const [sent, setSent] = React.useState({
-    status: false,
-    sending: false,
-  });
+
+
+  const [state, setState] = useState([]);
+
+const callData = async()=>{
+await getCourseList().then((res)=>{
+
+    setState(res.data.data);
+
+})
+}
+
+
+
+
 
   const [filter, setFilter] = React.useState({
     fFullName: "",
@@ -46,9 +58,7 @@ function Courses() {
     },
   });
 
-  const handleSent = (sentObj) => {
-    setSent(sentObj);
-  };
+
 
   const handleChange = (e) => {
     const field = e.target.id;
@@ -56,51 +66,35 @@ function Courses() {
     setFilter({ ...filter, [field]: value });
   };
 
-  const dispatch = useDispatch();
 
-  const getCourseList = async () => {
-    await dispatch(courseListAction());
+
+  const doSearch = async() => {
+
+   await getCourseBySearch(filter).then((res)=>{
+
+    setState(res.data.data);
+   })
+    
   };
 
   useEffect(() => {
-    getCourseList();
-  }, []);
 
-  useEffect(() => {
-    setState(courseList);
     if (
       filter.fTeacher !== "" ||
       filter.fFullName !== "" ||
       filter.fStatus !== ""
     ) {
+
       doSearch();
     }
   }, [filter.fTeacher, filter.fFullName, filter.fStatus]);
 
-  const doSearch = () => {
-    let tmp = courseList;
+  useEffect(() => {
+    callData()
+  }, []);
 
-    if (filter.fFullName !== "") {
-      tmp = tmp.filter((f) => f.name === filter.fFullName);
-    }
-    // if (filter.fTeacher.id !== "") {
 
-    //   tmp = tmp.filter((f) => f.teacher.id === filter.fTeacher.id);
-    // }
-    if (filter.fStatus.id !== "") {
-      tmp = tmp.filter((f) => f.status.id === filter.fStatus.id);
-    }
-    setState(tmp);
-  };
-
-  const textColor = useColorModeValue("gray.700", "white");
-  const borderColor = useColorModeValue("gray.200", "gray.600");
-  // const courseList = useCourseList(sent.status ,{
-  //   full_name : filter.fFullName,
-
-  //   status : filter.fStatus
-  // }, filter);
-
+  console.log(courseList,4545)
   return (
     <AuthorizeProvider roles={["admin"]}>
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -123,10 +117,9 @@ function Courses() {
 
           <CardBody>
             <CourseForm
-              changeSent={handleSent}
-              sent={sent}
               courses={courseList}
               statusData={statusData}
+              callData={callData}
             />
           </CardBody>
         </Card>
@@ -150,6 +143,7 @@ function Courses() {
               statusData={statusData}
               data={state}
               courses={courseList}
+              callData={callData}
             />
           </CardBody>
         </Card>

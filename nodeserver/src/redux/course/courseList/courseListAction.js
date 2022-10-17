@@ -1,5 +1,5 @@
 import { SiBreaker } from "react-icons/si";
-import { courseList } from "services/course";
+import { getCourseList } from "services/course";
 import { courseListPending, courseListSuccess , courseListError } from "./courseListReducer";
 
 
@@ -9,7 +9,7 @@ export const courseListAction = () => async (dispatch) => {
   dispatch(courseListPending());
 
   
-  const res = await courseList();
+  const res = await getCourseList();
   
 
   if (res.status === 200) {
