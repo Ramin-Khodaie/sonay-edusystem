@@ -36,6 +36,7 @@ import { courseListAction } from "redux/course/courseList/courseListAction";
 import CustomSelector from "components/Selectors/CustomSelector";
 import { useCourse } from "hooks/courses/useCourse";
 import { CheckIcon } from "@chakra-ui/icons";
+import { createCourse } from "services/course";
 
 function CourseForm(props) {
   const { courses, statusData,callData, courseId = "-1" } = props;
@@ -75,16 +76,19 @@ function CourseForm(props) {
       price: formData.price,
       image: formData.image,
     };
-    await dispatch(createCourseAction(newCourse));
+    // await dispatch(createCourseAction(newCourse));
+    await createCourse(newCourse).then((res)=>{
+      console.log(res,4545)
+      if(res==='not_unique'){
+        notify("نام وارد شده تکراری می باشد", true, "solid", "error");
+      }else if(res==='empty_field'){
+        notify("لطفا تمامی فیلد هارا تکمیل کنید", true, "solid", "error");
+      }
+    })
     await dispatch(courseListAction());
-    callData()
+    callData() //we call it twice one is to update list and other update redux state
   };
 
-  // const handleCourseOptionChange = (e) => {
-  //   const newOpt = courses.find((f) => f.id === e.target.value);
-
-  //   setFormData({ ...formData, prevCourse: newOpt });
-  // };
 
 
 

@@ -21,7 +21,7 @@ class SCourse:
         required = {"name", "_id", "prev_course", "status", "price"}
         if len(required.difference(set(course.keys()))) != 0:
             return 422, "missing_field", "some fields are missing", None
-        if not (course["name"] and course["status"] and course["price"]):
+        if course["name"]== '' or course["status"]['id'] == '' or course["price"]== '':
             return 422, "empty_field", "can not accept empty fiels", None
         if "_id" in course and course["_id"] == "" and len(list(col.find({"name": course["name"]}))) != 0:
             return 422, "not_unique", "user already exists", None

@@ -94,7 +94,6 @@ await getCourseList().then((res)=>{
   }, []);
 
 
-  console.log(courseList,4545)
   return (
     <AuthorizeProvider roles={["admin"]}>
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
