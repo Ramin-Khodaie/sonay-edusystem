@@ -472,9 +472,9 @@ class SAY():
         if "course" in filter and filter['course']['id'] != "":
             and_li.append({"courses.id" : filter['course']['id']})
         if "status" in filter and filter['status']['id'] != "":
-            and_li.append({"status.id" : filter["status"]['id']})
+            and_li.append({"roles.id" : filter["status"]['id']})
         col : Collection = self.db.mongo_db["s_user"]
-        data = list(col.find({"$and" : and_li},{"_id" : 1,"image" : 1,"full_name" : 1 ,"email" : 1,"courses" : 1,"enable" : 1,"phone" : 1 , "status" : 1 , 'username' : 1}))
+        data = list(col.find({"$and" : and_li},{"_id" : 1,"image" : 1,"full_name" : 1 ,"roles":1,"email" : 1,"courses" : 1,"enable" : 1,"phone" : 1 , "status" : 1 , 'username' : 1}))
         return 200, "ok", "user is registered", data
     def get_user(self,user_id):
         col: Collection = self.db.mongo_db["s_user"]

@@ -13,7 +13,6 @@ const TeacherDashboard = () => {
 
 const callData = async()=>{
   await getTeacherCounts().then((res)=>{
-    console.log(res,8787)
 
     
     setSt(res.data.data.st)

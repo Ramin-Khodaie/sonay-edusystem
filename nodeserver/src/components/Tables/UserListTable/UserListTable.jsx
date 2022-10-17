@@ -24,6 +24,7 @@ function UserListTable(props) {
 
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
+ 
   return (
     <CardBody>
       <Table style={{ direction: "rtl" }} variant="simple" color={textColor}>
@@ -57,7 +58,7 @@ function UserListTable(props) {
                 email={row.email}
               
                 domain={row.courses}
-                status={"Online"} //{row.enable}
+                role={row.roles} //{row.enable}
                 date={row.phone}
                 isLast={index === arr.length - 1 ? true : false}
                 key={row._id}

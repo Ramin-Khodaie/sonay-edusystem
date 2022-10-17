@@ -63,7 +63,6 @@ import { createProduct } from "services/product";
     };
   
     const handleDelete = (id) => (e) => {
-      console.log(id,formData.courses,4747)
       const cc = formData.courses.filter((element) => {
         return element.id !== id;
       });

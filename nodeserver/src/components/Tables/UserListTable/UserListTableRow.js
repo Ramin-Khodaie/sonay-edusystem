@@ -1,8 +1,10 @@
 import {
     Avatar,
     Badge,
+    Box,
     Button,
     Flex,
+    Spacer,
     Td,
     Text,
     Tr,
@@ -12,7 +14,7 @@ import {
   import UserEditModal from "components/Modal/userEdit";
   
   function UserListTableRow(props) {
-    const {userList,setUserList, logo, name, email, domain, status, date, isLast ,changeSent , sent , userId ,courses} = props;
+    const {userList,setUserList, logo, name, email, domain, role, date, isLast ,changeSent , sent , userId ,courses} = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -54,15 +56,29 @@ import {
           </Flex>
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <Badge
-            bg={status === "Online" ? "green.400" : bgStatus}
-            color={status === "Online" ? "white" : "white"}
-            fontSize="16px"
-            p="3px 10px"
-            borderRadius="8px"
-          >
-            {status}
-          </Badge>
+          
+<Box >
+  
+{role.map((itm,id)=>(
+              
+              <Badge
+              bg={itm.id === "student" ? "green.400" : 
+              itm.id === "teacher" ? "blue.400" :
+              itm.id === "admin" ? "yellow.400" : bgStatus}
+              color={itm.id === "Online" ? "white" : "white"}
+              fontSize="16px"
+              p="3px 10px"
+              mx='5px'
+              borderRadius="8px"
+            >
+              {itm.name}
+            </Badge>
+        
+              
+            ))}
+</Box>
+
+
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
@@ -71,7 +87,7 @@ import {
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
   
-          <UserEditModal userList={userList} setUserList={setUserList}  changeSent={changeSent} sent={sent} userId={userId} courses={courses} />
+          <UserEditModal userList={userList}  etUserList={setUserList}  changeSent={changeSent} sent={sent} userId={userId} courses={courses} />
           
         </Td>
       </Tr>

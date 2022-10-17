@@ -78,7 +78,6 @@ function CourseForm(props) {
     };
     // await dispatch(createCourseAction(newCourse));
     await createCourse(newCourse).then((res)=>{
-      console.log(res,4545)
       if(res==='not_unique'){
         notify("نام وارد شده تکراری می باشد", true, "solid", "error");
       }else if(res==='empty_field'){

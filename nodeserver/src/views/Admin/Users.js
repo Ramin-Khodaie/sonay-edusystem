@@ -40,7 +40,11 @@ import { UserPop1 } from "components/PopOvers/UserPopOver";
 const Users = () => {
   const textColor = useColorModeValue("gray.700", "white");
 
-  const studentStatus = require("../../status.json");
+  const studentStatus = [
+    {'_id' : 'admin','name' : 'ادمین'},
+    {'_id' :'teacher','name' : 'دبیر'},
+    {'_id' :'student','name' :'زبان آموز'}
+  ]
 
   const boxBg = useColorModeValue("gray.100", "navy.600");
   const { courseList } = useSelector((state) => state.courseList);
