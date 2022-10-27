@@ -1,5 +1,5 @@
 // Chakra imports
-import { useColorModeValue, Flex, Text } from "@chakra-ui/react";
+import { useColorModeValue, Flex, Text, Box } from "@chakra-ui/react";
 
 // Custom components
 import Card from "components/Card/Card.js";
@@ -18,6 +18,7 @@ import { getCourseBySearch } from "services/course";
 
 function Courses() {
   const textColor = useColorModeValue("gray.700", "white");
+  const boxBg = useColorModeValue("gray.100", "navy.600");
 
   const statusData = [
     { _id: "active", name: "فعال" },
@@ -137,14 +138,29 @@ await getCourseList().then((res)=>{
               ]}
             />
           </CardHeader>
-          <CardBody>
-            <CourseListTable
+       
+
+            {
+              state.length !== 0 ? <CourseListTable
               statusData={statusData}
               data={state}
               courses={courseList}
               callData={callData}
-            />
-          </CardBody>
+            /> :
+              <Box
+            mb={"30px"}
+            borderRadius={"3rem"}
+            alignSelf={"center"}
+            width={"500px"}
+            bg={boxBg}
+          >
+            <Text textAlign={"center"} my={"10px"}>
+              نمره ای یافت نشد
+            </Text>
+          </Box>
+            }
+            
+   
         </Card>
       </Flex>
     </AuthorizeProvider>

@@ -44,7 +44,7 @@ export const createUser = (user) => {
         password: user.password,
         confirm_password : user.confirmPassword,
         courses: user.courses,
-        roles: user.roles,
+        role: user.role,
       });
       
       if (res.status === 200) {

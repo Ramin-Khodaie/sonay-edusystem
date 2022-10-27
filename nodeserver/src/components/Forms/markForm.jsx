@@ -142,7 +142,7 @@ function MarkForm(props) {
           setIsLoading(false);
           setMarkList(
             markList.map((item, key) => {
-              return item._id === res.data._id ? res.data : item;
+              return item.username === res.data.username ? res.data : item;
             })
           );
 

@@ -110,7 +110,7 @@ class SCourse:
                     'pipeline': [
                         {
                             '$match': {
-                                'roles.id': 'teacher'
+                                'role.id': 'teacher'
                                     
                                 
                             }
@@ -161,7 +161,7 @@ class SCourse:
                     'pipeline': [
                         {
                             '$match': {
-                                'roles.id': 'teacher'
+                                'role.id': 'teacher'
                                     
                                 
                             }
@@ -184,7 +184,7 @@ class SCourse:
             {
                 '$match': {
                     'username': user['username'],
-                    'roles.id': 'teacher'
+                    'role.id': 'teacher'
                 }
             }, {
                 "$unwind": '$courses'
@@ -349,7 +349,7 @@ class SCourse:
                         't_obj': [
                             {
                                 '$match': {
-                                    'roles.id': 'teacher',
+                                    'role.id': 'teacher',
                                     'courses.id': course_id
                                 }
                             }, {
@@ -366,8 +366,8 @@ class SCourse:
                             }, {
                                 '$lookup': {
                                     'from': 'mark',
-                                    'localField': '_id',
-                                    'foreignField': 'student.id',
+                                    'localField': 'username',
+                                    'foreignField': 'username',
                                     'pipeline': [
                                         {
                                             '$match': {

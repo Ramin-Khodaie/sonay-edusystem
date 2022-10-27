@@ -25,6 +25,7 @@ import { useSelector } from "react-redux";
 import { useConfirmPassword } from "hooks/formValidation/useConfirmPassword";
 import { createUser } from "services/user";
 import { useState } from "react";
+import CustomSelector from "components/Selectors/CustomSelector";
 
 function UserForm(props) {
   const { courses, userList, setUserList, onClose, userId = "-1" } = props;
@@ -47,10 +48,9 @@ function UserForm(props) {
     email: "",
     password: "",
     confirm_password: "",
-    roles: [],
+    role: {'id' : "" , 'name' : ""},
     courses: [],
   });
-
   const resetFormInputs = () => {
     setFormData({
       _id: "",
@@ -60,15 +60,15 @@ function UserForm(props) {
       email: "",
       password: "",
       confirm_password: "",
-      roles: [],
+      role: {'name' : "" , 'id' : ""},
       courses: [],
     });
   };
   const handleDelete = (id) => (e) => {
-    const cc = formData.roles.filter((element) => {
+    const cc = formData.role.filter((element) => {
       return element.id !== id;
     });
-    setFormData({ ...formData, roles: cc });
+    setFormData({ ...formData, role: cc });
   };
   const handleChange = (event) => {
     const field = event.target.id;
@@ -87,7 +87,7 @@ function UserForm(props) {
       password: formData.password,
       confirmPassword : formData.confirm_password,
       courses: formData.courses,
-      roles: formData.roles,
+      role: formData.role,
     };
 
     await createUser(newUser).then((res) => {
@@ -139,15 +139,7 @@ function UserForm(props) {
     formData.confirm_password
   );
 
-  const handleOptionChange = (e) => {
-    const newOpt = data.find((f) => f._id === e.target.value);
-    formData.roles.findIndex((itm) => itm._id == newOpt._id) === -1
-      ? setFormData({
-          ...formData,
-          roles: [...formData.roles, { id: newOpt._id, name: newOpt.name }],
-        })
-      : notify("این آیتم قبلا انتخاب شده است", true, "solid", "warning");
-  };
+
 
   const handleOptionCourseChange = (e) => {
     const newOpt = courses.find((f) => f._id === e.target.value);
@@ -165,6 +157,7 @@ function UserForm(props) {
     });
     setFormData({ ...formData, courses: cc });
   };
+  console.log(currentUser,5858)
 
   useEffect(() => {
     if (currentUser.length != 0) {
@@ -176,7 +169,7 @@ function UserForm(props) {
         phone: currentUser[0].phone,
         email: currentUser[0].email,
         courses: currentUser[0].courses,
-        roles: currentUser[0].roles,
+        role: currentUser[0].role,
       });
     }
   }, [currentUser]);
@@ -288,41 +281,42 @@ function UserForm(props) {
               />
             </Box>
 
+
+
+
             <Box minH="80px">
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                دوره{" "}
+                نقش {" "}
               </FormLabel>
+              {/* <MultiSelect
+                handleChange={handleOptionChange}
+                handleDelete={handleDelete}
+                data={data}
+                options={formData.roles}
+                placeholder="نقش کاربر را انتخاب کنید"
+              /> */}
 
-              {containsObject("teacher", formData.roles) ? (
-                <MultiSelect
-                  handleChange={handleOptionCourseChange}
-                  handleDelete={handleOptionCourseDelete}
-                  data={courses}
-                  options={formData.courses}
-                  placeholder="دوره کاربر را انتخاب کنید"
-                />
-              ) : (
-                <Select
-                  focusBorderColor="purple.300"
-                  textAlign={"center"}
-                  placeholder={"دوره کاربر را انتخاب کنید"}
-                  onChange={handleSinleOptionChange}
-                >
-                  {courses.map((d) => (
-                    <option
-                      selected={
-                        formData.courses[0] && formData.courses[0].id === d._id
-                          ? true
-                          : false
-                      }
-                      value={[d.name, d._id]}
-                    >
-                      {d.name}
-                    </option>
-                  ))}
-                </Select>
-              )}
+
+<CustomSelector
+                onChange={setFormData}
+                state={formData}
+                data={data}
+                fieldId={"role"}
+              />
             </Box>
+
+
+
+
+
+
+
+
+
+
+
+
+
           </Box>
 
           <Box>
@@ -400,17 +394,44 @@ function UserForm(props) {
           </Box>
 
           <Box>
+        
+
+
+            
             <Box minH="80px">
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                نقش ها{" "}
+                دوره{" "}
               </FormLabel>
-              <MultiSelect
-                handleChange={handleOptionChange}
-                handleDelete={handleDelete}
-                data={data}
-                options={formData.roles}
-                placeholder="نقش کاربر را انتخاب کنید"
-              />
+
+              {formData.role.id == 'teacher' ? (
+                <MultiSelect
+                  handleChange={handleOptionCourseChange}
+                  handleDelete={handleOptionCourseDelete}
+                  data={courses}
+                  options={formData.courses}
+                  placeholder="دوره کاربر را انتخاب کنید"
+                />
+              ) : (
+                <Select
+                  focusBorderColor="purple.300"
+                  textAlign={"center"}
+                  placeholder={"دوره کاربر را انتخاب کنید"}
+                  onChange={handleSinleOptionChange}
+                >
+                  {courses.map((d) => (
+                    <option
+                      selected={
+                        formData.courses[0] && formData.courses[0].id === d._id
+                          ? true
+                          : false
+                      }
+                      value={[d.name, d._id]}
+                    >
+                      {d.name}
+                    </option>
+                  ))}
+                </Select>
+              )}
             </Box>
           </Box>
         </SimpleGrid>

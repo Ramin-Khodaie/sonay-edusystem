@@ -58,7 +58,7 @@ function UserListTable(props) {
                 email={row.email}
               
                 domain={row.courses}
-                role={row.roles} //{row.enable}
+                role={row.role} //{row.enable}
                 date={row.phone}
                 isLast={index === arr.length - 1 ? true : false}
                 key={row._id}

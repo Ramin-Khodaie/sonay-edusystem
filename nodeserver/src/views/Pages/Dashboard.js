@@ -24,11 +24,11 @@ export default function Dashboard() {
 
   return (
     <AuthorizeProvider roles={["admin", "student", "teacher"]}>
-      {userInfo.roles[0].id === "admin" ? (
+      {userInfo.role.id === "admin" ? (
         <AdminDashboard />
-      ) : userInfo.roles[0].id === "teacher" ? (
+      ) : userInfo.role.id === "teacher" ? (
         <TeacherDashboard />
-      ) : userInfo.roles[0].id === "student" ? (
+      ) : userInfo.role.id === "student" ? (
         <StudentDashoard user={userInfo} />
       ) : (
         <></>

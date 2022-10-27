@@ -88,7 +88,7 @@ def get_user_by_course(say: SAY, course_id):
 @sn(roles=['admin'])
 def get_teacher_list(say: SAY):
     
-    ret = say.get_user_by_query({"roles.id": "teacher"}, {
+    ret = say.get_user_by_query({"role.id": "teacher"}, {
                                 'id': '$_id', 'name': "$full_name"})
     return api_return(200, 'ok', 'ok', data=ret if ret != None else [])
     
@@ -110,7 +110,7 @@ async def userinfo(user: SUser):
     if user is None:
         return {
             "username": "anonymous",
-            "roles": [],
+            "role": {'id' : "" , 'name' : ""},
             "full_roles": [],
             "refreshToken": "",
             "password": "",
@@ -124,5 +124,5 @@ async def userinfo(user: SUser):
 
         if '_id' in u:
             del u["_id"]
-        ret = {**u, 'full_roles' : [role['id'] for role in u['roles']],  "info": sn.Settings.info}
+        ret = {**u, 'full_roles' : [u['role']['id']],  "info": sn.Settings.info}
         return ret

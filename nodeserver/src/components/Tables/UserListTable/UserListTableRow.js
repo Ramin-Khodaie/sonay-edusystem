@@ -58,24 +58,18 @@ import {
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
           
 <Box >
-  
-{role.map((itm,id)=>(
-              
-              <Badge
-              bg={itm.id === "student" ? "green.400" : 
-              itm.id === "teacher" ? "blue.400" :
-              itm.id === "admin" ? "yellow.400" : bgStatus}
-              color={itm.id === "Online" ? "white" : "white"}
+<Badge
+              bg={role.id === "student" ? "green.400" : 
+              role.id === "teacher" ? "blue.400" :
+              role.id === "admin" ? "yellow.400" : bgStatus}
+              color={role.id === "Online" ? "white" : "white"}
               fontSize="16px"
               p="3px 10px"
               mx='5px'
               borderRadius="8px"
             >
-              {itm.name}
+              {role.name}
             </Badge>
-        
-              
-            ))}
 </Box>
 
 

@@ -259,7 +259,7 @@ class SPurchase:
                         'pipeline': [
                             {
                                 '$match': {
-                                    'roles.id': 'student'
+                                    'role.id': 'student'
                                 }
                             }, {
                                 '$project': {
@@ -279,7 +279,7 @@ class SPurchase:
                         'pipeline': [
                             {
                                 '$match': {
-                                    'roles.id': 'teacher'
+                                    'role.id': 'teacher'
                                 }
                             }, {
                                 '$project': {
@@ -335,7 +335,7 @@ class SPurchase:
                         'pipeline': [
                             {
                                 '$match': {
-                                    'roles.id': 'student'
+                                    'role.id': 'student'
                                 }
                             }, {
                                 '$project': {
@@ -355,7 +355,7 @@ class SPurchase:
                         'pipeline': [
                             {
                                 '$match': 
-                                    {'roles.id': 'teacher'}
+                                    {'role.id': 'teacher'}
                                 
                             }, {
                                 '$project': {

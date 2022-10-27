@@ -80,9 +80,9 @@ class SAY():
                 "image" : "",
                 "creator": "admin",
                 "created": datetime.datetime.now(),
-                "roles": [{"id":"admin",
+                "role": {"id":"admin",
                 "name":"ادمین"},
-                          ],
+                          
                 "status" : {"id" : "reg",
                                       "name" : "ثبت نام شده"}
             }
@@ -155,12 +155,11 @@ class SAY():
                 user = self.get_user(user_id=usr)
                 if user is not None:
 
-                    n = user[3][0]["roles"]
-                    user_roles = [it['id'] for it in n]
+                    role_id = [user[3][0]["role"]['id']]
                     # api_roles = self.get_all_roles_of_roles(roles)
 
                     # final_roles = user_roles & api_roles
-                    final_roles = set(user_roles) & set(roles)
+                    final_roles = set(role_id) & set(roles)
                     role_permit = len(final_roles) > 0
 
                     if not role_permit:
@@ -317,7 +316,7 @@ class SAY():
 
     def validate_save_user(self, user: dict, col: Collection ):
 
-        required = {"username", "full_name", "phone", "courses", "roles"}
+        required = {"username", "full_name", "phone", "courses", "role"}
         if user["_id"] == "":
             #save validation
             required.add('password')
@@ -334,13 +333,13 @@ class SAY():
 
         if len(required.difference(set(user.keys()))) != 0 :
             return 422, "missing_field", "some fields are missing", None
-        if user["username"] == '' and user["full_name"] == ''  and user["phone"]=='' and  user["courses"]==[] and user["roles"]==[]:
+        if user["username"] == '' and user["full_name"] == ''  and user["phone"]=='' and  user["courses"]==[] and user["role"]['id']=="":
             return 422, "empty_field", "can not accept empty fiels", None
         
-        roles = [itm['id'] for itm in user['roles']]
         courses = [itm['id'] for itm in user['courses']]
-        if 'teacher'  in roles and len(courses) != 0:
-            cnt = len(list(col.find({'courses.id' : {"$in" : courses} , 'username' : {"$ne" : user['username']} , 'roles.id' : 'teacher'})))
+
+        if user['role']['id']=='teacher' and len(courses) != 0:
+            cnt = len(list(col.find({'courses.id' : {"$in" : courses} , 'username' : {"$ne" : user['username']} , 'role.id' : 'teacher'})))
             if cnt != 0:
                 return 422, "wrong_course", "selected course has another teacher", None
         
@@ -405,7 +404,11 @@ class SAY():
               "status" : {"id" : "reg",
                           "name" : "ثبت نام شده"},
               "creator": "self",
-              "image" : ""}
+              "image" : "" ,
+              }
+
+
+       
 
         col.insert_one(nu)
         return 200, "ok", "user inserted", nu
@@ -448,10 +451,10 @@ class SAY():
             "created": datetime.datetime.now(),
             "email": user_info["email"],
             "image" :"",
-            "roles": [
+            "role": 
                 {"id":"visitor",
                 "name":"بازدید کننده"}
-            ],
+            ,
             "course" : {
                 "id" : "-1",
                 "name" : "بازدید کننده"
@@ -472,9 +475,9 @@ class SAY():
         if "course" in filter and filter['course']['id'] != "":
             and_li.append({"courses.id" : filter['course']['id']})
         if "status" in filter and filter['status']['id'] != "":
-            and_li.append({"roles.id" : filter["status"]['id']})
+            and_li.append({"role.id" : filter["status"]['id']})
         col : Collection = self.db.mongo_db["s_user"]
-        data = list(col.find({"$and" : and_li},{"_id" : 1,"image" : 1,"full_name" : 1 ,"roles":1,"email" : 1,"courses" : 1,"enable" : 1,"phone" : 1 , "status" : 1 , 'username' : 1}))
+        data = list(col.find({"$and" : and_li},{"_id" : 1,"image" : 1,"full_name" : 1 ,"role":1,"email" : 1,"courses" : 1,"enable" : 1,"phone" : 1 , "status" : 1 , 'username' : 1}))
         return 200, "ok", "user is registered", data
     def get_user(self,user_id):
         col: Collection = self.db.mongo_db["s_user"]
@@ -492,7 +495,7 @@ class SAY():
         
     def get_user_by_course(self,course_id , role):
         col: Collection = self.db.mongo_db["s_user"]
-        res = list(col.find({"courses.id" : course_id , "roles.id" : role}))
+        res = list(col.find({"courses.id" : course_id , "role.id" : role}))
         return 200, "ok", "", res
         
     

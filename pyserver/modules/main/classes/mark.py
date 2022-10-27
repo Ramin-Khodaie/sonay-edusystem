@@ -103,13 +103,13 @@ class SMark:
     def get_mark_by_search(self, user, filter):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
-        roles = [c['id'] for c in user['roles']]
+        
         and_li = []
 
-        if 'student' in roles:
+        if user['role']['id'] == 'student': 
             and_li.append({'username': user['username']})
             and_li.append({'course.id': {"$ne": user['courses'][0]['id']}})
-        if 'teacher' in roles:
+        if user['role']['id'] == 'teacher':
             and_li.append({'teacher.username': user['username']})
         if 'name' in filter and filter['name'] != "":
             and_li.append({'student.name': {'$regex': filter['name']}})
@@ -292,7 +292,7 @@ class SMark:
             {
                 '$match': {
                     'courses.id': course_id,
-                    'roles.id': 'student'
+                    'role.id': 'student'
                 }
             }, {
                 '$lookup': {

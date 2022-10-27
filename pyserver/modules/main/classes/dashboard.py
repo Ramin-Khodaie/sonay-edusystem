@@ -54,7 +54,7 @@ class SDashboard:
                     'this_month': [
                         {
                             '$match': {'created': {'$gte': one_month_ago},
-                                       'roles.id': 'student'}
+                                       'role.id': 'student'}
 
                         },
                         {
@@ -76,7 +76,7 @@ class SDashboard:
                                        [
                                            {'created': {'$gte': two_month_ago}},
                                            {'created': {'$lt': one_month_ago}},
-                                           {'roles.id': 'student'}
+                                           {'role.id': 'student'}
                                        ]
                                        }
 
@@ -93,7 +93,7 @@ class SDashboard:
                         }
                     ],
                     'total': [{
-                        '$match': {'roles.id': 'student'}
+                        '$match': {'role.id': 'student'}
                     },
 
                         {
@@ -120,7 +120,7 @@ class SDashboard:
                     'this_month': [
                         {
                             '$match': {'created': {'$gte': one_month_ago},
-                                       'roles.id': 'teacher'}
+                                       'role.id': 'teacher'}
 
                         },
                         {
@@ -142,7 +142,7 @@ class SDashboard:
                                        [
                                            {'created': {'$gte': two_month_ago}},
                                            {'created': {'$lt': one_month_ago}},
-                                           {'roles.id': 'teacher'}
+                                           {'role.id': 'teacher'}
                                        ]
                                        }
 
@@ -159,7 +159,7 @@ class SDashboard:
                         }
                     ],
                     'total': [{
-                        '$match': {'roles.id': 'teacher'}
+                        '$match': {'role.id': 'teacher'}
                     },
 
                         {
@@ -556,8 +556,8 @@ class SDashboard:
         col: Collection = db[self.user_collection]
         data = list(col.find({'enable': True,
                               'courses.id': user['courses'][0]['id'],
-                              'roles.id': 'student',
-                              'status.id': 'mark'
+                              'role.id': 'student',
+                              'username' : {'$ne' : user['username']}
                               }, {
             'full_name': 1,
             'image': 1
@@ -583,7 +583,7 @@ class SDashboard:
                     'pipeline': [
                         {
                             '$match': {
-                                'roles.id': 'student'
+                                'role.id': 'student'
                             }
                         }, {
                             '$project': {

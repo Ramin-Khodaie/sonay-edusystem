@@ -39,7 +39,7 @@ import { CheckIcon } from "@chakra-ui/icons";
 import { createCourse } from "services/course";
 
 function CourseForm(props) {
-  const { courses, statusData,callData, courseId = "-1" } = props;
+  const { courses, statusData,callData,modalClose, courseId = "-1" } = props;
 
   const notify = useNotify();
 
@@ -85,7 +85,11 @@ function CourseForm(props) {
       }
     })
     await dispatch(courseListAction());
-    callData() //we call it twice one is to update list and other update redux state
+    callData()
+    if(courseId !== "-1"){
+      modalClose()
+    }
+     //we call it twice one is to update list and other update redux state
   };
 
 

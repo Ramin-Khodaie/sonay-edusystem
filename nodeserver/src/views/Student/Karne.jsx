@@ -11,6 +11,7 @@ import {
   SimpleGrid,
   Stack,
   Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { lineChartData } from "variables/charts";
 import { lineChartOptions } from "variables/charts";
@@ -37,6 +38,8 @@ import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import { ReportPop4 } from "components/PopOvers/ReportPopOver";
 import { ReportPop5 } from "components/PopOvers/ReportPopOver";
 const Karne = () => {
+  const boxBg = useColorModeValue("gray.100", "navy.600");
+
   const { userInfo } = useSelector((state) => state.getUserInfo);
   const [selectedCourse, setSelectedCourse] = useState(userInfo.courses[0].id);
   const [selectedMark, setSelectedMark] = useState(undefined);
@@ -157,6 +160,7 @@ const Karne = () => {
                     textAlign={"center"}
                     fontSize={{ sm: "18px", md: "22px", lg: "25px" }}
                     fontWeight={"bold"}
+                    dir='rtl'
                   >
                     کارنامه زبان آموز{" "}
                     {selectedMark && selectedMark.student.name} برای دوره{" "}
@@ -215,8 +219,22 @@ const Karne = () => {
             handleEndDateChange={handleEndDateChange}
           />
         </CardHeader>
-
-        <ReportMarkTable handleMarkChange={handleMarkChange} data={tableData} />
+{
+  tableData.length !== 0 ?
+  
+  <ReportMarkTable handleMarkChange={handleMarkChange} data={tableData} /> :
+  <Box
+  mb={"30px"}
+  borderRadius={"3rem"}
+  alignSelf={"center"}
+  width={"500px"}
+  bg={boxBg}
+>
+  <Text textAlign={"center"} my={"10px"}>
+    نمره ای یافت نشد
+  </Text>
+</Box>
+}
       </Card>
     </AuthorizeProvider>
   );
