@@ -34,14 +34,10 @@ export const createMark = (mark) => {
 };
 
 
-export const markByTeacher = (teacherId) => {
+export const markByTeacher = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await bixios.get("/marks/getmarkbyteacher", {
-        params:{
-          teacher_id : teacherId
-        }
-      });
+      const res = await bixios.get("/marks/getmarkbyteacher", );
 
       if (res.status === 200) {
         resolve(res.data.data);

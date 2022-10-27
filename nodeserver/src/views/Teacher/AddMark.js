@@ -100,7 +100,7 @@ function AddMark() {
   };
 
   const getMarkList = async () => {
-    const markListC = await markByTeacher("0");
+    const markListC = await markByTeacher();
 
     if (markListC.length > 0) {
       setMarkList(markListC);
@@ -109,7 +109,7 @@ function AddMark() {
 
   useEffect(() => {
     getCourseList();
-    getMarkList();
+
   }, []);
 
   useEffect(() => {
@@ -128,19 +128,10 @@ function AddMark() {
   useEffect(() => {
     setMarkList(markList);
 
-    if (
-      filter.name !== "" ||
-      filter.isFailed ||
-      filter.isPassed ||
-      filter.courses.id !== "" ||
-      filter.startDate !== "" ||
-      filter.endDate !== "" ||
-      filter.startMark !== "" ||
-      filter.endMark !== ""
-    ) {
-      doSearch();
-    }
-  }, [filter]);
+  
+    doSearch();
+    
+  }, [filter ]);
 
   const [slider, setSlider] = useState([0, 100]);
 
@@ -164,7 +155,6 @@ function AddMark() {
       setFilter({ ...filter, endDate: "" });
     }
   };
-
   return (
     <AuthorizeProvider roles={["teacher"]}>
       <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">
@@ -224,8 +214,8 @@ function AddMark() {
         </Card>
       ) : myStudents.length == 0 ? (
         <Card>
-          <Text fontWeight={"bold"} fontSize={"20px"} textAlign={"center"}>
-هیچ دانش آموزی جهت ورود نمره یافت نشد         </Text>
+          <Text dir={"rtl"} fontWeight={"bold"} fontSize={"20px"} textAlign={"center"}>
+هیچ دانش آموزی در کلاس {selectedItems && selectedItems.course.name} جهت ورود نمره یافت نشد         </Text>
 
 <Text textColor={'green'} fontSize={"16px"} textAlign={"center"}>
   نمرات این دوره با موفقیت ثبت شده است. جهت حذف یا ویرایش میتوانید از لیست نمرات واردشده در پایین صفحه استفاده کنید

@@ -21,16 +21,16 @@ mark=SMark('sonay' , 'mark' , 's_user')
 
 @router.post("/createmark")
 @sn(fast=True,roles=['teacher' ])
-def create_mark(st:SSettings, info : dict):
-    ret = mark.insert_mark(info , st)
+def create_mark(st:SSettings,user: SUser , info : dict):
+    ret = mark.insert_mark(user ,info , st)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 
 
 @router.get("/getmarkbyteacher")
 @sn(fast=True,roles=['teacher' ])
-def get_mark_by_teacher(teacher_id : str):
-    ret = mark.get_mark_by_teacher(teacher_id)
+def get_mark_by_teacher(user : SUser , st : SSettings):
+    ret = mark.get_mark_by_teacher(user , st)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 

@@ -5,6 +5,8 @@ from modules.main.sonay_app import sn
 from bson import ObjectId
 from persiantools.jdatetime import JalaliDate
 from datetime import datetime
+from persiantools.jdatetime import JalaliDate
+from dateutil.relativedelta import relativedelta
 
 
 class SMark:
@@ -16,23 +18,40 @@ class SMark:
         self.mark_collection = mark_collection
         self.user_collection = user_collection
 
-    def validate_mark(self, product, col):
-        # required = {"name", "_id", "price", "is_main" , "is_active"}
-        # if len(required.difference(set(product.keys()))) != 0:
-        #     return 422, "missing_field", "some fields are missing", None
-        # if not (product["name"] and product["price"] and type(product["is_main"] == Boolean) and type(product["is_active"] == Boolean) ):
-        #     return 422, "empty_field", "can not accept empty fiels", None
-        # if "_id" in product and product["_id"] == "" and len(list(col.find({"name": product["name"]}))) != 0:
-        #     return 422, "not_unique", "user already exists", None
+    def validate_mark(self, user, mark, col):
+        required = {"classActivity", "_id", "quiz",
+                    "extra", "midterm", 'final', 'sum', 'message'}
+        required_q = ['homework', 'writing', 'reading',
+                      'listening', 'speaking', 'activity']
+        for itm in required_q:
+            if itm not in mark or mark[itm]['id'] not in ['outstanding', 'good', 'satisfactory', 'weak']:
+                return 422, "missing_field_q", "some fields are missing", None
+        if len(required.difference(set(mark.keys()))) != 0:
+            return 422, "missing_field", "some fields are missing", None
+        if mark["message"] == "":
+            return 422, "missing_message", "message is empty", None
+        if mark["sum"] > 100:
+            return 422, "too_much", "sum cant be more than 100", None
+
+        itm = list(col.find(
+            {"student.id": mark["student"]['id'], 'course.id': mark['course']['id']}))
+
+        if "_id" in mark and mark["_id"] == "":
+            if len(itm) != 0:
+                return 422, "not_unique", "mark is not unique", None
+        else:
+            if len(itm) == 1 and user['username'] != itm[0]['teacher']['username']:
+                return 422, "wrong_teacher", "teacher is not responsible for mark", None
+            pass
 
         return 200, "ok", "is valid", None
 
-    def insert_mark(self, info, st):
+    def insert_mark(self, user,  info, st):
 
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
         col2: Collection = db[self.user_collection]
-        valid = self.validate_mark(info, col)
+        valid = self.validate_mark(user, info, col)
         if valid[0] != 200:
             return valid
 
@@ -48,8 +67,9 @@ class SMark:
         info['g_date'] = datetime.today()
         idd = str(ObjectId())
         itm_ready = {**info, "_id": idd, 'y': int(cc.year),
-                        'm': int(cc.month),
-                        'd': int(cc.day)}
+                     'm': int(cc.month),
+                     'd': int(cc.day),
+                     'teacher': {'username': user['username'], 'full_name': user['full_name']}}
         col.insert_one(itm_ready)
         col2.update_one({'_id': info['student']['id']}, {
                         "$set": {'status': {'id': "mark", "name": "مشاهده نمره"}}})
@@ -64,11 +84,14 @@ class SMark:
 
         return 200, "ok", "mark is inserted", res
 
-    def get_mark_by_teacher(self, teacher_id):
+    def get_mark_by_teacher(self, user, st):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
-        # res = list(col.find({"teacher.id" : teacher_id}))
-        res = list(col.find({}))
+        current_date = datetime.today()
+        n = st.info['ReportDefaultUpToDate']
+        past_date = current_date - relativedelta(months=n)
+        res = list(col.find({"teacher.username": user['username'],
+                             'g_date': {'$gte': past_date}}))
         return 200, "ok", "", res
 
     def edit_mark(self, info, col: Collection):
@@ -86,7 +109,8 @@ class SMark:
         if 'student' in roles:
             and_li.append({'username': user['username']})
             and_li.append({'course.id': {"$ne": user['courses'][0]['id']}})
-
+        if 'teacher' in roles:
+            and_li.append({'teacher.username': user['username']})
         if 'name' in filter and filter['name'] != "":
             and_li.append({'student.name': {'$regex': filter['name']}})
         if 'courses' in filter and filter['courses']['id'] != "":
@@ -95,7 +119,7 @@ class SMark:
             and_li.append({'course.name': {'$regex': filter['course']}})
         if 'isFailed' in filter and filter['isFailed']:
             and_li.append({'status': 'failed'})
-        
+
         if 'startMark' in filter and filter['startMark'] != '':
             and_li.append({'sum': {"$gte": int(filter['startMark'])}})
         if 'endMark' in filter and filter['endMark'] != '':
@@ -192,32 +216,32 @@ class SMark:
                                     '$avg': '$sum'
                                 }
                             }
-                        },{
-                            
-                            '$set':{
+                        }, {
+
+                            '$set': {
                                 'avg_classActivity': {
-                                    '$round': ['$classActivity',2]
+                                    '$round': ['$classActivity', 2]
                                 },
                                 'avg_quiz': {
-                                    '$round': ['$avg_quiz',2]
+                                    '$round': ['$avg_quiz', 2]
                                 },
                                 'avg_extra': {
-                                    '$round': ['$avg_extra',2]
+                                    '$round': ['$avg_extra', 2]
                                 },
                                 'avg_midterm': {
-                                    '$round': ['$avg_midterm',2]
+                                    '$round': ['$avg_midterm', 2]
                                 },
                                 'avg_final': {
-                                    '$round': ['$avg_final',2]
+                                    '$round': ['$avg_final', 2]
                                 },
                                 'avg_sum': {
-                                    '$round': ['$avg_sum',2]
+                                    '$round': ['$avg_sum', 2]
                                 }
                             }
-                            
-                            
-                            
-                            }, {
+
+
+
+                        }, {
                             '$project': {
                                 '_id': 0
                             }
@@ -260,38 +284,34 @@ class SMark:
         res = list(
             col.find({'username': username, 'course.id': {"$ne": course_id}}))
         return 200, 'ok', 'ok', res
-    def get_student_mark_by_course(self,course_id ):
+
+    def get_student_mark_by_course(self, course_id):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.user_collection]
         res = list(col.aggregate([
-    {
-        '$match': {
-            'courses.id' : course_id ,
-            'roles.id': 'student'
-        }
-    }, {
-        '$lookup': {
-            'from': 'mark', 
-            'localField': 'username', 
-            'foreignField': 'username', 
-            'pipeline': [
-                {
-                    '$match': {
-                        'course.id': course_id
-                    }
+            {
+                '$match': {
+                    'courses.id': course_id,
+                    'roles.id': 'student'
                 }
-            ], 
-            'as': 'mark'
-        }
-    }, {
-        '$match': {
-            'mark': []
-        }
-    }
-]))
+            }, {
+                '$lookup': {
+                    'from': 'mark',
+                    'localField': 'username',
+                    'foreignField': 'username',
+                    'pipeline': [
+                        {
+                            '$match': {
+                                'course.id': course_id
+                            }
+                        }
+                    ],
+                    'as': 'mark'
+                }
+            }, {
+                '$match': {
+                    'mark': []
+                }
+            }
+        ]))
         return 200, "ok", "", res
-
-
-
-
-

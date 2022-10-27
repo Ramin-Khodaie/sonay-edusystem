@@ -73,7 +73,7 @@ function MarkForm(props) {
     student: selectedStudent,
     course: selectedCourse,
 
-    teacher: { name: "مختار عمی", _id: "123456789" },
+
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -152,12 +152,27 @@ function MarkForm(props) {
 
           break;
         }
-      case "empty_field":
-        dispatch(createProductError("تمامی فیلدها تکمیل شوند."));
+      case "missing_field":
+       
+        notify("تمامی فیلد ها تکمیل شود", true, "solid", "error");
+
+
         break;
+        case "missing_field_q":
+          notify("تمامی فیلد ها را انتخاب کنید", true, "solid", "error");
+          break;
       case "not_unique":
-        dispatch(createProductError("نمره از قبل ثبت شده است."));
+        notify("نمره از قبل ثبت شده است", true, "solid", "warning");
         break;
+        case "missing_message":
+          notify("لطفا بخش متن پیام به کاربر را تکمیل کنید", true, "solid", "warning");
+          break;
+          case "too_much":
+          notify("جمع نمرات نباید بیش از 100 باشد", true, "solid", "warning");
+          break;
+          case "wrong_teacher":
+          notify("شما وارد کننده این نمره نیستید و نمی توانید آن را ویرایش کنید", true, "solid", "warning");
+          break;
     }
   };
 
