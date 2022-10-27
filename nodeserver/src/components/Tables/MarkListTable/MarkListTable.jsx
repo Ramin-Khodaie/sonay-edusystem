@@ -27,7 +27,7 @@ import React, { useEffect, useState } from "react";
 import ProductListTableRow from "components/Tables/ProductListTable/ProductListTableRow";
 import MarkListTableRow from "./MarkListTableRows";
 function MarkListTable(props) {
-  const { data  } = props;
+  const { data , markList , setMarkList , myStudents , setmyStudents  } = props;
 
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -65,6 +65,10 @@ function MarkListTable(props) {
             //   )).
             .map((row, index, arr) => (
               <MarkListTableRow
+              markList={markList}
+              setMarkList={setMarkList}
+              myStudents={myStudents}
+              setmyStudents={setmyStudents}
                 name={row.student.name}
                 logo={row.image}
                 sum={row.sum}

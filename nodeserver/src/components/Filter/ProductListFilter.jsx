@@ -55,7 +55,7 @@ import { ProductPop2 } from "components/PopOvers/ProductPopOver";
                   textAlign={"right"}
                   my={"10px"}
                 >
-                  لیست دوره ها{" "}
+                  لیست محصولات{" "}
                 </Text>
                
               </Flex>

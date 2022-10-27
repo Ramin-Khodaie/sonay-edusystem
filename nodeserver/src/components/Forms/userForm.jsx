@@ -102,7 +102,7 @@ function UserForm(props) {
           break;
           }else{
             // edit mode
-
+            setIsLoading(false);
             setUserList(userList.map((item , key)=>{
               return item.username === res.data.username ? res.data : item
             }))

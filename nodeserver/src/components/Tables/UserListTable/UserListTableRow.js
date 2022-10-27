@@ -87,7 +87,7 @@ import {
         </Td>
         <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
   
-          <UserEditModal userList={userList}  etUserList={setUserList}  changeSent={changeSent} sent={sent} userId={userId} courses={courses} />
+          <UserEditModal userList={userList}  setUserList={setUserList}  changeSent={changeSent} sent={sent} userId={userId} courses={courses} />
           
         </Td>
       </Tr>

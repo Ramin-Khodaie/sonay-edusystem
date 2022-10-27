@@ -177,13 +177,13 @@ class SCourse:
         ]))
         return 200, "ok", "ok", data
 
-    def get_course_by_teacher(self, teacher_id):
+    def get_course_by_teacher(self, user):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.user_collection]
         cl = list(col.aggregate([
             {
                 '$match': {
-                    # 'username': teacher_id,
+                    'username': user['username'],
                     'roles.id': 'teacher'
                 }
             }, {

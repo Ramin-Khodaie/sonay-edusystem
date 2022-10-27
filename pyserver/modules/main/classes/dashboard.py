@@ -571,7 +571,7 @@ class SDashboard:
         data = list(col.aggregate([
             {
                 '$match': {
-                    'username': '123456'
+                    'username': user['username']
                 }
             }, {
                 '$unwind': '$courses'

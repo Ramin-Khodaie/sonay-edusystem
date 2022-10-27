@@ -494,6 +494,5 @@ class SAY():
         col: Collection = self.db.mongo_db["s_user"]
         res = list(col.find({"courses.id" : course_id , "roles.id" : role}))
         return 200, "ok", "", res
-
-
-
+        
+    

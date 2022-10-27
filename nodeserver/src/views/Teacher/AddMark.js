@@ -15,6 +15,7 @@ import {
   Center,
   Spacer,
   Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
@@ -37,8 +38,11 @@ import MarkListTable from "components/Tables/MarkListTable/MarkListTable";
 import { markBySearch } from "services/mark";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import { TeacherPop1 } from "components/PopOvers/TeacherPopOver";
+import { getStudentMarkByCourse } from "services/mark";
 function AddMark() {
-  const notify = useNotify();
+  const boxBg = useColorModeValue("gray.100", "navy.600");
+
+
   const { colorMode } = useColorMode();
 
   const [selectedItems, setSelectedItems] = useState({
@@ -88,13 +92,11 @@ function AddMark() {
   };
 
   const getStudentList = async () => {
-    const studentsList = await studentByCourse(
-      selectedItems.course.id,
-      "student"
+    const studentsList = await getStudentMarkByCourse(
+      selectedItems.course.id
     );
-    
-      setmyStudents(studentsList);
-    
+
+    setmyStudents(studentsList);
   };
 
   const getMarkList = async () => {
@@ -216,21 +218,31 @@ function AddMark() {
         //   </Box>
         // </Flex>
         <Card>
-          <Text  fontWeight={'bold'} fontSize={'20px'} textAlign={"center"}>دوره را انتخاب کنید</Text>
+          <Text fontWeight={"bold"} fontSize={"20px"} textAlign={"center"}>
+            دوره را انتخاب کنید
+          </Text>
         </Card>
       ) : myStudents.length == 0 ? (
         <Card>
-          <Text fontWeight={'bold'} fontSize={'20px'} textAlign={"center"}>
-            هیچ زبان آموزی برای این کلاس یافت نشد
-          </Text>
+          <Text fontWeight={"bold"} fontSize={"20px"} textAlign={"center"}>
+هیچ دانش آموزی جهت ورود نمره یافت نشد         </Text>
+
+<Text textColor={'green'} fontSize={"16px"} textAlign={"center"}>
+  نمرات این دوره با موفقیت ثبت شده است. جهت حذف یا ویرایش میتوانید از لیست نمرات واردشده در پایین صفحه استفاده کنید
+</Text>
         </Card>
       ) : (
         <Flex flexDirection="column" mb="30 px" h="100%" align={"center"}>
           <SliderWrapper>
             <StudentRecords
+              markList={markList}
+              setMarkList={setMarkList}
+              myStudents={myStudents}
+              setmyStudents={setmyStudents}
               data={myStudents}
               handleStudentSelect={handleStudentSelect}
               selectedItems={selectedItems}
+
             />
           </SliderWrapper>
         </Flex>
@@ -257,7 +269,27 @@ function AddMark() {
           </Flex>
         </CardHeader>
 
-        <MarkListTable data={markList} />
+        {markList.length !== 0 ? (
+          <MarkListTable
+            data={markList}
+            markList={markList}
+            setMarkList={setMarkList}
+            myStudents={myStudents}
+              setmyStudents={setmyStudents}
+          />
+        ) : (
+          <Box
+            mb={"30px"}
+            borderRadius={"3rem"}
+            alignSelf={"center"}
+            width={"500px"}
+            bg={boxBg}
+          >
+            <Text textAlign={"center"} my={"10px"}>
+              نمره ای یافت نشد
+            </Text>
+          </Box>
+        )}
 
         {/* {isPending ? (
             <UserListSkleton />

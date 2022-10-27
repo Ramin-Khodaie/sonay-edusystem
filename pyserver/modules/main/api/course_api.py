@@ -58,8 +58,8 @@ def get_mark_by_search(filter : dict):
 
 @router.get("/getcoursebyteacher")
 @sn(fast=True,roles=['admin','teacher' , 'student'])
-def get_course_by_teacher(teacher_id : str):
-    ret = course.get_course_by_teacher(teacher_id)
+def get_course_by_teacher(user : SUser):
+    ret = course.get_course_by_teacher(user)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 

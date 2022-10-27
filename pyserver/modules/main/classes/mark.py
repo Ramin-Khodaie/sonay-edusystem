@@ -47,12 +47,13 @@ class SMark:
             return res
         info['g_date'] = datetime.today()
         idd = str(ObjectId())
-        col.insert_one({**info, "_id": idd, 'y': int(cc.year),
+        itm_ready = {**info, "_id": idd, 'y': int(cc.year),
                         'm': int(cc.month),
-                        'd': int(cc.day)})
+                        'd': int(cc.day)}
+        col.insert_one(itm_ready)
         col2.update_one({'_id': info['student']['id']}, {
                         "$set": {'status': {'id': "mark", "name": "مشاهده نمره"}}})
-        return 200, "ok", "mark is inserted", None
+        return 200, "ok", "mark is inserted", itm_ready
 
     def get_mark(self, mark_id):
         db: Database = sn.databases[self.database].db
@@ -74,7 +75,7 @@ class SMark:
         idd = info["_id"]
         del info["_id"]
         col.update_one({"_id": idd}, {"$set": info})
-        return 200, "ok", "ok", []
+        return 200, "ok", "ok", info
 
     def get_mark_by_search(self, user, filter):
         db: Database = sn.databases[self.database].db
@@ -259,3 +260,38 @@ class SMark:
         res = list(
             col.find({'username': username, 'course.id': {"$ne": course_id}}))
         return 200, 'ok', 'ok', res
+    def get_student_mark_by_course(self,course_id ):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.user_collection]
+        res = list(col.aggregate([
+    {
+        '$match': {
+            'courses.id' : course_id ,
+            'roles.id': 'student'
+        }
+    }, {
+        '$lookup': {
+            'from': 'mark', 
+            'localField': 'username', 
+            'foreignField': 'username', 
+            'pipeline': [
+                {
+                    '$match': {
+                        'course.id': course_id
+                    }
+                }
+            ], 
+            'as': 'mark'
+        }
+    }, {
+        '$match': {
+            'mark': []
+        }
+    }
+]))
+        return 200, "ok", "", res
+
+
+
+
+

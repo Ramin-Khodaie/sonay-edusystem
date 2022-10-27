@@ -45,7 +45,7 @@ def get_mark(mark_id : str):
 
 
 @router.put("/getmarkbysearch")
-@sn(fast=True,roles=['admin','student' ])
+@sn(fast=True,roles=['admin','teacher' ])
 def get_mark_by_search(user : SUser ,filter : dict):
     ret = mark.get_mark_by_search(user ,filter['filter'])
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
@@ -86,6 +86,14 @@ def get_compare_chart_data(username : str , course_id : str):
 def get_mark_history(user : SUser):
     ret = mark.get_mark_history(user['username'] , user['courses'][0]['id'])
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+@router.get("/getstudentmarkbycourse")
+@sn(roles=[ 'teacher'])
+def get_student_mark_by_course(say: SAY, course_id):
+    ret = mark.get_student_mark_by_course(course_id)
+    return api_return(ret[0], ret[1], ret[2], data=ret[3])
 
 
 

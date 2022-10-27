@@ -58,7 +58,7 @@ const Product = () => {
     ) {
       callData();
     }
-  }, [filter]);
+  }, [filter.name , filter.isActive,filter.isMain,filter.courses.id]);
 
   const callData = async () => {
     await getProductList(filter).then((res) => {
@@ -118,6 +118,7 @@ const Product = () => {
             productList={productList}
             setProductList={setProductList}
             courses={courseList}
+            
           />
 
           {/* {isPending ? (

@@ -37,7 +37,15 @@ import { createMark } from "services/mark";
 import { useMark } from "hooks/marks/useMark";
 
 function MarkForm(props) {
-  const { selectedCourse, selectedStudent, markId = "-1" } = props;
+  const {
+    selectedCourse,
+    selectedStudent,
+    onClose,
+    markList,
+    setMarkList,
+    myStudents, setmyStudents,
+    markId = "-1",
+  } = props;
   const data = [
     { _id: "outstanding", name: "بسیار عالی" },
     { _id: "good", name: "عالی" },
@@ -67,6 +75,7 @@ function MarkForm(props) {
 
     teacher: { name: "مختار عمی", _id: "123456789" },
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (event) => {
     const field = event.target.id;
@@ -116,13 +125,38 @@ function MarkForm(props) {
 
     switch (res.result) {
       case "ok":
-        notify("نمره با موفقیت ثبت شد", true, "solid", "success");
-        break;
+        if (markId === "-1") {
+          // insert mode
+          setIsLoading(false);
+          setMarkList([...markList, res.data]);
+          setmyStudents(
+            myStudents.filter((item, key) => {
+              return item.username !== res.data.username 
+            })
+          );
+          notify("نمره با موفقیت ثبت شد", true, "solid", "success");
+          onClose();
+          break;
+        } else {
+          // edit mode
+          setIsLoading(false);
+          setMarkList(
+            markList.map((item, key) => {
+              return item._id === res.data._id ? res.data : item;
+            })
+          );
+
+
+          notify("نمره با موفقیت ویرایش شد", true, "solid", "success");
+          onClose();
+
+          break;
+        }
       case "empty_field":
         dispatch(createProductError("تمامی فیلدها تکمیل شوند."));
         break;
       case "not_unique":
-        dispatch(createProductError("کاربر از قبل ثبت شده است."));
+        dispatch(createProductError("نمره از قبل ثبت شده است."));
         break;
     }
   };
@@ -199,17 +233,15 @@ function MarkForm(props) {
               <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
             </Flex>
 
-            <NumberInput size={"md"} dir="ltr" value={formData.classActivity} >
+            <NumberInput size={"md"} dir="ltr" value={formData.classActivity}>
               <InputLeftElement
                 pointerEvents="none"
                 color="gray.300"
                 fontSize="1.2em"
               />
               <NumberInputField
-           
                 onChange={handleNumbersChange}
                 id="classActivity"
-         
                 textAlign={"center"}
               />
               <NumberInputStepper>
@@ -228,8 +260,7 @@ function MarkForm(props) {
               <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
             </Flex>
 
-            <NumberInput size={"md"} dir="ltr"                 value={formData.quiz}
->
+            <NumberInput size={"md"} dir="ltr" value={formData.quiz}>
               <InputLeftElement
                 pointerEvents="none"
                 color="gray.300"
@@ -256,8 +287,7 @@ function MarkForm(props) {
               <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
             </Flex>
 
-            <NumberInput size={"md"} dir="ltr"                 value={formData.extra}
->
+            <NumberInput size={"md"} dir="ltr" value={formData.extra}>
               <InputLeftElement
                 pointerEvents="none"
                 color="gray.300"
@@ -284,8 +314,7 @@ function MarkForm(props) {
               <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
             </Flex>
 
-            <NumberInput size={"md"} dir="ltr"                 value={formData.midterm}
->
+            <NumberInput size={"md"} dir="ltr" value={formData.midterm}>
               <InputLeftElement
                 pointerEvents="none"
                 color="gray.300"
@@ -312,7 +341,7 @@ function MarkForm(props) {
               <Text textAlign={"end"} color={"red"} fontSize={"14px"}></Text>
             </Flex>
 
-            <NumberInput size={"md"} dir="ltr"  value={formData.final}>
+            <NumberInput size={"md"} dir="ltr" value={formData.final}>
               <InputLeftElement
                 pointerEvents="none"
                 color="gray.300"

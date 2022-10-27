@@ -71,9 +71,17 @@ def get_user(say: SAY, user_id):
 
 @router.get("/getuserbycourse")
 @sn(roles=['admin' , 'teacher' , 'student'])
-def get_user(say: SAY, course_id, role):
+def get_user_by_course(say: SAY, course_id, role):
     ret = say.get_user_by_course(course_id, role)
     return api_return(ret[0], ret[1], ret[2], data=ret[3])
+
+
+@router.get("/getstudentmarkbycourse")
+@sn(roles=[ 'teacher'])
+def get_user_by_course(say: SAY, course_id):
+    ret = say.get_user_by_course(course_id)
+    return api_return(ret[0], ret[1], ret[2], data=ret[3])
+
 
 
 @router.get("/getteacherlist")
