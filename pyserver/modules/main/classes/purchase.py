@@ -1,6 +1,7 @@
 from datetime import datetime
 import json
 from xmlrpc.client import Boolean
+import pymongo
 from pymongo.database import Database, Collection
 from modules.main.sonay_app import sn
 from bson import ObjectId
@@ -161,7 +162,9 @@ class SPurchase:
 
 
                     }
-        ))
+        ).sort([
+        ('g_date', pymongo.DESCENDING)
+      ]))
         return 200, 'ok', 'ok', data
 
     def get_recent_order_filter(self, st, filter):
@@ -210,7 +213,9 @@ class SPurchase:
 
 
                     }
-        ))
+        ).sort([
+        ('g_date', pymongo.DESCENDING)
+      ]))
         return 200, 'ok', 'ok', data
 
     def get_recent_registration_filter(self, st, filter):
@@ -399,7 +404,9 @@ class SPurchase:
 
 
                     }
-        ))
+        ).sort([
+        ('g_date', pymongo.DESCENDING)
+      ]))
         return 200, 'ok', 'ok', data
     
     def get_my_recent_order_filter(self, user , st,filter):
@@ -453,7 +460,9 @@ class SPurchase:
 
 
                     }
-        ))
+        ).sort([
+        ('g_date', pymongo.DESCENDING)
+      ]))
         return 200, 'ok', 'ok', data
     
     
