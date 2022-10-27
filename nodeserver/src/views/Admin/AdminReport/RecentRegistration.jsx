@@ -128,7 +128,7 @@ const RecentRegistration = () => {
                   mb="20px"
                 >
                   <Box>
-                    <Text>نام کاربر:</Text>
+                    <Text>نام دوره:</Text>
                     <Input
                       id="name"
                       onChange={handleFilterChange}

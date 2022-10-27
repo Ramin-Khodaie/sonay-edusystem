@@ -123,7 +123,7 @@ const AdminRecentTables = (props) => {
             mb={"50px"}
             fontWeight={"bold"}
           >
-            احیرا هیچ پرداختی صورت نگرفته است
+            اخیرا هیچ پرداختی صورت نگرفته است
           </Text>)
           
           
@@ -202,7 +202,7 @@ const AdminRecentTables = (props) => {
               mb={"50px"}
               fontWeight={"bold"}
             >
-              احیرا نمره ای ثبت نشده است
+              اخیرا نمره ای ثبت نشده است
             </Text>
           )}
         </Box>

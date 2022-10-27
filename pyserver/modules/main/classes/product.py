@@ -34,6 +34,8 @@ class SProduct:
             res = self.edit_product(info, col)
             return res
 
+        info['price'] = int(info['price'])
+
         itm_ready = {**info, "_id": str(ObjectId())}
         col.insert_one(itm_ready)
         return 200, "ok", "product is inserted", itm_ready

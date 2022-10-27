@@ -6,6 +6,7 @@ import BarChart from "components/Charts/BarChart";
 import { useEffect } from "react";
 import { useState } from "react";
 import { getTeacherAvg } from "services/dashboard";
+import { barChartData } from "variables/charts";
 import {
 
   barChartOptions,
@@ -21,7 +22,8 @@ const DashboardBarChart = () => {
   
   const getTeacherAvgData = async () => {
     await getTeacherAvg().then((res) => {
-      setTeacherAvg([{ name: "", data: res.data.data.data }]);
+      
+      setTeacherAvg( [{data :res.data.data.data}] );
       setTeacherAvgOpt({
         ...barChartOptions,
         xaxis: {
@@ -40,6 +42,8 @@ const DashboardBarChart = () => {
       });
     });
   };
+  console.log(teacherAvg,4141)
+      console.log(teacherAvgOpt,4141)
   useEffect(() => {
 
     getTeacherAvgData();
@@ -56,9 +60,11 @@ const DashboardBarChart = () => {
         </Text>
       </Flex>
       <Box minH="300px">
-        {teacherAvg.length !== 0 && teacherAvgOpt && (
-          <BarChart chartData={teacherAvg} chartOptions={teacherAvgOpt} />
-        )}
+       {
+        teacherAvg.length !== 0 && teacherAvgOpt && <BarChart data={teacherAvg} options={teacherAvgOpt} type="bar" />
+       }
+          
+   
       </Box>
     </Card>
   );

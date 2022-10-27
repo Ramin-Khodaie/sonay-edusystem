@@ -93,7 +93,7 @@ export const barChartOptions = {
     theme: "dark",
   },
   xaxis: {
-    categories: [],
+    categories: ['sdfg'],
     labels: {
       style: {
         colors: "#A0AEC0",

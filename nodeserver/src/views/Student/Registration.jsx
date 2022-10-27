@@ -73,6 +73,7 @@ const Registration = () => {
       );
       if (cd.status === 200) {
         if (cd.data.data.length > 0) {
+          setState("allowed")
           setCourseDetailData(cd.data.data[0]);
         }
       } else if (
@@ -86,6 +87,7 @@ const Registration = () => {
       ) {
         setState("PassMarkLimit");
       } else {
+        
       }
     }
   };
@@ -161,18 +163,19 @@ const Registration = () => {
           </SliderWrapper>
         </Flex>
 
-        {state && state === "noMark" ? (
+        { state === "noMark" ? (
           <NoMarkAlert />
-        ) : state === "PassMarkLimit" ? (
+        ) :  state === "PassMarkLimit" ? (
           <MarkLimitAlert />
-        ) : (
+        ) :  state==='allowed'? (
           <RegistrationCard
             getSum={getSum}
             cartItems={cartItems}
             courseDetailData={courseDetailData}
             registerCourse={registerCourse}
           />
-        )}
+
+        ) : <></>}
       </Box>
     </AuthorizeProvider>
   );

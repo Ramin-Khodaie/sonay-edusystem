@@ -429,9 +429,9 @@ class SDashboard:
         raw = list(col.aggregate([
             {
                 '$group': {
-                    '_id': '$teacher._id',
+                    '_id': '$teacher.username',
                     'name': {
-                        '$first': '$teacher.name'
+                        '$first': '$teacher.full_name'
                     },
                     'avrg': {
                         '$avg': '$sum'

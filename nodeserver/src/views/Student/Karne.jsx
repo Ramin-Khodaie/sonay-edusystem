@@ -154,26 +154,46 @@ const Karne = () => {
             colSpan={{ sm: 1, md: 2, lg: 2 }}
           >
             <Center>
-              <Card>
-                <Center>
-                  <Text
-                    textAlign={"center"}
-                    fontSize={{ sm: "18px", md: "22px", lg: "25px" }}
-                    fontWeight={"bold"}
-                    dir='rtl'
-                  >
-                    کارنامه زبان آموز{" "}
-                    {selectedMark && selectedMark.student.name} برای دوره{" "}
-                    {selectedMark && selectedMark.course.name} در تاریخ{" "}
-                    {selectedMark && selectedMark.date}{" "}
-                  </Text>
-                </Center>
+             {
+              selectedMark ?  <Card>
+              <Center>
+                <Text
+                  textAlign={"center"}
+                  fontSize={{ sm: "18px", md: "22px", lg: "25px" }}
+                  fontWeight={"bold"}
+                  dir='rtl'
+                >
+                  کارنامه زبان آموز{" "}
+                  {selectedMark && selectedMark.student.name} برای دوره{" "}
+                  {selectedMark && selectedMark.course.name} در تاریخ{" "}
+                  {selectedMark && selectedMark.date}{" "}
+                </Text>
+              </Center>
 
-                {/* <Text fontSize={"18px"} textAlign={"center"}>
-              کارنامه {selectedMark && selectedMark.student.name} دوره{" "}
-              {selectedMark && selectedMark.course.name}
-            </Text> */}
-              </Card>
+              {/* <Text fontSize={"18px"} textAlign={"center"}>
+            کارنامه {selectedMark && selectedMark.student.name} دوره{" "}
+            {selectedMark && selectedMark.course.name}
+          </Text> */}
+            </Card> :
+
+
+<Card  mt={'70px'}>
+<Center>
+  <Text
+    textAlign={"center"}
+    fontSize={{ sm: "18px", md: "20px", lg: "20px" }}
+    fontWeight={"bold"}
+    dir='rtl'
+    
+  >
+    هنوز هیچ نمره ای برای دوره فعلی شما ثبت نشده است
+
+  </Text>
+</Center>
+
+
+</Card>
+             }
             </Center>
           </GridItem>
           <GridItem rowSpan={1} colSpan={1}>
@@ -190,7 +210,7 @@ const Karne = () => {
             )}
           </GridItem>
           <GridItem rowSpan={1}>
-            {seriesBarCart.length === 2 && (
+            { selectedMark && seriesBarCart.length === 2 && (
               <MultiBarchart
                 title={"نمودار مقایسه عملکرد نسبت به ترم های پیشین"}
                 toolTip={<ReportPop5 />}
@@ -227,7 +247,7 @@ const Karne = () => {
   mb={"30px"}
   borderRadius={"3rem"}
   alignSelf={"center"}
-  width={"500px"}
+  width={{sm : "300px",md:"500px",lg :"500px"}}
   bg={boxBg}
 >
   <Text textAlign={"center"} my={"10px"}>

@@ -42,6 +42,7 @@ class SCourse:
         cc = JalaliDate.today()
         info['date'] = f"{cc.year}/{cc.month}/{cc.day}"
         info['g_date'] = datetime.today()
+        info['price'] = int(info['price'])
 
         col.insert_one({**info, "_id": idd})
         if info['prev_course']['id'] != '' and info['prev_course']['name'] != '':
@@ -336,7 +337,7 @@ class SCourse:
         col2: Collection = db[self.course_collection]
         col3: Collection = db[self.registration_collection]
 
-        cur = list(col2.find({"_id": course_id}))
+        cur = list(col2.find({"_id": course_id},{'g_date' : 0}))
         if len(cur) != 1 or 'prev_course' not in cur[0]:
             return 422, "missing_prev_course", "prev course for user is not defined", []
         else:

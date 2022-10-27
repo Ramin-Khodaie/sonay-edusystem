@@ -5,6 +5,7 @@ import {
   Text,
   Accordion,
   AccordionItem,
+  Box,
 } from "@chakra-ui/react";
 
 // Custom components
@@ -24,6 +25,7 @@ import { getProductList } from "services/product";
 import { ProductPop1 } from "components/PopOvers/ProductPopOver";
 const Product = () => {
   const { courseList } = useSelector((state) => state.courseList);
+  const boxBg = useColorModeValue("gray.100", "navy.600");
 
   const textColor = useColorModeValue("gray.700", "white");
   const [filter, setFilter] = React.useState({
@@ -114,12 +116,25 @@ const Product = () => {
             </Flex>
           </CardHeader>
 
-          <ProductListTable
+          {
+            productList.length !== 0 ? <ProductListTable
             productList={productList}
             setProductList={setProductList}
             courses={courseList}
             
-          />
+          /> : 
+          <Box
+          mb={"30px"}
+          borderRadius={"3rem"}
+          alignSelf={"center"}
+          width={{sm : "300px",md:"500px",lg :"500px"}}
+          bg={boxBg}
+        >
+          <Text textAlign={"center"} my={"10px"}>
+            محصولی یافت نشد
+          </Text>
+        </Box>
+          }
 
           {/* {isPending ? (
             <UserListSkleton />

@@ -133,7 +133,7 @@ const Users = () => {
               mb={"30px"}
               borderRadius={"3rem"}
               alignSelf={"center"}
-              width={"500px"}
+              width={{sm : "300px",md:"500px",lg :"500px"}}
               bg={boxBg}
             >
               <Text textAlign={"center"} my={"10px"}>
