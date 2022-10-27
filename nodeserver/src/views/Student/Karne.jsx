@@ -81,6 +81,7 @@ const Karne = () => {
       doSearch();
     }
   }, [filter]);
+  console.log(filter,4545)
 
   const [slider, setSlider] = useState([0, 100]);
 
