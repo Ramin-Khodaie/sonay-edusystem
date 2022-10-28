@@ -89,7 +89,7 @@ import { CoursePop2 } from "components/PopOvers/CoursePopOver";
                   onChange={selectChange}
                   data={courseStatus}
                   state={filter}
-                  placeHolder={"وضعیت کاربر را انتخاب کنید"}
+                  placeHolder={"وضعیت دوره را انتخاب کنید"}
                   fieldId={"fStatus"}
                 />
               </SimpleGrid>

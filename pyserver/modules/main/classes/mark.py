@@ -1,5 +1,6 @@
 import imp
 from xmlrpc.client import Boolean
+import pymongo
 from pymongo.database import Database, Collection
 from modules.main.sonay_app import sn
 from bson import ObjectId
@@ -105,40 +106,57 @@ class SMark:
         col: Collection = db[self.mark_collection]
         
         and_li = []
+        is_filter = False
 
         if user['role']['id'] == 'student': 
             and_li.append({'username': user['username']})
             and_li.append({'course.id': {"$ne": user['courses'][0]['id']}})
+             
         if user['role']['id'] == 'teacher':
             and_li.append({'teacher.username': user['username']})
+            
         if 'name' in filter and filter['name'] != "":
             and_li.append({'student.name': {'$regex': filter['name']}})
+            is_filter=True 
         if 'courses' in filter and filter['courses']['id'] != "":
             and_li.append({'course.id': filter['courses']['id']})
+            is_filter=True 
         if 'course' in filter and filter['course'] != "":
             and_li.append({'course.name': {'$regex': filter['course']}})
+            is_filter=True 
         if 'isFailed' in filter and filter['isFailed']:
             and_li.append({'status': 'failed'})
+            is_filter=True 
 
         if 'startMark' in filter and filter['startMark'] != '':
             and_li.append({'sum': {"$gte": int(filter['startMark'])}})
+            is_filter=True 
         if 'endMark' in filter and filter['endMark'] != '':
             and_li.append({'sum': {"$lte": int(filter['endMark'])}})
+            is_filter=True 
 
         if 'startDate' in filter and filter['startDate'] != '':
             cc = filter['startDate'].split('/')
             sd = JalaliDate(int(cc[0]), int(cc[1]), int(cc[2])).to_gregorian()
             sg = datetime(sd.year, sd.month, sd.day)
             and_li.append({'g_date': {"$gte": sg}})
+            is_filter=True 
 
         if 'endDate' in filter and filter['endDate'] != '':
             cc = filter['endDate'].split('/')
             sd = JalaliDate(int(cc[0]), int(cc[1]), int(cc[2])).to_gregorian()
             sg = datetime(sd.year, sd.month, sd.day)
             and_li.append({'g_date': {"$lte": sg}})
+            is_filter=True
 
-        data = list(col.find({"$and": and_li}))
-        return 200, "ok", "ok", data
+        if is_filter:
+            d = col.find({"$and" : and_li}).sort([('g_date', pymongo.DESCENDING)])
+        else:
+            d = col.find({"$and" : and_li}).sort([('g_date', pymongo.DESCENDING)]).limit(20)
+ 
+
+        
+        return 200, "ok", "ok", list(d)
 
     def get_selected_mark(self, username, course_id):
         db: Database = sn.databases[self.database].db

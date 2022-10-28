@@ -155,7 +155,7 @@ await getCourseList().then((res)=>{
             bg={boxBg}
           >
             <Text textAlign={"center"} my={"10px"}>
-              نمره ای یافت نشد
+              دوره ای یافت نشد
             </Text>
           </Box>
             }

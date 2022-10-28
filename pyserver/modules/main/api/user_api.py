@@ -96,7 +96,7 @@ def get_teacher_list(say: SAY):
 
 @router.get("/userinfo")
 @sn(roles=[], fast=True)
-async def userinfo(user: SUser):
+async def userinfo(user: SUser , say:SAY):
     # UTC = datetime.datetime.now()
     # date = cal.get_date_props(UTC)
     # datestr = cal.to_jalali(UTC)
@@ -107,6 +107,9 @@ async def userinfo(user: SUser):
     # pweekday = weekdays_j[UTC.weekday()]
     # today = {'year': year, 'month': month, 'day': day, 'datastr': datestr, 'weekday': weekday, 'pweekday': pweekday,
     #          'utc': UTC}
+
+    
+
     if user is None:
         return {
             "username": "anonymous",

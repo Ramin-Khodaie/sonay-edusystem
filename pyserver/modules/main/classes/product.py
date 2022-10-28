@@ -1,4 +1,6 @@
 from xmlrpc.client import Boolean
+from click import pass_context
+import pymongo
 from pymongo.database import Database, Collection
 from modules.main.sonay_app import sn
 from bson import ObjectId
@@ -59,17 +61,32 @@ class SProduct:
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.product_collection]
         filters = {}
+        is_filter = False
         if 'name' in filter and filter['name'] != "":
             # this will be text search
             filters["name"] = {'$regex': filter['name']}
+            is_filter = True
         if 'course' in filter and filter['course'] != "":
+            is_filter = True
             filters["courses.id"] = filter['course']
         if 'is_active' in filter and filter['is_active']:
             filters["is_active"] = filter['is_active']
+            is_filter = True
         if 'is_main' in filter and filter['is_main']:
             filters["is_main"] = filter['is_main']
-        cl = list(col.find(filters))
-        return 200, "ok", "ok", cl
+            is_filter = True
+
+        #to limit output if filter is not selected , only 20 active product will return
+
+
+        if is_filter:
+            d = col.find(filters).sort([('name', pymongo.DESCENDING)])
+        else:
+            filters['is_active'] = True
+            d = col.find(filters).sort([('name', pymongo.DESCENDING)]).limit(20)   
+        
+        
+        return 200, "ok", "ok", list(d)
 
     def get_product_by_course(self, course_id):
         db: Database = sn.databases[self.database].db

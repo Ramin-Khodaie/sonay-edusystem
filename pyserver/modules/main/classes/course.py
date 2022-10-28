@@ -1,3 +1,4 @@
+import pymongo
 from pymongo.database import Database, Collection
 from modules.main.sonay_app import sn
 from bson import ObjectId
@@ -96,12 +97,8 @@ class SCourse:
     def get_course_list(self, full_name, status):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
-        # filters = {}
-        # if full_name != "" :
-        #     filters["full_name"] =  {'$regex': full_name} #this will be text search
-        # if status != "":
-        #     filters["status"] = status
         cl = list(col.aggregate([
+            {"$match" :{"status.id":"active"}},
             {
                 '$lookup': {
                     'from': 's_user',
@@ -126,14 +123,12 @@ class SCourse:
             }
         ]))
         return 200, "ok", "ok", cl
+    
+    
     def get_course_by_search(self, filter):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
-        
-  
         and_li = [{}]
-
-
         if 'name' in filter and filter['name'] != "":
             and_li.append({'name': {'$regex': filter['name']}})
         if 'teacher' in filter and filter['teacher'] != "":

@@ -3,6 +3,7 @@ from importlib.metadata import requires
 import os
 import sys
 from bson import ObjectId
+import pymongo
 from pymongo.database import Database, Collection
 from typing import List
 import jwt
@@ -390,6 +391,19 @@ class SAY():
     def insert_new_user(self, user: dict):
         col: Collection = self.db.mongo_db["s_user"]
         res = self.validate_save_user(user, col )
+
+
+        # bare_users = list(col.find({'cids' : {"$exists" : 1}}))
+        
+        # for user in bare_users:
+        #     itm_ready = []
+        #     ids = user['cids']['id']
+        #     for c in ids:
+        #         course = list(col2.find({"_id" : c}))[0]
+        #         itm_ready.append({'id' : course['_id'] , 'name' : course['name']})
+        #     col.update_one({'username' : user['username']} , {"$set" : {"courses" : itm_ready}})
+
+
         if res[0] != 200:
             return res
         if user["_id"] != "":
@@ -476,15 +490,28 @@ class SAY():
     def get_user_list(self ,filter):
         
         and_li = [{}]
+        is_filter = False
         if "full_name" in filter and filter['full_name'] != "" : 
-            and_li.append({'full_name': {'$regex': filter['full_name']}})  
+            and_li.append({'full_name': {'$regex': filter['full_name']}}) 
+            is_filter=True 
         if "course" in filter and filter['course']['id'] != "":
             and_li.append({"courses.id" : filter['course']['id']})
+            is_filter=True
         if "status" in filter and filter['status']['id'] != "":
             and_li.append({"role.id" : filter["status"]['id']})
+            is_filter=True
+        else:
+            and_li.append({"role.id" : 'student'})
         col : Collection = self.db.mongo_db["s_user"]
-        data = list(col.find({"$and" : and_li},{"_id" : 1,"image" : 1,"full_name" : 1 ,"role":1,"email" : 1,"courses" : 1,"enable" : 1,"phone" : 1 , "status" : 1 , 'username' : 1}))
-        return 200, "ok", "user is registered", data
+        
+        #to limit output if filter is not selected , only 20 student will return
+        if is_filter:
+            d = col.find({"$and" : and_li}).sort([('created', pymongo.DESCENDING)])
+        else:
+            d = col.find({"$and" : and_li}).sort([('created', pymongo.DESCENDING)]).limit(20)
+
+        
+        return 200, "ok", "user is registered", list(d)
     def get_user(self,user_id):
         col: Collection = self.db.mongo_db["s_user"]
         try:
