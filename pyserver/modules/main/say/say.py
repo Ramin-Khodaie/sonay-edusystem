@@ -418,8 +418,14 @@ class SAY():
         if "password" in user and user["password"] != "":
             hash_pass = self.encode_pass(user["password"])
             user = {**user,"password" : hash_pass}
+        else:
+            
+            del user["password"]
         idd=user["_id"]
-        del user["_id"]
+        del user["confirm_password"]
+        del user["_id"]    
+        
+        
         col.update_one({"_id" : idd}, {"$set" : user})
         return 200, "ok", "user updated", {**user , '_id' : idd}
 

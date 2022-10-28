@@ -54,21 +54,18 @@ export default function Configurator(props) {
         <DrawerContent bg={bgDrawer}>
           <DrawerHeader pt="24px" px="24px">
             <DrawerCloseButton />
-            <Text fontSize="xl" fontWeight="bold" mt="16px">
-              Argon Chakra Configurator
+            <Text fontSize="xl" fontWeight="bold" textAlign={'right'} mb={'15px'} mt="16px">
+              تنظیمات وبسایت
             </Text>
-            <Text fontSize="md" mb="16px">
-              See your dashboard options.
-            </Text>
+            {/* <Text fontSize="md" mb="16px" textAlign={'right'}>
+              تنظیمات ظاهری وبسایت را در این قسمت می توانید ویرایش کنید
+            </Text> */}
             <HSeparator />
           </DrawerHeader>
           <DrawerBody w="340px" ps="24px" pe="40px">
             <Flex flexDirection="column">
               <Flex justifyContent="space-between " mb="16px">
-                <Text fontSize="md" fontWeight="600" mb="4px">
-                  Navbar Fixed
-                </Text>
-                <Switch
+              <Switch
                   colorScheme="blue"
                   isChecked={switched}
                   onChange={() => {
@@ -81,25 +78,30 @@ export default function Configurator(props) {
                     }
                   }}
                 />
+                <Text fontSize="md" fontWeight="600" mb="4px">
+                  عدم پنهان هدر
+                </Text>
+                
               </Flex>
               <Flex
                 justifyContent="space-between"
                 alignItems="center"
                 mb="24px"
               >
-                <Text fontSize="md" fontWeight="600" mb="4px">
-                  Dark/Light
-                </Text>
+                
                 <Button
                   onClick={toggleColorMode}
                   color={colorMode === "light" ? "Dark" : "Light"}
                 >
-                  Toggle {colorMode === "light" ? "Dark" : "Light"}
+                  تغییر به {colorMode === "light" ? "دارک" : "لایت"}
                 </Button>
+                <Text fontSize="md" fontWeight="600" mb="4px">
+                تم دارک/لایت
+                </Text>
               </Flex>
 
               <HSeparator />
-              <Box mt="24px">
+              {/* <Box mt="24px">
                 <Box>
                   <Link
                     href="https://www.creative-tim.com/product/argon-dashboard-chakra?ref=creativetim-pud"
@@ -179,7 +181,7 @@ export default function Configurator(props) {
                     </Link>
                   </Flex>
                 </Box>
-              </Box>
+              </Box> */}
             </Flex>
           </DrawerBody>
         </DrawerContent>
