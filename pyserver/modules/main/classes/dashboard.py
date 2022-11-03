@@ -425,7 +425,23 @@ class SDashboard:
     def get_teacher_avg(self):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
+        # col1: Collection = db['purchase']
+        # prs = list(col1.find({}))
+       
 
+        # for pr in prs:
+        #     cc = JalaliDate(pr['g_date'])
+        #     date = f"{cc.year}/{cc.month}/{cc.day}"
+        #     col1.update_one({"_id" : pr['_id']} , {"$set" : {
+
+
+
+        #         'y' : int(cc.year),
+        #         'm' : int(cc.month),
+        #         'd' : int(cc.day),
+        #         'date': date
+        #     }})
+        
         raw = list(col.aggregate([
             {
                 '$group': {

@@ -27,7 +27,7 @@ import {
   import UserListTableRow from "components/Tables/UserListTable/UserListTableRow";
 import CourseListTableRow from "./CourseListTableRow";
   function CourseListTable(props) {
-    const { data, courses ,statusData,callData } = props;
+    const { data, courses ,statusData,callData , handleDelete } = props;
     const textColor = useColorModeValue("gray.700", "white");
     const borderColor = useColorModeValue("gray.200", "gray.600");
 
@@ -83,6 +83,7 @@ import CourseListTableRow from "./CourseListTableRow";
                 courses={courses}
                 statusData={statusData}
                 callData={callData}
+               handleDelete={handleDelete}
               />
             );
           })}

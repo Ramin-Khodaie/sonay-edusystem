@@ -85,6 +85,12 @@ class SCourse:
 
         return 200, "ok", "ok", []
 
+
+    def delete_course(self,_id):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.course_collection]
+        col.delete_one({'_id' : _id})
+        return 200, "ok", "ok", _id
     def get_course(self, course_id):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
@@ -94,11 +100,21 @@ class SCourse:
         else:
             return 200, "ok", "ok", course
 
-    def get_course_list(self, full_name, status):
+    
+    def get_course_list(self):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.course_collection]
+        cl = list(col.find({"status.id" : "active"}))
+       
+        return 200, "ok", "ok", list(cl) 
+    
+
+    def get_course_list_limited(self, full_name, status):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
         cl = list(col.aggregate([
-            {"$match" :{"status.id":"active"}},
+           
+            {"$sort" : {"g_date" : -1}},{"$limit" : 20},
             {
                 '$lookup': {
                     'from': 's_user',
@@ -117,12 +133,17 @@ class SCourse:
                                 'full_name': 1,
                                 'username': 1
                             }
+                        },
+                        {
+                            "$sort" : {"g_date" : -1}
                         }
                     ]
                 }
             }
+          
         ]))
-        return 200, "ok", "ok", cl
+        res = list(cl)
+        return 200, "ok", "ok", res 
     
     
     def get_course_by_search(self, filter):

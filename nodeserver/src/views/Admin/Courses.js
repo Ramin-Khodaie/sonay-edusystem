@@ -13,8 +13,9 @@ import { courseListAction } from "redux/course/courseList/courseListAction";
 import CourseListTable from "components/Tables/CourseListTable/CourseListTable";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import { CoursePop1 } from "components/PopOvers/CoursePopOver";
-import { getCourseList } from "services/course";
 import { getCourseBySearch } from "services/course";
+import { deleteCourse } from "services/course";
+import { getCourseListLimited } from "services/course";
 
 function Courses() {
   const textColor = useColorModeValue("gray.700", "white");
@@ -36,7 +37,7 @@ function Courses() {
   const [state, setState] = useState([]);
 
 const callData = async()=>{
-await getCourseList().then((res)=>{
+await getCourseListLimited().then((res)=>{
 
     setState(res.data.data);
 
@@ -58,6 +59,13 @@ await getCourseList().then((res)=>{
       name: "",
     },
   });
+
+  const handleDelete = (_id)=>{
+
+    deleteCourse(_id).then((res)=>{
+      console.log(res,2121)
+    })
+  }
 
 
 
@@ -142,6 +150,7 @@ await getCourseList().then((res)=>{
 
             {
               state.length !== 0 ? <CourseListTable
+              handleDelete={handleDelete}
               statusData={statusData}
               data={state}
               courses={courseList}

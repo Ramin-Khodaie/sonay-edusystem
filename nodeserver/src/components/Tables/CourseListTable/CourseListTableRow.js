@@ -3,6 +3,8 @@ import {
     Badge,
     Button,
     Flex,
+    Icon,
+    IconButton,
     Td,
     Text,
     Tr,
@@ -10,9 +12,13 @@ import {
   } from "@chakra-ui/react";
   import React from "react";
 import CourseEditModal from "components/Modal/courseEdit";
+import { CloseIcon } from "@chakra-ui/icons";
+import DeleteConfirmModal from "components/Modal/deleteConfirmModal";
   
   function CourseListTableRow(props) {
-    const { name , logo , prevCourse , status , teacher , teacherImage , callData,teacherUserName, price , isLast , key ,courseId , courses , statusData} = props;
+    const { name , logo , prevCourse , status , teacher , teacherImage ,
+       callData,teacherUserName, price , isLast , key ,courseId , courses ,
+        statusData , handleDelete} = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -87,6 +93,11 @@ import CourseEditModal from "components/Modal/courseEdit";
           courseId={courseId} courses={courses} statusData={statusData} callData={callData} />
           
         </Td>
+
+        <Td  mx={0} borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+  
+        <DeleteConfirmModal handleDelete={handleDelete} _id={courseId} />       </Td>
+
       </Tr>
     );
   }

@@ -78,10 +78,13 @@ function CourseForm(props) {
     };
     // await dispatch(createCourseAction(newCourse));
     await createCourse(newCourse).then((res)=>{
-      if(res==='not_unique'){
+      console.log(res,2121)
+      if(res.result==='not_unique'){
         notify("نام وارد شده تکراری می باشد", true, "solid", "error");
-      }else if(res==='empty_field'){
+      }else if(res.result==='empty_field'){
         notify("لطفا تمامی فیلد هارا تکمیل کنید", true, "solid", "error");
+      }else if(res.result==='ok'){
+        notify("دوره با موفقیت افزوده شد", true, "solid", "success");
       }
     })
     await dispatch(courseListAction());

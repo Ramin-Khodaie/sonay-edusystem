@@ -34,10 +34,28 @@ def get_course(_id : str):
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 
+
+
+@router.delete("/deletecourse")
+@sn(fast=True,roles=['admin'])
+def delete_course(_id : str):
+    ret = course.delete_course(_id)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
 @router.get("/getcourselist")
 @sn(fast=True,roles=['admin','teacher' , 'student'])
 def get_course_list(full_name = "" , status = ""):
-    ret = course.get_course_list(full_name , status)
+    ret = course.get_course_list()
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
+@router.get("/getcourselistlimited")
+@sn(fast=True,roles=['admin','teacher' , 'student'])
+def get_course_list_limited(full_name = "" , status = ""):
+    ret = course.get_course_list_limited(full_name , status)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
 

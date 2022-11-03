@@ -17,7 +17,7 @@ export const createCourse = (course) => {
         resolve(res.data);
       }
     } catch (error) {
-      if (error.response.status === 422) resolve(error.response.data.detail.result);
+      if (error.response.status === 422) resolve(error.response.data.detail);
       if (error.response.status === 500) resolve(error.response.data.detail);
     }
   });
@@ -41,6 +41,41 @@ export const getCourse = (_id) => {
     }
   });
 };
+
+
+
+export const deleteCourse = (_id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.delete("/courses/deletecourse" , {
+        params:{
+          '_id' : _id
+        }
+      });
+
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+      resolve(error.response.status);
+    }
+  });
+};
+
+export const getCourseListLimited = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/courses/getcourselistlimited");
+
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+      resolve(error.response.status);
+    }
+  });
+};
+
 
 
 export const getCourseList = () => {
