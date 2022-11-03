@@ -12,9 +12,10 @@ import {
   } from "@chakra-ui/react";
   import React from "react";
   import UserEditModal from "components/Modal/userEdit";
+import DeleteConfirmModal from "components/Modal/deleteConfirmModal";
   
   function UserListTableRow(props) {
-    const {userList,setUserList, logo, name, email, domain, role, date, isLast ,changeSent , sent , userId ,courses} = props;
+    const {userList,setUserList, handleDelete , logo, name, email, domain, role, date, isLast ,changeSent , sent , userId,username ,courses} = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -84,6 +85,9 @@ import {
           <UserEditModal userList={userList}  setUserList={setUserList}  changeSent={changeSent} sent={sent} userId={userId} courses={courses} />
           
         </Td>
+        <Td  mx={0} borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+  
+  <DeleteConfirmModal handleDelete={handleDelete} _id={username} />       </Td>
       </Tr>
     );
   }

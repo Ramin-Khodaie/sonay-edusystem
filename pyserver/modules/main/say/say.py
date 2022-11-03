@@ -427,6 +427,12 @@ class SAY():
         col.insert_one(nu)
         return 200, "ok", "user inserted", nu
 
+
+    def delete_user(self,username):
+        col: Collection = self.db.mongo_db["s_user"]
+        col.delete_one({"username":username})
+
+        return 200,"ok","ok",username
     def edit_user(self,user,col):
         
         if "password" in user and user["password"] != "":
@@ -443,7 +449,7 @@ class SAY():
         col.update_one({"_id" : idd}, {"$set" : user})
         return 200, "ok", "user updated", {**user , '_id' : idd}
 
-    def delete_user(self, userid: str):
+    
 
         if self.get_user(userid=userid) is None:
             return 404, "not_found", "user not found", None

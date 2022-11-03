@@ -44,6 +44,15 @@ def insert_new_user(say: SAY, user: dict):
     return api_return(ret[0], ret[1], ret[2], data=ret[3])
 
 
+
+
+@router.delete("/deleteuser")
+@sn(roles=['admin'])
+def delete_user(say: SAY, username: str):
+    ret = say.delete_user(username)
+    return api_return(ret[0], ret[1], ret[2], data=ret[3])
+
+
 @router.get("/checkregisterform")
 @sn()
 def check_register_form(say: SAY, user_name: str = "", email: str = "", phone: str = None):

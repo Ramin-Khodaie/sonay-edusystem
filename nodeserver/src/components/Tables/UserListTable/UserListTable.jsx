@@ -20,7 +20,7 @@ import CardBody from "components/Card/CardBody.js";
 import React from "react";
 import UserListTableRow from "components/Tables/UserListTable/UserListTableRow";
 function UserListTable(props) {
-  const { data, courses , userList , setUserList } = props;
+  const { data, courses , userList , setUserList , handleDelete } = props;
 
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -43,6 +43,7 @@ function UserListTable(props) {
               شماره تماس
             </Th>
             <Th borderColor={borderColor}></Th>
+            <Th borderColor={borderColor}></Th>
           </Tr>
         </Thead>
 
@@ -56,6 +57,7 @@ function UserListTable(props) {
                 name={row.full_name}
                 logo={row.image}
                 email={row.email}
+                username={row.username}
               
                 domain={row.courses}
                 role={row.role} //{row.enable}
@@ -66,6 +68,7 @@ function UserListTable(props) {
                 courses={courses}
                 userList={userList}
                  setUserList={setUserList}
+                 handleDelete={handleDelete}
               />
             ))}
         </Tbody>

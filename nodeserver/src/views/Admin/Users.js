@@ -37,6 +37,7 @@ import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import { getUserList } from "services/user";
 import { PhoneIcon, QuestionIcon, QuestionOutlineIcon } from "@chakra-ui/icons";
 import { UserPop1 } from "components/PopOvers/UserPopOver";
+import { deleteUser } from "services/user";
 const Users = () => {
   const textColor = useColorModeValue("gray.700", "white");
 
@@ -77,7 +78,14 @@ const Users = () => {
     setFilter(f);
   };
 
+const handleDelete = (username)=>{
+  deleteUser(username).then((res)=>{
+    if(res.status===200){
+      setUserList(userList.filter((user)=>user.username !== username))
+    }
+  })
 
+}
  
   return (
     <AuthorizeProvider roles={["admin"]}>
@@ -146,6 +154,7 @@ const Users = () => {
               setUserList={setUserList}
               data={userList}
               courses={courseList}
+              handleDelete={handleDelete}
             />
           )}
         </Card>

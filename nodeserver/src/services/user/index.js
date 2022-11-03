@@ -59,6 +59,23 @@ export const createUser = (user) => {
 
 
 
+export const deleteUser= (username) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.delete("/users/deleteuser" , {
+        params:{
+          'username' : username
+        }
+      });
+
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+      resolve(error.response.status);
+    }
+  });
+};
 
 
 
