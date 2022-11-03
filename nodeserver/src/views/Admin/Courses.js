@@ -63,7 +63,7 @@ await getCourseListLimited().then((res)=>{
   const handleDelete = (_id)=>{
 
     deleteCourse(_id).then((res)=>{
-      console.log(res,2121)
+      setState(state.filter((course)=>course._id !== res.data.data))
     })
   }
 
