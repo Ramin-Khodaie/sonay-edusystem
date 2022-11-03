@@ -23,6 +23,16 @@ def create_product(info : dict):
     ret = product.insert_product(info)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
+
+
+@router.delete("/deleteproduct")
+@sn(fast=True,roles=['admin'])
+def delete_product(_id : str):
+    ret = product.delete_product(_id)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+
 @router.put("/getproductlist")
 @sn(fast=True,roles=['admin'])
 def get_product_list(filter:dict):

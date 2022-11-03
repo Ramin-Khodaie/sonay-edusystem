@@ -23,6 +23,7 @@ import { productListAction } from "redux/product/productList/ProductListAction";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import { getProductList } from "services/product";
 import { ProductPop1 } from "components/PopOvers/ProductPopOver";
+import { deleteProduct } from "services/product";
 const Product = () => {
   const { courseList } = useSelector((state) => state.courseList);
   const boxBg = useColorModeValue("gray.100", "navy.600");
@@ -72,6 +73,15 @@ const Product = () => {
     callData();
   }, []);
 
+
+
+  const handleDelete = (_id)=>{
+    deleteProduct(_id).then((res)=>{
+      if(res.status === 200){
+        setProductList(productList.filter((product)=> product._id !== _id))
+      }
+    })
+  }
   return (
     <AuthorizeProvider roles={["admin"]}>
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -117,10 +127,12 @@ const Product = () => {
           </CardHeader>
 
           {
-            productList.length !== 0 ? <ProductListTable
+            productList.length !== 0 ?
+             <ProductListTable
             productList={productList}
             setProductList={setProductList}
             courses={courseList}
+            handleDelete={handleDelete}
             
           /> : 
           <Box

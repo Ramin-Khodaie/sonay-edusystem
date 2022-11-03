@@ -26,6 +26,26 @@ export const createProduct = (product) => {
 
 
 
+export const deleteProduct = (_id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.delete("/products/deleteproduct" , {
+        params:{
+          '_id' : _id
+        }
+      });
+
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+      resolve(error.response.status);
+    }
+  });
+};
+
+
+
 
 
 

@@ -26,7 +26,7 @@ import {
   import React, { useEffect, useState } from "react";
   import ProductListTableRow from "components/Tables/ProductListTable/ProductListTableRow";
   function ProductListTable(props) {
-    const {  courses , productList, setProductList } = props;
+    const {  courses , productList, setProductList , handleDelete } = props;
   
     const textColor = useColorModeValue("gray.700", "white");
     const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -74,6 +74,7 @@ import {
                   courses={courses}
                   productList={productList}
                    setProductList={setProductList}
+                   handleDelete={handleDelete}
                 />
               ))}
           </Tbody>

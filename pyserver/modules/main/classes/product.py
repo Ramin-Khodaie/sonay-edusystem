@@ -2,6 +2,7 @@ from xmlrpc.client import Boolean
 from click import pass_context
 import pymongo
 from pymongo.database import Database, Collection
+from requests import delete
 from modules.main.sonay_app import sn
 from bson import ObjectId
 
@@ -42,6 +43,11 @@ class SProduct:
         col.insert_one(itm_ready)
         return 200, "ok", "product is inserted", itm_ready
 
+    def delete_product(self,_id):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.product_collection]
+        col.delete_one({"_id" : _id})
+        return 200 , "ok","ok", _id
     def edit_product(self, info, col: Collection):
         idd = info["_id"]
         del info["_id"]
