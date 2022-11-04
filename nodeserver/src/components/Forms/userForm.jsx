@@ -96,7 +96,7 @@ function UserForm(props) {
           if(userId === '-1'){
             // insert mode
           setIsLoading(false);
-          setUserList([...userList, res.data]);
+          setUserList([ res.data,...userList]);
           notify("کابر با موفقیت ثبت شد", true, "solid", "success");
 
           break;

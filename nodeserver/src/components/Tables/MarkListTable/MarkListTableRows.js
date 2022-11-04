@@ -11,6 +11,7 @@ import {
 import React from "react";
 
 import MarkEditModal from "components/Modal/MarkEdit";
+import DeleteConfirmModal from "components/Modal/deleteConfirmModal";
 
 function MarkListTableRow(props) {
   const {
@@ -27,13 +28,13 @@ function MarkListTableRow(props) {
     selectedStudent,
     markList,
     setMarkList,
-    myStudents,setmyStudents
+    myStudents,setmyStudents,
+    handleDelete
   } = props;
   const textColor = useColorModeValue("gray.500", "white");
   const titleColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "navy.900");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-
   return (
     <Tr>
       <Td
@@ -97,8 +98,16 @@ function MarkListTableRow(props) {
           markId={markId}
           myStudents={myStudents}
               setmyStudents={setmyStudents}
+              handleDelete={handleDelete}
         />
       </Td>
+
+
+
+      <Td  mx={0} borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+  
+  <DeleteConfirmModal handleDelete={handleDelete} _id={markId} />       </Td>
+      
     </Tr>
   );
 }

@@ -27,7 +27,7 @@ import React, { useEffect, useState } from "react";
 import ProductListTableRow from "components/Tables/ProductListTable/ProductListTableRow";
 import MarkListTableRow from "./MarkListTableRows";
 function MarkListTable(props) {
-  const { data , markList , setMarkList , myStudents , setmyStudents  } = props;
+  const { data , markList , setMarkList , myStudents , setmyStudents ,handleDelete  } = props;
 
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
@@ -80,6 +80,7 @@ function MarkListTable(props) {
                 markId={row._id}
                 selectedCourse={{"id" : row.course._id , "name" : row.course.name}}
                 selectedStudent={{"id" : row.student._id , "name" : row.student.name}}
+                handleDelete={handleDelete}
               />
             ))}
         </Tbody>

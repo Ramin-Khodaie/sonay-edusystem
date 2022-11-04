@@ -30,7 +30,7 @@ import {
 import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
-import avatar6 from "assets/img/avatars/avatar6.png";
+import avatar6 from "assets/img/registrationCard.png";
 import { FaRegCheckCircle } from "react-icons/fa";
 
 import React, { useEffect } from "react";

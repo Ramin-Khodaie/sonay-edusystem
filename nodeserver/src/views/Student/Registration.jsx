@@ -30,6 +30,7 @@ import useNotify from "helpers/notify/useNotify";
 import { getRedirectUrl } from "services/purchase";
 import { Redirect, useHistory } from "react-router-dom";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
+import NoNextCourseAlert from "components/Alert/NoNextCourseAlert";
 const Registration = () => {
   const dispatch = useDispatch();
 
@@ -52,6 +53,7 @@ const Registration = () => {
   });
 
   const [state, setState] = useState(undefined);
+  const [error, setError] = useState(undefined);
 
   const getCourseHistoryData = async () => {
     const ch = await courseHistory(userInfo.courses[0].id);
@@ -59,7 +61,9 @@ const Registration = () => {
       if (ch.data.data.length > 0) {
         setMyCourseHistory(ch.data.data);
       }
-    }
+    }else if(ch.status === 422){
+      if(ch.data.detail.result === 'missing_next_course')
+setError('missing_next_course')    }
   };
 
   const notify = useNotify();
@@ -153,30 +157,38 @@ const Registration = () => {
 
   return (
     <AuthorizeProvider roles={["student"]}>
+     {!error ?
       <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">
-        <Flex flexDirection="column" mb="30px" h="100%" align={"center"}>
-          <SliderWrapper>
-            <CourseRegisterRecords
-              handleSelectCourseHistory={handleSelectCourseHistory}
-              data={myCourseHistory}
-            />
-          </SliderWrapper>
-        </Flex>
-
-        { state === "noMark" ? (
-          <NoMarkAlert />
-        ) :  state === "PassMarkLimit" ? (
-          <MarkLimitAlert />
-        ) :  state==='allowed'? (
-          <RegistrationCard
-            getSum={getSum}
-            cartItems={cartItems}
-            courseDetailData={courseDetailData}
-            registerCourse={registerCourse}
+      <Flex flexDirection="column" mb="30px" h="100%" align={"center"}>
+        <SliderWrapper>
+          <CourseRegisterRecords
+            handleSelectCourseHistory={handleSelectCourseHistory}
+            data={myCourseHistory}
           />
+        </SliderWrapper>
+      </Flex>
 
-        ) : <></>}
-      </Box>
+      { state === "noMark" ? (
+        <NoMarkAlert />
+      ) :  state === "PassMarkLimit" ? (
+        <MarkLimitAlert />
+      ) :  state==='allowed'? (
+        <RegistrationCard
+          getSum={getSum}
+          cartItems={cartItems}
+          courseDetailData={courseDetailData}
+          registerCourse={registerCourse}
+        />
+
+      ) : <></>}
+    </Box>:
+    
+    
+    <NoNextCourseAlert />
+    
+    
+    
+    }
     </AuthorizeProvider>
   );
 };

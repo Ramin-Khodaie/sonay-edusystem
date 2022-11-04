@@ -73,7 +73,7 @@ import {
                   status={row.status}
                   sum={row.sum}
                   date={row.date}
-                  teacher = {row.teacher.name}
+                  teacher = {row.teacher.full_name}
                   isLast={index === arr.length - 1 ? true : false}
                   key={row._id}
                   handleMarkChange={handleMarkChange}

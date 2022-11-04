@@ -90,7 +90,7 @@ import { createProduct } from "services/product";
               // insert mode
               setIsLoading(false);
   
-            setProductList([...productList, res.data]);
+            setProductList([ res.data,...productList]);
             notify("محصول با موفقیت ثبت شد", true, "solid", "success");
   
             break;

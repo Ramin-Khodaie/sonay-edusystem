@@ -316,7 +316,8 @@ class SDashboard:
     def calculate_percantage(self, first_value, sec_value):
         if first_value == 0:
             return 100
-        return ((sec_value - first_value) / first_value)*100
+        res = ((sec_value - first_value) / first_value)*100
+        return '%.2f'%res
 
     def prepare_count_data(self, students, teachers, purchases, courses, template):
         template['students']['count'] = 0 if len(
@@ -442,7 +443,9 @@ class SDashboard:
         #         'date': date
         #     }})
         
-        raw = list(col.aggregate([
+        raw = list(col.aggregate([{
+            '$match' :{"teacher.full_name" : {"$ne" : ""}}
+        },
             {
                 '$group': {
                     '_id': '$teacher.username',

@@ -76,6 +76,13 @@ class SMark:
                         "$set": {'status': {'id': "mark", "name": "مشاهده نمره"}}})
         return 200, "ok", "mark is inserted", itm_ready
 
+    
+    
+    def delete_mark(self,_id):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.mark_collection]
+        col.delete_one({"_id":_id })
+        return 200, "ok", "mark is deleted", _id
     def get_mark(self, mark_id):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]

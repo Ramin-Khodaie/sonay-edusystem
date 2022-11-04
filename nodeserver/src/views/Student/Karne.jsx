@@ -220,7 +220,9 @@ const Karne = () => {
           </GridItem>
           <GridItem pb={"30px"}>
             {selectedMark && (
-              <TeacherMessage description={selectedMark.message} />
+              <TeacherMessage description={selectedMark.message}
+              
+              teacherName={selectedMark.teacher.full_name}/>
             )}
           </GridItem>
         </Grid>

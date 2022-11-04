@@ -142,7 +142,7 @@ export const courseHistory = (courseId = "0") => {
         resolve(res);
       }
     } catch (error) {
-      resolve(error.response.status);
+      resolve(error.response);
     }
   });
 };

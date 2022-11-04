@@ -39,8 +39,10 @@ import { markBySearch } from "services/mark";
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import { TeacherPop1 } from "components/PopOvers/TeacherPopOver";
 import { getStudentMarkByCourse } from "services/mark";
+import { deleteMerk } from "services/mark";
 function AddMark() {
   const boxBg = useColorModeValue("gray.100", "navy.600");
+  const textGreen = useColorModeValue("green.600", "green.100");
 
 
   const { colorMode } = useColorMode();
@@ -155,6 +157,16 @@ function AddMark() {
       setFilter({ ...filter, endDate: "" });
     }
   };
+
+  const handleDelete = (_id)=>{
+
+
+    deleteMerk(_id).then((res)=>{
+      if(res.status===200){
+        setMarkList(markList.filter((mark)=>mark._id !== _id))
+      }
+    })
+  }
   return (
     <AuthorizeProvider roles={["teacher"]}>
       <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">
@@ -217,7 +229,7 @@ function AddMark() {
           <Text dir={"rtl"} fontWeight={"bold"} fontSize={"20px"} textAlign={"center"}>
 هیچ دانش آموزی در کلاس {selectedItems && selectedItems.course.name} جهت ورود نمره یافت نشد         </Text>
 
-<Text textColor={'green'} fontSize={"16px"} textAlign={"center"}>
+<Text textColor={textGreen} fontSize={"16px"} textAlign={"center"}>
   نمرات این دوره با موفقیت ثبت شده است. جهت حذف یا ویرایش میتوانید از لیست نمرات واردشده در پایین صفحه استفاده کنید
 </Text>
         </Card>
@@ -266,6 +278,7 @@ function AddMark() {
             setMarkList={setMarkList}
             myStudents={myStudents}
               setmyStudents={setmyStudents}
+              handleDelete={handleDelete}
           />
         ) : (
           <Box

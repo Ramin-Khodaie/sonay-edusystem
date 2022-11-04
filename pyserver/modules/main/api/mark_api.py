@@ -25,6 +25,12 @@ def create_mark(st:SSettings,user: SUser , info : dict):
     ret = mark.insert_mark(user ,info , st)
     return api_return(ret[0],ret[1],ret[2],data=ret[3])
 
+@router.delete("/deletemark")
+@sn(fast=True,roles=['teacher' ])
+def delete_mark(_id:str):
+    ret = mark.delete_mark(_id)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
 
 
 @router.get("/getmarkbyteacher")
