@@ -442,6 +442,8 @@ class SDashboard:
         #         'd' : int(cc.day),
         #         'date': date
         #     }})
+
+        # return
         
         raw = list(col.aggregate([{
             '$match' :{"teacher.full_name" : {"$ne" : ""}}

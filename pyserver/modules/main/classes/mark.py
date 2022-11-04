@@ -245,7 +245,7 @@ class SMark:
 
                             '$set': {
                                 'avg_classActivity': {
-                                    '$round': ['$classActivity', 2]
+                                    '$round': ['$avg_classActivity', 2]
                                 },
                                 'avg_quiz': {
                                     '$round': ['$avg_quiz', 2]
@@ -281,12 +281,12 @@ class SMark:
                         }, {
                             '$project': {
                                 '_id': 0,
-                                'classActivity': 1,
-                                'quiz': 1,
-                                'extra': 1,
-                                'midterm': 1,
-                                'final': 1,
-                                'sum': 1
+                                'classActivity': '$classActivity',
+                                'quiz': '$quiz',
+                                'extra': '$extra',
+                                'midterm': '$midterm',
+                                'final': '$final',
+                                'sum': '$sum'
                             }
                         }
                     ]

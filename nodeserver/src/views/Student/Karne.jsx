@@ -110,11 +110,14 @@ const Karne = () => {
       setSelectedMark(res[0]);
     });
   };
+  console.log(selectedMark,8585)
 
   const callBarChartData = () => {
-    getCompareChartData(selectedCourse, userInfo.username).then((res) => {
-      setSeriesBarChart(res);
-    });
+    if(selectedMark){
+      getCompareChartData(selectedMark.course.id, userInfo.username).then((res) => {
+        setSeriesBarChart(res);
+      });
+    }
   };
 
   const callMarkHistory = () => {
