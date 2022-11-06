@@ -79,6 +79,31 @@ export const deleteUser= (username) => {
 
 
 
+
+export const getUserByRole = (role) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/users/getuserbyrole",
+       {
+        params:{
+          role : role,
+         
+        }
+      }
+      
+      
+      );
+
+      
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+       resolve(error.response.status);
+    }
+  });
+};
+
 export const getUserList = (filters) => {
   return new Promise(async (resolve, reject) => {
     try {

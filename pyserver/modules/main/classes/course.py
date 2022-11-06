@@ -154,7 +154,7 @@ class SCourse:
             and_li.append({'name': {'$regex': filter['name']}})
         if 'teacher' in filter and filter['teacher'] != "":
             col2: Collection = db[self.user_collection]
-            courses = list(col2.find({'username' : filter['teacher']},{'courses' : 1}))
+            courses = list(col2.find({'_id' : filter['teacher']},{'courses' : 1}))
             if len(courses) == 1:
                 ids = [cid['id'] for cid in courses[0]['courses']]
                 and_li.append({'_id': {"$in" : ids}})

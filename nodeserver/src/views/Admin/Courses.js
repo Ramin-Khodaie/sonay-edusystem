@@ -16,6 +16,7 @@ import { CoursePop1 } from "components/PopOvers/CoursePopOver";
 import { getCourseBySearch } from "services/course";
 import { deleteCourse } from "services/course";
 import { getCourseListLimited } from "services/course";
+import { getUserByRole } from "services/user";
 
 function Courses() {
   const textColor = useColorModeValue("gray.700", "white");
@@ -35,12 +36,20 @@ function Courses() {
 
 
   const [state, setState] = useState([]);
+  const [teachers, setTeachers] = useState([]);
 
 const callData = async()=>{
 await getCourseListLimited().then((res)=>{
 
     setState(res.data.data);
 
+})
+
+
+
+await getUserByRole('teacher').then((res)=>{
+
+  setTeachers(res.data.data);
 })
 }
 
@@ -59,6 +68,7 @@ await getCourseListLimited().then((res)=>{
       name: "",
     },
   });
+  console.log(teachers,1515)
 
   const handleDelete = (_id)=>{
 
@@ -102,7 +112,7 @@ await getCourseListLimited().then((res)=>{
     callData()
   }, []);
 
-
+console.log(filter,4545)
   return (
     <AuthorizeProvider roles={["admin"]}>
       <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -140,10 +150,7 @@ await getCourseListLimited().then((res)=>{
               courses={courseList}
               selectChange={setFilter}
               courseStatus={statusData}
-              teacher={[
-                { _id: "5", name: "aysan eshraghi" },
-                { _id: "6", name: "jafar jafari" },
-              ]}
+              teacher={teachers}
             />
           </CardHeader>
        

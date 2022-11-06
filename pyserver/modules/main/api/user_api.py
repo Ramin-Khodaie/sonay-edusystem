@@ -78,6 +78,17 @@ def get_user(say: SAY, user_id):
         return 500, "server_error", 'cant connect to DataBAse', []
 
 
+@router.get("/getuserbyrole")
+@sn(roles=['admin' ])
+def get_user_by_role(say: SAY, role):
+    try:
+        ret = say.get_user_by_query({'role.id': role}, {'name' : '$full_name' , 'id' : '$_id' , '_id' : 1})
+        return api_return(200, 'ok', 'ok', data=list(ret))
+
+    except:
+        return 500, "server_error", 'cant connect to DataBAse', []
+
+
 @router.get("/getuserbycourse")
 @sn(roles=['admin' , 'teacher' , 'student'])
 def get_user_by_course(say: SAY, course_id, role):
