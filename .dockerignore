@@ -1,0 +1,11 @@
+node_modules
+env
+venv
+nodeserver
+package-lock.json
+build
+*.pyc
+__pycache__
+__pycache__/
+**/__pycache__/
+data_transfer

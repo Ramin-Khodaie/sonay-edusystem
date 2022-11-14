@@ -30,7 +30,6 @@ import {
 import { createProductAction } from "redux/product/productCreate/productCreateAction";
 import { productListAction } from "redux/product/productList/ProductListAction";
 import { useProduct } from "hooks/products/useProduct";
-import { isConstTypeReference } from "typescript";
 import { createProduct } from "services/product";
 
   function ProductForm(props) {

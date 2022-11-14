@@ -26,7 +26,7 @@
         "default": false,
         "name": "educational_app",
         "type": "mongodb",
-        "host": "localhost",
+        "host": "mongodb",
         "port": 27017,
         "username": "",
         "password": "",
@@ -60,7 +60,7 @@
         "default": false,
         "name": "sonay",
         "type": "mongodb",
-        "host": "localhost",
+        "host": "mongodb",
         "port": 27017,
         "username": "",
         "password": "",
@@ -110,12 +110,12 @@
       "MERCHANT" : "eef9f4c5-a94d-498c-a2d4-75e0bdadbad0" ,
       "server":{
           "ssr":{
-              "url":"localhost",
+              "url":"0.0.0.0",
               "port":3000
               
           },
           "service":{
-              "url":"localhost",
+              "url":"0.0.0.0",
               "port":22659
           }
       }

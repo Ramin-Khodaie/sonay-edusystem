@@ -1,0 +1,59 @@
+version: '3'
+networks:
+  frontend:
+    external: true
+  backend:
+    external: true
+volumes:
+  appdata:
+  nginxdata:
+  mongodbdata:
+services:
+  fastapi:
+      
+      image: pyserver
+      restart: unless-stopped
+      ports:
+        - 8000:8000
+      volumes:
+        - appdata:/var/www
+      depends_on:
+        - mongodb
+      networks:
+        - frontend
+        - backend
+      
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    
+    volumes:
+      - mongodbdata:/data/db
+    networks:
+      - backend
+   
+        
+
+  webserver:
+    
+    image: nodeserver
+    container_name: webserver
+    restart: unless-stopped
+    environment:
+      APP_ENV: "prod"
+      APP_NAME: "webserver"
+      APP_DEBUG: "false"
+      SERVICE_NAME: "webserver"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - nginxdata:/var/log/nginx
+    depends_on:
+      - fastapi
+    networks:
+      - frontend
+  

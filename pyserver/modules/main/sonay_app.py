@@ -69,7 +69,7 @@ class SonayApp:
     isStarted = False
 
     def start(self, mode):
-        print("we started the app")
+        print("we started the app in mode " , mode )
         self._mode = mode
         self._state = "INIT"
         state, settings = load_settings(mode)

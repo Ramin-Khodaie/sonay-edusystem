@@ -30,7 +30,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { createProductAction } from "redux/product/productCreate/productCreateAction";
 import { productListAction } from "redux/product/productList/ProductListAction";
 import { useProduct } from "hooks/products/useProduct";
-import { isConstTypeReference } from "typescript";
 import CustomSelector from "components/Selectors/CustomSelector";
 import { useState } from "react";
 import { createMark } from "services/mark";
