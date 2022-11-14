@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 // Chakra imports
 import {
   Box,
@@ -22,6 +22,7 @@ import { useNavigate, useHistory } from "react-router-dom";
 import { withRouter } from "helpers/components/withRouter/withRouter";
 import { useDispatch, useSelector } from "react-redux";
 import { userInfoAction } from "redux/user/UserInfo/UserInfoAction";
+import useNotify from "helpers/notify/useNotify";
 
 function SignIn(props) {
   // Chakra color mode
@@ -39,7 +40,7 @@ function SignIn(props) {
     username : "",
     password : ""
   })
-
+const [state,setState] = useState({isLoading : false})
 
 
   const handleChange = (event) => {
@@ -53,8 +54,10 @@ function SignIn(props) {
   let history = useHistory();
 
 
-
+const notify = useNotify()
 function createPost(){
+
+  setState({...state , isLoading : true})
 
   // const fData = new FormData();
   // fData.append("username", formData.username);
@@ -70,6 +73,8 @@ function createPost(){
     localStorage.setItem("rt", response.data.data.rt);
    
     await getUserInfo()
+    setState({...state , isLoading : false})
+
     history.push("/sonay/dashboard")
     
     
@@ -77,6 +82,12 @@ function createPost(){
   })
 
   .catch((err) => {
+    if(err.response.status === 403){
+      notify("نام کاربری یا رمز عبور اشتباه است", true, "solid", "error");
+      setState({...state , isLoading : false})
+
+
+    }
   })
 }
 
@@ -136,7 +147,7 @@ useEffect(()=>{
             w='445px'
             background='transparent'
             borderRadius='15px'
-            p='40px'
+            p='50px'
             mx={{ base: "100px" }}
             m={{ base: "20px", md: "auto" }}
             bg={bgForm}
@@ -150,9 +161,9 @@ useEffect(()=>{
               fontWeight='bold'
               textAlign='center'
               mb='22px'>
-              : ورود به پنل کاربری با 
+              : ورود به پنل کاربری  
             </Text>
-            <HStack spacing='15px' justify='center' mb='22px'>
+            {/* <HStack spacing='15px' justify='center' mb='22px'>
               <Flex
                 justify='center'
                 align='center'
@@ -221,7 +232,7 @@ useEffect(()=>{
               textAlign='center'
               mb='22px'>
               یا
-            </Text>
+            </Text> */}
             <FormControl>
               <FormLabel textAlign='end' ms='4px' fontSize='sm' fontWeight='normal'>
                 نام کاربری
@@ -266,6 +277,7 @@ useEffect(()=>{
                 </FormLabel>
               </FormControl>
               <Button
+              disabled={state.isLoading}
               onClick={createPost}
                 fontSize='20px'
                 fontFamily='Lalezar'
@@ -274,7 +286,11 @@ useEffect(()=>{
                 w='100%'
                 h='45'
                 mb='24px'>
-                ورود
+
+                  {
+                    state.isLoading ? "در حال بررسی" : "ورود"
+                  }
+                
               </Button>
             </FormControl>
             <Flex
@@ -283,7 +299,7 @@ useEffect(()=>{
               alignItems='center'
               maxW='100%'
               mt='0px'>
-              <Text color={textColor} fontWeight='medium'>
+              {/* <Text color={textColor} fontWeight='medium'>
                
                 تاکنون ثبت نام نکرده اید؟
                 {" "}
@@ -291,11 +307,11 @@ useEffect(()=>{
                   color={titleColor}
                   as='span'
                   ms='5px'
-                  href='#'
+                  href='/auth/signup'
                   fontWeight='bold'>
                   ثبت نام کنید
                 </Link>
-              </Text>
+              </Text> */}
             </Flex>
           </Flex>
         </Flex>

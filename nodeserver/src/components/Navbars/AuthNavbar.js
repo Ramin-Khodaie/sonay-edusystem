@@ -149,7 +149,7 @@ export default function AuthNavbar(props) {
           display={{ base: "flex", lg: "none" }}
         >
           <SidebarResponsive
-            hamburgerColor={hamburgerColor}
+         
             logoText={props.logoText}
             secondary={props.secondary}
             routes={routes}

@@ -21,12 +21,7 @@ export default function Pages(props) {
   
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.collapse) {
-        return getRoutes(prop.views);
-      }
-      if (prop.category === "account") {
-        return getRoutes(prop.views);
-      }
+
       if (prop.layout === "/auth") {
         return (
           <Route
@@ -35,7 +30,14 @@ export default function Pages(props) {
             key={key}
           />
         );
-      } else {
+      }
+      if (prop.collapse) {
+        return getRoutes(prop.views);
+      }
+      if (prop.category === "account") {
+        return getRoutes(prop.views);
+      }
+       else {
         return null;
       }
     });
@@ -44,14 +46,12 @@ export default function Pages(props) {
   document.documentElement.dir = "ltr";
   return (
     <Box ref={navRef} w='100%'>
-      <Portal containerRef={navRef}>
-        <AuthNavbar secondary={getActiveNavbar(routes)} logoText='' />
-      </Portal>
+     
       <Box w='100%'>
         <Box ref={wrapper} w='100%'>
           <Switch>
             {getRoutes(routes)}
-            <Redirect from='/auth' to='/auth/login-page' />
+            <Redirect from='/auth' to='/auth/signin' />
           </Switch>
         </Box>
       </Box>
