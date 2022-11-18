@@ -41,6 +41,7 @@ const Registration = () => {
   const { cartItems } = useSelector((state) => state.order);
 
   const [myCourseHistory, setMyCourseHistory] = useState([]);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState({
     id: "",
     name: "",
@@ -138,16 +139,20 @@ setError('missing_next_course')    }
   const [link, setLink] = useState("");
 
   const registerCourse = async () => {
+    setIsRedirecting(true)
     const res = await getRedirectUrl(
       courseDetailData.c_obj.length > 0 && courseDetailData.c_obj[0]._id,
       courseDetailData.c_obj.length > 0 && courseDetailData.c_obj[0].name,
       userInfo.username,
       getSum(),
       cartItems
+
     );
 
     if (res.data.data !== "") {
       // setRedirect(res.data.data)
+      setIsRedirecting(false)
+
 
       window.location.replace(res.data.data);
     }
@@ -178,6 +183,7 @@ setError('missing_next_course')    }
           cartItems={cartItems}
           courseDetailData={courseDetailData}
           registerCourse={registerCourse}
+          isRedirecting={isRedirecting}
         />
 
       ) : <></>}

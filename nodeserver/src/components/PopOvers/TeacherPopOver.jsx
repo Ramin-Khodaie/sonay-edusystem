@@ -25,18 +25,18 @@ import Buttons from "react-multi-date-picker/components/button";
 export const TeacherPop1 = () => {
   const iconBlue = useColorModeValue("blue", "white");
   return (
-    <Popover offset={[-20, 20]} arrowSize={"12"}>
+    <Popover offset={[-70, 20]} arrowSize={"12"}>
       <PopoverTrigger>
-        <Button bg={"yellow.500"}>راهنمای ورود نمره</Button>
+        <Button width={'200px'} bg={"yellow.500"}>راهنمای ورود نمره</Button>
       </PopoverTrigger>
-      <PopoverContent ml={"30px"} w={"500px"}>
+      <PopoverContent ml={"30px"} w={"400px"}>
         <PopoverCloseButton />
         <PopoverArrow />
 
         <PopoverHeader textAlign={"center"}>راهنمای ورود نمره </PopoverHeader>
         <PopoverBody dir="rtl">
           <Text textAlign={"justify"}>
-            دبیر گرامی! جهت ورود نمره، کلاس مد نظر خود را از سلکتور بالای صفحه
+            دبیر گرامی! جهت ورود نمره، کلاس مد نظر خود را از سلکتور پایین
             انتخاب کنید. پس از انتخاب زبان آموز هایی که برای کلاس انتخاب شده
             تعریف شده اند،نمایش داده می شوند. با جابه جایی پنل زبان آموزان به
             سمت راست یا چپ، زبان آموز مد نظر خود را پیدا و روی آن کلیک کنید. پس

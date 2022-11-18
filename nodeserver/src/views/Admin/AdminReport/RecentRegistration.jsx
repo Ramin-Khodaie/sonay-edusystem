@@ -100,7 +100,7 @@ const RecentRegistration = () => {
                     <AccordionButton>
                       <Box flex="1" textAlign="left">
                         {" "}
-                        نمایش فیلتر ها{" "}
+                        نمایش فیلتر{" "}
                       </Box>
                       <AccordionIcon />
                     </AccordionButton>
@@ -115,7 +115,7 @@ const RecentRegistration = () => {
                     textAlign={"right"}
                     my={"10px"}
                   >
-                    لیست ثبت نام های اخیر {" "}
+              ثبت نام های اخیر {" "}
                   </Text>
                 </Flex>
               </Flex>
@@ -124,7 +124,7 @@ const RecentRegistration = () => {
                 <SimpleGrid
                   style={{ direction: "rtl" }}
                   columns={{ sm: 1, md: 2, xl: 3 }}
-                  spacing="24px"
+                  spacing={{"sm" :"10px" ,"md" : "24px","lg" : "24px"}}
                   mb="20px"
                 >
                   <Box>
@@ -147,11 +147,12 @@ const RecentRegistration = () => {
                     <Text>از تاریخ:</Text>
 
                     <DatePicker
+                    
+                    
                       placeholder="تاریخ شروع را وارد کنید"
                       calendar={persian}
                       locale={persian_fa}
-                      style={{ padding: "17px", width: "300px" }}
-                      selected={filter.startDate}
+                      style={{ padding: "17px", width: "300px" , backgroundColor:"transparent" }}                      selected={filter.startDate}
                       onChange={(v) => {
                         handleStartDateChange(v);
                       }}
@@ -164,8 +165,7 @@ const RecentRegistration = () => {
                       placeholder="تاریخ پایان را وارد کنید"
                       calendar={persian}
                       locale={persian_fa}
-                      style={{ padding: "17px", width: "300px" }}
-                      selected={filter.endDate}
+                      style={{ padding: "17px", width: "300px" , backgroundColor:"transparent" }}                      selected={filter.endDate}
                       onChange={(v) => {
                         handleEndDateChange(v);
                       }}
@@ -181,10 +181,10 @@ const RecentRegistration = () => {
         </Flex>
       </Card>
 
-      <Card mt={"30px"}>
+      <Card mt={"30px"} style={{ direction: "rtl" }} maxW={"100%"} overflowX={{ sm: "scroll", xl: "hidden" }}>
         <TableContainer>
           <Table dir="rtl" variant="striped" colorScheme="gray">
-            <TableCaption>لیست ثبت نام های اخیر</TableCaption>
+            <TableCaption>ثبت نام های اخیر</TableCaption>
             <Thead>
               <Tr>
                 <Th>نام و نام خانوادگی</Th>

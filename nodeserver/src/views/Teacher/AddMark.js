@@ -170,8 +170,10 @@ function AddMark() {
   return (
     <AuthorizeProvider roles={["teacher"]}>
       <Box mt="60px" px="55px" py="5" w="100%" dir="rtl">
-        <Flex>
-          <Box w={{ sm: "200px", md: "500px", lg: "500px" }}>
+        <Flex direction={'column'}>
+            <TeacherPop1 />
+      
+          <Box pt={"15px"} w={{ sm: "200px", md: "500px", lg: "500px" }}>
             <CustomSelector
               onChange={setSelectedItems}
               data={myCourses}
@@ -181,8 +183,6 @@ function AddMark() {
               bg={colorMode === "light" ? "white" : "navy.700"}
             />
           </Box>
-          <Spacer />
-          <TeacherPop1 />
         </Flex>
 
         {/* <Select

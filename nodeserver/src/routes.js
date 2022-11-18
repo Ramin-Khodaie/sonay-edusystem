@@ -132,17 +132,17 @@ var dashRoutes = [
     show : true
 
   },
-  {
-    path: "/checkout",
-    name: "سبد خرید",
-    rtlName: "سبد خرید",
-    icon: <FaShoppingCart />,
-    component: Checkout,
-    layout: "/sonay",
-    roles:[ 'student'],
-    show : true
+  // {
+  //   path: "/checkout",
+  //   name: "سبد خرید",
+  //   rtlName: "سبد خرید",
+  //   icon: <FaShoppingCart />,
+  //   component: Checkout,
+  //   layout: "/sonay",
+  //   roles:[ 'student'],
+  //   show : true
 
-  },
+  // },
   {
     path: "/recentorder",
     name: "سفارشات اخیر",

@@ -127,7 +127,7 @@ function MarkForm(props) {
         if (markId === "-1") {
           // insert mode
           setIsLoading(false);
-          setMarkList([...markList, res.data]);
+          setMarkList([ res.data,...markList]);
           setmyStudents(
             myStudents.filter((item, key) => {
               return item.username !== res.data.username 

@@ -88,6 +88,7 @@ const RecentOrder = () => {
 
   return (
     <AuthorizeProvider roles={["admin"]}>
+      
       <Card mt={"75px"}>
         <Flex direction="column">
           <Accordion allowToggle>
@@ -114,7 +115,7 @@ const RecentOrder = () => {
                     textAlign={"right"}
                     my={"10px"}
                   >
-                    لیست سفارشات اخیر ثبت شده در سامانه{" "}
+                    سفارشات اخیر{" "}
                   </Text>
                 </Flex>
               </Flex>
@@ -123,7 +124,7 @@ const RecentOrder = () => {
                 <SimpleGrid
                   style={{ direction: "rtl" }}
                   columns={{ sm: 1, md: 2, xl: 3 }}
-                  spacing="24px"
+                  spacing={{"sm" :"10px" ,"md" : "24px","lg" : "24px"}}
                   mb="20px"
                 >
                   <Box>
@@ -149,8 +150,7 @@ const RecentOrder = () => {
                       placeholder="تاریخ شروع را وارد کنید"
                       calendar={persian}
                       locale={persian_fa}
-                      style={{ padding: "17px", width: "300px" }}
-                      selected={filter.startDate}
+                      style={{ padding: "17px", width: "300px" , backgroundColor:"transparent" }}                      selected={filter.startDate}
                       onChange={(v) => {
                         handleStartDateChange(v);
                       }}
@@ -163,8 +163,7 @@ const RecentOrder = () => {
                       placeholder="تاریخ پایان را وارد کنید"
                       calendar={persian}
                       locale={persian_fa}
-                      style={{ padding: "17px", width: "300px" }}
-                      selected={filter.endDate}
+                      style={{ padding: "17px", width: "300px" , backgroundColor:"transparent" }}                      selected={filter.endDate}
                       onChange={(v) => {
                         handleEndDateChange(v);
                       }}
@@ -180,7 +179,7 @@ const RecentOrder = () => {
         </Flex>
       </Card>
 
-      <Card mt={"30px"}>
+      <Card mt={"30px"}  style={{ direction: "rtl" }} maxW={"100%"} overflowX={{ sm: "scroll", xl: "hidden" }}>
         <TableContainer>
           <Table dir="rtl" variant="striped" colorScheme="gray">
             <TableCaption>لیست سفارشات ثبت شده</TableCaption>

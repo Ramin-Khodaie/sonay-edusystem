@@ -307,7 +307,7 @@ class SMark:
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
         res = list(
-            col.find({'username': username, 'course.id': {"$ne": course_id}}))
+            col.find({'username': username, 'course.id': {"$ne": course_id}}).sort([('g_date', pymongo.DESCENDING)]))
         return 200, 'ok', 'ok', res
 
     def get_student_mark_by_course(self, course_id):

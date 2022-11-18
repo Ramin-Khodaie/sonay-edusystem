@@ -35,7 +35,7 @@ const CourseDetail = () => {
   const [filter, setFilter] = useState({
     name: "",
     teacher: { id: "", name: "" },
-    deActive: false,
+    deActive: { id: "", name: "" },
   });
 
   const callData = () => {
@@ -68,7 +68,7 @@ const CourseDetail = () => {
   useEffect(() => {
     setData(data);
 
-    if (filter.name !== "" || filter.teacher.id !== "" || filter.deActive) {
+    if (filter.name !== "" || filter.teacher.id !== "" || filter.deActive.id !== "") {
       doSearch();
     } else {
       callData();
@@ -120,7 +120,7 @@ const CourseDetail = () => {
                   mb="20px"
                 >
                   <Box>
-                    <Text>نام کاربر:</Text>
+                    <Text>نام دوره:</Text>
                     <Input
                       id="name"
                       onChange={handleFilterChange}
@@ -147,13 +147,25 @@ const CourseDetail = () => {
                   </Box>
 
                   <Box>
-                    <Checkbox
+
+                  <Text>وضعیت دوره:</Text>
+                    <CustomSelector
+                      onChange={setFilter}
+                      data={[
+                        { _id: "active", name: "فعال" },
+                        { _id: "deactive", name: "غیرفعال" },
+                      ]}
+                      state={filter}
+                      placeHolder={"وضعیت دوره را انتخاب کنید"}
+                      fieldId={"deActive"}
+                    />
+                    {/* <Checkbox
                       onChange={handleCheckBoxChange}
                       id="deActive"
                       size={"lg"}
                     >
                       فقط دوره های غیر فعال{" "}
-                    </Checkbox>
+                    </Checkbox> */}
                   </Box>
 
                   {/* <Checkbox onChange={handleCheckBoxChange} id="isMain" size={"lg"} >
@@ -165,7 +177,7 @@ const CourseDetail = () => {
         </Flex>
       </Card>
 
-      <Card mt={"30px"}>
+      <Card mt={"30px"} style={{ direction: "rtl" }} maxW={"100%"} overflowX={{ sm: "scroll", xl: "hidden" }}>
         <TableContainer>
           <Table dir="rtl" variant="striped" colorScheme="gray">
             <TableCaption>لیست ثبت نام های اخیر</TableCaption>

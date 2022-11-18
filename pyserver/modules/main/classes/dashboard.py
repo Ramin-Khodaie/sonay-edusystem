@@ -575,7 +575,7 @@ class SDashboard:
 
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.user_collection]
-        data = list(col.find({'enable': True,
+        data = list(col.find({'status.id': "reg",
                               'courses.id': user['courses'][0]['id'],
                               'role.id': 'student',
                               'username' : {'$ne' : user['username']}
@@ -615,6 +615,8 @@ class SDashboard:
                     ],
                     'as': 'students'
                 }
+            },{
+                "$match" : {"students" : {"$ne" : []}}
             }
         ]))
         student_count = 0

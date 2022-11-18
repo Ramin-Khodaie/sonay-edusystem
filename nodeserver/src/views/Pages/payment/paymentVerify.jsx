@@ -31,29 +31,10 @@ import PaymentSuccess from "./paymentSuccess";
 import PaymentError from "./paymentError";
 function PaymentVerify(props) {
   let query = useQuery();
-  const history = useHistory();
-  const { oid } = useParams();
-  const dispatch = useDispatch();
 
-  const authority = query.get("Authority");
   const paymentStatus = query.get("Status");
   const [status, setStatus] = useState(paymentStatus);
-  const doVerify = () => {
-    verifyRegistration(oid, authority).then((res) => {
-      if (res.data.data === "ok") {
-        dispatch(userInfoAction());
 
-        setTimeout(() => {
-          history.push("/sonay/dashboard");
-        }, 4000);
-      }
-    });
-  };
-  useEffect(() => {
-    if (paymentStatus === "OK") {
-      doVerify();
-    }
-  }, []);
 
   return <> {status === "OK" ? <PaymentSuccess /> : <PaymentError />} </>;
 }

@@ -82,7 +82,7 @@ export const ReportPop2 = () => {
 
 export const ReportPop3 = () => {
   return (
-    <Popover offset={[20, 20]} arrowSize={"12"}>
+    <Popover offset={[-20, 20]} arrowSize={"12"}>
       <PopoverTrigger>
         <QuestionIcon
           mr={"10px"}
@@ -93,7 +93,7 @@ export const ReportPop3 = () => {
       </PopoverTrigger>
       <PopoverContent
         ml={"10px"}
-        width={{ sm: "400px", md: "500px", lg: "500px" }}
+        width={{ sm: "300px", md: "500px", lg: "500px" }}
       >
         <PopoverCloseButton />
         <PopoverArrow />
@@ -152,7 +152,7 @@ export const ReportPop3 = () => {
 
 export const ReportPop4 = () => {
   return (
-    <Popover offset={[20, 20]} arrowSize={"12"}>
+    <Popover offset={[-20, 20]} arrowSize={"12"}>
       <PopoverTrigger>
         <QuestionIcon
           mr={"10px"}
@@ -163,7 +163,7 @@ export const ReportPop4 = () => {
       </PopoverTrigger>
       <PopoverContent
         ml={"10px"}
-        width={{ sm: "400px", md: "500px", lg: "500px" }}
+        width={{ sm: "300px", md: "500px", lg: "500px" }}
       >
         <PopoverCloseButton />
         <PopoverArrow />
@@ -194,7 +194,7 @@ export const ReportPop4 = () => {
 
 export const ReportPop5 = () => {
   return (
-    <Popover offset={[20, 20]} arrowSize={"12"}>
+    <Popover offset={[-70, 20]} arrowSize={"12"}>
       <PopoverTrigger>
         <QuestionIcon
           mr={"10px"}
@@ -205,7 +205,7 @@ export const ReportPop5 = () => {
       </PopoverTrigger>
       <PopoverContent
         ml={"10px"}
-        width={{ sm: "400px", md: "500px", lg: "500px" }}
+        width={{ sm: "300px", md: "500px", lg: "500px" }}
       >
         <PopoverCloseButton />
         <PopoverArrow />
@@ -237,7 +237,7 @@ export const ReportPop5 = () => {
 
 export const ReportPop6 = () => {
   return (
-    <Popover offset={[20, 20]} arrowSize={"12"}>
+    <Popover offset={[-70, 20]} arrowSize={"12"}>
       <PopoverTrigger>
         <QuestionIcon
           mr={"10px"}
@@ -248,7 +248,7 @@ export const ReportPop6 = () => {
       </PopoverTrigger>
       <PopoverContent
         ml={"10px"}
-        width={{ sm: "400px", md: "500px", lg: "500px" }}
+        width={{ sm: "300px", md: "500px", lg: "500px" }}
       >
         <PopoverCloseButton />
         <PopoverArrow />

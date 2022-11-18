@@ -17,11 +17,7 @@ import { lineChartData } from "variables/charts";
 import { lineChartOptions } from "variables/charts";
 import LineChart from "components/Charts/LineChart";
 import Card from "components/Card/Card";
-import BarChart from "components/Charts/BarChart";
-import { barChartData } from "variables/charts";
-import { barChartOptions } from "variables/charts";
-import WorkbookChart from "./WorkbookChart";
-import StudentFinaleState from "./StudentFinalState";
+
 import PolarBasicChart from "components/Charts/PolarBasicChart";
 import MultiBarchart from "components/Charts/MultiBarChart";
 import TeacherMessage from "components/TeacherMessage/TeacherMessage";
@@ -103,6 +99,7 @@ const Karne = () => {
 
   const handleMarkChange = (course) => {
     setSelectedCourse(course);
+ 
   };
 
   const callSelectedMark = () => {
@@ -110,11 +107,14 @@ const Karne = () => {
       setSelectedMark(res[0]);
     });
   };
-  console.log(selectedMark,8585)
 
   const callBarChartData = () => {
     if(selectedMark){
       getCompareChartData(selectedMark.course.id, userInfo.username).then((res) => {
+        setSeriesBarChart(res);
+      });
+    }else{
+      getCompareChartData(userInfo.courses[0].id, userInfo.username).then((res) => {
         setSeriesBarChart(res);
       });
     }
@@ -130,6 +130,7 @@ const Karne = () => {
     callMarkHistory();
     callSelectedMark();
     callBarChartData();
+     console.log('biiiiiiiiiiiib')
   };
 
   useEffect(() => {
@@ -180,7 +181,8 @@ const Karne = () => {
             </Card> :
 
 
-<Card  mt={'70px'}>
+<Card     
+  mt={'0px'}>
 <Center>
   <Text
     textAlign={"center"}

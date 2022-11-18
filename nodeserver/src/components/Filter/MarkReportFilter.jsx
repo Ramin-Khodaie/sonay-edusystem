@@ -84,8 +84,7 @@ const MarkReportFilter = (props) => {
                     placeholder="تاریخ شروع را وارد کنید"
                     calendar={persian}
                     locale={persian_fa}
-                    style={{ padding: "17px", width: "300px" }}
-                    selected={filter.startDate}
+                    style={{ padding: "17px", width: "300px" , backgroundColor:"transparent" }}                    selected={filter.startDate}
                     onChange={(v) => {
                       handleStartDateChange(v);
                     }}
@@ -98,8 +97,7 @@ const MarkReportFilter = (props) => {
                     placeholder="تاریخ پایان را وارد کنید"
                     calendar={persian}
                     locale={persian_fa}
-                    style={{ padding: "17px", width: "300px" }}
-                    selected={filter.endDate}
+                    style={{ padding: "17px", width: "300px" , backgroundColor:"transparent" }}                    selected={filter.endDate}
                     onChange={(v) => {
                       handleEndDateChange(v);
                     }}

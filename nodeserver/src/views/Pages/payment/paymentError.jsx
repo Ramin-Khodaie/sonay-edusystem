@@ -9,10 +9,20 @@ import { Spinner,
 
   import paymentError from "assets/img/paymentError.jpg";
   import {  FaTimes } from "react-icons/fa";
+import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
-  
+
   function PaymentError(props) {
-
+    const history = useHistory();
+    const returnToDashboard = ()=>{
+      setTimeout(() => {
+        history.push("/sonay/dashboard");
+      }, 4000);
+    }
+useEffect(()=>{
+  returnToDashboard()
+},[])
     return (
 
     
@@ -37,8 +47,8 @@ import { Spinner,
         <Box>
         
            
-        <Text fontSize={'45px'} textAlign={'center'} fontFamily={"Lalezar"}>متاسفانه خطایی در روند پرداخت رخ داد</Text>
-        <Text  fontSize={'16px'} textAlign={'center'} >تا لحظاتی دیگر به سامانه آموزشی زبانکده استقلال انتقال خواهید یافت </Text>
+        <Text color={'red'} fontSize={'45px'} textAlign={'center'} fontFamily={"Lalezar"}>متاسفانه خطایی در روند پرداخت رخ داد</Text>
+        <Text color={'black'}  fontSize={'16px'} textAlign={'center'} >تا لحظاتی دیگر به سامانه آموزشی زبانکده استقلال انتقال خواهید یافت </Text>
         </Box>
         <Center>
          <Spinner   thickness='5px'

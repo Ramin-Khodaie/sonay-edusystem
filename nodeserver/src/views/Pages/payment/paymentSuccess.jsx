@@ -13,8 +13,41 @@ import { Spinner,
   import paymentSuccess from "assets/img/paymentSuccess.jpg";
 
   import { FaRegCheckCircle } from "react-icons/fa";
+import { useHistory, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearAllItems } from "redux/product/orderReducer";
+import { useQuery } from "hooks/useQuery";
+import { useEffect } from "react";
+import { verifyRegistration } from "services/purchase";
+import { userInfoAction } from "redux/user/UserInfo/UserInfoAction";
 
   function PaymentSuccess(props) {
+    const history = useHistory();
+    const { oid } = useParams();
+    const dispatch = useDispatch();
+    let query = useQuery();
+    const paymentStatus = query.get("Status");
+
+
+  
+    const authority = query.get("Authority");
+    const doVerify = () => {
+      verifyRegistration(oid, authority).then((res) => {
+        if (res.data.result === "ok") {
+          dispatch(userInfoAction());
+          dispatch(clearAllItems())
+  
+          setTimeout(() => {
+            history.push("/sonay/dashboard");
+          }, 4000);
+        }
+      });
+    };
+    useEffect(() => {
+      if (paymentStatus === "OK") {
+        doVerify();
+      }
+    }, []);
 
     return (
         <SimpleGrid bg={'white'} columns={{"sm" : 1 , "md" : 1 , "lg" : 2}}
@@ -38,8 +71,8 @@ import { Spinner,
        <Box>
        
            
-       <Text fontSize={'45px'} textAlign={'center'} fontFamily={"Lalezar"}>پرداخت شما با موفقیت انجام شد</Text>
-       <Text  fontSize={'16px'} textAlign={'center'} >تا لحظاتی دیگر به سامانه آموزشی زبانکده استقلال انتقال خواهید یافت </Text>
+       <Text color={'green'} fontSize={'45px'} textAlign={'center'} fontFamily={"Lalezar"}>پرداخت شما با موفقیت انجام شد</Text>
+       <Text color={'black'} fontSize={'16px'} textAlign={'center'} >تا لحظاتی دیگر به سامانه آموزشی زبانکده استقلال انتقال خواهید یافت </Text>
         </Box>
         <Center>
          <Spinner   thickness='5px'

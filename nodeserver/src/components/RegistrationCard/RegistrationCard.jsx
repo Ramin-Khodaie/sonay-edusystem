@@ -40,7 +40,7 @@ import { getProductListByCourse } from "services/product";
 import { CoursePop3 } from "components/PopOvers/CoursePopOver";
 
 function RegistrationCard(props) {
-  const { courseDetailData, registerCourse , cartItems , getSum } = props;
+  const { courseDetailData, registerCourse , cartItems , getSum , isRedirecting } = props;
 
 
   const colorMode = useColorMode();
@@ -190,7 +190,7 @@ function RegistrationCard(props) {
                               <Td>
                                 {" "}
                                 {courseDetailData.c_obj.length > 0 &&
-                                  courseDetailData.c_obj[0].price}
+                                  <>{courseDetailData.c_obj[0].price}ریال</> }
                               </Td>
                             </Tr>
 
@@ -223,8 +223,7 @@ function RegistrationCard(props) {
                       </Button>
                       <Button onClick={registerCourse} colorScheme="blue">
                         {" "}
-                        تایید می کنم
-                      </Button>
+{isRedirecting ? "در حال هدایت به صفحه پرداخت" : "تایید می کنم"}                      </Button>
                     </ModalFooter>
                   </ModalContent>
                 </Modal>

@@ -112,6 +112,7 @@ const StudentRecord = ({
               setmyStudents={setmyStudents}
               selectedCourse={selectedItems.course}
               selectedStudent={selectedItems.student}
+              onClose={onClose}
             />
           </ModalBody>
         </ModalContent>

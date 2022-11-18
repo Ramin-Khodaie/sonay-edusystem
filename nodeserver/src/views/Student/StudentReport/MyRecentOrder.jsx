@@ -105,7 +105,7 @@ const MyRecentOrder = () => {
                     <AccordionButton>
                       <Box flex="1" textAlign="left">
                         {" "}
-                        نمایش فیلتر ها{" "}
+                        نمایش فیلتر{" "}
                       </Box>
                       <AccordionIcon />
                     </AccordionButton>
@@ -120,7 +120,7 @@ const MyRecentOrder = () => {
                     textAlign={"right"}
                     my={"10px"}
                   >
-                    لیست سفارشات اخیر ثبت شده در سامانه{" "}
+                     سفارشات اخیر{" "}
                   </Text>
 
                   
@@ -157,8 +157,7 @@ const MyRecentOrder = () => {
                       placeholder="تاریخ شروع را وارد کنید"
                       calendar={persian}
                       locale={persian_fa}
-                      style={{ padding: "17px", width: "300px" }}
-                      selected={filter.startDate}
+                      style={{ padding: "17px", width: "300px" , backgroundColor:"transparent" }}                      selected={filter.startDate}
                       onChange={(v) => {
                         handleStartDateChange(v);
                       }}
@@ -171,8 +170,7 @@ const MyRecentOrder = () => {
                       placeholder="تاریخ پایان را وارد کنید"
                       calendar={persian}
                       locale={persian_fa}
-                      style={{ padding: "17px", width: "300px" }}
-                      selected={filter.endDate}
+                      style={{ padding: "17px", width: "300px" , backgroundColor:"transparent" }}                      selected={filter.endDate}
                       onChange={(v) => {
                         handleEndDateChange(v);
                       }}

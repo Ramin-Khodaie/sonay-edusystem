@@ -2,6 +2,7 @@
 import {
   Avatar,
     Box,
+    Center,
     SimpleGrid,
 
     Table,
@@ -59,7 +60,7 @@ const Classmate = ()=>{
 همکلاسی های شما        </Text>
 
         <Box overflow='scroll'>
-          {classmate.length !== 0 && (
+          {classmate.length !== 0 ? (
             <Table dir="rtl">
               <Thead>
                 <Tr bg={tableRowColor}>
@@ -100,6 +101,19 @@ const Classmate = ()=>{
                 })}
               </Tbody>
             </Table>
+          ):
+          
+          
+          (
+
+
+            <Box  >
+            <Center h={'300px'}>
+              <Text fontWeight={'bold'} fontSize={'18px'}>
+حال حاضر هم کلاسی یافت نشد              </Text>
+            </Center>
+            </Box>
+
           )}
         </Box>
       </Card>

@@ -317,10 +317,9 @@ class SPurchase:
 
         if 'name' in filter and filter['name'] != "":
             and_li.append({'name': {'$regex': filter['name']}})
-        if 'deActive' in filter and filter['deActive'] :
-            and_li.append({'status.id': 'deactive'})
-        else:
-            and_li.append({'status.id': 'active'})
+        if 'deActive' in filter and filter['deActive']["id"] != "" :
+            and_li.append({'status.id': filter['deActive']["id"]})
+        
         if 'teacher' in filter and filter['teacher']['id'] != "":
             teacher_and_li.append({'teacher.full_name': {'$regex': filter['teacher']['name']}})
 

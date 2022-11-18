@@ -22,10 +22,14 @@ const orderReducer = createSlice({
         },
         RemoveAnItem:(state,{payload})=>{            
             state.cartItems = RemoveOneItem(state.cartItems, payload)
+        },
+        clearAllItems:(state)=>{            
+            state.cartItems = []
         }
+        
     }
 })
 
-export const { AddCartItems, ToggleCartItem,DeleteCartItem,RemoveAnItem } = orderReducer.actions
+export const { AddCartItems, ToggleCartItem,DeleteCartItem,RemoveAnItem,clearAllItems } = orderReducer.actions
 
 export default orderReducer.reducer

@@ -50,7 +50,7 @@ const PolarBasicChart = (props) => {
     },
     responsive: [
       {
-        breakpoint: 480,
+        breakpoint: 300,
         options: {
           chart: {
             width: 100,
