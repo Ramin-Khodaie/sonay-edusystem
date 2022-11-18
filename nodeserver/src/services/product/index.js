@@ -55,8 +55,8 @@ export const getProductList = (filter) => {
       const res = await bixios.put("/products/getproductlist",
       {filter:{
         name: filter.name,
-        is_main: filter.isMain,
-        is_active: filter.isActive,
+        is_main: filter.isMain.id,
+        is_active: filter.isActive.id,
         course: filter.courses.id,
       }}
       

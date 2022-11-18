@@ -285,7 +285,7 @@ export function SidebarResponsive(props) {
   let activeBg = useColorModeValue("white", "navy.700");
   let inactiveBg = useColorModeValue("white", "navy.700");
   let activeColor = useColorModeValue("gray.700", "white");
-  let inactiveColor = useColorModeValue("gray.400", "white");
+  let inactiveColor = useColorModeValue("gray.400", "gray.300");
   let sidebarActiveShadow = useColorModeValue(
     "0px 7px 11px rgba(0, 0, 0, 0.04)",
     "none"
@@ -373,7 +373,7 @@ export function SidebarResponsive(props) {
                     {prop.icon}
                   </IconBox>
                 )}
-                <Text color={activeColor} my="auto" fontSize="sm">
+                <Text color={activeColor} fontWeight={'bold'} my="auto" fontSize="lg">
                   {document.documentElement.dir === "rtl"
                     ? prop.rtlName
                     : prop.name}
@@ -408,6 +408,7 @@ export function SidebarResponsive(props) {
               _focus={{
                 boxShadow: "none",
               }}
+              onClick={onClose}
             >
               <Flex>
                 {typeof prop.icon === "string" ? (
@@ -423,7 +424,7 @@ export function SidebarResponsive(props) {
                     {prop.icon}
                   </IconBox>
                 )}
-                <Text color={inactiveColor} my="auto" fontSize="sm">
+                <Text color={inactiveColor} my="auto" fontSize="lg">
                   {document.documentElement.dir === "rtl"
                     ? prop.rtlName
                     : prop.name}

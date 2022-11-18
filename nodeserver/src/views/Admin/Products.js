@@ -31,8 +31,8 @@ const Product = () => {
   const textColor = useColorModeValue("gray.700", "white");
   const [filter, setFilter] = React.useState({
     name: "",
-    isMain: false,
-    isActive: false,
+    isMain: { id: "", name: "" },
+    isActive: { id: "", name: "" },
     courses: { id: "", name: "" },
   });
 
@@ -55,8 +55,8 @@ const Product = () => {
 
     if (
       filter.name !== "" ||
-      filter.isActive ||
-      filter.isMain ||
+      filter.isActive.id ||
+      filter.isMain.id ||
       filter.courses.id !== ""
     ) {
       callData();
@@ -84,7 +84,7 @@ const Product = () => {
   }
   return (
     <AuthorizeProvider roles={["admin"]}>
-      <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
+      <Flex direction="column"  pt="75px">
         <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
           <CardHeader p="6px 0px 22px 0px">
             <Flex dir="rtl">

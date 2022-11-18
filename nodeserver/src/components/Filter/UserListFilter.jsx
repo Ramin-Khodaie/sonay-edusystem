@@ -87,7 +87,7 @@ const UserListFilter = (props) => {
                 onChange={selectChange}
                 data={studentStatus}
                 state={filter}
-                placeHolder={"وضعیت کاربر را انتخاب کنید"}
+                placeHolder={"نقش کاربر را انتخاب کنید"}
                 fieldId={"fStatus"}
               />
             </SimpleGrid>

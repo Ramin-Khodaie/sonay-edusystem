@@ -50,7 +50,7 @@ class SSettings:
     extra: dict
 
 
-def load_settings(mode, filename="settings.json"):
+def load_settings(mode, filename="pyserver\settings.json"):
     """
     Loads the configuration file named settings.json by default.
     Returns an array with two

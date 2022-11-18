@@ -88,7 +88,7 @@ const RecentOrder = () => {
 
   return (
     <AuthorizeProvider roles={["admin"]}>
-      <Card mt={"100px"}>
+      <Card mt={"75px"}>
         <Flex direction="column">
           <Accordion allowToggle>
             <AccordionItem>

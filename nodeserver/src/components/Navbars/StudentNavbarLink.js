@@ -72,9 +72,11 @@ export default function StudentNavbarLink(props) {
             alignItems='center'
             flexDirection='row'>
             {/* <SearchBar me='18px' /> */}
-          
+          {
+            userInfo.full_roles.includes('student') && <DropDown />
+          }
 
-            <DropDown />
+            
 {/* 
             <NavLink to='/auth/signin'>
                 <Button

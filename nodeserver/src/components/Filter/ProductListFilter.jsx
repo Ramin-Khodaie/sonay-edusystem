@@ -27,7 +27,6 @@ import { ProductPop2 } from "components/PopOvers/ProductPopOver";
   
     const textColor = useColorModeValue("gray.700", "white");
 
-
     return (
       <Flex direction="column">
         <Accordion allowToggle>
@@ -64,7 +63,7 @@ import { ProductPop2 } from "components/PopOvers/ProductPopOver";
             <AccordionPanel pb={4}>
               <SimpleGrid
                 style={{ direction: "rtl" }}
-                columns={{ sm: 2, md: 2, xl: 4 }}
+                columns={{ sm: 1, md: 2, xl: 4 }}
                 spacing="24px"
                 mb="20px"
      
@@ -93,12 +92,26 @@ import { ProductPop2 } from "components/PopOvers/ProductPopOver";
                   fieldId={"courses"}
                 />
 
-          
-                <Checkbox onChange={handleCheckBoxChange} id="isActive" size={"lg"} >
-فقط محصولات فعال                </Checkbox>
-                <Checkbox onChange={handleCheckBoxChange} id="isMain" size={"lg"} >
-فقط محصولات اصلی                </Checkbox>
-             
+
+<CustomSelector
+                  onChange={selectChange}
+                  data={[{"_id" : 'active' , 'name' : "فعال"},{"_id" : 'deactive' , 'name' : "غیرفعال"}]}
+                  state={filter}
+                  placeHolder={"وضعیت محصول را انتخاب کنید"}
+                  fieldId={"isActive"}
+                />
+
+
+
+<CustomSelector
+                  onChange={selectChange}
+                  data={[{"_id" : 'main' , 'name' : "اصلی"},{"_id" : 'not_main' , 'name' : "جانبی"}]}
+                  state={filter}
+                  placeHolder={"نوع محصول را انتخاب کنید"}
+                  fieldId={"isMain"}
+                />
+
+
 
                 
 

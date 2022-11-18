@@ -8,6 +8,7 @@ import {
   Td,
   useColorModeValue,
   Text,
+  Box,
 } from "@chakra-ui/react";
 import OrderListTableRow from "./OrderListTableRow";
 import { useSelector } from "react-redux";
@@ -19,52 +20,47 @@ const OrderListTable = (props) => {
 
   const { cartItems } = useSelector((state) => state.order);
   return (
-    <Table style={{ direction: "rtl" }} variant="simple" color={textColor}>
-      <Thead verticalAlign={true}>
-        <Tr my=".8rem" pl="0px" color="gray.400">
-          <Th pl="0px" borderColor={borderColor} color="gray.400"></Th>
-          <Th borderColor={borderColor} color="gray.400" textAlign="center">
-            عنوان کتاب
-          </Th>
-  
+    <Box style={{ direction: "rtl" }} maxW={"100%"} overflowX={{ sm: "scroll", xl: "hidden" }}>
+      <Table style={{ direction: "rtl" }} variant="simple" color={textColor}>
+        <Thead verticalAlign={true}>
+          <Tr my=".8rem" pl="0px" color="gray.400">
+            <Th pl="0px" borderColor={borderColor} color="gray.400"></Th>
+            <Th borderColor={borderColor} color="gray.400" textAlign="center">
+              عنوان کتاب
+            </Th>
 
-          <Th borderColor={borderColor} color="gray.400" textAlign="center">
-            تعداد
-          </Th>
-          <Th borderColor={borderColor} color="gray.400" textAlign="center">
-            قیمت هر واحد
-          </Th>
-          <Th borderColor={borderColor} color="gray.400" textAlign="center">
-            حذف
-          </Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {cartItems.length > 0 ? (
-          cartItems.map((item, idx) => {
-            return (
-              <OrderListTableRow
-                cartitem={item}
-                key={item.id}
-                
-              />
-            );
-          })
-        ) : (
-          <Td colSpan="6">
-            <Flex
-              flexDirection="column"
-              height="200"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <CartIcon fontSize="3xl" mb="15px" />
-              <Text fontSize="2xl">سبد خرید خالی میباشد</Text>
-            </Flex>
-          </Td>
-        )}
-      </Tbody>
-    </Table>
+            <Th borderColor={borderColor} color="gray.400" textAlign="center">
+              تعداد
+            </Th>
+            <Th borderColor={borderColor} color="gray.400" textAlign="center">
+              قیمت هر واحد
+            </Th>
+            <Th borderColor={borderColor} color="gray.400" textAlign="center">
+              حذف
+            </Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {cartItems.length > 0 ? (
+            cartItems.map((item, idx) => {
+              return <OrderListTableRow cartitem={item} key={item.id} />;
+            })
+          ) : (
+            <Td colSpan="6">
+              <Flex
+                flexDirection="column"
+                height="200"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <CartIcon fontSize="3xl" mb="15px" />
+                <Text fontSize="2xl">سبد خرید خالی میباشد</Text>
+              </Flex>
+            </Td>
+          )}
+        </Tbody>
+      </Table>
+    </Box>
   );
 };
 

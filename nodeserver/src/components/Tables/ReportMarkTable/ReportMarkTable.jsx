@@ -32,7 +32,7 @@ import {
     const borderColor = useColorModeValue("gray.200", "gray.600");
   
     return (
-      <CardBody overflowX={{ sm: "scroll", xl: "hidden" }}>
+      <CardBody style={{ direction: "rtl" }} maxW={"100%"} overflowX={{ sm: "scroll", xl: "hidden" }}>
         <Table style={{ direction: "rtl" }} variant="simple" color={textColor}>
           <Thead>
             <Tr my=".8rem" pl="0px" color="gray.400">

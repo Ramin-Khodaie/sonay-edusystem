@@ -104,7 +104,7 @@ class SCourse:
     def get_course_list(self):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
-        cl = list(col.find({"status.id" : "active"}))
+        cl = list(col.find({} , {'_id' : 1 , "name" : 1}))
        
         return 200, "ok", "ok", list(cl) 
     

@@ -1,15 +1,3 @@
-'''
-File: adatabase_base.py
-Project: database
-File Created: Saturday, 31st October 2020 3:35:37 pm
-Author: Ahad Rafat Talebi (office) (ahadrt@gmail.com)
------
-Last Modified: Thursday, 11th March 2021 1:29:48 pm
-Modified By: Ahad Rafat Talebi (office) (ahadrt@gmail.com>)
------
-Copyright 2018 - 2021 Borna Mehr Fann, Borna Mehr Fann
-Trademark barteh
-'''
 
 class ADatabaseBase:
     def __init__(self, **db):

@@ -68,7 +68,6 @@ await getUserByRole('teacher').then((res)=>{
       name: "",
     },
   });
-  console.log(teachers,1515)
 
   const handleDelete = (_id)=>{
 
@@ -97,11 +96,11 @@ await getUserByRole('teacher').then((res)=>{
   };
 
   useEffect(() => {
-
+console.log(filter,777)
     if (
-      filter.fTeacher !== "" ||
+      filter.fTeacher.id !== "" ||
       filter.fFullName !== "" ||
-      filter.fStatus !== ""
+      filter.fStatus.id !== ""
     ) {
 
       doSearch();
@@ -115,7 +114,7 @@ await getUserByRole('teacher').then((res)=>{
 console.log(filter,4545)
   return (
     <AuthorizeProvider roles={["admin"]}>
-      <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
+      <Flex direction="column" pt="75px">
         <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
           <CardHeader p="6px 0px 22px 0px">
             <Flex dir='rtl' >
@@ -142,7 +141,7 @@ console.log(filter,4545)
           </CardBody>
         </Card>
 
-        <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
+        <Card  my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
           <CardHeader p="6px 0px 22px 0px">
             <CourseListFilter
               filter={filter}

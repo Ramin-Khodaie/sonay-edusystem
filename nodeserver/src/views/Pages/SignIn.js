@@ -149,17 +149,20 @@ useEffect(()=>{
             borderRadius='15px'
             p='50px'
             mx={{ base: "100px" }}
-            m={{ base: "20px", md: "auto" }}
+            m='auto'
+            mt='0px'
+            // m={{ base: "20px", md: "auto" }}
             bg={bgForm}
             boxShadow={useColorModeValue(
               "0px 5px 14px rgba(0, 0, 0, 0.05)",
               "unset"
             )}>
             <Text
-              fontSize='xl'
+              fontSize='2xl'
               color={textColor}
               fontWeight='bold'
               textAlign='center'
+              fontFamily={'Lalezar'}
               mb='22px'>
               : ورود به پنل کاربری  
             </Text>

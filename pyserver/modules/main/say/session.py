@@ -1,15 +1,4 @@
-'''
-File: session.py
-Project: aaa
-File Created: Sunday, 10th January 2021 12:40:00 pm
-Author: Ahad Rafat Talebi (office) (ahadrt@gmail.com)
------
-Last Modified: Thursday, 11th March 2021 1:29:10 pm
-Modified By: Ahad Rafat Talebi (office) (ahadrt@gmail.com>)
------
-Copyright 2018 - 2021 Borna Mehr Fann, Borna Mehr Fann
-Trademark barteh
-'''
+
 import datetime
 import enum
 import time

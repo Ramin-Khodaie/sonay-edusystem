@@ -93,9 +93,13 @@ function UserListTableRow(props) {
 
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
         {productCourse.map((c) => (
-          <Text fontSize="md" color={textColor} fontWeight="bold">
+          <Flex minW={'200px'}  maxH={'100px'} overflowY={'scroll'} direction="column">
+
+                     <Text fontSize="md" color={textColor} fontWeight="bold">
             {c.name}
           </Text>
+          </Flex>
+ 
         ))}
       </Td>
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>

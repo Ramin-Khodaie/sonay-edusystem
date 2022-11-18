@@ -75,21 +75,21 @@ class SProduct:
         if 'course' in filter and filter['course'] != "":
             is_filter = True
             filters["courses.id"] = filter['course']
-        if 'is_active' in filter and filter['is_active']:
-            filters["is_active"] = filter['is_active']
+        if 'is_active' in filter and filter['is_active']!= "":
+            filters["is_active"] = True if filter['is_active'] == 'active' else False
             is_filter = True
-        if 'is_main' in filter and filter['is_main']:
-            filters["is_main"] = filter['is_main']
+        if 'is_main' in filter and filter['is_main']!= "":
+            filters["is_main"] = True if filter['is_main'] == 'main' else False
             is_filter = True
 
         #to limit output if filter is not selected , only 20 active product will return
 
 
         if is_filter:
-            d = col.find(filters).sort([('name', pymongo.DESCENDING)])
+            d = col.find(filters).sort([('name', pymongo.ASCENDING)])
         else:
             filters['is_active'] = True
-            d = col.find(filters).sort([('name', pymongo.DESCENDING)]).limit(20)   
+            d = col.find(filters).sort([('name', pymongo.ASCENDING)]).limit(20)   
         
         
         return 200, "ok", "ok", list(d)

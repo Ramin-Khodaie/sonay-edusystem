@@ -40,16 +40,16 @@ import DeleteConfirmModal from "components/Modal/deleteConfirmModal";
                 {name}
               </Text>
               <Text fontSize="sm" color="gray.400" fontWeight="normal">
-                {email}
+                {username}
               </Text>
             </Flex>
           </Flex>
         </Td>
   
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <Flex direction="column">
+        <Td  borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+          <Flex minW={'200px'}  maxH={'100px'} overflowY={'scroll'} direction="column">
             {domain.map((itm,id)=>(
-              <Text fontSize="md" color={textColor} fontWeight="bold">
+              <Text  fontSize="md" color={textColor} fontWeight="bold">
               {itm.name}
             </Text>
             ))}

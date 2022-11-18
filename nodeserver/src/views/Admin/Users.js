@@ -89,7 +89,7 @@ const handleDelete = (username)=>{
  
   return (
     <AuthorizeProvider roles={["admin"]}>
-      <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
+      <Flex direction="column"  pt="75px">
         <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
           <CardHeader p="6px 0px 22px 0px">
             <Flex dir='rtl' >

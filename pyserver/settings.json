@@ -22,45 +22,12 @@
     },
     
     "databases": [
+    
       {
-        "default": false,
-        "name": "educational_app",
-        "type": "mongodb",
-        "host": "mongodb",
-        "port": 27017,
-        "username": "",
-        "password": "",
-        "database": "educational_app",
-        "appName": "sonay",
-        "options": {
-          "retryReads": true,
-          "retryWrites": true,
-          "ssl": false,
-          "tlsCertificateKeyFile": null,
-          "tlsCertificateKeyFilePassword": null,
-          "tlsCAFile": null,
-          "tlsAllowInvalidCertificates": true,
-          "tlsAllowInvalidHostnames": false,
-          "tlsInsecure": false,
-          "connectTimeoutMS": 20000,
-          "socketTimeoutMS": 20000,
-          "compressors": "zstd",
-          "zlibCompressionLevel": -1,
-          "poolOptions": {
-            "maxPoolSize": 100,
-            "minPoolSize": 0,
-            "maxIdleTimeMS": 600,
-            "waitQueueMultiple": 50,
-            "waitQueueTimeoutMS": 20000
-          }
-        }
-      },
-     
-      {
-        "default": false,
+        "default": true,
         "name": "sonay",
         "type": "mongodb",
-        "host": "mongodb",
+        "host": "localhost",
         "port": 27017,
         "username": "",
         "password": "",

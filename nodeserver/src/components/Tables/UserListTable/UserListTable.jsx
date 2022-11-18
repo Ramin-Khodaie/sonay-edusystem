@@ -26,8 +26,8 @@ function UserListTable(props) {
   const borderColor = useColorModeValue("gray.200", "gray.600");
  
   return (
-    <CardBody>
-      <Table style={{ direction: "rtl" }} variant="simple" color={textColor}>
+    <CardBody  style={{ direction: "rtl" }} maxW={"100%"} overflowX={{ sm: "scroll", xl: "hidden" }}>
+      <Table  variant="simple" color={textColor}>
         <Thead>
           <Tr my=".8rem" pl="0px" color="gray.400">
             <Th pl="0px" borderColor={borderColor} color="gray.400">
@@ -42,8 +42,8 @@ function UserListTable(props) {
             <Th borderColor={borderColor} color="gray.400">
               شماره تماس
             </Th>
-            <Th borderColor={borderColor}></Th>
-            <Th borderColor={borderColor}></Th>
+            <Th borderColor={borderColor}>ویرایش</Th>
+            <Th borderColor={borderColor}>حذف</Th>
           </Tr>
         </Thead>
 
