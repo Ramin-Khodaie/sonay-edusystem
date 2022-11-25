@@ -28,7 +28,8 @@ if sn.state == "READY":
         "http://localhost:3000",
         "http://0.0.0.0:3000",
         "http://127.0.0.1:8000/"
-        "http://0.0.0.0/"
+        "http://0.0.0.0/",
+        "http://sahand-esteglal.ir"
     ]
 
     app.add_middleware(
