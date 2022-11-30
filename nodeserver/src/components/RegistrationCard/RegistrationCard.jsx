@@ -66,10 +66,9 @@ function RegistrationCard(props) {
 
   return (
     <>
-      <Card mb={"20px"}>
-        <CardHeader h={"auto"} pb={"10px"}>
+      <CardBody h={"auto"} pb={"10px"} mb={"20px"}>
          
-          <Text textAlign={"center"} fontSize={"25px"} fontFamily={"Lalezar"}>
+          <Text  textAlign={"center"} fontSize={"25px"} fontFamily={"Lalezar"}>
             شما در حال ثبت نام برای دوره{" "}
             {courseDetailData.c_obj.length > 0 && courseDetailData.c_obj[0].name} هستید
           </Text>
@@ -80,8 +79,7 @@ function RegistrationCard(props) {
             جهت ثبت نام برای این دوره روی دکمه سبز رنگ "ثبت نام " کلیک کنید. قبل
             از ورود به درگاه پرداخت از خاموش بودن وی پی ان اطمینان حاصل کنید
           </Text>
-        </CardHeader>
-      </Card>
+      </CardBody>
 
       <Card>
         <CardBody>

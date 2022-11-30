@@ -113,6 +113,7 @@ class SonayApp:
         else:
             
             print("settings.json could not be loaded")
+            return
             
 
     def __init__(self, mode=None):

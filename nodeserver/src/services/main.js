@@ -13,7 +13,7 @@ export const bixios = axios.create({
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
   },
-  baseURL: "http://sahand-esteglal.ir:80/api/"
+  baseURL: "//sahand-esteglal.ir/api/"
 });
 
 

@@ -21,15 +21,15 @@ if sn.state == "READY":
         app.include_router(router=r, prefix='/api')
 
     origins = [
-        "http://192.168.0.1",
+        "//192.168.0.1",
         "*",
-        "http://0.0.0.0",
-        "http://localhost:8080",
-        "http://localhost:3000",
-        "http://0.0.0.0:3000",
-        "http://127.0.0.1:8000/"
-        "http://0.0.0.0/",
-        "http://sahand-esteglal.ir"
+        "//0.0.0.0",
+        "//localhost:8080",
+        "//localhost:3000",
+        "//0.0.0.0:3000",
+        "//127.0.0.1:8000/"
+        "//0.0.0.0/",
+        "//sahand-esteglal.ir"
     ]
 
     app.add_middleware(

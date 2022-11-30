@@ -50,7 +50,7 @@ class SSettings:
     extra: dict
 
 
-def load_settings(mode, filename="pyserver\settings.json"):
+def load_settings(mode, filename="pyserver/settings.json"):
     """
     Loads the configuration file named settings.json by default.
     Returns an array with two
@@ -76,7 +76,7 @@ def load_settings(mode, filename="pyserver\settings.json"):
     _settings = None
     _state = "ISREADING"
 
-    if path.isfile(path.abspath(filename)):
+    if path.isfile(filename):
         data = json.load(codecs.open(filename, 'r', 'utf-8-sig'))
         _settings = SSettings(**data)
         _state = "READY"

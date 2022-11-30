@@ -21,7 +21,7 @@ function NoNextCourseAlert(props) {
       <AlertIcon boxSize="40px" mr={0} />
       <AlertTitle mt={4} mb={1} fontSize="lg">
         <Text textAlign={"center"} fontFamily={"Lalezar"} fontSize={"25px"}>
-        کاربر گرمی{" "}
+        کاربر گرامی{" "}
         </Text>
       </AlertTitle>
       <AlertDescription mb={"10px"} mx={"13px"} maxW={"lg"}>

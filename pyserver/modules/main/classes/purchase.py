@@ -17,7 +17,7 @@ mobile = '09337814796'  # Optional
 ZP_API_REQUEST = "https://api.zarinpal.com/pg/v4/payment/request.json"
 ZP_API_VERIFY = "https://api.zarinpal.com/pg/v4/payment/verify.json"
 ZP_API_STARTPAY = "https://www.zarinpal.com/pg/StartPay/{authority}"
-CallbackURL = 'http://sahand-esteglal.ir:3000/#/paymentverify'
+CallbackURL = '//sahand-esteglal.ir/#/paymentverify'
 # CallbackURL = 'http://sahand-esteglal.ir/verify'
 
 

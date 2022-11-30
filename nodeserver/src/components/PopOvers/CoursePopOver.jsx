@@ -97,7 +97,7 @@ export const CoursePop2 = () => {
 export const CoursePop3 = () => {
   const iconBlue = useColorModeValue("blue", "white");
   return (
-    <Popover     offset={[-20,20]} arrowSize={'12'} >
+    <Popover      offset={[-20,20]} arrowSize={'12'} >
       <PopoverTrigger>
 
         <Button mt={'10px'}
@@ -107,7 +107,7 @@ export const CoursePop3 = () => {
       
 
       </PopoverTrigger>
-      <PopoverContent w={'500px'}  >
+      <PopoverContent w={'400px'}  >
       <PopoverCloseButton />
         <PopoverArrow    />
         

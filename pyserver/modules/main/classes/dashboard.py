@@ -478,14 +478,14 @@ class SDashboard:
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.purchase_collection]
         data = list(col.find({"type": "registration"}).sort(
-            key_or_list='g_date', direction=1).limit(num))
+            key_or_list='g_date', direction=-1).limit(num))
         return 200, "ok", "course is inserted", data
 
     def get_recent_mark(self, num):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
         data = list(col.find({}).sort(
-            key_or_list='g_date', direction=1).limit(num))
+            key_or_list='g_date', direction=-1).limit(num))
         return 200, "ok", "course is inserted", data
 
     def get_top_student(self, num):
