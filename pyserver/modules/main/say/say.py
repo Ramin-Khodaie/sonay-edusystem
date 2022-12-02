@@ -9,10 +9,11 @@ from typing import List
 import jwt
 import time
 from modules.main.s_settings import SSettings
+from modules.main.s_session import SSession
 from modules.main.classes.user import SUser
 from modules.main.database.adatabase import ADatabase
 import copy
-from .session import ASession
+
 import datetime
 import hashlib
 import base64
@@ -91,8 +92,8 @@ class SAY():
 
     def init(self):
         if self.db.type == 'mongodb':
-            ASession.set_collection(self.db.mongo_db["a_session"])
-            ASession.collect_garbage()
+            SSession.set_collection(self.db.mongo_db["s_session"])
+            SSession.collect_garbage()
             self.init_users()
 
 

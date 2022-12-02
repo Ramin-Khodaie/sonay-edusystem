@@ -5,6 +5,7 @@ export const getAccessToken = () => {
 }
 
 export const bixios = axios.create({
+  withCredentials: true,
 
 
   headers: {
@@ -13,7 +14,7 @@ export const bixios = axios.create({
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
   },
-  baseURL: "//sahand-esteglal.ir/api/"
+  baseURL: "//localhost:8000/api/"
 });
 
 

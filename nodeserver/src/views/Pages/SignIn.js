@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 // Chakra imports
 import {
+  Image,
   Box,
   Flex,
   Button,
@@ -13,6 +14,7 @@ import {
   Switch,
   Text,
   useColorModeValue,
+  IconButton,
 } from "@chakra-ui/react";
 // Assets
 import signInImage from "assets/img/signInImage.png";
@@ -23,6 +25,7 @@ import { withRouter } from "helpers/components/withRouter/withRouter";
 import { useDispatch, useSelector } from "react-redux";
 import { userInfoAction } from "redux/user/UserInfo/UserInfoAction";
 import useNotify from "helpers/notify/useNotify";
+import { MdRefresh } from "react-icons/md";
 
 function SignIn(props) {
   // Chakra color mode
@@ -38,9 +41,10 @@ function SignIn(props) {
   const dispatch = useDispatch()
   const [formData , setFormData] = React.useState({
     username : "",
-    password : ""
+    password : "",
+    captcha : ""
   })
-const [state,setState] = useState({isLoading : false})
+const [state,setState] = useState({isLoading : false,rnd:0})
 
 
   const handleChange = (event) => {
@@ -66,6 +70,7 @@ function createPost(){
   bixios.post("/users/login" , {
     username: formData.username,
     password: formData.password,
+    captcha : formData.captcha
  
   }
   ).then(async (response) => {
@@ -82,11 +87,17 @@ function createPost(){
   })
 
   .catch((err) => {
+    console.log(err,7878)
     if(err.response.status === 403){
       notify("نام کاربری یا رمز عبور اشتباه است", true, "solid", "error");
       setState({...state , isLoading : false})
 
 
+    }
+    else if(err.response.status === 422 && err.response.data.detail.result === 'wrong_captcha'){
+      notify("لطفا کاراکتر هایی که در تصویر مشاهده می کنید مجددا وارد نمایید", true, "solid", "error");
+      setState({...state , isLoading : false , rnd: state.rnd+1 })
+      setFormData({...formData , captcha : ""})
     }
   })
 }
@@ -111,6 +122,9 @@ const logOutUser = ()=>{
   localStorage.setItem("at", "");
   localStorage.setItem("rt", "");
   
+}
+const handleCaptchaRefresh = ()=>{
+  setState({...state , rnd: state.rnd+1})
 }
 
 useEffect(()=>{
@@ -273,6 +287,31 @@ useEffect(()=>{
                 mb='24px'
                 size='lg'
               />
+
+<FormControl display='flex' alignItems='center' mb='24px' >
+
+<IconButton  onClick={handleCaptchaRefresh}  aria-label='refresh' icon={<MdRefresh />} />
+
+<Image src={`//localhost:8000/api/users/captcha?q=${state.rnd}`} alt='captcha' />
+<Input
+              onChange={
+                handleChange
+              }
+              id="captcha"
+              value={formData.captcha}
+                textAlign='right'
+                variant='auth'
+                fontSize='sm'
+                placeholder="کد امنیتی"
+                ms='4px'
+                mb='24px'
+                size='lg'
+              />
+
+
+</FormControl>
+
+
               <FormControl display='flex' alignItems='center' mb='24px'>
                 <Switch id='remember-login' colorScheme='blue' me='10px' />
                 <FormLabel htmlFor='remember-login' mb='0' fontWeight='normal'>

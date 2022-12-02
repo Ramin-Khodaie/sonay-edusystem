@@ -7,23 +7,60 @@ from dependencies import get_token_header
 from modules.main.s_settings import SSettings
 from modules.main.say.say import SAY
 from modules.main.api_return import api_return
+from modules.main.s_session import SSession
 
 from modules.main.sonay_app import sn
 from modules.main.classes.user import SUser
+from fastapi.responses import StreamingResponse
 
-
+import random
+from captcha.image import ImageCaptcha
 class User:
     pass
 
-
+captcha_image = ImageCaptcha()
 router = APIRouter(prefix='/users', tags=["user"])
 
 sn.add_router(router)
 
 
+chars = 'abcdefghijklmnopqrstuvwxyz'
+
+@router.get("/captcha")
+@sn(roles=[])
+async def get_captcha(session: SSession):
+    show_str = ""
+
+    for i in range(0, 5):
+        nn=random.randint(0,25)
+        show_str = show_str +chars[nn]
+
+        pass
+
+    captcha_str = show_str.lower()
+
+    # while True:
+    #     n = random.randint(12345, 98765)
+    #     li = [char for char in str(n)]
+    #     if "1" not in li and "7" not in li:
+    #         break
+    # captcha_str=str(n)
+
+    session.set('captcha', captcha_str)
+
+    # image = ImageCaptcha()
+    data = captcha_image.generate(show_str, 'png')
+    res = StreamingResponse(data, media_type="image/png")
+    return res
+
+
 @router.post("/login")
 @sn(fast=True)
-def login(say: SAY, info: dict):
+def login(say: SAY,session: SSession, info: dict):
+    session_captcha = session('captcha')
+    if info["captcha"].lower() != session_captcha:
+        return api_return(422, "wrong_captcha", "captcha is incorrect", [])
+
     ret = say.authenticate(info["username"], info['password'])
     return api_return(ret[0], ret[1], ret[2], data=ret[3])
 

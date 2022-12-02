@@ -5,7 +5,7 @@ from starlette.responses import JSONResponse
 from fastapi import Request, Response, HTTPException
 
 from modules.main.say.say import SAY
-from modules.main.say.session import ASession
+from modules.main.s_session import SSession
 from modules.main.classes.user import SUser
 from .s_settings import SSettings
 
@@ -98,7 +98,7 @@ def sn_decorator(say: SAY, settings: SSettings, *, roles : List[str] = [], fast:
 
             session_id: str = request.cookies.get(session_token_name)
 
-            session = ASession(session_id)
+            session = SSession(session_id)
 
 
 
