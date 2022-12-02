@@ -26,7 +26,6 @@ export const getUserInfo = () => {
         resolve(res);
       }
     } catch (error) {
-       console.log(error);
     }
   });
 };
@@ -45,6 +44,7 @@ export const createUser = (user) => {
         confirm_password : user.confirmPassword,
         courses: user.courses,
         role: user.role,
+        is_enable : user.is_enable
       });
       
       if (res.status === 200) {
@@ -78,6 +78,24 @@ export const deleteUser= (username) => {
 };
 
 
+export const enableUser= (username,isEnable) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.delete("/users/enableuser" , {
+        params:{
+          'username' : username,
+          "is_enable" : isEnable
+        }
+      });
+
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+      resolve(error.response.status);
+    }
+  });
+};
 
 
 export const getUserByRole = (role) => {

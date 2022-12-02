@@ -89,6 +89,14 @@ def delete_user(say: SAY, username: str):
     return api_return(ret[0], ret[1], ret[2], data=ret[3])
 
 
+
+@router.delete("/enableuser")
+@sn(roles=['admin'])
+def enable_user(say: SAY, username: str , is_enable:bool):
+    ret = say.enable_user(username,is_enable)
+    return api_return(ret[0], ret[1], ret[2], data=ret[3])
+
+
 @router.get("/checkregisterform")
 @sn()
 def check_register_form(say: SAY, user_name: str = "", email: str = "", phone: str = None):

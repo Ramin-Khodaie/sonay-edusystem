@@ -13,9 +13,10 @@ import {
   import React from "react";
   import UserEditModal from "components/Modal/userEdit";
 import DeleteConfirmModal from "components/Modal/deleteConfirmModal";
+import EnableConfirmModal from "components/Modal/enableConfirmModal";
   
   function UserListTableRow(props) {
-    const {userList,setUserList, handleDelete , logo, name, email, domain, role, date, isLast ,changeSent , sent , userId,username ,courses} = props;
+    const {userList,setUserList, handleDelete,handleEnable , logo, name, email, domain, role, date, isLast ,changeSent , sent , userId,username ,courses , isEnable} = props;
     const textColor = useColorModeValue("gray.500", "white");
     const titleColor = useColorModeValue("gray.700", "white");
     const bgStatus = useColorModeValue("gray.400", "navy.900");
@@ -85,6 +86,11 @@ import DeleteConfirmModal from "components/Modal/deleteConfirmModal";
           <UserEditModal userList={userList}  setUserList={setUserList}  changeSent={changeSent} sent={sent} userId={userId} courses={courses} />
           
         </Td>
+
+        <Td  mx={0} borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+  
+  <EnableConfirmModal handleEnable={handleEnable} _id={username} isEnable={isEnable} />       </Td>
+
         <Td  mx={0} borderColor={borderColor} borderBottom={isLast ? "none" : null}>
   
   <DeleteConfirmModal handleDelete={handleDelete} _id={username} />       </Td>

@@ -42,8 +42,7 @@ const DashboardBarChart = () => {
       });
     });
   };
-  console.log(teacherAvg,4141)
-      console.log(teacherAvgOpt,4141)
+
   useEffect(() => {
 
     getTeacherAvgData();

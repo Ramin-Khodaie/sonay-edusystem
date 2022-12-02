@@ -96,7 +96,6 @@ await getUserByRole('teacher').then((res)=>{
   };
 
   useEffect(() => {
-console.log(filter,777)
     if (
       filter.fTeacher.id !== "" ||
       filter.fFullName !== "" ||
@@ -111,7 +110,6 @@ console.log(filter,777)
     callData()
   }, []);
 
-console.log(filter,4545)
   return (
     <AuthorizeProvider roles={["admin"]}>
       <Flex direction="column" pt="75px">

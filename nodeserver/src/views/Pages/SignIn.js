@@ -87,7 +87,6 @@ function createPost(){
   })
 
   .catch((err) => {
-    console.log(err,7878)
     if(err.response.status === 403){
       notify("نام کاربری یا رمز عبور اشتباه است", true, "solid", "error");
       setState({...state , isLoading : false})

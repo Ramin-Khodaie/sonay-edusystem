@@ -14,7 +14,6 @@ const TeacherDashboard = () => {
 const callData = async()=>{
   await getTeacherCounts().then((res)=>{
 
-    console.log(res,4545)
     setSt(res.data.data.st)
     setCr(res.data.data.cr)
     setCourseDetail(res.data.data.data)

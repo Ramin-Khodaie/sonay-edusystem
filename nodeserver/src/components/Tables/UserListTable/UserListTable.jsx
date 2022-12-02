@@ -20,11 +20,10 @@ import CardBody from "components/Card/CardBody.js";
 import React from "react";
 import UserListTableRow from "components/Tables/UserListTable/UserListTableRow";
 function UserListTable(props) {
-  const { data, courses , userList , setUserList , handleDelete } = props;
+  const { data, courses , userList , setUserList , handleDelete , handleEnable } = props;
 
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
- 
   return (
     <CardBody  style={{ direction: "rtl" }} maxW={"100%"} overflowX={{ sm: "scroll", xl: "hidden" }}>
       <Table  variant="simple" color={textColor}>
@@ -43,6 +42,7 @@ function UserListTable(props) {
               شماره تماس
             </Th>
             <Th borderColor={borderColor}>ویرایش</Th>
+            <Th borderColor={borderColor}>فعال/غیرفعال</Th>
             <Th borderColor={borderColor}>حذف</Th>
           </Tr>
         </Thead>
@@ -69,6 +69,8 @@ function UserListTable(props) {
                 userList={userList}
                  setUserList={setUserList}
                  handleDelete={handleDelete}
+                 handleEnable={handleEnable}
+                 isEnable={row.is_enable}
               />
             ))}
         </Tbody>

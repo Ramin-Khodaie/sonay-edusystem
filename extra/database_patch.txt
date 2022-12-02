@@ -1,0 +1,1 @@
+db.s_user.updateMany({},{"$set" : {is_enable : true}})

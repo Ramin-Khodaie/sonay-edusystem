@@ -18,7 +18,7 @@ import {
   PopoverAnchor,
   Button,
   Tag,
-  Stack
+  Stack,
 } from "@chakra-ui/react";
 
 // Custom components
@@ -38,14 +38,15 @@ import { getUserList } from "services/user";
 import { PhoneIcon, QuestionIcon, QuestionOutlineIcon } from "@chakra-ui/icons";
 import { UserPop1 } from "components/PopOvers/UserPopOver";
 import { deleteUser } from "services/user";
+import { enableUser } from "services/user";
 const Users = () => {
   const textColor = useColorModeValue("gray.700", "white");
 
   const studentStatus = [
-    {'_id' : 'admin','name' : 'ادمین'},
-    {'_id' :'teacher','name' : 'دبیر'},
-    {'_id' :'student','name' :'زبان آموز'}
-  ]
+    { _id: "admin", name: "ادمین" },
+    { _id: "teacher", name: "دبیر" },
+    { _id: "student", name: "زبان آموز" },
+  ];
 
   const boxBg = useColorModeValue("gray.100", "navy.600");
   const { courseList } = useSelector((state) => state.courseList);
@@ -78,35 +79,42 @@ const Users = () => {
     setFilter(f);
   };
 
-const handleDelete = (username)=>{
-  deleteUser(username).then((res)=>{
-    if(res.status===200){
-      setUserList(userList.filter((user)=>user.username !== username))
-    }
-  })
+  const handleDelete = (username) => {
+    deleteUser(username).then((res) => {
+      if (res.status === 200) {
+        setUserList(userList.filter((user) => user.username !== username));
+      }
+    });
+  };
 
-}
- 
+  const handleEnable = (username, isEnable) => {
+    enableUser(username, isEnable).then((res) => {
+      if (res.status === 200) {
+        setUserList(
+          userList.map((item, key) => {
+            return item.username === res.data.data.username
+              ? res.data.data
+              : item;
+          })
+        );
+
+       
+      } 
+    });
+  };
+
   return (
     <AuthorizeProvider roles={["admin"]}>
-      <Flex direction="column"  pt="75px">
+      <Flex direction="column" pt="75px">
         <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
           <CardHeader p="6px 0px 22px 0px">
-            <Flex dir='rtl' >
-            <Text
-              fontSize="xl"
-              color={textColor}
-              fontWeight="bold"
-             
-            >
-              ثبت کاربر جدید
-            </Text>
+            <Flex dir="rtl">
+              <Text fontSize="xl" color={textColor} fontWeight="bold">
+                ثبت کاربر جدید
+              </Text>
 
-            <UserPop1 />
-
-
+              <UserPop1 />
             </Flex>
-            
           </CardHeader>
 
           <CardBody>
@@ -141,7 +149,7 @@ const handleDelete = (username)=>{
               mb={"30px"}
               borderRadius={"3rem"}
               alignSelf={"center"}
-              width={{sm : "300px",md:"500px",lg :"500px"}}
+              width={{ sm: "300px", md: "500px", lg: "500px" }}
               bg={boxBg}
             >
               <Text textAlign={"center"} my={"10px"}>
@@ -155,6 +163,7 @@ const handleDelete = (username)=>{
               data={userList}
               courses={courseList}
               handleDelete={handleDelete}
+              handleEnable={handleEnable}
             />
           )}
         </Card>

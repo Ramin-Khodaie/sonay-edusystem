@@ -38,7 +38,6 @@ export const createMark = (mark) => {
 
 export const deleteMerk= (_id) => {
   return new Promise(async (resolve, reject) => {
-    console.log(_id,5454)
     try {
       const res = await bixios.delete("/marks/deletemark" , {
         params:{

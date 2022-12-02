@@ -108,7 +108,6 @@ export const getCourseBySearch = (filter) => {
         resolve(res);
       }
     } catch (error) {
-      console.log(error)
       return([])
     }
   });

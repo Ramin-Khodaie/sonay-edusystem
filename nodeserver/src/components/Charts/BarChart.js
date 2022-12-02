@@ -10,8 +10,7 @@ class BarChart extends React.Component {
       chartOptions: {},
     }
 
-    console.log(this.props.options,3131)
-    console.log(this.props.data,3131)
+
   }
 
   

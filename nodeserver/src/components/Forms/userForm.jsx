@@ -10,6 +10,7 @@ import {
   Button,
   Select,
   Spacer,
+  Checkbox,
 } from "@chakra-ui/react";
 
 // Custom components
@@ -49,6 +50,7 @@ function UserForm(props) {
     password: "",
     confirm_password: "",
     role: {'id' : "" , 'name' : ""},
+    isEnable: true,
     courses: [],
   });
   const resetFormInputs = () => {
@@ -64,12 +66,7 @@ function UserForm(props) {
       courses: [],
     });
   };
-  const handleDelete = (id) => (e) => {
-    const cc = formData.role.filter((element) => {
-      return element.id !== id;
-    });
-    setFormData({ ...formData, role: cc });
-  };
+
   const handleChange = (event) => {
     const field = event.target.id;
     const value = event.target.value;
@@ -88,6 +85,7 @@ function UserForm(props) {
       confirmPassword : formData.confirm_password,
       courses: formData.courses,
       role: formData.role,
+      is_enable: formData.isEnable,
     };
 
     await createUser(newUser).then((res) => {
@@ -157,7 +155,11 @@ function UserForm(props) {
     });
     setFormData({ ...formData, courses: cc });
   };
-  console.log(currentUser,5858)
+
+
+  const handleChckBoxChange = ()=>{
+    setFormData({...formData , isEnable: !formData.isEnable})
+  }
 
   useEffect(() => {
     if (currentUser.length != 0) {
@@ -170,6 +172,7 @@ function UserForm(props) {
         email: currentUser[0].email,
         courses: currentUser[0].courses,
         role: currentUser[0].role,
+        isEnable : currentUser[0].is_enable
       });
     }
   }, [currentUser]);
@@ -188,16 +191,6 @@ function UserForm(props) {
     });
   };
 
-  function containsObject(_id, list) {
-    var i;
-    for (i = 0; i < list.length; i++) {
-      if (list[i]["id"] === _id) {
-        return true;
-      }
-    }
-
-    return false;
-  }
 
   return (
     <>
@@ -288,13 +281,7 @@ function UserForm(props) {
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                 نقش {" "}
               </FormLabel>
-              {/* <MultiSelect
-                handleChange={handleOptionChange}
-                handleDelete={handleDelete}
-                data={data}
-                options={formData.roles}
-                placeholder="نقش کاربر را انتخاب کنید"
-              /> */}
+             
 
 
 <CustomSelector
@@ -390,6 +377,15 @@ function UserForm(props) {
                 mb="10px"
                 size="lg"
               />
+            </Box>
+
+
+
+            <Box pt={'35px'} minH="80px">
+
+             
+
+              <Checkbox onChange={handleChckBoxChange} isChecked={formData.isEnable}>آیا کاربر فعال هست؟</Checkbox>
             </Box>
           </Box>
 

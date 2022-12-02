@@ -4,7 +4,8 @@ import os
 import sys
 from bson import ObjectId
 import pymongo
-from pymongo.database import Database, Collection
+from pymongo.database import Database, Collection 
+from pymongo.collection import ReturnDocument
 from typing import List
 import jwt
 import time
@@ -84,6 +85,7 @@ class SAY():
                 "created": datetime.datetime.now(),
                 "role": {"id":"admin",
                 "name":"ادمین"},
+                "is_enable" : True ,
                           
                 "status" : {"id" : "reg",
                                       "name" : "ثبت نام شده"}
@@ -318,7 +320,7 @@ class SAY():
 
     def validate_save_user(self, user: dict, col: Collection ):
 
-        required = {"username", "full_name", "phone", "courses", "role"}
+        required = {"username", "full_name", "phone", "courses", "role" , "is_enable"}
         if user["_id"] == "":
             #save validation
             required.add('password')
@@ -434,6 +436,15 @@ class SAY():
         col.delete_one({"username":username})
 
         return 200,"ok","ok",username
+
+
+    def enable_user(self,username,is_enable):
+        col: Collection = self.db.mongo_db["s_user"]
+        res = col.find_one_and_update({"username":username} , {"$set" : {"is_enable" : is_enable}},
+        return_document=ReturnDocument.AFTER,
+        projection={'password': False, 'created': False , "creator" : False})
+
+        return 200,"ok","ok",res
     def edit_user(self,user,col):
         
         if "password" in user and user["password"] != "":
@@ -452,18 +463,7 @@ class SAY():
 
     
 
-        if self.get_user(userid=userid) is None:
-            return 404, "not_found", "user not found", None
-        else:
-            try:
-                col: Collection = self.db.mongo_db["s_user"]
-
-                col.delete_one({"userid": userid})
-                if userid in self._user_cache:
-                    del self._user_cache[userid]
-                return 200, "ok", "user is deleted", None
-            except:
-                return 500, "error", "error accrued during delete user", None
+ 
 
     def user_registration(self, user_info: dict) -> List:
         col: Collection = self.db.mongo_db["s_user"]
