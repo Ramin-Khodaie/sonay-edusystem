@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  Checkbox,
   Flex,
   Input,
   Select,
@@ -22,7 +23,7 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { UserPop2 } from "components/PopOvers/UserPopOver";
 
 const UserListFilter = (props) => {
-  const { filter, onChange, courses ,selectChange , studentStatus } = props;
+  const { filter, onChange, courses ,selectChange , studentStatus ,handleChckBoxChange } = props;
 
 
 
@@ -71,7 +72,7 @@ const UserListFilter = (props) => {
           <AccordionPanel pb={4}>
             <SimpleGrid
               style={{ direction: "rtl" }}
-              columns={{ sm: 1, md: 3, xl: 3 }}
+              columns={{ sm: 1, md: 4, xl: 4 }}
               spacing="24px"
               mb="20px"
             >
@@ -90,6 +91,7 @@ const UserListFilter = (props) => {
                 placeHolder={"نقش کاربر را انتخاب کنید"}
                 fieldId={"fStatus"}
               />
+              <Checkbox onChange={handleChckBoxChange} defaultChecked={false}>فقط کاربران غیرفعال</Checkbox>
             </SimpleGrid>
           </AccordionPanel>
         </AccordionItem>

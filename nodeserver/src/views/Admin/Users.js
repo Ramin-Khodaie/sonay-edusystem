@@ -57,6 +57,7 @@ const Users = () => {
     fFullName: "",
     fCourse: { id: "", name: "" },
     fStatus: { id: "", name: "" },
+    isEnable : false
   });
 
   useEffect(() => {
@@ -64,11 +65,12 @@ const Users = () => {
     if (
       filter.fCourse !== "" ||
       filter.fFullName !== "" ||
-      filter.fStatus !== ""
+      filter.fStatus !== "" ||
+      filter.isEnabled
     ) {
       doSearch();
     }
-  }, [filter.fCourse, filter.fFullName, filter.fStatus]);
+  }, [filter.fCourse, filter.fFullName, filter.fStatus , filter.isEnable]);
 
   const doSearch = async () => {
     await getUserList(filter).then((res) => {
@@ -102,6 +104,9 @@ const Users = () => {
       } 
     });
   };
+  const handleChckBoxChange = ()=>{
+    setFilter({...filter , isEnable: !filter.isEnable})
+  }
 
   return (
     <AuthorizeProvider roles={["admin"]}>
@@ -132,6 +137,7 @@ const Users = () => {
               <Accordion allowToggle>
                 <AccordionItem>
                   <UserListFilter
+                  handleChckBoxChange={handleChckBoxChange}
                     courses={courseList}
                     filter={filter}
                     onChange={handleChange}

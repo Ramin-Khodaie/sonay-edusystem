@@ -130,7 +130,8 @@ export const getUserList = (filters) => {
         filter:{
           full_name : filters.fFullName,
           course : filters.fCourse,
-          status : filters.fStatus
+          status : filters.fStatus,
+          is_enable : filters.isEnable
         }
       }
       

@@ -16,15 +16,9 @@ import {
 } from "@chakra-ui/react";
 
 // Custom components
-import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
-import CardHeader from "components/Card/CardHeader.js";
-import UserForm from "components/Forms/userForm";
-import Pagination from "components/Pagination/pagination";
-import TablesTableRow from "components/Tables/TablesTableRow";
-import UserListFilter from "components/Filter/UserListFilter";
+
 import React, { useEffect, useState } from "react";
-import ProductListTableRow from "components/Tables/ProductListTable/ProductListTableRow";
 import MarkListTableRow from "./MarkListTableRows";
 function MarkListTable(props) {
   const { data , markList , setMarkList , myStudents , setmyStudents ,handleDelete  } = props;
