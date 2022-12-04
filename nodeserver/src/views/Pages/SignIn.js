@@ -98,6 +98,11 @@ function createPost(){
       setState({...state , isLoading : false , rnd: state.rnd+1 })
       setFormData({...formData , captcha : ""})
     }
+    else if(err.response.status === 422 && err.response.data.detail.result === 'inactive_user'){
+      notify("کاربری شما غیر فعال می باشد.", true, "solid", "error");
+      // setFormData({...formData , captcha : ""})
+      setState({...state , isLoading : false})
+    }
   })
 }
 

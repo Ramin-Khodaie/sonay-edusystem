@@ -26,8 +26,6 @@ class SDashboard:
         col2: Collection = db[self.course_collection]
         current_date = datetime.today()
 
-        # Subtract 20 months from current date
-
         one_month_ago = current_date - relativedelta(months=1)
         two_month_ago = current_date - relativedelta(months=2)
         itm_ready = {
@@ -54,7 +52,7 @@ class SDashboard:
                     'this_month': [
                         {
                             '$match': {'created': {'$gte': one_month_ago},
-                                       'role.id': 'student'}
+                                       'role.id': 'student' , "is_enable" : True}
 
                         },
                         {
@@ -76,7 +74,8 @@ class SDashboard:
                                        [
                                            {'created': {'$gte': two_month_ago}},
                                            {'created': {'$lt': one_month_ago}},
-                                           {'role.id': 'student'}
+                                           {'role.id': 'student'},
+                                           {"is_enable" : True}
                                        ]
                                        }
 
@@ -93,7 +92,7 @@ class SDashboard:
                         }
                     ],
                     'total': [{
-                        '$match': {'role.id': 'student'}
+                        '$match': {'role.id': 'student', "is_enable" : True}
                     },
 
                         {
@@ -120,7 +119,7 @@ class SDashboard:
                     'this_month': [
                         {
                             '$match': {'created': {'$gte': one_month_ago},
-                                       'role.id': 'teacher'}
+                                       'role.id': 'teacher', "is_enable" : True}
 
                         },
                         {
@@ -142,7 +141,8 @@ class SDashboard:
                                        [
                                            {'created': {'$gte': two_month_ago}},
                                            {'created': {'$lt': one_month_ago}},
-                                           {'role.id': 'teacher'}
+                                           {'role.id': 'teacher'},
+                                           { "is_enable" : True}
                                        ]
                                        }
 
@@ -159,7 +159,7 @@ class SDashboard:
                         }
                     ],
                     'total': [{
-                        '$match': {'role.id': 'teacher'}
+                        '$match': {'role.id': 'teacher', "is_enable" : True}
                     },
 
                         {
@@ -426,24 +426,7 @@ class SDashboard:
     def get_teacher_avg(self):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
-        # col1: Collection = db['purchase']
-        # prs = list(col1.find({}))
        
-
-        # for pr in prs:
-        #     cc = JalaliDate(pr['g_date'])
-        #     date = f"{cc.year}/{cc.month}/{cc.day}"
-        #     col1.update_one({"_id" : pr['_id']} , {"$set" : {
-
-
-
-        #         'y' : int(cc.year),
-        #         'm' : int(cc.month),
-        #         'd' : int(cc.day),
-        #         'date': date
-        #     }})
-
-        # return
         
         raw = list(col.aggregate([{
             '$match' :{"teacher.full_name" : {"$ne" : ""}}
@@ -492,8 +475,8 @@ class SDashboard:
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
         data = list(col.find({}).sort([
-            ('g_date', pymongo.ASCENDING),
-            ('sum', pymongo.ASCENDING)]).limit(num))
+            ('g_date', pymongo.DESCENDING),
+            ('sum', pymongo.DESCENDING)]).limit(num))
         return 200, "ok", "course is inserted", data
 
     def get_compare_student_mark(self, username):

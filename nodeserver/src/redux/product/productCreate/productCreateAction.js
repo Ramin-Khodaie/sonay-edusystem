@@ -13,7 +13,7 @@ export const createProductAction = (Product) => async (dispatch) => {
   
   switch (res.result) {
     case "ok":
-      dispatch(createProductSuccess("کاربر با موفقیت ثبت شد"));
+      dispatch(createProductSuccess("محصول با موفقیت ثبت شد"));
       break;
     case "empty_field":
       dispatch(createProductError("تمامی فیلدها تکمیل شوند."));

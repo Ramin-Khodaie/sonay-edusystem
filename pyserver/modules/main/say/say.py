@@ -111,6 +111,10 @@ class SAY():
         # elif not usr["enable"]:
         #     return 403 , "userInactive", 'user is not active', {"at": "","rf": "", "usr" :None}
         else:
+            if not usr[0]['is_enable']:
+                return 422, "inactive_user", 'user has been deactivated by admin', {"at": "", "rf": "", "usr": None}
+
+
             at = self.encode_auth_token(user, 'access_token')
             rt = self.encode_auth_token(user, 'refresh_token')
             # self._user_cache[usr["username"]] = usr
