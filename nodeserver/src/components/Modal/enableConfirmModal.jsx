@@ -12,25 +12,30 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 function EnableConfirmModal(props) {
-  const { handleEnable, _id, isEnable } = props;
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { handleEnable, _id, isEnable,handleShowModal,show } = props;
+  const {  onClose } = useDisclosure();
   const cancelRef = useRef();
 
   const handleClick = () => {
     handleEnable(_id, !isEnable);
-
-    onClose();
+    handleShowModal(false)
+    onClose;
   };
+
+
+  const handleClose=()=>{
+    handleShowModal(false)
+    onClose
+    
+  }
   return (
     <>
-      <Button colorScheme={isEnable ? "gray" : "yellow"} onClick={onOpen}>
-        {isEnable ? "غیرفعال" : "فعال"}
-      </Button>
+  
 
-      <AlertDialog
-        isOpen={isOpen}
+     {show && <AlertDialog
+        isOpen={show}
         leastDestructiveRef={cancelRef}
-        onClose={onClose}
+        onClose={handleClose}
       >
         <AlertDialogOverlay>
           <AlertDialogContent dir="rtl">
@@ -39,20 +44,20 @@ function EnableConfirmModal(props) {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              آیا از تغییر وضعیت کاربر مطمعن هستید؟{" "}
+              آیا از تغییر وضعیت کاربر به حالت {isEnable?"غیرفعال":"فعال"} مطمعن هستید؟{" "}
             </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button onClick={handleClick} mx={"10px"} colorScheme="yellow">
-                تغییر
+                {isEnable ? "غیرفعال":"فعال"}
               </Button>
-              <Button ref={cancelRef} onClick={onClose}>
+              <Button ref={cancelRef} onClick={handleClose}>
                 لغو
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialogOverlay>
-      </AlertDialog>
+      </AlertDialog>}
     </>
   );
 }

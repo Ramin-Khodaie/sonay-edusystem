@@ -134,6 +134,7 @@ function UserListTableRow(props) {
 
 
           <IconButton
+          fontSize={'24px'}
             background={"none"}
             color="yellow"
             icon={<FaImage />}
@@ -148,7 +149,7 @@ function UserListTableRow(props) {
             />
           )}{" "}
 
-          
+
           <IconButton
             background={"none"}
             color="red"

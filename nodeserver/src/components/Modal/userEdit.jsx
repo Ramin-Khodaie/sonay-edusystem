@@ -12,34 +12,37 @@ import UserForm from "components/Forms/userForm";
 import React, { useEffect } from "react";
 
 function UserEditModal(props) {
-  const { userList,setUserList, changeSent, sent , userId , courses } = props;
+  const { userList,setUserList, changeSent, sent , userId , courses,handleShowModal,show } = props;
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {  onClose } = useDisclosure();
 
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
- 
+  const handleClose=()=>{
+    handleShowModal(false)
+    onClose
+    
+  }
 
   return (
     <>
-      <Button onClick={onOpen}>ویرایش</Button>
 
-      <Modal
+      {show&& <Modal
         size={"5xl"}
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={show}
+        onClose={handleClose}
       >
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
           <ModalBody pt={"50px"}>
-            <UserForm onClose={onClose} userList={userList} setUserList={setUserList} changeSent={changeSent} sent={sent} courses={courses} modalClose={onClose} mode="edit" userId={userId} />
+            <UserForm onClose={handleClose} userList={userList} setUserList={setUserList} changeSent={changeSent} sent={sent} courses={courses} modalClose={onClose} mode="edit" userId={userId} />
           </ModalBody>
         </ModalContent>
-      </Modal>
+      </Modal>}
     </>
   );
 }

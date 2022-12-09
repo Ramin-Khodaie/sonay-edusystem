@@ -41,9 +41,8 @@ function UserListTable(props) {
             <Th borderColor={borderColor} color="gray.400">
               شماره تماس
             </Th>
-            <Th borderColor={borderColor}>ویرایش</Th>
-            <Th borderColor={borderColor}>فعال/غیرفعال</Th>
-            <Th borderColor={borderColor}>حذف</Th>
+            <Th borderColor={borderColor}></Th>
+
           </Tr>
         </Thead>
 
@@ -55,7 +54,7 @@ function UserListTable(props) {
             .map((row, index, arr) => (
               <UserListTableRow
                 name={row.full_name}
-                logo={row.image}
+                imageId={row.image}
                 email={row.email}
                 username={row.username}
               

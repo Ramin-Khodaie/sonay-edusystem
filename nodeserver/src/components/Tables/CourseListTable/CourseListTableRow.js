@@ -130,6 +130,7 @@ function CourseListTableRow(props) {
 
 <IconButton
             background={"none"}
+            fontSize={'24px'}
             color="yellow"
             icon={<FaImage />}
             onClick={() => handleShowUploadModal(true)}
