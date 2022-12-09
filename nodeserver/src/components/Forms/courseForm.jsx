@@ -112,6 +112,13 @@ function CourseForm(props) {
     }
   }, [currentCourse]);
 
+
+  const handleFileChange = (e) => {
+    if (e.target.files) {
+      setFormData({...formData , image : e.target.files[0]});
+    }
+  };
+console.log(formData.image , 7575)
   return (
     <>
       <FormControl>
@@ -217,7 +224,10 @@ function CourseForm(props) {
               </NumberInput>
             </Box>
 
-            <Box></Box>
+            <Box>
+
+              <input onChange={handleFileChange} type={'file'}></input>
+            </Box>
 
             <Box>
               <Button

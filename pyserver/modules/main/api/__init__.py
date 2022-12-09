@@ -4,3 +4,4 @@ from .product_api import *
 from .mark_api import *
 from .purchase_api import *
 from .dashboard_api import *
+from .upload_api import *

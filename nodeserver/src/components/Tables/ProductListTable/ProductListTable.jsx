@@ -46,6 +46,7 @@ import {
 <Th borderColor={borderColor} color="gray.400">
 دوره            </Th>
               <Th borderColor={borderColor}></Th>
+              <Th borderColor={borderColor}></Th>
             </Tr>
           </Thead>
   

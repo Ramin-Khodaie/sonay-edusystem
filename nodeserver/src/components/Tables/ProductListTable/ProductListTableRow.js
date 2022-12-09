@@ -12,6 +12,7 @@ import React from "react";
 import { CheckIcon, CloseIcon, SmallCloseIcon } from "@chakra-ui/icons";
 import ProductEditModal from "components/Modal/productEdit";
 import DeleteConfirmModal from "components/Modal/deleteConfirmModal";
+import UploadModal from "components/Modal/uploadModal";
 
 function UserListTableRow(props) {
   const {
@@ -105,6 +106,14 @@ function UserListTableRow(props) {
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
         <ProductEditModal productList={productList} setProductList={setProductList} productId={productId} courses={courses} />
       </Td>
+
+
+      <Td  mx={0} borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+  
+  <UploadModal  _id={productId} />       </Td>
+
+
+
       <Td  mx={0} borderColor={borderColor} borderBottom={isLast ? "none" : null}>
   
   <DeleteConfirmModal handleDelete={handleDelete} _id={productId} />       </Td>

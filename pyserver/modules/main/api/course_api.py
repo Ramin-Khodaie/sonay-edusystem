@@ -1,5 +1,5 @@
 
-from fastapi import APIRouter 
+from fastapi import APIRouter ,File, UploadFile , Form
 
 from modules.main.api_return import api_return
 
@@ -8,7 +8,7 @@ from modules.main.s_settings import SSettings
 from modules.main.classes.user import SUser
 from modules.main.say.say import SAY
 from ..classes.course import SCourse
-
+from typing import List
 
 
 router = APIRouter(prefix='/courses' , tags=["course"])

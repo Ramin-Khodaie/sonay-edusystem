@@ -4,7 +4,6 @@ import Dashboard from "./views/Pages/Dashboard.js";
 import Users from "./views/Admin/Users.js";
 import Courses from "./views/Admin/Courses.js";
 import Billing from "./views/Admin/Billing.js";
-import RTLPage from "./views/RTL/RTLPage.js";
 import Profile from "./views/Admin/Profile.js";
 import SignIn from "./views/Pages/SignIn.js";
 import SignUp from "./views/Pages/SignUp.js";
