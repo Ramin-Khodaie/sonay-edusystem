@@ -19,12 +19,16 @@ import {
 // Custom components
 
 import React from "react";
+import { useState } from "react";
 import CourseListTableRow from "./CourseListTableRow";
 function CourseListTable(props) {
   const { data, courses, statusData, callData, handleDelete } = props;
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-
+  const [show, setShow] = useState(false);
+  const handleShowModal = (st) => {
+    setShow(st);
+  };
   return (
     <Box style={{ direction: "rtl" }} maxW={"100%"} overflowX={{ sm: "scroll", xl: "hidden" }}>
       <Table style={{ direction: "rtl" }} variant="simple" color={textColor}>

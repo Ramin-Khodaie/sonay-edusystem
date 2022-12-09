@@ -31,7 +31,6 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { Buffer } from "buffer";
 import { loadImage } from "services/media";
 
 import noProduct from "assets/img/noProduct.png";
@@ -94,7 +93,6 @@ function UploadModal(props) {
       console.log(res);
     });
   };
-  console.log(file, 7878);
   const hiddenFileInput = useRef(null);
 
   const handleUploadClick = (event) => {
@@ -132,14 +130,9 @@ function UploadModal(props) {
     });
   };
 
-  // const [isOpen , setIsOpen] = useState(true)
-  const handleOpen = () => {
-    onOpen;
-  };
 
   const handleClose = () => {
-    console.log("sdf");
-    console.log(show);
+ 
     handleShowModal(false);
 
     onClose;

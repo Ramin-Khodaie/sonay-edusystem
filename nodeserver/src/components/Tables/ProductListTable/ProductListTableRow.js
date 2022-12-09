@@ -15,7 +15,7 @@ import ProductEditModal from "components/Modal/productEdit";
 import DeleteConfirmModal from "components/Modal/deleteConfirmModal";
 import UploadModal from "components/Modal/uploadModal";
 import { useState } from "react";
-import { FaImage } from "react-icons/fa";
+import { FaImage, FaPencilAlt } from "react-icons/fa";
 
 function UserListTableRow(props) {
   const {
@@ -38,9 +38,19 @@ function UserListTableRow(props) {
   const titleColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "navy.900");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-  const [show, setShow] = useState(false);
-  const handleShowModal = (st) => {
-    setShow(st);
+  const [state, setState] = useState({
+    remove: false,
+    edit: false,
+    image: false,
+  });
+  const handleShowUploadModal = (st) => {
+    setState({...state , image : st});
+  };
+  const handleShowRemoveModal = (st) => {
+    setState({...state , remove : st});
+  };
+  const handleShowEditModal = (st) => {
+    setState({...state , edit : st});
   };
   return (
     <Tr>
@@ -110,27 +120,49 @@ function UserListTableRow(props) {
       </Td>
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
         <Flex direction={"row"} justifyContent={"space-between"}>
-          <ProductEditModal
+        <IconButton  background={'none'} icon={<FaPencilAlt />} onClick={() => handleShowEditModal(true)}></IconButton>
+
+          {state.edit && <ProductEditModal
             productList={productList}
             setProductList={setProductList}
             productId={productId}
             courses={courses}
-          />
+            handleShowModal={handleShowEditModal}
+            show={state.edit}
+          />}
+
+
+
           <IconButton
             background={"none"}
             color="yellow"
             icon={<FaImage />}
-            onClick={() => handleShowModal(true)}
+            onClick={() => handleShowUploadModal(true)}
           />
-          {show && (
+          {state.image && (
             <UploadModal
-              handleShowModal={handleShowModal}
-              show={show}
+              handleShowModal={handleShowUploadModal}
+              show={state.image}
               imageId={imageId}
               _id={productId}
             />
           )}{" "}
-          <DeleteConfirmModal handleDelete={handleDelete} _id={productId} />{" "}
+
+          
+          <IconButton
+            background={"none"}
+            color="red"
+            onClick={() => handleShowRemoveModal(true)}
+            icon={<CloseIcon />}
+          ></IconButton>
+          {state.remove && (
+            <DeleteConfirmModal
+              show={state.remove}
+              handleShowModal={handleShowRemoveModal}
+              handleDelete={handleDelete}
+              _id={productId}
+            />
+          )}{" "}
         </Flex>
       </Td>
     </Tr>
