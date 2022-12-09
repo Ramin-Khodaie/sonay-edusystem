@@ -145,10 +145,10 @@ class Docs():
         db = sn.databases[self.database].db
         coll: Collection = db[self.doc_collection]
         try:
-            q = coll.find({"_id": doc_id})
+            q = list(coll.find({"_id": doc_id}))
             # ,
             #           {"_id": 0, "thumbnail": thumbnail, "data": im, "content_type": 1})
-            if q.count() > 0:
+            if len(q) > 0:
                 d = q[0]
                 c_type = d["content_type"] if im == 0 else "image/jpg"
 
@@ -212,7 +212,6 @@ class Docs():
             attachment = "attachment;" if download and not thumbnail else ""
             res = StreamingResponse(dat, media_type=d["content_type"]
                                     , headers={"Content-Disposition": f"{attachment}filename={fn}",
-                                            "Cache-Control": "max-age=120000",
                                             })
 
         return res

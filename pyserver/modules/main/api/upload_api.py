@@ -23,21 +23,30 @@ sn.add_router(router)
 
 
 # api, files: List[UploadFile] = File(...)
-@router.put("/uploadimage")
+@router.put("/uploadproductimage")
 @sn(roles=[], fast=True)
-def upload(user : SUser,file: UploadFile = File(...) ,category: str = Form(...),
+def upload_product_image(user : SUser,file: UploadFile = File(...) ,category: str = Form(...),
            _id: str = Form(...)):
     # if not ObjectId.is_valid(sys_code):
     #     return api_return(status=422, result="invalid_plan_id", data=[])
 
     rets = docs.save_docs(file, category=category,
                      product_id=_id, creator=user["username"], create_datetime=datetime.datetime.now())
-
+    db: Database = sn.databases["sonay"].db
+    col: Collection = db["product"]
+    col.update_one({"_id":_id} , {"$set" : {"image" : rets[0]}})
+    
     
     return api_return(status=200, result="result", data="rets")
 
 
 
+# api, files: List[UploadFile] = File(...)
+@router.get("/loadimage")
+@sn(roles=[], fast=True)
+def load_image(doc_id):
+    res = docs.send_doc(doc_id=doc_id,thumbnail=False,download=False)
+    return res
 
 
 

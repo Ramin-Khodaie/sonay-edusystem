@@ -6,30 +6,42 @@ import {
   ModalCloseButton,
   useDisclosure,
   Button,
+  IconButton,
 } from "@chakra-ui/react";
 import ProductForm from "components/Forms/productForm";
 import UserForm from "components/Forms/userForm";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { FaPencilAlt } from "react-icons/fa";
 
 function ProductEditModal(props) {
   const { productId, courses, productList, setProductList } = props;
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {  onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
+  const [isOpen , setIsOpen] = useState(false)
+const handleOpen=()=>{
+  onOpen
+  setIsOpen(true)
+}
+
+const handleClose=()=>{
+  onClose
+  setIsOpen(false)
+}
 
   return (
     <>
-      <Button onClick={onOpen}>ویرایش</Button>
+      <IconButton  background={'none'} icon={<FaPencilAlt />} onClick={handleOpen}></IconButton>
 
-      <Modal
+      {isOpen && <Modal
         size={"5xl"}
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={handleClose}
       >
         <ModalOverlay />
         <ModalContent>
@@ -44,7 +56,7 @@ function ProductEditModal(props) {
             />
           </ModalBody>
         </ModalContent>
-      </Modal>
+      </Modal>}
     </>
   );
 }

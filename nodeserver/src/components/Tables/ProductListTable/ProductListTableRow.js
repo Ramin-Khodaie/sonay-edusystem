@@ -3,6 +3,7 @@ import {
   Badge,
   Button,
   Flex,
+  IconButton,
   Td,
   Text,
   Tr,
@@ -13,6 +14,8 @@ import { CheckIcon, CloseIcon, SmallCloseIcon } from "@chakra-ui/icons";
 import ProductEditModal from "components/Modal/productEdit";
 import DeleteConfirmModal from "components/Modal/deleteConfirmModal";
 import UploadModal from "components/Modal/uploadModal";
+import { useState } from "react";
+import { FaImage } from "react-icons/fa";
 
 function UserListTableRow(props) {
   const {
@@ -24,17 +27,21 @@ function UserListTableRow(props) {
     productCourse,
     isLast,
     key,
+    imageId,
     productId,
     courses,
     productList,
-     setProductList,
-     handleDelete
+    setProductList,
+    handleDelete,
   } = props;
   const textColor = useColorModeValue("gray.500", "white");
   const titleColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "navy.900");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-
+  const [show, setShow] = useState(false);
+  const handleShowModal = (st) => {
+    setShow(st);
+  };
   return (
     <Tr>
       <Td
@@ -44,7 +51,7 @@ function UserListTableRow(props) {
         borderBottom={isLast ? "none" : null}
       >
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          <Avatar src={logo} w="50px" borderRadius="12px" me="18px" />
+          {/* <Avatar src={logo} w="50px" borderRadius="12px" me="18px" /> */}
           <Flex direction="column">
             <Text
               fontSize="md"
@@ -59,14 +66,9 @@ function UserListTableRow(props) {
       </Td>
 
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-        <Flex direction="column">
-          <Text fontSize="md" color={textColor} fontWeight="bold">
-            {price} ریال
-          </Text>
-          {/* <Text fontSize="sm" color="gray.400" fontWeight="normal">
-              {subdomain}
-            </Text> */}
-        </Flex>
+        <Text fontSize="md" color={textColor} fontWeight="bold">
+          {price} ریال
+        </Text>
       </Td>
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
         <Badge
@@ -94,29 +96,43 @@ function UserListTableRow(props) {
 
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
         {productCourse.map((c) => (
-          <Flex minW={'200px'}  maxH={'100px'} overflowY={'scroll'} direction="column">
-
-                     <Text fontSize="md" color={textColor} fontWeight="bold">
-            {c.name}
-          </Text>
+          <Flex
+            minW={"200px"}
+            maxH={"100px"}
+            overflowY={"scroll"}
+            direction="column"
+          >
+            <Text fontSize="md" color={textColor} fontWeight="bold">
+              {c.name}
+            </Text>
           </Flex>
- 
         ))}
       </Td>
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-        <ProductEditModal productList={productList} setProductList={setProductList} productId={productId} courses={courses} />
+        <Flex direction={"row"} justifyContent={"space-between"}>
+          <ProductEditModal
+            productList={productList}
+            setProductList={setProductList}
+            productId={productId}
+            courses={courses}
+          />
+          <IconButton
+            background={"none"}
+            color="yellow"
+            icon={<FaImage />}
+            onClick={() => handleShowModal(true)}
+          />
+          {show && (
+            <UploadModal
+              handleShowModal={handleShowModal}
+              show={show}
+              imageId={imageId}
+              _id={productId}
+            />
+          )}{" "}
+          <DeleteConfirmModal handleDelete={handleDelete} _id={productId} />{" "}
+        </Flex>
       </Td>
-
-
-      <Td  mx={0} borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-  
-  <UploadModal  _id={productId} />       </Td>
-
-
-
-      <Td  mx={0} borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-  
-  <DeleteConfirmModal handleDelete={handleDelete} _id={productId} />       </Td>
     </Tr>
   );
 }

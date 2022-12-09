@@ -46,7 +46,7 @@ import {
 <Th borderColor={borderColor} color="gray.400">
 دوره            </Th>
               <Th borderColor={borderColor}></Th>
-              <Th borderColor={borderColor}></Th>
+      
             </Tr>
           </Thead>
   
@@ -63,6 +63,7 @@ import {
                   isMain={row.is_main}
                   isActive={row.is_active}
                   productCourse={row.courses}
+                  imageId={row.image}
             
                   isLast={index === arr.length - 1 ? true : false}
                   key={row._id}

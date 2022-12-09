@@ -57,7 +57,6 @@ const [state,setState] = useState({isLoading : false,rnd:0})
 
   let history = useHistory();
 
-
 const notify = useNotify()
 function createPost(){
 
@@ -296,7 +295,7 @@ useEffect(()=>{
 
 <IconButton  onClick={handleCaptchaRefresh}  aria-label='refresh' icon={<MdRefresh />} />
 
-<Image src={`//localhost:8000/api/users/captcha?q=${state.rnd}`} alt='captcha' />
+<Image src={`${process.env.REACT_APP_API}/api/users/captcha?q=${state.rnd}`} alt='captcha' />
 <Input
               onChange={
                 handleChange

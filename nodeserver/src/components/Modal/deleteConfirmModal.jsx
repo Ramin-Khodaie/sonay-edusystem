@@ -18,7 +18,7 @@ function DeleteConfirmModal(props) {
   
     return (
       <>
-        <IconButton colorScheme='red' onClick={onOpen} icon={<CloseIcon /> }>
+        <IconButton background={'none'} color='red' onClick={onOpen} icon={<CloseIcon /> }>
         </IconButton>
   
         <AlertDialog

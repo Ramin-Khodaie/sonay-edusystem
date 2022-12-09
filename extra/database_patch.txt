@@ -1,1 +1,18 @@
 db.s_user.updateMany({},{"$set" : {is_enable : true}})
+db.product.aggregate([
+  {
+    /**
+     * field: The field name
+     * expression: The expression.
+     */
+    $set: {
+      image: "",
+    },
+  },
+  {
+    /**
+     * Provide the name of the output collection.
+     */
+    $out: "product",
+  },
+])
