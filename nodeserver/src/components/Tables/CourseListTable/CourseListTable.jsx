@@ -51,11 +51,8 @@ function CourseListTable(props) {
               شهریه
             </Th>
             <Th borderColor={borderColor} color="gray.400">
-              ویرایش
-            </Th>
-            <Th borderColor={borderColor} color="gray.400">
-              حذف
-            </Th>
+             </Th>
+         
           </Tr>
         </Thead>
         <Tbody>
@@ -63,7 +60,7 @@ function CourseListTable(props) {
             return (
               <CourseListTableRow
                 name={row.name}
-                logo={row.image}
+                imageId={row.image}
                 prevCourse={row.prev_course.name}
                 status={row.status.id} //{row.enable}
                 teacher={

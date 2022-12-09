@@ -8,10 +8,9 @@ import {
   Input,
   FormLabel,
   Button,
-  Select,
+  
   InputLeftElement,
-  InputRightElement,
-  InputGroup,
+
   Spacer,
   Textarea,
   NumberInput,
@@ -24,18 +23,13 @@ import {
 // Custom components
 
 import React from "react";
-import MultiSelect from "components/MultiSelect/MultiSelect";
 
 import useNotify from "helpers/notify/useNotify";
-import { useUser } from "hooks/users/useUser";
 import { useEffect } from "react";
-import { bixios } from "services/main";
 import { useDispatch, useSelector } from "react-redux";
-import { createCourseAction } from "redux/course/createCource/createCourseAction";
 import { courseListAction } from "redux/course/courseList/courseListAction";
 import CustomSelector from "components/Selectors/CustomSelector";
 import { useCourse } from "hooks/courses/useCourse";
-import { CheckIcon } from "@chakra-ui/icons";
 import { createCourse } from "services/course";
 
 function CourseForm(props) {
@@ -62,7 +56,7 @@ function CourseForm(props) {
   };
 
   const dispatch = useDispatch();
-  const { isLoading, message, error } = useSelector(
+  const { isLoading } = useSelector(
     (state) => state.createcourse
   );
 
@@ -113,12 +107,6 @@ function CourseForm(props) {
   }, [currentCourse]);
 
 
-  const handleFileChange = (e) => {
-    if (e.target.files) {
-      setFormData({...formData , image : e.target.files[0]});
-    }
-  };
-console.log(formData.image , 7575)
   return (
     <>
       <FormControl>
@@ -226,7 +214,6 @@ console.log(formData.image , 7575)
 
             <Box>
 
-              <input onChange={handleFileChange} type={'file'}></input>
             </Box>
 
             <Box>

@@ -13,37 +13,40 @@ import CourseForm from "components/Forms/courseForm";
   import React, { useEffect } from "react";
   
   function CourseEditModal(props) {
-    const { courseId , courses , statusData , callData } = props;
+    const { courseId , courses , statusData , callData,handleShowModal,show } = props;
   
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const {  onClose } = useDisclosure();
   
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
   
-
+    const handleClose=()=>{
+      handleShowModal(false)
+      onClose
+      
+    }
   
     return (
       <>
-        <Button onClick={onOpen}>ویرایش</Button>
-  
+  {show &&
         <Modal
           size={"5xl"}
           initialFocusRef={initialRef}
           finalFocusRef={finalRef}
-          isOpen={isOpen}
-          onClose={onClose}
+          isOpen={show}
+          onClose={handleClose}
         >
           <ModalOverlay />
           <ModalContent>
             <ModalCloseButton />
             <ModalBody pt={"50px"}>
               <CourseForm courses={courses}
-               modalClose={onClose} mode="edit" courseId={courseId}
+               modalClose={handleClose} mode="edit" courseId={courseId}
                statusData={statusData}
                callData={callData} />
             </ModalBody>
           </ModalContent>
-        </Modal>
+        </Modal>}
       </>
     );
   }

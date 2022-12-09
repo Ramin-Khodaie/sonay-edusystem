@@ -1,106 +1,169 @@
 import {
-    Avatar,
-    Badge,
-    Button,
-    Flex,
-    Icon,
-    IconButton,
-    Td,
-    Text,
-    Tr,
-    useColorModeValue
-  } from "@chakra-ui/react";
-  import React from "react";
+  Avatar,
+  Badge,
+  Button,
+  Flex,
+  Icon,
+  IconButton,
+  Td,
+  Text,
+  Tr,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import React from "react";
 import CourseEditModal from "components/Modal/courseEdit";
 import { CloseIcon } from "@chakra-ui/icons";
 import DeleteConfirmModal from "components/Modal/deleteConfirmModal";
-  
-  function CourseListTableRow(props) {
-    const { name , logo , prevCourse , status , teacher , teacherImage ,
-       callData,teacherUserName, price , isLast , key ,courseId , courses ,
-        statusData , handleDelete} = props;
-    const textColor = useColorModeValue("gray.500", "white");
-    const titleColor = useColorModeValue("gray.700", "white");
-    const bgStatus = useColorModeValue("gray.400", "navy.900");
-    const borderColor = useColorModeValue("gray.200", "gray.600");
-    return (
-      <Tr>
+import { useState } from "react";
+import { FaImage, FaPencilAlt } from "react-icons/fa";
+import UploadModal from "components/Modal/uploadModal";
 
-        
-        <Td
-          minWidth={{ sm: "250px" }}
-          pl="0px"
-          borderColor={borderColor}
-          borderBottom={isLast ? "none" : null}
-        >
-          <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-            <Avatar  w="50px" borderRadius="12px" me="18px" />
-            <Flex direction="column">
-              <Text
-                fontSize="md"
-                color={titleColor}
-                fontWeight="bold"
-                minWidth="100%"
-              >
-                {name}
-              </Text>
-
-            </Flex>
-          </Flex>
-        </Td>
-  
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+function CourseListTableRow(props) {
+  const {
+    name,
+    imageId,
+    prevCourse,
+    status,
+    teacher,
+    teacherImage,
+    callData,
+    teacherUserName,
+    price,
+    isLast,
+    key,
+    courseId,
+    courses,
+    statusData,
+    handleDelete,
+  } = props;
+  const textColor = useColorModeValue("gray.500", "white");
+  const titleColor = useColorModeValue("gray.700", "white");
+  const bgStatus = useColorModeValue("gray.400", "navy.900");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const [state, setState] = useState({
+    remove: false,
+    edit: false,
+    image: false,
+  });
+  const handleShowUploadModal = (st) => {
+    setState({ ...state, image: st });
+  };
+  const handleShowRemoveModal = (st) => {
+    setState({ ...state, remove: st });
+  };
+  const handleShowEditModal = (st) => {
+    setState({ ...state, edit: st });
+  };
+  return (
+    <Tr>
+      <Td
+        minWidth={{ sm: "250px" }}
+        pl="0px"
+        borderColor={borderColor}
+        borderBottom={isLast ? "none" : null}
+      >
+        <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           <Flex direction="column">
-            <Text fontSize="md" color={textColor} fontWeight="bold">
-              {prevCourse}
+            <Text
+              fontSize="md"
+              color={titleColor}
+              fontWeight="bold"
+              minWidth="100%"
+            >
+              {name}
             </Text>
-            {/* <Text fontSize="sm" color="gray.400" fontWeight="normal">
+          </Flex>
+        </Flex>
+      </Td>
+
+      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+        <Flex direction="column">
+          <Text fontSize="md" color={textColor} fontWeight="bold">
+            {prevCourse}
+          </Text>
+          {/* <Text fontSize="sm" color="gray.400" fontWeight="normal">
               {subdomain}
             </Text> */}
-          </Flex>
-        </Td>
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <Badge
-            bg={status === "active" ? "green.400" : bgStatus}
-            color={"white"}
-            fontSize="16px"
-            p="3px 10px"
-            borderRadius="8px"
-          >
-            {status === "active" ? "فعال" : "غیرفعال"}
-          </Badge>
-        </Td>
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-{teacher}
-          </Text>
-           <Text fontSize="sm" color="gray.400" fontWeight="normal">
-{teacherUserName}
-            </Text>
-        </Td>
+        </Flex>
+      </Td>
+      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+        <Badge
+          bg={status === "active" ? "green.400" : bgStatus}
+          color={"white"}
+          fontSize="16px"
+          p="3px 10px"
+          borderRadius="8px"
+        >
+          {status === "active" ? "فعال" : "غیرفعال"}
+        </Badge>
+      </Td>
+      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+        <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
+          {teacher}
+        </Text>
+        <Text fontSize="sm" color="gray.400" fontWeight="normal">
+          {teacherUserName}
+        </Text>
+      </Td>
 
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-          <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-          {price}  ریال  
+      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+        <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
+          {price} ریال
+        </Text>
+      </Td>
+      <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
+      <IconButton  background={'none'} icon={<FaPencilAlt />} onClick={() => handleShowEditModal(true)}></IconButton>
 
-          </Text>
+        {state.edit && <CourseEditModal
 
-        </Td>
-        <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-  
-          <CourseEditModal 
-          
-          courseId={courseId} courses={courses} statusData={statusData} callData={callData} />
-          
-        </Td>
+          courseId={courseId}
+          courses={courses}
+          statusData={statusData}
+          callData={callData}
+          handleShowModal={handleShowEditModal}
+            show={state.edit}
+        />}
 
-        <Td  mx={0} borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-  
-        <DeleteConfirmModal handleDelete={handleDelete} _id={courseId} />       </Td>
 
-      </Tr>
-    );
-  }
-  
-  export default CourseListTableRow;
-  
+
+
+
+<IconButton
+            background={"none"}
+            color="yellow"
+            icon={<FaImage />}
+            onClick={() => handleShowUploadModal(true)}
+          />
+          {state.image && (
+            <UploadModal
+              handleShowModal={handleShowUploadModal}
+              show={state.image}
+              imageId={imageId}
+              _id={courseId}
+            />
+          )}{" "}
+
+
+
+        <IconButton
+          background={"none"}
+          color="red"
+          onClick={() => handleShowRemoveModal(true)}
+          icon={<CloseIcon />}
+        ></IconButton>
+        {state.remove && (
+          <DeleteConfirmModal
+            show={state.remove}
+            handleShowModal={handleShowRemoveModal}
+            handleDelete={handleDelete}
+            _id={courseId}
+          />
+        )}{" "}
+      </Td>
+
+
+    </Tr>
+  );
+}
+
+export default CourseListTableRow;
