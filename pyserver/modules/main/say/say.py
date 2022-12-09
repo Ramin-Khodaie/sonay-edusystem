@@ -511,12 +511,14 @@ class SAY():
         if "status" in filter and filter['status']['id'] != "":
             and_li.append({"role.id" : filter["status"]['id']})
             is_filter=True
+        else:
+                    and_li.append({"role.id" : 'student'})
+
         if "is_enable" in filter and filter['is_enable']:
             and_li.append({"is_enable" : False})
             is_filter = True
 
-        else:
-            and_li.append({"role.id" : 'student'})
+        
         col : Collection = self.db.mongo_db["s_user"]
         
         #to limit output if filter is not selected , only 20 student will return

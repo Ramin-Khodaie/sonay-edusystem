@@ -3,6 +3,7 @@ import {
   Badge,
   Button,
   Flex,
+  IconButton,
   Td,
   Text,
   Tr,
@@ -12,6 +13,9 @@ import React from "react";
 
 import MarkEditModal from "components/Modal/MarkEdit";
 import DeleteConfirmModal from "components/Modal/deleteConfirmModal";
+import { useState } from "react";
+import { CloseIcon } from "@chakra-ui/icons";
+import { FaPencilAlt } from "react-icons/fa";
 
 function MarkListTableRow(props) {
   const {
@@ -28,13 +32,26 @@ function MarkListTableRow(props) {
     selectedStudent,
     markList,
     setMarkList,
-    myStudents,setmyStudents,
-    handleDelete
+    myStudents,
+    setmyStudents,
+    handleDelete,
   } = props;
   const textColor = useColorModeValue("gray.500", "white");
   const titleColor = useColorModeValue("gray.700", "white");
   const bgStatus = useColorModeValue("gray.400", "navy.900");
   const borderColor = useColorModeValue("gray.200", "gray.600");
+
+  const [state, setState] = useState({
+    remove: false,
+    edit: false,
+  });
+
+  const handleShowRemoveModal = (st) => {
+    setState({ ...state, remove: st });
+  };
+  const handleShowEditModal = (st) => {
+    setState({ ...state, edit: st });
+  };
   return (
     <Tr>
       <Td
@@ -90,24 +107,40 @@ function MarkListTableRow(props) {
         {course.name}
       </Td>
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-        <MarkEditModal
-          markList={markList}
-          setMarkList={setMarkList}
-          selectedCourse={selectedCourse}
-          selectedStudent={selectedStudent}
-          markId={markId}
-          myStudents={myStudents}
-              setmyStudents={setmyStudents}
-              handleDelete={handleDelete}
-        />
+        <IconButton
+          background={"none"}
+          icon={<FaPencilAlt />}
+          onClick={() => handleShowEditModal(true)}
+        ></IconButton>
+        {state.edit && (
+          <MarkEditModal
+            markList={markList}
+            setMarkList={setMarkList}
+            selectedCourse={selectedCourse}
+            selectedStudent={selectedStudent}
+            markId={markId}
+            myStudents={myStudents}
+            setmyStudents={setmyStudents}
+            handleDelete={handleDelete}
+            handleShowModal={handleShowEditModal}
+            show={state.edit}
+          />
+        )}
+        <IconButton
+          background={"none"}
+          color="red"
+          onClick={() => handleShowRemoveModal(true)}
+          icon={<CloseIcon />}
+        ></IconButton>
+        {state.remove && (
+          <DeleteConfirmModal
+            show={state.remove}
+            handleShowModal={handleShowRemoveModal}
+            handleDelete={handleDelete}
+            _id={markId}
+          />
+        )}{" "}
       </Td>
-
-
-
-      <Td  mx={0} borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-  
-  <DeleteConfirmModal handleDelete={handleDelete} _id={markId} />       </Td>
-      
     </Tr>
   );
 }

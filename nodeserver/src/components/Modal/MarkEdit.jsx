@@ -5,11 +5,9 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  Button,
+  
 } from "@chakra-ui/react";
 import MarkForm from "components/Forms/markForm";
-import ProductForm from "components/Forms/productForm";
-import UserForm from "components/Forms/userForm";
 
 import React, { useEffect } from "react";
 
@@ -20,24 +18,27 @@ function MarkEditModal(props) {
     markId,
     markList,
     setMarkList,
-    myStudents , setmyStudents
+    myStudents , setmyStudents,handleShowModal,show
   } = props;
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onClose } = useDisclosure();
 
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
-
+  const handleClose=()=>{
+    handleShowModal(false)
+    onClose
+    
+  }
   return (
     <>
-      <Button onClick={onOpen}>ویرایش</Button>
 
-      <Modal
+      {show && <Modal
         size={"5xl"}
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={show}
+        onClose={handleClose}
       >
         <ModalOverlay />
         <ModalContent>
@@ -46,7 +47,7 @@ function MarkEditModal(props) {
             <MarkForm
               markList={markList}
               setMarkList={setMarkList}
-              onClose={onClose}
+              onClose={handleClose}
               selectedCourse={selectedCourse}
               selectedStudent={selectedStudent}
               markId={markId}
@@ -55,7 +56,7 @@ function MarkEditModal(props) {
             />
           </ModalBody>
         </ModalContent>
-      </Modal>
+      </Modal>}
     </>
   );
 }
