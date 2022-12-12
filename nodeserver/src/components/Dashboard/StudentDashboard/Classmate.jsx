@@ -59,7 +59,7 @@ const Classmate = ()=>{
         >
 همکلاسی های شما        </Text>
 
-        <Box overflow='scroll'>
+        <Box maxH={"300px"} overflow='scroll'>
           {classmate.length !== 0 ? (
             <Table dir="rtl">
               <Thead>
@@ -84,7 +84,7 @@ const Classmate = ()=>{
                         border={index === arr.length - 1 ? "none" : null}
                         borderColor={borderColor}
                       >
-                        <Avatar size={'sm'} />
+                        <Avatar  borderRadius='5px' size={'sm'} />
                       </Td>
 
                       <Td
@@ -110,7 +110,7 @@ const Classmate = ()=>{
             <Box  >
             <Center h={'300px'}>
               <Text fontWeight={'bold'} fontSize={'18px'}>
-حال حاضر هم کلاسی یافت نشد              </Text>
+حال حاضر همکلاسی یافت نشد              </Text>
             </Center>
             </Box>
 

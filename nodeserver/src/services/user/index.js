@@ -150,7 +150,65 @@ export const getUserList = (filters) => {
 
 
 
+export const getProfileInfo = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/users/getprofileinfo");
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+       resolve(error.response.status);
+    }
+  });
+};
 
+
+
+export const updateProfileInfo = (info) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.put("/users/updateprofileinfo",
+       {
+        info:info
+      }
+      
+      
+      );
+
+      
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+       resolve(error.response.status);
+    }
+  });
+};
+
+
+
+export const ChangePassword = (info) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.put("/users/changepassword",
+       {
+        current:info.current,
+        new : info.new
+      }
+      
+      
+      );
+
+      
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+      resolve(error.response);
+    }
+  });
+};
 
 export const studentByCourse= (courseId , role) => {
  if(courseId !== ""){

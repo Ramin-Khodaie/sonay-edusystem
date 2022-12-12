@@ -8,9 +8,14 @@ import {
   Grid,
   Icon,
   Image,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  InputRightAddon,
   Link,
   Switch,
   Text,
+  Textarea,
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -27,7 +32,10 @@ import ImageArchitect3 from "assets/img/ImageArchitect3.png";
 import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
-import React from "react";
+import ProfileEditForm from "components/Forms/ProfileEditForm";
+import ChangePasswordModal from "components/Modal/changePasswordModal";
+import useNotify from "helpers/notify/useNotify";
+import React, { useEffect, useState } from "react";
 import {
   FaCube,
   FaFacebook,
@@ -37,9 +45,12 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 import { IoDocumentsSharp } from "react-icons/io5";
+import { useSelector } from "react-redux";
+import { studentByCourse } from "services/user";
 
 function Profile() {
   const { colorMode } = useColorMode();
+  const [teacher, setTeaher] = useState([]);
 
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
@@ -47,7 +58,24 @@ function Profile() {
   const bgProfile = useColorModeValue("hsla(0,0%,100%,.8)", "navy.800");
   const borderProfileColor = useColorModeValue("white", "transparent");
   const emailColor = useColorModeValue("gray.400", "gray.300");
+  const { userInfo } = useSelector((state) => state.getUserInfo);
+  const callTeacher = async () => {
+    await studentByCourse(userInfo.courses[0].id, "teacher").then((res) => {
 
+      setTeaher(res);
+    });
+  };
+
+  useEffect(() => {
+    callTeacher();
+  }, []);
+
+
+const notify = useNotify()
+  const handleSwitchChange= ()=>{
+    notify("این قابلیت در آپدیت بعدی اعمال خواهد شد", true, "solid", "warning");
+
+  }
   return (
     <Flex direction='column' pt={{ base: "120px", md: "75px", lg: "100px" }}>
       <Flex
@@ -82,20 +110,22 @@ function Profile() {
               color={textColor}
               fontWeight='bold'
               ms={{ sm: "8px", md: "0px" }}>
-              Alec Thompson
+                           {userInfo.full_name}
+
             </Text>
             <Text
               fontSize={{ sm: "sm", md: "md" }}
               color={emailColor}
               fontWeight='semibold'>
-              alec@simmmple.com
+              {userInfo.courses[0].name}
+
             </Text>
           </Flex>
         </Flex>
         <Flex
           direction={{ sm: "column", lg: "row" }}
           w={{ sm: "100%", md: "50%", lg: "auto" }}>
-          <Button p='0px' bg='transparent' variant='no-effects'>
+          {/* <Button p='0px' bg='transparent' variant='no-effects'>
             <Flex
               align='center'
               w={{ sm: "100%", lg: "135px" }}
@@ -110,79 +140,51 @@ function Profile() {
                 OVERVIEW
               </Text>
             </Flex>
-          </Button>
-          <Button p='0px' bg='transparent' variant='no-effects'>
-            <Flex
-              align='center'
-              w={{ lg: "135px" }}
-              borderRadius='15px'
-              justifyContent='center'
-              py='10px'
-              mx={{ lg: "1rem" }}
-              cursor='pointer'>
-              <Icon color={textColor} as={IoDocumentsSharp} me='6px' />
-              <Text fontSize='xs' color={textColor} fontWeight='bold'>
-                TEAMS
-              </Text>
-            </Flex>
-          </Button>
-          <Button p='0px' bg='transparent' variant='no-effects'>
-            <Flex
-              align='center'
-              w={{ lg: "135px" }}
-              borderRadius='15px'
-              justifyContent='center'
-              py='10px'
-              cursor='pointer'>
-              <Icon color={textColor} as={FaPenFancy} me='6px' />
-              <Text fontSize='xs' color={textColor} fontWeight='bold'>
-                PROJECTS
-              </Text>
-            </Flex>
-          </Button>
+          </Button> */}
+
         </Flex>
       </Flex>
 
-      <Grid templateColumns={{ sm: "1fr", xl: "repeat(3, 1fr)" }} gap='22px'>
-        <Card p='16px'>
+      <Grid templateColumns={{ sm: "1fr", xl: "repeat(2, 1fr)" }} gap='22px'>
+        <Card dir='rtl' p='16px'>
           <CardHeader p='12px 5px' mb='12px'>
             <Text fontSize='lg' color={textColor} fontWeight='bold'>
-              Platform Settings
+              تنظیمات
             </Text>
           </CardHeader>
-          <CardBody px='5px'>
+          <CardBody  px='5px'>
             <Flex direction='column'>
               <Text fontSize='sm' color='gray.400' fontWeight='600' mb='20px'>
-                ACCOUNT
+          کاربر
               </Text>
               <Flex align='center' mb='20px'>
-                <Switch colorScheme='blue' me='10px' />
+                <Switch onChange={handleSwitchChange} colorScheme='blue' me='10px' />
                 <Text
                   noOfLines={1}
                   fontSize='md'
                   color='gray.400'
                   fontWeight='400'>
-                  Email me when someone follows me
+                   ارسال ایمیل موقع دریافت نمره
                 </Text>
               </Flex>
               <Flex align='center' mb='20px'>
-                <Switch colorScheme='blue' me='10px' />
+                <Switch onChange={handleSwitchChange} colorScheme='blue' me='10px' />
                 <Text
                   noOfLines={1}
                   fontSize='md'
                   color='gray.400'
                   fontWeight='400'>
-                  Email me when someone answers on my post
+                   ارسال پیامک موقع دریافت نمره
                 </Text>
               </Flex>
               <Flex align='center' mb='20px'>
-                <Switch colorScheme='blue' me='10px' />
+                <Switch onChange={handleSwitchChange} colorScheme='blue' me='10px' />
                 <Text
                   noOfLines={1}
                   fontSize='md'
                   color='gray.400'
                   fontWeight='400'>
-                  Email me when someone mentions me
+                عضویت در مجله خبری آموزشگاه
                 </Text>
               </Flex>
               <Text
@@ -190,142 +192,37 @@ function Profile() {
                 color='gray.400'
                 fontWeight='600'
                 m='6px 0px 20px 0px'>
-                APPLICATION
+                امنیت
               </Text>
               <Flex align='center' mb='20px'>
-                <Switch colorScheme='blue' me='10px' />
+                <Switch onChange={handleSwitchChange} colorScheme='blue' me='10px' />
                 <Text
                   noOfLines={1}
                   fontSize='md'
                   color='gray.400'
                   fontWeight='400'>
-                  New launches and projects
+                  نمایش اطلاعات تماس در صفحه پروفایل
                 </Text>
               </Flex>
               <Flex align='center' mb='20px'>
-                <Switch colorScheme='blue' me='10px' />
+                <Switch onChange={handleSwitchChange} colorScheme='blue' me='10px' />
                 <Text
                   noOfLines={1}
                   fontSize='md'
                   color='gray.400'
                   fontWeight='400'>
-                  Monthly product changes
+                 نمایش آخرین بازدید
                 </Text>
               </Flex>
-              <Flex align='center' mb='20px'>
-                <Switch colorScheme='blue' me='10px' />
-                <Text
-                  noOfLines={1}
-                  fontSize='md'
-                  color='gray.400'
-                  fontWeight='400'>
-                  Subscribe to newsletter
-                </Text>
-              </Flex>
+              <ChangePasswordModal />
+              <Button my={'5px'} colorScheme={'red'} disabled={true}>درخواست لغو عضویت در سامانه</Button>
+             
             </Flex>
           </CardBody>
         </Card>
-        <Card p='16px' my={{ sm: "24px", xl: "0px" }}>
-          <CardHeader p='12px 5px' mb='12px'>
-            <Text fontSize='lg' color={textColor} fontWeight='bold'>
-              Profile Information
-            </Text>
-          </CardHeader>
-          <CardBody px='5px'>
-            <Flex direction='column'>
-              <Text fontSize='md' color='gray.400' fontWeight='400' mb='30px'>
-                Hi, I’m Esthera Jackson, Decisions: If you can’t decide, the
-                answer is no. If two equally difficult paths, choose the one
-                more painful in the short term (pain avoidance is creating an
-                illusion of equality).
-              </Text>
-              <Flex align='center' mb='18px'>
-                <Text
-                  fontSize='md'
-                  color={textColor}
-                  fontWeight='bold'
-                  me='10px'>
-                  Full Name:{" "}
-                </Text>
-                <Text fontSize='md' color='gray.400' fontWeight='400'>
-                  Esthera Jackson
-                </Text>
-              </Flex>
-              <Flex align='center' mb='18px'>
-                <Text
-                  fontSize='md'
-                  color={textColor}
-                  fontWeight='bold'
-                  me='10px'>
-                  Mobile:{" "}
-                </Text>
-                <Text fontSize='md' color='gray.400' fontWeight='400'>
-                  (44) 123 1234 123
-                </Text>
-              </Flex>
-              <Flex align='center' mb='18px'>
-                <Text
-                  fontSize='md'
-                  color={textColor}
-                  fontWeight='bold'
-                  me='10px'>
-                  Email:{" "}
-                </Text>
-                <Text fontSize='md' color='gray.400' fontWeight='400'>
-                  esthera@simmmple.com
-                </Text>
-              </Flex>
-              <Flex align='center' mb='18px'>
-                <Text
-                  fontSize='md'
-                  color={textColor}
-                  fontWeight='bold'
-                  me='10px'>
-                  Location:{" "}
-                </Text>
-                <Text fontSize='md' color='gray.400' fontWeight='400'>
-                  United States
-                </Text>
-              </Flex>
-              <Flex align='center' mb='18px'>
-                <Text
-                  fontSize='md'
-                  color={textColor}
-                  fontWeight='bold'
-                  me='10px'>
-                  Social Media:{" "}
-                </Text>
-                <Flex>
-                  <Link
-                    href='#'
-                    color={iconColor}
-                    fontSize='lg'
-                    me='10px'
-                    _hover={{ color: "blue.500" }}>
-                    <Icon as={FaFacebook} />
-                  </Link>
-                  <Link
-                    href='#'
-                    color={iconColor}
-                    fontSize='lg'
-                    me='10px'
-                    _hover={{ color: "blue.500" }}>
-                    <Icon as={FaInstagram} />
-                  </Link>
-                  <Link
-                    href='#'
-                    color={iconColor}
-                    fontSize='lg'
-                    me='10px'
-                    _hover={{ color: "blue.500" }}>
-                    <Icon as={FaTwitter} />
-                  </Link>
-                </Flex>
-              </Flex>
-            </Flex>
-          </CardBody>
-        </Card>
-        <Card p='16px'>
+        <ProfileEditForm />
+        
+        {/* <Card p='16px'>
           <CardHeader p='12px 5px' mb='12px'>
             <Text fontSize='lg' color={textColor} fontWeight='bold'>
               Conversations
@@ -475,9 +372,9 @@ function Profile() {
               </Flex>
             </Flex>
           </CardBody>
-        </Card>
+        </Card> */}
       </Grid>
-      <Card p='16px' my='24px'>
+      {/* <Card p='16px' my='24px'>
         <CardHeader p='12px 5px' mb='12px'>
           <Flex direction='column'>
             <Text fontSize='lg' color={textColor} fontWeight='bold'>
@@ -625,7 +522,7 @@ function Profile() {
             </Button>
           </Grid>
         </CardBody>
-      </Card>
+      </Card> */}
     </Flex>
   );
 }

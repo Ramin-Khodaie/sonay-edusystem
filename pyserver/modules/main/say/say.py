@@ -100,7 +100,6 @@ class SAY():
 
 
     def authenticate(self, user, password):
-        res = {}
         passwd = self.encode_pass(password)
         usr: SUser = None
         usr = self.get_user_by_query({"username": user, "password": passwd}, {
@@ -138,6 +137,19 @@ class SAY():
         else :
             return x
         
+    def get_profile_info(self,username):
+        col : Collection = self.db.mongo_db["s_user"]
+        info = list(col.find({'username' : username},{"bio" : 1,"address" : 1,"full_name" :1,"email":1}))
+        return 200,"ok","ok",info
+    def update_profile_info(self,username,info):
+        col : Collection = self.db.mongo_db["s_user"]
+        col.update_one({"username" : username},{"$set":{
+            "bio" : info["bio"],
+            "address" : info["address"],
+            "full_name" : info["full_name"],
+            "email" : info["email"],
+        }})
+        return 200 , "ok" , 'ok' , []
 
     def authorize(self, roles: list, headers) -> int:
         aut = os.environ['aut'] if 'aut' in os.environ else 'yes'
@@ -280,47 +292,57 @@ class SAY():
 
     def check_password_policy(self, password: str) -> bool:
         length_error = len(password) < 8
+        if length_error :
+            return True , "less","length should not be less than 8 character"
+        else:
+            return False , "ok"
 
-        # searching for digits
-        digit_error = re.search(r"\d", password) is None
+        # # searching for digits
+        # digit_error = re.search(r"\d", password) is None
 
-        # searching for uppercase
-        uppercase_error = re.search(r"[A-Z]", password) is None
+        # # searching for uppercase
+        # uppercase_error = re.search(r"[A-Z]", password) is None
 
-        # searching for lowercase
-        lowercase_error = re.search(r"[a-z]", password) is None
+        # # searching for lowercase
+        # lowercase_error = re.search(r"[a-z]", password) is None
 
-        # searching for symbols
-        symbol_error = re.search(
-            r"[ !#$%&'()*+,-./[\\\]^_`{|}~" + r'"]', password) is None
+        # # searching for symbols
+        # symbol_error = re.search(
+        #     r"[ !#$%&'()*+,-./[\\\]^_`{|}~" + r'"]', password) is None
 
         # overall result
-        password_ok = not (
-            length_error or digit_error or uppercase_error or lowercase_error or symbol_error)
-        return password_ok
+        # password_ok = not (
+        #     length_error or digit_error or uppercase_error or lowercase_error or symbol_error)
+        
 
     def get_online_users(self):
         return self._session_manager.get_online_users()
 
-    def change_password(self, userid: str, password: str) -> int:
+    def change_password(self, username: str, data: str) -> int:
+        passwd = self.encode_pass(data['current'])
+        usr: SUser = None
+        usr = self.get_user_by_query({"username": username, "password": passwd}, {
+                                    "_id" : 1})
 
-        ret = False
-        q = self.get_user(userid=userid)
-        if q is None:
-            ret = "userNotFound"
+        if usr is None:
+            return 422, "wrong_password", 'current password is wrong',[]
+        # elif not usr["enable"]:
+        #     return 403 , "userInactive", 'user is not active', {"at": "","rf": "", "usr" :None}
         else:
-            if not self.check_password_policy(password):
-                return "tooSimple"
+            pass
 
-            epass = self.encode_pass(password)
-            try:
-                # q.update(password=epass)
-                self.update_user(q, {"password": epass})
-                ret = "ok"
-            except:
-                ret = "database"
+        password_check = self.check_password_policy(data['new'])
+        if password_check[0]:
+            return  422, password_check[1], password_check[2],[]
+        else:
 
-        return ret
+            new_pass = self.encode_pass(data['new'])
+           
+             
+            col: Collection = self.db.mongo_db["s_user"]
+            col.update_one({"username" : username},{"$set":{"password" : new_pass}})
+            return 200,'ok','password has changed' , []
+            
 
     def validate_save_user(self, user: dict, col: Collection ):
 

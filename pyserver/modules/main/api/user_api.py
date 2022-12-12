@@ -158,6 +158,34 @@ def get_teacher_list(say: SAY):
     
 
 
+@router.get("/getprofileinfo")
+@sn(roles=['admin','teacher','student'])
+def get_profile_info(user: SUser , say : SAY):
+    
+    ret = say.get_profile_info(username=user['username'])
+    return api_return(200, 'ok', 'ok', data=ret[3])
+
+@router.put("/updateprofileinfo")
+@sn(roles=['admin','teacher','student'])
+def update_profile_info(user: SUser , say : SAY , info:dict):
+    
+    ret = say.update_profile_info(username=user['username'] , info=info['info'])
+    return api_return(ret[0], ret[1],ret[2], ret[3])
+
+
+
+@router.put("/changepassword")
+@sn(roles=['admin','teacher','student'])
+def change_password(user: SUser , say : SAY , data:dict):
+    
+    ret = say.change_password(username=user['username'] , data=data)
+    # return api_return(200, 'ok', 'ok', data=[])
+
+    return api_return(ret[0], ret[1], ret[2], data=[3])
+    
+
+
+
 @router.get("/userinfo")
 @sn(roles=[], fast=True)
 async def userinfo(user: SUser , say:SAY):

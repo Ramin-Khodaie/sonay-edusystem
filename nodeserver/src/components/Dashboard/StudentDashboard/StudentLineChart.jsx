@@ -66,7 +66,7 @@ const StudentlineChart = (props) => {
           in 2022
         </Text> */}
       </Flex>
-      <Box minH="300px">
+      <Box maxH={"300px"} minH="300px">
         {studentCompareData.length !== 0 && studentCompareOpt && (
           <LineChart data={studentCompareData} options={studentCompareOpt} />
         )}{" "}
