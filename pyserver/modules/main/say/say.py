@@ -14,11 +14,11 @@ from modules.main.s_session import SSession
 from modules.main.classes.user import SUser
 from modules.main.database.adatabase import ADatabase
 import copy
-
 import datetime
 import hashlib
 import base64
 import re
+from persiantools.jdatetime import JalaliDate
 
 
 __all__ = ['SAY']
@@ -343,8 +343,19 @@ class SAY():
             col.update_one({"username" : username},{"$set":{"password" : new_pass}})
             return 200,'ok','password has changed' , []
             
+    def log_online_state(self,username):
+        col: Collection = self.db.mongo_db["s_user"]
+        cc = JalaliDate.today()
+        uu =datetime.datetime.today()
+
+        col.update_one({'username' : username},{"$set" : {"last_seen" : f"{cc.year}/{cc.month}/{cc.day}" ,
+         "_last_seen" : uu,
+         "last_seen_h" : uu.hour,
+         "last_seen_m" : uu.minute,
+          }})
 
     def validate_save_user(self, user: dict, col: Collection ):
+
 
         required = {"username", "full_name", "phone", "courses", "role" , "is_enable"}
         if user["_id"] == "":

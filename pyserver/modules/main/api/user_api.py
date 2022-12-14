@@ -213,6 +213,7 @@ async def userinfo(user: SUser , say:SAY):
 
         }
     else:
+        say.log_online_state(user['username'])
         u = {**user, "refreshToken": "", "password": "",
              #  "today": today
              }

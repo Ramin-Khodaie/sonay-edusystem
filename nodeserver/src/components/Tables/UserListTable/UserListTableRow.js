@@ -18,6 +18,7 @@ import EnableConfirmModal from "components/Modal/enableConfirmModal";
 import { CloseIcon } from "@chakra-ui/icons";
 import { FaImage, FaPencilAlt, FaUserCheck, FaUserMinus } from "react-icons/fa";
 import UploadModal from "components/Modal/uploadModal";
+import ProfileCard from "components/Modal/profileCardModal";
 
 function UserListTableRow(props) {
   const {
@@ -48,6 +49,7 @@ function UserListTableRow(props) {
     edit: false,
     image: false,
     enable: false,
+    profile : false
   });
   const handleShowUploadModal = (st) => {
     setState({ ...state, image: st });
@@ -62,6 +64,11 @@ function UserListTableRow(props) {
   const handleShowEnableModal = (st) => {
     setState({ ...state, enable: st });
   };
+
+  const handleShowProfileModal = (st) => {
+    console.log("dsfsdf")
+    setState({ ...state, profile: st });
+  };
   return (
     <Tr>
       <Td
@@ -69,6 +76,7 @@ function UserListTableRow(props) {
         pl="0px"
         borderColor={borderColor}
         borderBottom={isLast ? "none" : null}
+        
       >
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           <Flex direction="column">
@@ -77,12 +85,22 @@ function UserListTableRow(props) {
               color={titleColor}
               fontWeight="bold"
               minWidth="100%"
+              onClick={() => handleShowProfileModal(true)}
+              
             >
               {name}
             </Text>
             <Text fontSize="sm" color="gray.400" fontWeight="normal">
               {username}
             </Text>
+
+
+            {state.profile && <ProfileCard 
+          
+          handleShowModal={handleShowEditModal}
+          show={state.profile}
+        />}
+
           </Flex>
         </Flex>
       </Td>
