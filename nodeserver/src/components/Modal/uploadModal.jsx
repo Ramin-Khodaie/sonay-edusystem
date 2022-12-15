@@ -15,6 +15,7 @@ import {
   Grid,
   GridItem,
   useColorModeValue,
+  Icon,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -35,6 +36,7 @@ import { loadImage } from "services/media";
 
 import noProduct from "assets/img/noProduct.png";
 import noUser from "assets/img/noUser.png";
+import { FaBook, FaChalkboardTeacher, FaUserAlt } from "react-icons/fa";
 const baseStyle = {
   flex: 1,
   minHeight: "170px",
@@ -96,7 +98,7 @@ function UploadModal(props) {
     });
   };
   const hiddenFileInput = useRef(null);
-
+  console.log(img,7878)
   const handleUploadClick = (event) => {
     hiddenFileInput.current.click();
   };
@@ -132,7 +134,7 @@ function UploadModal(props) {
   //   });
   // };
 
-
+const fs ={'sm':"200px",'md':"200px",'lg':'280px'}
   const handleClose = () => {
  
     handleShowModal(false);
@@ -177,33 +179,32 @@ function UploadModal(props) {
 
 
                 category == 'user' ? 
-                <Image
-                    h={{ sm: "150px", md: "300px", lg: "320px" }}
-                    maxW={{ sm: "200px", md: "300px", lg: "320px" }}
-                    src={noUser}
-                    alt="casptcha"
-                    borderRadius={"3rem"}
-                  ></Image>
+    
+                 <Icon as={FaUserAlt} 
+                //  boxSize={{sm:"30",md:"50",lg:'60'}}
+                h={{ sm: "150px", md: "300px", lg: "320px" }}
+                w={{ sm: "200px", md: "300px", lg: "320px" }}
+                  />
+               
                 
                 
                 : category == 'product' ? 
-                <Image
-                    h={{ sm: "150px", md: "300px", lg: "320px" }}
-                    maxW={{ sm: "200px", md: "300px", lg: "320px" }}
-                    src={noProduct}
-                    alt="casptcha"
-                    borderRadius={"3rem"}
-                  ></Image> :
+                <Icon as={FaBook} 
+                //  boxSize={{sm:"30",md:"50",lg:'60'}}
+                h={{ sm: "150px", md: "300px", lg: "320px" }}
+                w={{ sm: "200px", md: "300px", lg: "320px" }}
+                  />
+                  
+                  :
 
 
                   category == 'course' ?
-                  <Image
-                    h={{ sm: "150px", md: "300px", lg: "320px" }}
-                    maxW={{ sm: "200px", md: "300px", lg: "320px" }}
-                    src={""}
-                    alt="casptcha"
-                    borderRadius={"3rem"}
-                  ></Image> :
+                  <Icon as={FaChalkboardTeacher} 
+                //  boxSize={{sm:"30",md:"50",lg:'60'}}
+                h={{ sm: "150px", md: "300px", lg: "320px" }}
+                w={{ sm: "200px", md: "300px", lg: "320px" }}
+                  />
+                   :
 
 
 

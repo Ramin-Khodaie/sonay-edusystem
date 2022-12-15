@@ -40,7 +40,7 @@ def upload_image(user : SUser,file: UploadFile = File(...) ,category: str = Form
         col: Collection = db["product"]
         obj =col.find_one_and_update({"_id":_id} , {"$set" : {"image" : rets[0]}})
     elif category == 'course':
-        col: Collection = db["courses"]
+        col: Collection = db["course"]
         obj =col.find_one_and_update({"_id":_id} , {"$set" : {"image" : rets[0]}})
     else:
         obj = {}

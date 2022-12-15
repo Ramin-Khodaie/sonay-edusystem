@@ -34,6 +34,7 @@ import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
 import ProfileEditForm from "components/Forms/ProfileEditForm";
 import ChangePasswordModal from "components/Modal/changePasswordModal";
+import UploadModal from "components/Modal/uploadModal";
 import useNotify from "helpers/notify/useNotify";
 import React, { useEffect, useState } from "react";
 import {
@@ -46,12 +47,17 @@ import {
 } from "react-icons/fa";
 import { IoDocumentsSharp } from "react-icons/io5";
 import { useSelector } from "react-redux";
+import { getProfileInfo } from "services/user";
 import { studentByCourse } from "services/user";
 
 function Profile() {
   const { colorMode } = useColorMode();
-  const [teacher, setTeaher] = useState([]);
-
+  const [formData, setFormData] = useState({
+    full_name: "",
+    email: "",
+    bio: "",
+    address: "",
+  });
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
   const iconColor = useColorModeValue("blue.500", "white");
@@ -59,16 +65,12 @@ function Profile() {
   const borderProfileColor = useColorModeValue("white", "transparent");
   const emailColor = useColorModeValue("gray.400", "gray.300");
   const { userInfo } = useSelector((state) => state.getUserInfo);
-  const callTeacher = async () => {
-    await studentByCourse(userInfo.courses[0].id, "teacher").then((res) => {
 
-      setTeaher(res);
-    });
+  const handleChange = (event) => {
+    const field = event.target.id;
+    const value = event.target.value;
+    setFormData({ ...formData, [field]: value });
   };
-
-  useEffect(() => {
-    callTeacher();
-  }, []);
 
 
 const notify = useNotify()
@@ -76,6 +78,41 @@ const notify = useNotify()
     notify("این قابلیت در آپدیت بعدی اعمال خواهد شد", true, "solid", "warning");
 
   }
+  const [state, setState] = useState({
+
+    image: false,
+    imageId:'',
+    userId :''
+  });
+  const handleShowUploadModal = (st) => {
+    setState({ ...state, image: st });
+  };
+
+
+
+
+  
+  const callProfileInfo = ()=>{
+    getProfileInfo().then((res)=>{
+        if (res.status === 200){
+            setFormData({
+                
+            bio:res.data.data[0].bio ? res.data.data[0].bio : "",          
+            address :res.data.data[0].address ? res.data.data[0].address : "" ,
+            full_name:res.data.data[0].full_name ? res.data.data[0].full_name : "" ,
+            email:res.data.data[0].email ? res.data.data[0].email : ""
+            })
+            setState({...state , imageId : res.data.data[0].image ,userId :  res.data.data[0]._id  })
+        }
+    })
+  }
+
+  useEffect(()=>{
+
+    callProfileInfo()
+  },[])
+  
+
   return (
     <Flex direction='column' pt={{ base: "120px", md: "75px", lg: "100px" }}>
       <Flex
@@ -99,10 +136,11 @@ const notify = useNotify()
           textAlign={{ sm: "center", md: "start" }}>
           <Avatar
             me={{ md: "22px" }}
-            src={avatar5}
+            src={`${process.env.REACT_APP_API}/api/media/loadimage?doc_id=${state.imageId}`}
             w='80px'
             h='80px'
             borderRadius='15px'
+            bg={'none'}
           />
           <Flex direction='column' maxWidth='100%' my={{ sm: "14px" }}>
             <Text
@@ -215,12 +253,23 @@ const notify = useNotify()
                 </Text>
               </Flex>
               <ChangePasswordModal />
+              <Button onClick={() => handleShowUploadModal(true)} colorScheme={'yellow'}>تغییر تصویر پروفایل</Button>
+
               <Button my={'5px'} colorScheme={'red'} disabled={true}>درخواست لغو عضویت در سامانه</Button>
              
             </Flex>
+            {state.image && (
+            <UploadModal
+              handleShowModal={handleShowUploadModal}
+              show={state.image}
+              imageId={state.imageId}
+              _id={state.userId}
+              category={'user'}
+            />
+          )}{" "}
           </CardBody>
         </Card>
-        <ProfileEditForm />
+        <ProfileEditForm formData={formData} onChange={handleChange} />
         
         {/* <Card p='16px'>
           <CardHeader p='12px 5px' mb='12px'>
