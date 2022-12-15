@@ -56,8 +56,7 @@ function UserListTable(props) {
                 name={row.full_name}
                 imageId={row.image}
                 email={row.email}
-                username={row.username}
-              
+                username={row.username}          
                 domain={row.courses}
                 role={row.role} //{row.enable}
                 date={row.phone}

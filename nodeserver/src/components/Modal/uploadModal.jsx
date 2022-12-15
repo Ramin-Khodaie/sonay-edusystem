@@ -19,7 +19,7 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRef } from "react";
-import { uploadProductImage } from "services/media";
+import { uploadImage } from "services/media";
 import { useDropzone } from "react-dropzone";
 import { useMemo } from "react";
 import {
@@ -34,6 +34,7 @@ import {
 import { loadImage } from "services/media";
 
 import noProduct from "assets/img/noProduct.png";
+import noUser from "assets/img/noUser.png";
 const baseStyle = {
   flex: 1,
   minHeight: "170px",
@@ -65,9 +66,10 @@ const rejectStyle = {
 };
 
 function UploadModal(props) {
-  const { _id, imageId, show, handleShowModal } = props;
-  const { onOpen, onClose } = useDisclosure();
+  const { _id, imageId, show, handleShowModal,category } = props;
+  const {  onClose } = useDisclosure();
   const [file, setFile] = useState([]);
+  const [img, setImg] = useState('');
   const data = new FormData();
   const dndBG = useColorModeValue("gray.200", "gray.800");
 
@@ -81,16 +83,16 @@ function UploadModal(props) {
       return;
     }
     data.append("_id", _id);
-    data.append("category", "product");
+    data.append("category", category);
     data.append("file", file[0]);
 
-    uploadProductImage(
+    uploadImage(
       {
         "content-type": "multipart/form-data",
       },
       data
     ).then((res) => {
-      console.log(res);
+      setImg(res.data)
     });
   };
   const hiddenFileInput = useRef(null);
@@ -121,14 +123,14 @@ function UploadModal(props) {
   const handleDocDelete = (num) => {
     setFile(file.filter((elem, idx) => idx !== num));
   };
-  const [image, setImage] = useState(undefined);
-  const getThumnail = () => {
-    loadImage(imageId).then((res) => {
-      let cc = Buffer.from(res, "binary").toString("base64");
-      console.log(cc, 1212);
-      setImage(cc);
-    });
-  };
+  // const [image, setImage] = useState(undefined);
+  // const getThumnail = () => {
+  //   loadImage(imageId).then((res) => {
+  //     let cc = Buffer.from(res, "binary").toString("base64");
+  //     console.log(cc, 1212);
+  //     setImage(cc);
+  //   });
+  // };
 
 
   const handleClose = () => {
@@ -149,7 +151,17 @@ function UploadModal(props) {
           <ModalBody>
             <Grid height={"400px"} templateColumns="repeat(5, 1fr) " gap={1}>
               <GridItem colSpan={{ sm: 1, md: 2, lg: 2 }}>
-                {imageId || imageId !== "" ? (
+                {img !== ''  ? (
+                  <Image
+                    h={{ sm: "150px", md: "300px", lg: "320px" }}
+                    maxW={{ sm: "200px", md: "300px", lg: "320px" }}
+                    src={`${process.env.REACT_APP_API}/api/media/loadimage?doc_id=${img}`}
+                    alt="casptcha"
+                    borderRadius={"3rem"}
+                  ></Image>
+                ) :
+                imageId || imageId !== ""?
+                (
                   <Image
                     h={{ sm: "150px", md: "300px", lg: "320px" }}
                     maxW={{ sm: "200px", md: "300px", lg: "320px" }}
@@ -157,14 +169,57 @@ function UploadModal(props) {
                     alt="casptcha"
                     borderRadius={"3rem"}
                   ></Image>
-                ) : (
-                  <Image
-                    src={noProduct}
-                    alt="casptcha"
+                ) :
+
+
+              //  if no image available according to its category we show diffrent images as anonymous avatar
+                
+
+
+                category == 'user' ? 
+                <Image
                     h={{ sm: "150px", md: "300px", lg: "320px" }}
                     maxW={{ sm: "200px", md: "300px", lg: "320px" }}
+                    src={noUser}
+                    alt="casptcha"
+                    borderRadius={"3rem"}
                   ></Image>
-                )}
+                
+                
+                : category == 'product' ? 
+                <Image
+                    h={{ sm: "150px", md: "300px", lg: "320px" }}
+                    maxW={{ sm: "200px", md: "300px", lg: "320px" }}
+                    src={noProduct}
+                    alt="casptcha"
+                    borderRadius={"3rem"}
+                  ></Image> :
+
+
+                  category == 'course' ?
+                  <Image
+                    h={{ sm: "150px", md: "300px", lg: "320px" }}
+                    maxW={{ sm: "200px", md: "300px", lg: "320px" }}
+                    src={""}
+                    alt="casptcha"
+                    borderRadius={"3rem"}
+                  ></Image> :
+
+
+
+                  <Image
+                    h={{ sm: "150px", md: "300px", lg: "320px" }}
+                    maxW={{ sm: "200px", md: "300px", lg: "320px" }}
+                    src={""}
+                    alt="casptcha"
+                    borderRadius={"3rem"}
+                  ></Image>
+                
+                
+                
+                
+                
+                }
               </GridItem>
               <GridItem colSpan={{ sm: 4, md: 3, lg: 3 }}>
                 <Flex direction={"column"} align={"center"}>

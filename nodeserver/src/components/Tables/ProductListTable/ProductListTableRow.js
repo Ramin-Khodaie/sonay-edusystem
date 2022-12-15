@@ -146,6 +146,7 @@ function UserListTableRow(props) {
               show={state.image}
               imageId={imageId}
               _id={productId}
+              category={'product'}
             />
           )}{" "}
 

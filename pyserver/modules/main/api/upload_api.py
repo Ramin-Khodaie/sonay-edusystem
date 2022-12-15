@@ -23,9 +23,9 @@ sn.add_router(router)
 
 
 # api, files: List[UploadFile] = File(...)
-@router.put("/uploadproductimage")
+@router.put("/uploadimage")
 @sn(roles=[], fast=True)
-def upload_product_image(user : SUser,file: UploadFile = File(...) ,category: str = Form(...),
+def upload_image(user : SUser,file: UploadFile = File(...) ,category: str = Form(...),
            _id: str = Form(...)):
     # if not ObjectId.is_valid(sys_code):
     #     return api_return(status=422, result="invalid_plan_id", data=[])
@@ -33,11 +33,23 @@ def upload_product_image(user : SUser,file: UploadFile = File(...) ,category: st
     rets = docs.save_docs(file, category=category,
                      product_id=_id, creator=user["username"], create_datetime=datetime.datetime.now())
     db: Database = sn.databases["sonay"].db
-    col: Collection = db["product"]
-    col.update_one({"_id":_id} , {"$set" : {"image" : rets[0]}})
+    if category == 'user':
+        col: Collection = db["s_user"]
+        obj = col.find_one_and_update({"_id":_id} , {"$set" : {"image" : rets[0]}})
+    elif category == 'product':
+        col: Collection = db["product"]
+        obj =col.find_one_and_update({"_id":_id} , {"$set" : {"image" : rets[0]}})
+    elif category == 'course':
+        col: Collection = db["courses"]
+        obj =col.find_one_and_update({"_id":_id} , {"$set" : {"image" : rets[0]}})
+    else:
+        obj = {}
+    if "image" in obj:
+        col2:Collection =db["docs"]
+        col2.delete_one({'_id' : obj['image'] })
     
     
-    return api_return(status=200, result="result", data="rets")
+    return api_return(status=200, result="result", data=rets[0])
 
 
 

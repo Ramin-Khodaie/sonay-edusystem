@@ -176,6 +176,7 @@ function UserListTableRow(props) {
               show={state.image}
               imageId={imageId}
               _id={userId}
+              category={'user'}
             />
           )}{" "}
           {isEnable ? (

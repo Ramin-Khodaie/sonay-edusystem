@@ -141,6 +141,7 @@ function CourseListTableRow(props) {
             show={state.image}
             imageId={imageId}
             _id={courseId}
+            category={'course'}
           />
         )}{" "}
         <IconButton
