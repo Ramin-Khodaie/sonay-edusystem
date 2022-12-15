@@ -15,8 +15,11 @@ import { useRef } from "react";
 import darkBg from "assets/img/BackgroundCard1.png";
 import lightBg from "assets/img/admin-background.jpg";
 import avatar5 from "assets/img/avatars/avatar5.png";
+import { useEffect } from "react";
+import { useState } from "react";
+import { getProfileInfo } from "services/user";
 
-function ProfileCard({ handleShowModal, show }) {
+function ProfileCard({ handleShowModal, show ,username }) {
   let boxBg = useColorModeValue("white !important", "#111c44 !important");
   let mainText = useColorModeValue("gray.800", "white");
   let secondaryText = useColorModeValue("gray.400", "gray.400");
@@ -31,7 +34,20 @@ function ProfileCard({ handleShowModal, show }) {
     handleShowModal(false);
     onClose;
   };
-  console.log("show", show);
+
+  const [data,setData]=useState([])
+
+  const callProfileInfo = ()=>{
+    getProfileInfo(username).then((res)=>{
+        if (res.status === 200){
+            setData(res.data.data[0])
+        }
+    })
+  }
+  useEffect(()=>{
+    callProfileInfo()
+  },[])
+
   return (
     <>
       {show && (
@@ -40,10 +56,12 @@ function ProfileCard({ handleShowModal, show }) {
           finalFocusRef={finalRef}
           isOpen={show}
           onClose={handleClose}
-          size={"md"}
+          
+          
+         
         >
-          <ModalOverlay />
-          <ModalContent h={"580px"} overflow={'scroll'} borderRadius={"20px"}>
+          <ModalOverlay backdropFilter={'blur(10px)'} />
+          <ModalContent  maxW={{sm:"500px" , md:"700px" , lg:"900px"}}  h={"580px"} overflow={'scroll'} borderRadius={"20px"}>
             <ModalCloseButton mr={"25px"} mt={"25px"} />
             <ModalBody>
               <Flex
@@ -73,7 +91,7 @@ function ProfileCard({ handleShowModal, show }) {
                     textAlign="center"
                     fontSize="xl"
                   >
-                    Adela Parkson
+                    {data.full_name && data.full_name}
                   </Text>
                   <Text
                     color={secondaryText}
@@ -81,39 +99,34 @@ function ProfileCard({ handleShowModal, show }) {
                     fontSize="sm"
                     fontWeight="500"
                   >
-                    Product Designer
+                    آخرین بازدید {" "}
+                   {data.last_seen ? <> {data.last_seen} {data.last_seen_h}:{data.last_seen_m}</> : <>خیلی وقت پیش</>}
                   </Text>
                 </Flex>
                 <Divider  />
                 <Flex
                   dir="rtl"
                   flexDirection="column"
-                  justify="space-between"
+                  justify={'space-between'}
+                  w={'100%'}
             
                   px="36px"
                 >
                 
-                    <Text
-                      fontFamily={"Lalezar"}
-                      color={mainText}
-                      fontSize={"20px"}
-                      mt={"15px"}
-                    >
-                      درباره من:
-                    </Text>
-                    <Text textAlign={"justify"} fontWeight="500">
-                      لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ،
-                      و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه
-                      روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای
-                      شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
-                      صنعت چاپ،
-                      و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه
-                      روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای
-                      صنعت چاپ،
-                      و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه
-                      روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای
-                      
-                    </Text>
+                   {data.bio &&
+                 
+                <>  <Text
+                fontFamily={"Lalezar"}
+                color={mainText}
+                fontSize={"20px"}
+                mt={"15px"}
+              >
+                درباره من:
+              </Text>
+              <Text textAlign={"justify"} fontWeight="500">
+              { data.bio}
+              </Text></>
+                }
                     <Text
                       fontFamily={"Lalezar"}
                       color={mainText}
@@ -126,7 +139,7 @@ function ProfileCard({ handleShowModal, show }) {
                  
                
                     <Text fontWeight="500">
-                      Family and friends
+                      {data.courses && data.courses.length !==0 && data.courses[0]['name']}
                     </Text>
                   
                     <Text

@@ -112,40 +112,37 @@ function CourseListTableRow(props) {
         </Text>
       </Td>
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-      <IconButton  background={'none'} icon={<FaPencilAlt />} onClick={() => handleShowEditModal(true)}></IconButton>
-
-        {state.edit && <CourseEditModal
-
-          courseId={courseId}
-          courses={courses}
-          statusData={statusData}
-          callData={callData}
-          handleShowModal={handleShowEditModal}
-            show={state.edit}
-        />}
-
-
-
-
-
+<Flex>
 <IconButton
-            background={"none"}
-            fontSize={'24px'}
-            color="yellow"
-            icon={<FaImage />}
-            onClick={() => handleShowUploadModal(true)}
+          background={"none"}
+          icon={<FaPencilAlt />}
+          onClick={() => handleShowEditModal(true)}
+        ></IconButton>
+        {state.edit && (
+          <CourseEditModal
+            courseId={courseId}
+            courses={courses}
+            statusData={statusData}
+            callData={callData}
+            handleShowModal={handleShowEditModal}
+            show={state.edit}
           />
-          {state.image && (
-            <UploadModal
-              handleShowModal={handleShowUploadModal}
-              show={state.image}
-              imageId={imageId}
-              _id={courseId}
-            />
-          )}{" "}
-
-
-
+        )}
+        <IconButton
+          background={"none"}
+          fontSize={"24px"}
+          color="yellow"
+          icon={<FaImage />}
+          onClick={() => handleShowUploadModal(true)}
+        />
+        {state.image && (
+          <UploadModal
+            handleShowModal={handleShowUploadModal}
+            show={state.image}
+            imageId={imageId}
+            _id={courseId}
+          />
+        )}{" "}
         <IconButton
           background={"none"}
           color="red"
@@ -160,9 +157,8 @@ function CourseListTableRow(props) {
             _id={courseId}
           />
         )}{" "}
+</Flex>
       </Td>
-
-
     </Tr>
   );
 }

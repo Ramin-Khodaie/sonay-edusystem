@@ -147,7 +147,7 @@ await getUserByRole('teacher').then((res)=>{
               courses={courseList}
               selectChange={setFilter}
               courseStatus={statusData}
-              teacher={teachers}
+              teacher={teachers ? teachers : []}
             />
           </CardHeader>
        

@@ -139,7 +139,13 @@ class SAY():
         
     def get_profile_info(self,username):
         col : Collection = self.db.mongo_db["s_user"]
-        info = list(col.find({'username' : username},{"bio" : 1,"address" : 1,"full_name" :1,"email":1}))
+        info = list(col.find({'username' : username},{"bio" : 1,"address" : 1,"full_name" :1,
+                                                      "email":1,"image" : 1,
+                                                      "last_seen" : 1,
+                                                      "last_seen_h" : 1,
+                                                      "last_seen_m" : 1,
+                                                      "courses" : 1
+                                                      }))
         return 200,"ok","ok",info
     def update_profile_info(self,username,info):
         col : Collection = self.db.mongo_db["s_user"]

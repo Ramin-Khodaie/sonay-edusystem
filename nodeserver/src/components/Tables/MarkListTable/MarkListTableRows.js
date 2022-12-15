@@ -107,7 +107,8 @@ function MarkListTableRow(props) {
         {course.name}
       </Td>
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-        <IconButton
+<Flex >
+<IconButton
           background={"none"}
           icon={<FaPencilAlt />}
           onClick={() => handleShowEditModal(true)}
@@ -140,6 +141,7 @@ function MarkListTableRow(props) {
             _id={markId}
           />
         )}{" "}
+</Flex>
       </Td>
     </Tr>
   );

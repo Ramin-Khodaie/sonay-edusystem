@@ -150,10 +150,10 @@ export const getUserList = (filters) => {
 
 
 
-export const getProfileInfo = () => {
+export const getProfileInfo = (username="") => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await bixios.get("/users/getprofileinfo");
+      const res = await bixios.get("/users/getprofileinfo",{params : {username : username}});
       if (res.status === 200) {
         resolve(res);
       }

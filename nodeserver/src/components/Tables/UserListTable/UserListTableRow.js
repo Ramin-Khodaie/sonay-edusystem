@@ -49,7 +49,7 @@ function UserListTableRow(props) {
     edit: false,
     image: false,
     enable: false,
-    profile : false
+    profile: false,
   });
   const handleShowUploadModal = (st) => {
     setState({ ...state, image: st });
@@ -66,7 +66,6 @@ function UserListTableRow(props) {
   };
 
   const handleShowProfileModal = (st) => {
-    console.log("dsfsdf")
     setState({ ...state, profile: st });
   };
   return (
@@ -76,7 +75,6 @@ function UserListTableRow(props) {
         pl="0px"
         borderColor={borderColor}
         borderBottom={isLast ? "none" : null}
-        
       >
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           <Flex direction="column">
@@ -86,7 +84,6 @@ function UserListTableRow(props) {
               fontWeight="bold"
               minWidth="100%"
               onClick={() => handleShowProfileModal(true)}
-              
             >
               {name}
             </Text>
@@ -94,13 +91,14 @@ function UserListTableRow(props) {
               {username}
             </Text>
 
-
-            {state.profile && <ProfileCard 
-          
-          handleShowModal={handleShowEditModal}
-          show={state.profile}
-        />}
-
+            {state.profile && (
+              <ProfileCard
+              
+                handleShowModal={handleShowProfileModal}
+                show={state.profile}
+                username={username}
+              />
+            )}
           </Flex>
         </Flex>
       </Td>
@@ -147,26 +145,26 @@ function UserListTableRow(props) {
         </Text>
       </Td>
       <Td borderColor={borderColor} borderBottom={isLast ? "none" : null}>
-      <IconButton  background={'none'} icon={<FaPencilAlt />} onClick={() => handleShowEditModal(true)}></IconButton>
-
-       {state.edit && <UserEditModal
-          userList={userList}
-          setUserList={setUserList}
-          changeSent={changeSent}
-          sent={sent}
-          userId={userId}
-          courses={courses}
-          handleShowModal={handleShowEditModal}
-            show={state.edit}
-        />}
-
-
-
-
-        
-
-<IconButton
-fontSize={'24px'}
+        <Flex>
+          <IconButton
+            background={"none"}
+            icon={<FaPencilAlt />}
+            onClick={() => handleShowEditModal(true)}
+          ></IconButton>
+          {state.edit && (
+            <UserEditModal
+              userList={userList}
+              setUserList={setUserList}
+              changeSent={changeSent}
+              sent={sent}
+              userId={userId}
+              courses={courses}
+              handleShowModal={handleShowEditModal}
+              show={state.edit}
+            />
+          )}
+          <IconButton
+            fontSize={"24px"}
             background={"none"}
             color="yellow"
             icon={<FaImage />}
@@ -180,53 +178,48 @@ fontSize={'24px'}
               _id={userId}
             />
           )}{" "}
-
-
-
-{
-          isEnable ? 
+          {isEnable ? (
+            <IconButton
+              fontSize={"24px"}
+              background={"none"}
+              color="green"
+              icon={<FaUserCheck />}
+              onClick={() => handleShowEnableModal(true)}
+            />
+          ) : (
+            <IconButton
+              fontSize={"24px"}
+              background={"none"}
+              color="red"
+              icon={<FaUserMinus />}
+              onClick={() => handleShowEnableModal(true)}
+            />
+          )}
+          {state.enable && (
+            <EnableConfirmModal
+              handleEnable={handleEnable}
+              _id={username}
+              isEnable={isEnable}
+              show={state.enable}
+              handleShowModal={handleShowEnableModal}
+            />
+          )}
           <IconButton
-          fontSize={'24px'}
-            background={"none"}
-            color="green"
-            icon={<FaUserCheck />}
-            onClick={() => handleShowEnableModal(true)}
-          />:
-          <IconButton
-          fontSize={'24px'}
             background={"none"}
             color="red"
-            icon={<FaUserMinus />}
-            onClick={() => handleShowEnableModal(true)}
-          />
-        }
-{state.enable && <EnableConfirmModal
-          handleEnable={handleEnable}
-          _id={username}
-          isEnable={isEnable}
-          show={state.enable}
-          handleShowModal={handleShowEnableModal}
-        />}
-
-
-
-        <IconButton
-          background={"none"}
-          color="red"
-          onClick={() => handleShowRemoveModal(true)}
-          icon={<CloseIcon />}
-        ></IconButton>
-        {state.remove && (
-          <DeleteConfirmModal
-            show={state.remove}
-            handleShowModal={handleShowRemoveModal}
-            handleDelete={handleDelete}
-            _id={username}
-          />
-        )}{" "}
+            onClick={() => handleShowRemoveModal(true)}
+            icon={<CloseIcon />}
+          ></IconButton>
+          {state.remove && (
+            <DeleteConfirmModal
+              show={state.remove}
+              handleShowModal={handleShowRemoveModal}
+              handleDelete={handleDelete}
+              _id={username}
+            />
+          )}{" "}
+        </Flex>
       </Td>
-
- 
     </Tr>
   );
 }

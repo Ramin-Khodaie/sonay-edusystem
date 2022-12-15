@@ -160,9 +160,10 @@ def get_teacher_list(say: SAY):
 
 @router.get("/getprofileinfo")
 @sn(roles=['admin','teacher','student'])
-def get_profile_info(user: SUser , say : SAY):
+def get_profile_info(user: SUser , say : SAY ,username=""):
+    u = user["username"] if username=="" else username
     
-    ret = say.get_profile_info(username=user['username'])
+    ret = say.get_profile_info(username=u)
     return api_return(200, 'ok', 'ok', data=ret[3])
 
 @router.put("/updateprofileinfo")
