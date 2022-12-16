@@ -10,7 +10,6 @@ from bson import ObjectId
 from PIL import Image, ImageFile
 import os
 import io
-
 __all__ = ["save_docs", "load_doc", "send_doc"]
 
 
@@ -28,7 +27,8 @@ def create_thumbnail(img: AnyStr, size: int = 64):
         return byteIO.getvalue()
     except:
         e = sys.exc_info()
-        return download_image_thumb
+        # return download_image_thumb
+        return None
 
 
 def is_image(content_type: str) -> bool:
@@ -41,9 +41,9 @@ def is_image(content_type: str) -> bool:
         return False
 
 
-tf = open("pyserver\modules\main\classes\download.png", "rb")
-download_image_thumb = tf.read()
-tf.close()
+# tf = open("pyserver\modules\main\classes\download.png", "rb")
+# download_image_thumb = tf.read()
+# tf.close()
 
 
 class Docs():
@@ -74,7 +74,8 @@ class Docs():
             return byteIO.getvalue()
         except:
             e = sys.exc_info()
-            return download_image_thumb
+            # return download_image_thumb
+            return None
 
 
     def is_image(self , content_type: str) -> bool:
@@ -118,10 +119,10 @@ class Docs():
 
             content = file.file.read()
             tm = None
-            if self.is_image(file.content_type):
-                tm = self.create_thumbnail(content, thumbnail_size)
-            else:
-                tm = download_image_thumb
+            # if self.is_image(file.content_type):
+            #     tm = self.create_thumbnail(content, thumbnail_size)
+            # else:
+            #     tm = download_image_thumb
             doc = {"app": self.app, "content_type": file.content_type, "file_name": file.filename
                 , **extras, "thumbnail": tm, "data": content}
             ret = None
