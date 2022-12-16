@@ -369,7 +369,8 @@ class SDashboard:
                             '$match': {
                                 'y': {
                                     '$eq': 1401
-                                }
+                                },
+                                'type' : 'registration'
                             }
                         }, {
                             '$group': {
