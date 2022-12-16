@@ -13,6 +13,7 @@ import {
   InputLeftAddon,
   InputRightAddon,
   Link,
+  Spacer,
   Switch,
   Text,
   Textarea,
@@ -82,7 +83,8 @@ const notify = useNotify()
 
     image: false,
     imageId:'',
-    userId :''
+    userId :'',
+    avg:0
   });
   const handleShowUploadModal = (st) => {
     setState({ ...state, image: st });
@@ -95,6 +97,8 @@ const notify = useNotify()
   const callProfileInfo = ()=>{
     getProfileInfo().then((res)=>{
         if (res.status === 200){
+          console.log(res)
+
             setFormData({
                 
             bio:res.data.data[0].bio ? res.data.data[0].bio : "",          
@@ -102,7 +106,9 @@ const notify = useNotify()
             full_name:res.data.data[0].full_name ? res.data.data[0].full_name : "" ,
             email:res.data.data[0].email ? res.data.data[0].email : ""
             })
-            setState({...state , imageId : res.data.data[0].image ,userId :  res.data.data[0]._id  })
+            setState({...state , avg : res.data.data[0].average_mark ? res.data.data[0].average_mark : 0 ,
+               imageId : res.data.data[0].image ,
+               userId :  res.data.data[0]._id  })
         }
     })
   }
@@ -112,7 +118,6 @@ const notify = useNotify()
     callProfileInfo()
   },[])
   
-
   return (
     <Flex direction='column' pt={{ base: "120px", md: "75px", lg: "100px" }}>
       <Flex
@@ -161,8 +166,10 @@ const notify = useNotify()
           </Flex>
         </Flex>
         <Flex
-          direction={{ sm: "column", lg: "row" }}
-          w={{ sm: "100%", md: "50%", lg: "auto" }}>
+     
+          direction={'column'}
+          dir={'rtl'}
+          w={"100%"}>
           {/* <Button p='0px' bg='transparent' variant='no-effects'>
             <Flex
               align='center'
@@ -180,6 +187,19 @@ const notify = useNotify()
             </Flex>
           </Button> */}
 
+
+{userInfo && userInfo.role.id === 'student' &&
+
+<Flex justify={'space-between'} w={'50%'} >
+<Text fontSize={'24px'} fontFamily={"Lalezar"}>معدل کل </Text>
+<Text fontSize={'24px'} fontFamily={"Lalezar"}>{state.avg} </Text>
+</Flex>
+
+}
+<Flex  w={'100%'} >
+<Text fontSize={'24px'} fontFamily={"Lalezar"}>دستاورد ها </Text>
+<Text pr={'20px'}  >هنوز هیچ دستاوردی کسب نکرده اید </Text>
+</Flex>
         </Flex>
       </Flex>
 

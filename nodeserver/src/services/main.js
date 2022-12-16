@@ -14,7 +14,7 @@ export const bixios = axios.create({
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
   },
-  baseURL: "//localhost:8000/api/"
+  baseURL: `${process.env.REACT_APP_API}/api/`
 });
 
 

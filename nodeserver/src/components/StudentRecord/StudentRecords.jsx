@@ -5,7 +5,7 @@ import { forwardRef, useImperativeHandle } from "react";
 const StudentRecords = ({ data, handleStudentSelect, selectedItems , markList ,
   
   setMarkList,
-myStudents , setmyStudents }, ref) => {
+ setmyStudents }, ref) => {
   const handleSliderLeft = () => {
     const slider = document.getElementById("studentSlider");
     slider.scrollLeft = slider.scrollLeft + 500;
@@ -31,7 +31,7 @@ myStudents , setmyStudents }, ref) => {
           selectedItems={selectedItems}
           markList={markList}
           setMarkList={setMarkList}
-          myStudents={myStudents}
+          myStudents={data}
               setmyStudents={setmyStudents}
         />
       ))}

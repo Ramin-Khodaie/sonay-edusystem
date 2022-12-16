@@ -11,11 +11,12 @@ class SCourse:
     course_collection: str = 'course'
     user_collection: str = 's_user'
 
-    def __init__(self, database, course_collection, user_collection, mark_collection, registration_collection):
+    def __init__(self, database, course_collection, user_collection, mark_collection, registration_collection , product_collection = "product"):
         self.database = database
         self.course_collection = course_collection
         self.user_collection = user_collection
         self.mark_collection = mark_collection
+        self.product_collection = product_collection
         self.registration_collection = registration_collection
 
     def validate_course(self, course, col):
@@ -89,6 +90,19 @@ class SCourse:
     def delete_course(self,_id):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
+        col2: Collection = db[self.user_collection]
+        col3: Collection = db[self.product_collection]
+        if len(list(col2.find({"courses.id" : _id}))) > 0:
+            return 422 , "has_user" , "item has users including student and teacher" , []
+        if len(list(col3.find({"courses.id" : _id}))) > 0:
+            return 422 , "has_product" , "item has products" , []
+
+
+
+
+
+        col.update_many({'next_course.id' : _id} , {"$set" : {"next_course" : {"id" : "","name" : ""}}})
+        col.update_many({'prev_course.id' : _id} , {"$set" : {"prev_course" : {"id" : "","name" : ""}}})
         col.delete_one({'_id' : _id})
         return 200, "ok", "ok", _id
     def get_course(self, course_id):
@@ -321,6 +335,8 @@ class SCourse:
                 }
             }
         ]))
+        if len(raw[0]['item'])==0:
+            return 422, "missing_next_course", "next coursefor current course is mpt defined by admin", []
 
         nxt = sorted(raw[0]['nxt'], key=lambda x: x['order'])
         for itm in nxt:

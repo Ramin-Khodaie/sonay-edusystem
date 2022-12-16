@@ -57,7 +57,7 @@ export const deleteCourse = (_id) => {
         resolve(res);
       }
     } catch (error) {
-      resolve(error.response.status);
+      resolve(error.response);
     }
   });
 };

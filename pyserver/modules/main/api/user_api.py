@@ -24,14 +24,14 @@ router = APIRouter(prefix='/users', tags=["user"])
 sn.add_router(router)
 
 
-chars = 'abcdefghijklmnopqrstuvwxyz'
+chars = 'ABCDEFGHIJKLMNOQRSTUVWXYZ0123456789'
 
 @router.get("/captcha")
 @sn(roles=[])
 async def get_captcha(session: SSession):
     show_str = ""
 
-    for i in range(0, 5):
+    for i in range(0,4):
         nn=random.randint(0,25)
         show_str = show_str +chars[nn]
 

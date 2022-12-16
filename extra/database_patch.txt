@@ -1,3 +1,62 @@
 db.s_user.updateMany({},{"$set" : {is_enable : true}})
 db.course.updateMany({},{"$set" :{"image" : ""}})
 db.product.updateMany({},{"$set" :{"image" : ""}})
+
+
+db.s_user.aggregate([
+  {
+    /**
+     * query: The query in MQL.
+     */
+    $match: {
+      "role.id": "student",
+    },
+  },
+  {
+    /**
+     * from: The target collection.
+     * localField: The local join field.
+     * foreignField: The target join field.
+     * as: The name for the results.
+     * pipeline: Optional pipeline to run on the foreign collection.
+     * let: Optional variables to use in the pipeline field stages.
+     */
+    $lookup: {
+      from: "mark",
+      localField: "username",
+      foreignField: "username",
+      as: "result",
+    },
+  },
+  {
+    /**
+     * field: The field name
+     * expression: The expression.
+     */
+    $set: {
+      average_mark: {
+        $round: [{ $avg: "$result.sum" }, 2],
+      },
+    },
+  },
+  {
+    /**
+     * Provide the field name to exclude.
+     * To exclude multiple fields, pass the field names in an array.
+     */
+    $unset: "result",
+  },
+  {
+    /**
+     * into: The target collection.
+     * on: Fields to  identify.
+     * let: Defined variables.
+     * whenMatched: Action for matching docs.
+     * whenNotMatched: Action for non-matching docs.
+     */
+    $merge: {
+      into: "s_user",
+      on: "_id",
+    },
+  },
+])

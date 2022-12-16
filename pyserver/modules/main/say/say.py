@@ -144,7 +144,8 @@ class SAY():
                                                       "last_seen" : 1,
                                                       "last_seen_h" : 1,
                                                       "last_seen_m" : 1,
-                                                      "courses" : 1
+                                                      "courses" : 1,
+                                                      "average_mark" : 1
                                                       }))
         return 200,"ok","ok",info
     def update_profile_info(self,username,info):
@@ -465,6 +466,7 @@ class SAY():
                           "name" : "ثبت نام شده"},
               "creator": "self",
               "image" : "" ,
+              "average_mark" : 0
               }
 
 

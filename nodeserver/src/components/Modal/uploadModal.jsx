@@ -16,6 +16,7 @@ import {
   GridItem,
   useColorModeValue,
   Icon,
+  Spinner,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -72,15 +73,19 @@ function UploadModal(props) {
   const {  onClose } = useDisclosure();
   const [file, setFile] = useState([]);
   const [img, setImg] = useState('');
+  const [state, setState] = useState({
+    isUploading : false
+  });
   const data = new FormData();
   const dndBG = useColorModeValue("gray.200", "gray.800");
 
   const handleFileChange = (f) => {
     if (f.length > 0) {
-      setFile([...file, f[0]]);
+      setFile([f[0]]);
     }
   };
   const handleUpload = () => {
+    setState({...state , isUploading : true})
     if (!file || file.length > 1) {
       return;
     }
@@ -95,19 +100,19 @@ function UploadModal(props) {
       data
     ).then((res) => {
       setImg(res.data)
+      setFile([])
+      setState({...state , isUploading : false})
+
     });
   };
   const hiddenFileInput = useRef(null);
-  console.log(img,7878)
-  const handleUploadClick = (event) => {
-    hiddenFileInput.current.click();
-  };
+
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
     useDropzone({
       accept: { "image/*": [] },
       noClick: true,
-      maxFiles: 2,
+      maxFiles:1,
 
       onDrop: handleFileChange,
     });
@@ -225,10 +230,8 @@ const fs ={'sm':"200px",'md':"200px",'lg':'280px'}
               <GridItem colSpan={{ sm: 4, md: 3, lg: 3 }}>
                 <Flex direction={"column"} align={"center"}>
                   <Text pb={"20px"}>جهت بارگذاری تصویر</Text>
-                  <Button mb={"20px"} onClick={handleUploadClick}>
-                    اینجا کلیک کنید
-                  </Button>
-                  <Text pb={"20px"}>و یا تصویر را در کادر زیر رها کنید</Text>
+                  
+                  <Text pb={"20px"}>روی کادر زیر کلیک کنید یا آن را در کادر زیر رها کنید</Text>
                   <Input
                     ref={hiddenFileInput}
                     style={{
@@ -251,31 +254,32 @@ const fs ={'sm':"200px",'md':"200px",'lg':'280px'}
                     <Input {...getInputProps()} />
                     {file.length === 0 && (
                       <Text textAlign={"center"}>
-                        فایل خود را اینجا رها کنید
-                      </Text>
+کلیک کنید یا فایل را اینجا رها کنید                      </Text>
                     )}
-                    <VStack
-                      height={"170x"}
-                      // w={{ sm: "400px", md: "600px", lg: "700px" }}
-                      style={{ overflow: "scroll" }}
-                      divider={<StackDivider borderColor="gray.200" />}
-                      spacing={1}
-                      align="stretch"
-                    >
+                        { file.length !== 0 &&
+                        <Flex dir={'rtl'}  w={'100%'} direction={"column"}>
                       {file.map((f, num) => (
-                        <Flex px={"20px"} direction={"row"}>
+             
+        
+                    
+                          <Flex align={'center'}>
                           <Text>{f.name}</Text>
-                          <Spacer />
+                     
                           <IconButton
                             onClick={() => handleDocDelete(num)}
                             color={"red"}
                             background={"none"}
                             icon={<DeleteIcon />}
-                          ></IconButton>
-                        </Flex>
+                          ></IconButton></Flex>
+                   
                       ))}
-                    </VStack>
+                    </Flex>
+                    }
+
                   </Box>
+                    { state.isUploading && <Spinner mt={'30px'} />
+}
+
                 </Flex>
               </GridItem>
             </Grid>
@@ -284,8 +288,8 @@ const fs ={'sm':"200px",'md':"200px",'lg':'280px'}
             <Button mx={"10px"} colorScheme={"red"} onClick={handleClose}>
               لغو
             </Button>
-            <Button mx={"10px"} colorScheme={"green"} onClick={handleUpload}>
-              آپلود
+            <Button disabled={state.isUploading} mx={"10px"} colorScheme={"green"} onClick={handleUpload}>
+              {state.isUploading ? "در حال بارگذاری" : "آپلود"}
             </Button>
           </ModalFooter>
         </ModalContent>

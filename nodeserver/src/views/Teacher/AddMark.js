@@ -101,13 +101,8 @@ function AddMark() {
     setmyStudents(studentsList);
   };
 
-  const getMarkList = async () => {
-    const markListC = await markByTeacher();
+  console.log(myStudents,778)
 
-    if (markListC.length > 0) {
-      setMarkList(markListC);
-    }
-  };
 
   useEffect(() => {
     getCourseList();
@@ -115,7 +110,10 @@ function AddMark() {
   }, []);
 
   useEffect(() => {
-    getStudentList();
+    if(selectedItems.course.id !== ""){
+       getStudentList();
+    }
+   
   }, [selectedItems.course]);
 
   const handleStudentSelect = (_id, name) => {
@@ -195,36 +193,14 @@ function AddMark() {
         /> */}
       </Box>
 
-      {selectedItems.course.id == "" ? (
-        // <Flex
-        //   borderRadius={"3rem"}
-        //   bg="white"
-        //   mt={"25px"}
-        //   mx={{ sm: "25px", md: "60px", lg: "80px" }}
-        //   mb={"55px"}
-        //   py={"20px"}
-        // >
-        //   <Center w={{ sm: "150px", md: "200px", lg: "250px" }}>
-        //     <SkeletonCircle
-        //       mx={{ sm: "25px", md: "60px", lg: "80px" }}
-        //       size="81"
-        //     />
-        //   </Center>
-
-        //   <Box flex="1">
-        //     <Stack mr={{ sm: "25px", md: "60px", lg: "80px" }}>
-        //       <Skeleton height="20px" />
-        //       <Skeleton height="20px" />
-        //       <Skeleton height="20px" />
-        //     </Stack>
-        //   </Box>
-        // </Flex>
+      {selectedItems.course.id === "" ? (
+      
         <Card>
           <Text fontWeight={"bold"} fontSize={"20px"} textAlign={"center"}>
             دوره را انتخاب کنید
           </Text>
         </Card>
-      ) : myStudents.length == 0 ? (
+      ) : myStudents.length === 0 ? (
         <Card>
           <Text dir={"rtl"} fontWeight={"bold"} fontSize={"20px"} textAlign={"center"}>
 هیچ دانش آموزی در کلاس {selectedItems && selectedItems.course.name} جهت ورود نمره یافت نشد         </Text>
@@ -239,7 +215,7 @@ function AddMark() {
             <StudentRecords
               markList={markList}
               setMarkList={setMarkList}
-              myStudents={myStudents}
+             
               setmyStudents={setmyStudents}
               data={myStudents}
               handleStudentSelect={handleStudentSelect}

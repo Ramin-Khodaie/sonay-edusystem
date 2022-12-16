@@ -38,10 +38,10 @@ const StudentRecord = ({
   myStudents,
   setmyStudents
 }) => {
-  const { full_name, _id, courses } = studentRecord;
+  const { full_name, _id, courses ,average_mark } = studentRecord;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
@@ -51,7 +51,6 @@ const StudentRecord = ({
   };
 
   const { colorMode } = useColorMode();
-
   return (
     <div className="record-card" onClick={handleOpenCard}>
       <SimpleGrid
@@ -89,8 +88,9 @@ const StudentRecord = ({
           <Text textAlign={"center"} fontSize={"sm"}>
             {courses[0].name}
           </Text>
-          <Badge colorScheme="purple">شاگرد ممتاز</Badge>
-          <Text fontSize={"sm"}>معدل کل : 98.5</Text>
+          {average_mark > 95 &&
+          <Badge colorScheme="purple">شاگرد ممتاز</Badge>}
+          <Text fontSize={"sm"}>معدل کل : {average_mark}</Text>
         </Box>
       </SimpleGrid>
 

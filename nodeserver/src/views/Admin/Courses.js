@@ -17,6 +17,7 @@ import { getCourseBySearch } from "services/course";
 import { deleteCourse } from "services/course";
 import { getCourseListLimited } from "services/course";
 import { getUserByRole } from "services/user";
+import useNotify from "helpers/notify/useNotify";
 
 function Courses() {
   const textColor = useColorModeValue("gray.700", "white");
@@ -68,11 +69,23 @@ await getUserByRole('teacher').then((res)=>{
       name: "",
     },
   });
-
+const notify = useNotify()
   const handleDelete = (_id)=>{
 
     deleteCourse(_id).then((res)=>{
-      setState(state.filter((course)=>course._id !== res.data.data))
+      if(res.status === 200){
+        setState(state.filter((course)=>course._id !== res.data.data))
+      }else if(res.status === 422){
+        if(res.data.detail.result=== 'has_product'){
+
+          notify("این دوره برای محصولاتی تعریف شده و قابل حذف نمی باشد", true, "solid", "error");
+
+
+        } else if (res.data.detail.result=== 'has_user'){
+          notify("این دوره برای کاربرانی تعریف شده و قابل حذف نمی باشد", true, "solid", "error");
+
+        }
+      }
     })
   }
 

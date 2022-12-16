@@ -319,6 +319,13 @@ class SMark:
                     'courses.id': course_id,
                     'role.id': 'student'
                 }
+            },{
+                "$project" : {
+                    'full_name' : 1,
+                    'username' : 1,
+                    'average_mark' : 1,
+                    'courses' : 1
+                }
             }, {
                 '$lookup': {
                     'from': 'mark',
