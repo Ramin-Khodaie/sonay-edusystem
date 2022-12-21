@@ -11,7 +11,7 @@ class SCourse:
     course_collection: str = 'course'
     user_collection: str = 's_user'
 
-    def __init__(self, database, course_collection, user_collection, mark_collection, registration_collection , product_collection = "product"):
+    def __init__(self, database, course_collection, user_collection, mark_collection, registration_collection, product_collection="product"):
         self.database = database
         self.course_collection = course_collection
         self.user_collection = user_collection
@@ -23,7 +23,7 @@ class SCourse:
         required = {"name", "_id", "prev_course", "status", "price"}
         if len(required.difference(set(course.keys()))) != 0:
             return 422, "missing_field", "some fields are missing", None
-        if course["name"]== '' or course["status"]['id'] == '' or course["price"]== '':
+        if course["name"] == '' or course["status"]['id'] == '' or course["price"] == '':
             return 422, "empty_field", "can not accept empty fiels", None
         if "_id" in course and course["_id"] == "" and len(list(col.find({"name": course["name"]}))) != 0:
             return 422, "not_unique", "user already exists", None
@@ -55,21 +55,18 @@ class SCourse:
 
         return 200, "ok", "course is inserted", None
 
-    def get_course(self , _id):
+    def get_course(self, _id):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
-        data = list(col.find({'_id' : _id}))
+        data = list(col.find({'_id': _id}))
         if len(data) == 1:
 
             return 200, "ok", "is valid", data
         else:
-            return 404, "not_found" , "not found", []
-
-
-
-
+            return 404, "not_found", "not found", []
 
         return
+
     def edit_course(self, info, col: Collection):
         idd = info["_id"]
         del info["_id"]
@@ -86,25 +83,23 @@ class SCourse:
 
         return 200, "ok", "ok", []
 
-
-    def delete_course(self,_id):
+    def delete_course(self, _id):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
         col2: Collection = db[self.user_collection]
         col3: Collection = db[self.product_collection]
-        if len(list(col2.find({"courses.id" : _id}))) > 0:
-            return 422 , "has_user" , "item has users including student and teacher" , []
-        if len(list(col3.find({"courses.id" : _id}))) > 0:
-            return 422 , "has_product" , "item has products" , []
+        if len(list(col2.find({"courses.id": _id}))) > 0:
+            return 422, "has_user", "item has users including student and teacher", []
+        if len(list(col3.find({"courses.id": _id}))) > 0:
+            return 422, "has_product", "item has products", []
 
-
-
-
-
-        col.update_many({'next_course.id' : _id} , {"$set" : {"next_course" : {"id" : "","name" : ""}}})
-        col.update_many({'prev_course.id' : _id} , {"$set" : {"prev_course" : {"id" : "","name" : ""}}})
-        col.delete_one({'_id' : _id})
+        col.update_many({'next_course.id': _id}, {
+                        "$set": {"next_course": {"id": "", "name": ""}}})
+        col.update_many({'prev_course.id': _id}, {
+                        "$set": {"prev_course": {"id": "", "name": ""}}})
+        col.delete_one({'_id': _id})
         return 200, "ok", "ok", _id
+
     def get_course(self, course_id):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
@@ -114,21 +109,19 @@ class SCourse:
         else:
             return 200, "ok", "ok", course
 
-    
     def get_course_list(self):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
-        cl = list(col.find({} , {'_id' : 1 , "name" : 1}))
-       
-        return 200, "ok", "ok", list(cl) 
-    
+        cl = list(col.find({}, {'_id': 1, "name": 1}))
+
+        return 200, "ok", "ok", list(cl)
 
     def get_course_list_limited(self, full_name, status):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
         cl = list(col.aggregate([
-           
-            {"$sort" : {"g_date" : -1}},{"$limit" : 20},
+
+            {"$sort": {"g_date": -1}}, {"$limit": 20},
             {
                 '$lookup': {
                     'from': 's_user',
@@ -139,8 +132,8 @@ class SCourse:
                         {
                             '$match': {
                                 'role.id': 'teacher'
-                                    
-                                
+
+
                             }
                         }, {
                             '$project': {
@@ -149,17 +142,16 @@ class SCourse:
                             }
                         },
                         {
-                            "$sort" : {"g_date" : -1}
+                            "$sort": {"g_date": -1}
                         }
                     ]
                 }
             }
-          
+
         ]))
         res = list(cl)
-        return 200, "ok", "ok", res 
-    
-    
+        return 200, "ok", "ok", res
+
     def get_course_by_search(self, filter):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
@@ -168,21 +160,21 @@ class SCourse:
             and_li.append({'name': {'$regex': filter['name']}})
         if 'teacher' in filter and filter['teacher'] != "":
             col2: Collection = db[self.user_collection]
-            courses = list(col2.find({'_id' : filter['teacher']},{'courses' : 1}))
+            courses = list(
+                col2.find({'_id': filter['teacher']}, {'courses': 1}))
             if len(courses) == 1:
                 ids = [cid['id'] for cid in courses[0]['courses']]
-                and_li.append({'_id': {"$in" : ids}})
+                and_li.append({'_id': {"$in": ids}})
             else:
                 return 200, "ok", "ok", []
 
         if 'status' in filter and filter['status'] != '':
             and_li.append({'status.id': filter['status']})
-        
 
         data = list(col.aggregate([
             {
-            "$match" : {"$and" : and_li}
-        },
+                "$match": {"$and": and_li}
+            },
             {
                 '$lookup': {
                     'from': 's_user',
@@ -193,8 +185,8 @@ class SCourse:
                         {
                             '$match': {
                                 'role.id': 'teacher'
-                                    
-                                
+
+
                             }
                         }, {
                             '$project': {
@@ -335,7 +327,7 @@ class SCourse:
                 }
             }
         ]))
-        if len(raw[0]['item'])==0:
+        if len(raw[0]['item']) == 0:
             return 422, "missing_next_course", "next coursefor current course is mpt defined by admin", []
 
         nxt = sorted(raw[0]['nxt'], key=lambda x: x['order'])
@@ -369,7 +361,7 @@ class SCourse:
         col2: Collection = db[self.course_collection]
         col3: Collection = db[self.registration_collection]
 
-        cur = list(col2.find({"_id": course_id},{'g_date' : 0}))
+        cur = list(col2.find({"_id": course_id}, {'g_date': 0}))
         if len(cur) != 1 or 'prev_course' not in cur[0]:
             return 422, "missing_prev_course", "prev course for user is not defined", []
         else:
@@ -474,3 +466,25 @@ class SCourse:
         }]}})
 
         return 200, "ok", "ok", None
+
+    def get_course_members(self, course_id):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.user_collection]
+        ret = list(col.find({"courses.id": course_id,
+                   "role.id": "student"}, {'full_name': 1}))
+
+        return 200, 'ok', 'ok', ret
+
+    def course_transfer(self, data):
+        db: Database = sn.databases[self.database].db
+        col: Collection = db[self.user_collection]
+        
+        if data["desCourse"]["id"] == "":
+            
+            return 422, "missing_course" , "destination course is missing" , []
+        ids = [it['_id'] for it in data['students']]
+        col.update_many({"_id": {"$in": ids}}, 
+                        {"$set": {"courses": [{"id": data['desCourse']['id'],
+                                               "name": data['desCourse']['name']
+                                               }]}})
+        return 200, 'ok', 'ok', []

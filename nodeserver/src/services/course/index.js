@@ -179,3 +179,50 @@ export const registrationSuccess = (courseId = "0", username = "0") => {
     }
   });
 };
+
+
+
+export const getCourseMembers = (courseId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.get("/courses/getcoursemembers", {
+        params: { course_id: courseId},
+      });
+
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+      resolve(error.response.status);
+    }
+  });
+};
+
+
+
+
+
+
+
+export const courseTransfer = (data) => {
+  
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res = await bixios.put("/courses/coursetransfer", {
+       
+        students:data.students,
+        desCourse : data.desCourse,
+ 
+        
+      });
+
+      if (res.status === 200) {
+        resolve(res);
+      }
+    } catch (error) {
+
+      resolve(error.response);
+
+    }
+  });
+};

@@ -33,6 +33,7 @@ import { IoExitOutline } from 'react-icons/io5';
 import { RiLogoutBoxRFill } from 'react-icons/ri';
 import { SiGoogleanalytics } from 'react-icons/si';
 import { MdAnalytics } from 'react-icons/md';
+import Transfer from 'views/Admin/Transfer.js';
 var dashRoutes = [
   {
     path: "/dashboard",
@@ -72,6 +73,17 @@ var dashRoutes = [
     rtlName: "لوحة القيادة",
     icon: <FaBook /> ,
     component: Product,
+    layout: "/sonay",
+    roles:['admin' ],
+    show : true
+
+  },
+  {
+    path: "/transfer",
+    name: "انتقال",
+    rtlName: "لوحة القيادة",
+    icon: <FaBook /> ,
+    component: Transfer,
     layout: "/sonay",
     roles:['admin' ],
     show : true

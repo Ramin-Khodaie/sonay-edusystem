@@ -125,3 +125,17 @@ def course_registration_success( st:SSettings,username : str,course_id : str ):
 
 
         
+        
+@router.get("/getcoursemembers")
+@sn(fast=True,roles=['admin'])
+def get_course_members( course_id : str ):
+    ret = course.get_course_members(course_id)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])
+
+
+        
+@router.put("/coursetransfer")
+@sn(fast=True,roles=['admin' ])
+def course_transfer(data : dict):
+    ret = course.course_transfer(data)
+    return api_return(ret[0],ret[1],ret[2],data=ret[3])

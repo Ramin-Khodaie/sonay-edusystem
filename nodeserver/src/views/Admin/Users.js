@@ -6,19 +6,7 @@ import {
   Accordion,
   AccordionItem,
   Box,
-  Tooltip,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
-  Button,
-  Tag,
-  Stack,
+
 } from "@chakra-ui/react";
 
 // Custom components
@@ -26,16 +14,13 @@ import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import UserForm from "components/Forms/userForm";
-import UserListSkleton from "components/Skleton/UserListSkleton/UserListSkleton";
 import UserListFilter from "components/Filter/UserListFilter";
 import UserListTable from "components/Tables/UserListTable/UserListTable";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { courseListAction } from "redux/course/courseList/courseListAction";
-import { userListAction } from "redux/user/UserList/UserListAction";
+import {  useSelector } from "react-redux";
+
 import AuthorizeProvider from "helpers/authorize/AuthorizeProvider";
 import { getUserList } from "services/user";
-import { PhoneIcon, QuestionIcon, QuestionOutlineIcon } from "@chakra-ui/icons";
 import { UserPop1 } from "components/PopOvers/UserPopOver";
 import { deleteUser } from "services/user";
 import { enableUser } from "services/user";
