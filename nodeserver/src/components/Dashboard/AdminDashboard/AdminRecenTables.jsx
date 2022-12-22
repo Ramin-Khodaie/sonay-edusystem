@@ -49,7 +49,7 @@ const AdminRecentTables = (props) => {
 
   const getTopStudentData = async () => {
     await getTopStudent().then((res) => {
-      setTopStudent(res.data.data);
+      setTopStudent(res.data.data.sort((a,b) => b.sum - a.sum));
     });
   };
 

@@ -3,9 +3,12 @@ import {
   useColorModeValue,
   Flex,
   Text,
+  Box,
   Accordion,
   AccordionItem,
-  Box,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
 } from "@chakra-ui/react";
 
 // Custom components
@@ -85,28 +88,42 @@ const Product = () => {
   return (
     <AuthorizeProvider roles={["admin"]}>
       <Flex direction="column"  pt="75px">
-        <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
-          <CardHeader p="6px 0px 22px 0px">
-            <Flex dir="rtl">
-              <Text
-                fontSize="xl"
-                color={textColor}
-                fontWeight="bold"
-                textAlign={"right"}
-              >
-                ثبت محصول جدید
-              </Text>
-              <ProductPop1 />
-            </Flex>
-          </CardHeader>
+        <Card overflowX={{ sm: "scroll", xl: "hidden" }}
+        overflowY={'hidden'}  pb="20px">
+      
+        <Accordion defaultIndex={[1]} allowMultiple >
+            <AccordionItem >
+              <AccordionButton>
+                <ProductPop1 />
 
-          <CardBody>
+                <Box
+                  fontWeight={"bold"}
+                  fontSize={"20px"}
+                  as="span"
+                  flex="1"
+                  textAlign="right"
+                >
+                  ثبت محصول جدید
+                </Box>
+
+                <AccordionIcon />
+              </AccordionButton>
+
+              <AccordionPanel pb={4}>
+           
+      <CardBody>
             <ProductForm
               productList={productList}
               setProductList={setProductList}
               courses={courseList}
             />
           </CardBody>
+
+
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+    
         </Card>
 
         <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">

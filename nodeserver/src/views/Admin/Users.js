@@ -3,9 +3,13 @@ import {
   useColorModeValue,
   Flex,
   Text,
+
+  Box,
   Accordion,
   AccordionItem,
-  Box,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
 
 } from "@chakra-ui/react";
 
@@ -96,24 +100,46 @@ const Users = () => {
   return (
     <AuthorizeProvider roles={["admin"]}>
       <Flex direction="column" pt="75px">
-        <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
-          <CardHeader p="6px 0px 22px 0px">
-            <Flex dir="rtl">
-              <Text fontSize="xl" color={textColor} fontWeight="bold">
-                ثبت کاربر جدید
-              </Text>
+        <Card 
+        overflowX={{ sm: "scroll", xl: "hidden" }}
+        overflowY={'hidden'}
+         pb="20px">
+         
 
-              <UserPop1 />
-            </Flex>
-          </CardHeader>
 
-          <CardBody>
+
+        <Accordion defaultIndex={[1]} allowMultiple >
+            <AccordionItem >
+              <AccordionButton>
+                <UserPop1 />
+
+                <Box
+                  fontWeight={"bold"}
+                  fontSize={"20px"}
+                  as="span"
+                  flex="1"
+                  textAlign="right"
+                >
+                  ثبت کاربر جدید
+                </Box>
+
+                <AccordionIcon />
+              </AccordionButton>
+
+              <AccordionPanel pb={4}>
+           
+
+              <CardBody>
             <UserForm
               userList={userList}
               setUserList={setUserList}
               courses={courseList}
             />
           </CardBody>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+       
         </Card>
 
         <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">

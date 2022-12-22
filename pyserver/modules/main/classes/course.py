@@ -112,7 +112,7 @@ class SCourse:
     def get_course_list(self):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.course_collection]
-        cl = list(col.find({}, {'_id': 1, "name": 1}))
+        cl = list(col.find({}, {'_id': 1, "name": 1}).sort("name", 1))
 
         return 200, "ok", "ok", list(cl)
 
@@ -203,30 +203,23 @@ class SCourse:
     def get_course_by_teacher(self, user):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.user_collection]
-        cl = list(col.aggregate([
-            {
-                '$match': {
+        col2: Collection = db[self.course_collection]
+        teacher_courses = list(col.find({
                     'username': user['username'],
                     'role.id': 'teacher'
-                }
-            }, {
-                "$unwind": '$courses'
-            }, {
-                '$group': {
-                    '_id': '$courses.id',
-                    'name': {
-                        '$first': '$courses.name'
-                    }
-                }
-            }
-        ]))
+                }, {"courses": 1}))[0]['courses']
+        course_ids = [it['id'] for it in teacher_courses]
 
-        return 200, "ok", "ok", cl
+        courses = list(
+            col2.find({"_id": {"$in": course_ids}, "status.id": "active"}, {"name": 1}))
+
+        
+        return 200, "ok", "ok", courses
 
     def get_course_by_student(self, student_id):
-        db: Database = sn.databases[self.database].db
-        col: Collection = db[self.mark_collection]
-        cl = list(col.aggregate([
+        db: Database=sn.databases[self.database].db
+        col: Collection=db[self.mark_collection]
+        cl=list(col.aggregate([
             {
                 '$match': {
                     # 'username': teacher_id,
@@ -246,16 +239,16 @@ class SCourse:
 
     def get_course_history(self, course_id):
 
-        db: Database = sn.databases[self.database].db
-        col: Collection = db[self.course_collection]
+        db: Database=sn.databases[self.database].db
+        col: Collection=db[self.course_collection]
 
-        cur = list(col.find({"_id": course_id}))
+        cur=list(col.find({"_id": course_id}))
         if len(cur) != 1 or 'next_course' not in cur[0]:
             return 422, "missing_next_course", "next course for user is not defined", []
         else:
-            nxt = cur[0]['next_course']['id']
+            nxt=cur[0]['next_course']['id']
 
-        raw = list(col.aggregate([
+        raw=list(col.aggregate([
             {
                 '$facet': {
                     'item': [
@@ -330,45 +323,45 @@ class SCourse:
         if len(raw[0]['item']) == 0:
             return 422, "missing_next_course", "next coursefor current course is mpt defined by admin", []
 
-        nxt = sorted(raw[0]['nxt'], key=lambda x: x['order'])
+        nxt=sorted(raw[0]['nxt'], key=lambda x: x['order'])
         for itm in nxt:
-            itm['state'] = 'upcoming'
-        prv = sorted(raw[0]['prv'], key=lambda x: x['order'], reverse=True)
+            itm['state']='upcoming'
+        prv=sorted(raw[0]['prv'], key = lambda x: x['order'], reverse=True)
         for itm in prv:
-            itm['state'] = 'attended'
+            itm['state']= 'attended'
 
-        raw[0]['item'][0]['state'] = 'current'
-        final = prv + raw[0]['item'] + nxt
+        raw[0]['item'][0]['state']= 'current'
+        final= prv + raw[0]['item'] + nxt
 
         return 200, "ok", "ok", final
 
     def course_registration(self, student_id, course_id):
 
-        db: Database = sn.databases[self.database].db
-        col: Collection = db[self.mark_collection]
-        col2: Collection = db[self.course_collection]
-        col3: Collection = db[self.registration_collection]
+        db: Database= sn.databases[self.database].db
+        col: Collection= db[self.mark_collection]
+        col2: Collection= db[self.course_collection]
+        col3: Collection= db[self.registration_collection]
 
-        mark = list(
+        mark= list(
             col.find({'student.id': student_id, 'course.id': course_id}))
         if len(mark) != 1:
             return 422, 'invalid_result',  'no or more than one mark found', []
 
     def get_course_registration_detail(self, st, username, course_id, state):
 
-        db: Database = sn.databases[self.database].db
-        col: Collection = db[self.user_collection]
-        col2: Collection = db[self.course_collection]
-        col3: Collection = db[self.registration_collection]
+        db: Database= sn.databases[self.database].db
+        col: Collection= db[self.user_collection]
+        col2: Collection= db[self.course_collection]
+        col3: Collection= db[self.registration_collection]
 
-        cur = list(col2.find({"_id": course_id}, {'g_date': 0}))
+        cur= list(col2.find({"_id": course_id}, {'g_date': 0}))
         if len(cur) != 1 or 'prev_course' not in cur[0]:
             return 422, "missing_prev_course", "prev course for user is not defined", []
         else:
-            prev = cur[0]['prev_course']['id']
+            prev= cur[0]['prev_course']['id']
 
         if state == 'current':
-            res = list(col.aggregate([
+            res= list(col.aggregate([
                 {
                     '$facet': {
                         't_obj': [

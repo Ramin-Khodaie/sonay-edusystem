@@ -1,5 +1,15 @@
 // Chakra imports
-import { useColorModeValue, Flex, Text, Box } from "@chakra-ui/react";
+import {
+  useColorModeValue,
+  Flex,
+  Text,
+  Box,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
+} from "@chakra-ui/react";
 
 // Custom components
 import Card from "components/Card/Card.js";
@@ -28,35 +38,20 @@ function Courses() {
     { _id: "deactive", name: "غیرفعال" },
   ];
 
-
-  const { courseList } = useSelector(
-    (state) => state.courseList
-  );
-
-
-
+  const { courseList } = useSelector((state) => state.courseList);
 
   const [state, setState] = useState([]);
   const [teachers, setTeachers] = useState([]);
 
-const callData = async()=>{
-await getCourseListLimited().then((res)=>{
+  const callData = async () => {
+    await getCourseListLimited().then((res) => {
+      setState(res.data.data);
+    });
 
-    setState(res.data.data);
-
-})
-
-
-
-await getUserByRole('teacher').then((res)=>{
-
-  setTeachers(res.data.data);
-})
-}
-
-
-
-
+    await getUserByRole("teacher").then((res) => {
+      setTeachers(res.data.data);
+    });
+  };
 
   const [filter, setFilter] = React.useState({
     fFullName: "",
@@ -69,27 +64,30 @@ await getUserByRole('teacher').then((res)=>{
       name: "",
     },
   });
-const notify = useNotify()
-  const handleDelete = (_id)=>{
-
-    deleteCourse(_id).then((res)=>{
-      if(res.status === 200){
-        setState(state.filter((course)=>course._id !== res.data.data))
-      }else if(res.status === 422){
-        if(res.data.detail.result=== 'has_product'){
-
-          notify("این دوره برای محصولاتی تعریف شده و قابل حذف نمی باشد", true, "solid", "error");
-
-
-        } else if (res.data.detail.result=== 'has_user'){
-          notify("این دوره برای کاربرانی تعریف شده و قابل حذف نمی باشد", true, "solid", "error");
-
+  const notify = useNotify();
+  const handleDelete = (_id) => {
+    deleteCourse(_id).then((res) => {
+      if (res.status === 200) {
+        setState(state.filter((course) => course._id !== res.data.data));
+      } else if (res.status === 422) {
+        if (res.data.detail.result === "has_product") {
+          notify(
+            "این دوره برای محصولاتی تعریف شده و قابل حذف نمی باشد",
+            true,
+            "solid",
+            "error"
+          );
+        } else if (res.data.detail.result === "has_user") {
+          notify(
+            "این دوره برای کاربرانی تعریف شده و قابل حذف نمی باشد",
+            true,
+            "solid",
+            "error"
+          );
         }
       }
-    })
-  }
-
-
+    });
+  };
 
   const handleChange = (e) => {
     const field = e.target.id;
@@ -97,15 +95,10 @@ const notify = useNotify()
     setFilter({ ...filter, [field]: value });
   };
 
-
-
-  const doSearch = async() => {
-
-   await getCourseBySearch(filter).then((res)=>{
-
-    setState(res.data.data);
-   })
-    
+  const doSearch = async () => {
+    await getCourseBySearch(filter).then((res) => {
+      setState(res.data.data);
+    });
   };
 
   useEffect(() => {
@@ -114,45 +107,50 @@ const notify = useNotify()
       filter.fFullName !== "" ||
       filter.fStatus.id !== ""
     ) {
-
       doSearch();
     }
   }, [filter.fTeacher, filter.fFullName, filter.fStatus]);
 
   useEffect(() => {
-    callData()
+    callData();
   }, []);
 
   return (
     <AuthorizeProvider roles={["admin"]}>
       <Flex direction="column" pt="75px">
-        <Card overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
-          <CardHeader p="6px 0px 22px 0px">
-            <Flex dir='rtl' >
-             
-              <Text
-              fontSize="xl"
-              color={textColor}
-              fontWeight="bold"
-              textAlign={"right"}
-            >
-              ثبت دوره جدید
-            </Text>
-            <CoursePop1 />
-            </Flex>
-            
-          </CardHeader>
+        <Card overflowX={{ sm: "scroll", xl: "hidden" }} 
+        overflowY={'hidden'} pb="20px">
+          <Accordion defaultIndex={[1]} allowMultiple>
+            <AccordionItem>
+              <AccordionButton>
+                <CoursePop1 />
 
-          <CardBody>
-            <CourseForm
-              courses={courseList}
-              statusData={statusData}
-              callData={callData}
-            />
-          </CardBody>
+                <Box
+                  fontWeight={"bold"}
+                  fontSize={"20px"}
+                  as="span"
+                  flex="1"
+                  textAlign="right"
+                >
+                  ثبت دوره جدید
+                </Box>
+
+                <AccordionIcon />
+              </AccordionButton>
+
+              <AccordionPanel pb={4}>
+                <CardBody>
+                  <CourseForm
+                    courses={courseList}
+                    statusData={statusData}
+                    callData={callData}
+                  />
+                </CardBody>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
         </Card>
-
-        <Card  my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
+        <Card my="22px" overflowX={{ sm: "scroll", xl: "hidden" }} pb="0px">
           <CardHeader p="6px 0px 22px 0px">
             <CourseListFilter
               filter={filter}
@@ -163,30 +161,28 @@ const notify = useNotify()
               teacher={teachers ? teachers : []}
             />
           </CardHeader>
-       
 
-            {
-              state.length !== 0 ? <CourseListTable
+          {state.length !== 0 ? (
+            <CourseListTable
               handleDelete={handleDelete}
               statusData={statusData}
               data={state}
               courses={courseList}
               callData={callData}
-            /> :
-              <Box
-            mb={"30px"}
-            borderRadius={"3rem"}
-            alignSelf={"center"}
-            width={{sm : "300px",md:"500px",lg :"500px"}}
-            bg={boxBg}
-          >
-            <Text textAlign={"center"} my={"10px"}>
-              دوره ای یافت نشد
-            </Text>
-          </Box>
-            }
-            
-   
+            />
+          ) : (
+            <Box
+              mb={"30px"}
+              borderRadius={"3rem"}
+              alignSelf={"center"}
+              width={{ sm: "300px", md: "500px", lg: "500px" }}
+              bg={boxBg}
+            >
+              <Text textAlign={"center"} my={"10px"}>
+                دوره ای یافت نشد
+              </Text>
+            </Box>
+          )}
         </Card>
       </Flex>
     </AuthorizeProvider>

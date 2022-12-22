@@ -52,7 +52,7 @@ class SDashboard:
                     'this_month': [
                         {
                             '$match': {'created': {'$gte': one_month_ago},
-                                       'role.id': 'student' , "is_enable" : True}
+                                       'role.id': 'student', "is_enable": True}
 
                         },
                         {
@@ -75,7 +75,7 @@ class SDashboard:
                                            {'created': {'$gte': two_month_ago}},
                                            {'created': {'$lt': one_month_ago}},
                                            {'role.id': 'student'},
-                                           {"is_enable" : True}
+                                           {"is_enable": True}
                                        ]
                                        }
 
@@ -92,7 +92,7 @@ class SDashboard:
                         }
                     ],
                     'total': [{
-                        '$match': {'role.id': 'student', "is_enable" : True}
+                        '$match': {'role.id': 'student', "is_enable": True}
                     },
 
                         {
@@ -119,7 +119,7 @@ class SDashboard:
                     'this_month': [
                         {
                             '$match': {'created': {'$gte': one_month_ago},
-                                       'role.id': 'teacher', "is_enable" : True}
+                                       'role.id': 'teacher', "is_enable": True}
 
                         },
                         {
@@ -142,7 +142,7 @@ class SDashboard:
                                            {'created': {'$gte': two_month_ago}},
                                            {'created': {'$lt': one_month_ago}},
                                            {'role.id': 'teacher'},
-                                           { "is_enable" : True}
+                                           {"is_enable": True}
                                        ]
                                        }
 
@@ -159,7 +159,7 @@ class SDashboard:
                         }
                     ],
                     'total': [{
-                        '$match': {'role.id': 'teacher', "is_enable" : True}
+                        '$match': {'role.id': 'teacher', "is_enable": True}
                     },
 
                         {
@@ -317,7 +317,7 @@ class SDashboard:
         if first_value == 0:
             return 100
         res = ((sec_value - first_value) / first_value)*100
-        return '%.2f'%res
+        return '%.2f' % res
 
     def prepare_count_data(self, students, teachers, purchases, courses, template):
         template['students']['count'] = 0 if len(
@@ -370,7 +370,7 @@ class SDashboard:
                                 'y': {
                                     '$eq': 1401
                                 },
-                                'type' : 'registration'
+                                'type': 'registration'
                             }
                         }, {
                             '$group': {
@@ -427,10 +427,9 @@ class SDashboard:
     def get_teacher_avg(self):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.mark_collection]
-       
-        
+
         raw = list(col.aggregate([{
-            '$match' :{"teacher.full_name" : {"$ne" : ""}}
+            '$match': {"teacher.full_name": {"$ne": ""}}
         },
             {
                 '$group': {
@@ -442,7 +441,7 @@ class SDashboard:
                         '$avg': '$sum'
                     }
                 }
-            }, {
+        }, {
                 '$project': {
                     'avrg': {
                         '$round': '$avrg'
@@ -450,7 +449,7 @@ class SDashboard:
                     'name': 1,
                     '_id': 0
                 }
-            }
+        }
         ]))
         itm_ready = {
             "axis": [it['name'] for it in raw],
@@ -477,7 +476,7 @@ class SDashboard:
         col: Collection = db[self.mark_collection]
         data = list(col.find({}).sort([
             ('g_date', pymongo.DESCENDING),
-            ('sum', pymongo.DESCENDING)]).limit(num))
+        ]).limit(num))
         return 200, "ok", "course is inserted", data
 
     def get_compare_student_mark(self, username):
@@ -562,7 +561,7 @@ class SDashboard:
         data = list(col.find({'status.id': "reg",
                               'courses.id': user['courses'][0]['id'],
                               'role.id': 'student',
-                              'username' : {'$ne' : user['username']}
+                              'username': {'$ne': user['username']}
                               }, {
             'full_name': 1,
             'image': 1
@@ -573,43 +572,65 @@ class SDashboard:
     def get_teacher_counts(self, user):
         db: Database = sn.databases[self.database].db
         col: Collection = db[self.user_collection]
-        data = list(col.aggregate([
-            {
-                '$match': {
-                    'username': user['username']
-                }
-            }, {
-                '$unwind': '$courses'
-            }, {
-                '$lookup': {
-                    'from': 's_user',
-                    'localField': 'courses.id',
-                    'foreignField': 'courses.id',
-                    'pipeline': [
-                        {
-                            '$match': {
-                                'role.id': 'student'
-                            }
-                        }, {
-                            '$project': {
-                                'full_name': 1,
-                                'image': 1
-                            }
+        col2: Collection = db[self.course_collection]
+
+        teacher_courses = list(col.find({
+            'username': user['username'],
+            'role.id': 'teacher'
+        }, {"courses": 1}))[0]['courses']
+        course_ids = [it['id'] for it in teacher_courses]
+
+        data = list(
+            col2.aggregate(
+                [
+                    {"$match": {
+                        "_id": {"$in": course_ids},
+                        "status.id": "active"
+                    }}, {
+                        "$project": {
+                            'name': 1,
+
                         }
-                    ],
-                    'as': 'students'
-                }
-            },{
-                "$match" : {"students" : {"$ne" : []}}
-            }
-        ]))
+                    }, {
+                        '$lookup': {
+                            'from': 's_user',
+                            'localField': '_id',
+                            'foreignField': 'courses.id',
+                            'pipeline': [
+                                {
+                                    '$match': {
+                                        'role.id': 'student'
+                                    }
+                                }, {
+                                    '$project': {
+                                        'full_name': 1,
+                                        'image': 1
+                                    }
+                                }
+                            ],
+                            'as': 'students'
+                        }
+
+                    } ,
+                    {
+                        "$match" : {
+"students" : {"$ne" : []}
+                        }
+                    }
+                
+                ]
+
+            ))
+
+
+
         student_count = 0
         for item in data:
             student_count += len(item['students'])
         itm_ready = {
-            'data' : data , 
-            'st' : student_count,
-            'cr' : len(data)
+            'data': data,
+            'st': student_count,
+            'cr': len(data)
         }
-        
+
         return 200, "ok", "ok", itm_ready

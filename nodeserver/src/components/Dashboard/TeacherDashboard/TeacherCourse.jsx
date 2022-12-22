@@ -3,6 +3,9 @@ import TeacherCourseDetail from "../TeacherCourseDetail";
 
 const TeacerCourse = (props) => {
   const { data } = props;
+
+
+  console.log(data,7878)
   return (
     <>
       {data.length === 0 ? (
@@ -27,7 +30,7 @@ const TeacerCourse = (props) => {
         >
           {data.map((item, key) => (
             <TeacherCourseDetail
-              name={item.courses.name}
+              name={item.name}
               students={item.students}
             />
           ))}
